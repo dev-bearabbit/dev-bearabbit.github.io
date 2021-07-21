@@ -54,7 +54,7 @@
 <meta property="og:description" content="Ansible 설치방법에 대해서 간단히 설명합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2021-07-18T07:21:12.000Z">
-<meta property="article:modified_time" content="2021-07-18T10:14:25.045Z">
+<meta property="article:modified_time" content="2021-07-19T03:04:31.049Z">
 <meta property="article:author" content="Hyeonji Ryu">
 <meta property="article:tag" content="sshpass">
 <meta property="article:tag" content="docker">
@@ -301,7 +301,7 @@
 <li>repo 파일 생성하기</li>
 <li>yum repolist로 확인하기</li>
 </ol>
-<p>만약 위 과정 중에 모르는 것이 있다면 <a href="https://hyeonji-ryu.github.io/2021/07/17/Linux/Linux-3/#more">이 글</a>을 참고하면 된다.</p>
+<p>만약 위 과정 중에 모르는 것이 있다면 <a href="https://hyeonji-ryu.github.io/2021/07/17/Linux/Linux-4/#more">이 글</a>을 참고하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># repo 폴더 생성</span></span><br><span class="line">mkdir -p /var/www/html/ans</span><br><span class="line"></span><br><span class="line"><span class="comment"># ansible.tar 파일을 전송 후 압축 해제</span></span><br><span class="line">tar xvf /var/www/html/ans/ansible.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># repo 작성하기</span></span><br><span class="line">cat &lt;&lt; EOT &gt;&gt; /etc/yum.repos.d/ans.repo</span><br><span class="line">[ans]</span><br><span class="line">name=ans</span><br><span class="line">baseurl=file://var/www/html/ans</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line">EOT</span><br><span class="line"></span><br><span class="line"><span class="comment"># repo 확인</span></span><br><span class="line">yum clean all</span><br><span class="line">yum repolist</span><br><span class="line"></span><br><span class="line"><span class="comment"># ansible 설치</span></span><br><span class="line">yum install ansible</span><br></pre></td></tr></table></figure>
 <h2 id="Ansible-설치-완료-확인"><a href="#Ansible-설치-완료-확인" class="headerlink" title="Ansible 설치 완료 확인"></a>Ansible 설치 완료 확인</h2><p>문제 없이 설치되었다면 아래와 같이 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible --version</span><br></pre></td></tr></table></figure>
@@ -330,10 +330,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/07/17/Linux/Linux-3/" rel="prev" title="3. Linux Repository">
-      <i class="fa fa-chevron-left"></i> 3. Linux Repository
+    <a href="/2021/07/17/Linux/Linux-3/" rel="prev" title="3. Linux core concepts">
+      <i class="fa fa-chevron-left"></i> 3. Linux core concepts
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/19/Linux/Linux-4/" rel="next" title="4. Linux Package management">
+      4. Linux Package management <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -409,7 +412,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
