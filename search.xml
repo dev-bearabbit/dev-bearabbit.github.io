@@ -22,18 +22,20 @@
 <p><img src="/images/116.png" alt="lightsail2"></p>
 <p>그 다음 아래로 내리면 위 사진과 같은 화면을 볼 수 있다. 여기서 사양과 가격을 잘 분석한 뒤 선택하면 된다. 나의 경우 $10를 선택했다.<br>마지막으로 서버 이름을 변경해준 뒤 인스턴스 생성을 누르면 완료된다.</p>
 <h3 id="터미널-접속"><a href="#터미널-접속" class="headerlink" title="터미널 접속"></a>터미널 접속</h3><p>막 생성된 lightsail 서버에 터미널로 접속하고 싶다면 2가지의 방법이 있다.</p>
-<ol>
-<li>AWS 홈페이지에서 접속하기</li>
-<li>ssh 프라이빗 키 다운 받아 터미널로 접속하기</li>
-</ol>
+<ul>
+<li><p>AWS 홈페이지에서 접속하기</p>
 <p>먼저 AWS에서 접속하는 방법은 다음과 같다.<br>생성된 인스턴스를 누르면 해당 서버에 대한 정보들과 연결 카테고리가 있다. 연결 카테고리를 클릭한 후 아래를 보면 다음과 같은 화면이 보일 것이다.</p>
 <p><img src="/images/117.png" alt="lightsail3"></p>
 <p>여기서 <code>ssh를 사용하여 연결</code>을 클릭하면 해당 서버의 터미널이 브라우저로 열린다.</p>
+</li>
+<li><p>ssh 프라이빗 키 다운 받아 터미널로 접속하기</p>
 <p>다른 방법은 내 컴퓨터 터미널에서 해당 서버로 접속하는 방법이다. 이는 먼저 lightsail 계정의 ssh 프라이빗 키를 저장해야 한다.</p>
 <p><img src="/images/118.png" alt="lightsail4"></p>
 <p>연결 페이지 아래에 보면 위와 같은 안내와 함께 <code>계정 페이지</code> 링크가 있을 것이다. 클릭해보자.</p>
 <p><img src="/images/119.png" alt="lightsail5"></p>
 <p>그러면 이렇게 내 계정의 ssh 프라이빗 키를 다운로드 받을 수 있다. 이를 내 컴퓨터에 저장한다.</p>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>KBO Analytical Dashboard</category>
