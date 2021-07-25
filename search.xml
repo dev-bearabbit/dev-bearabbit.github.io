@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>1. AWS lightsail로 DB 서버 생성하기</title>
+    <url>/2021/07/25/KBO/kbo-1/</url>
+    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 크롤링한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.</p>
+<a id="more"></a>
+<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>이전 글에서 언급했지만 사실 해당 프로젝트는 개인적으로 진행했었다. 스터디 팀원들과 함께 KBO 홈페이지 데이터 크롤링을 성공한 후, 웹개발을 배워보고 싶은 마음에 해당 데이터로 “내맘대로 만드는 간단 대시보드”를 만들기 시작하였다. 하지만 스터디에서 크롤링한 데이터를 그냥 두는 것은 아깝다는 의견이 많아졌고, 이는 결국 팀원마다 대시보드를 만드는 것으로 결론이 났다. 즉, 다같이 DB 서버 하나를 생성해서 각각의 웹 서버들이 공유하는 방식으로 진행하자는 것이다.</p>
+<p>처음 혼자서 웹서버를 올렸던 구조는 AWS의 ec2 프리티어 버전을 하나 생성해서 도커를 설치한 후, 각 컨테이너에 DB, flask를 올리는 방식이다. 물론 DB와 웹서버는 분리해서 사용하는 것이 맞다고 알고 있었지만, 가벼운 사이드 프로젝트라서 금전을 아끼고 싶었다. 그러다가 ec2 무료 사용시간을 모두 소진했고, 마침 스터디 다른 팀원들도 웹 서버를 만든다고 해서 이런 결말을 맞았다.</p>
+<h2 id="아키텍처-요약"><a href="#아키텍처-요약" class="headerlink" title="아키텍처 요약"></a>아키텍처 요약</h2><p>해당 프로젝트의 구조는 다음과 같다.</p>
+<ol>
+<li>깃허브 액션: KBO 홈페이지 크롤링 및 실시간 데이터 전처리</li>
+<li>DB 서버: 데이터 저장 및 대시보드 데이터 전송</li>
+<li>웹 서버: 데이터 분석 및 시각화</li>
+</ol>
+<p>참 간단하다. 매일 KBO 공식 홈페이지에 업데이트 되는 자료들을 크롤링한 후 DB에 저장할 수 있는 형태로 전처리하여 DB 서버로 보낸다. 그러면 DB 서버에는 새로운 시합들에 대한 정보가 저장되고, 해당 DB서버와 연결된 대시보드는 실시간 정보가 반영된 분석 및 시각화를 제공할 수 있다.</p>
+<p>하지만 위 구조는 앞으로 만들어질 실시간 데이터만을 처리한다. 즉, 2000년부터 2021년 현재까지 과거 데이터의 경우는 수동적으로 크롤링하여 전처리한 후 DB에 저장해주어야 한다. 이를 위해서 먼저 해야할 일은 사용할 DB 서버 생성, DB 스키마 설계 등 이었다.</p>
+<h2 id="DB-서버-생성"><a href="#DB-서버-생성" class="headerlink" title="DB 서버 생성"></a>DB 서버 생성</h2><p>DB 서버는 AWS의 lightsail을 사용하기로 결정했다. 그 이유로는 매달 결정되어 있는 가격대와 편리함 등이 꼽혔다. 여러 명이 같이 돈을 지불해야 하는 탓에 금액이 정해져있지 않으면 매달 귀찮은 일이 발생할 것 같았다.</p>
+<h3 id="AWS-lightsail-인스턴스-생성"><a href="#AWS-lightsail-인스턴스-생성" class="headerlink" title="AWS lightsail 인스턴스 생성"></a>AWS lightsail 인스턴스 생성</h3><p>AWS의 계정이 있다면, 간단하다. 서비스에서  lightsail을 찾아서 들어간 후 <code>인스턴스 생성</code>을 클릭하면 된다. 그러면 아래와 같은 화면은 만날 수 있다.</p>
+<p><img src="/images/115.png" alt="lightsail"></p>
+<p>여기서 사용하려는 OS를 선택하면 된다. 나의 경우 Ubuntu18.04 LTS를 선택하였다.<br>현재 회사에서는 레드 햇이나 센토스를 주로 사용하기 때문에 사이드 프로젝트 할 때만이라도 우분투를 사용해보고 싶었다. 결론은 매우 개인적인 이유로 OS를 선택했다.</p>
+<p><img src="/images/116.png" alt="lightsail2"></p>
+<p>그 다음 아래로 내리면 위 사진과 같은 화면을 볼 수 있다. 여기서 사양과 가격을 잘 분석한 뒤 선택하면 된다. 나의 경우 $10를 선택했다.<br>마지막으로 서버 이름을 변경해준 뒤 인스턴스 생성을 누르면 완료된다.</p>
+<h3 id="터미널-접속"><a href="#터미널-접속" class="headerlink" title="터미널 접속"></a>터미널 접속</h3><p>막 생성된 lightsail 서버에 터미널로 접속하고 싶다면 2가지의 방법이 있다.</p>
+<ol>
+<li>AWS 홈페이지에서 접속하기</li>
+<li>ssh 프라이빗 키 다운 받아 터미널로 접속하기</li>
+</ol>
+<p>먼저 AWS에서 접속하는 방법은 다음과 같다.<br>생성된 인스턴스를 누르면 해당 서버에 대한 정보들과 연결 카테고리가 있다. 연결 카테고리를 클릭한 후 아래를 보면 다음과 같은 화면이 보일 것이다.</p>
+<p><img src="/images/117.png" alt="lightsail3"></p>
+<p>여기서 <code>ssh를 사용하여 연결</code>을 클릭하면 해당 서버의 터미널이 브라우저로 열린다.</p>
+<p>다른 방법은 내 컴퓨터 터미널에서 해당 서버로 접속하는 방법이다. 이는 먼저 lightsail 계정의 ssh 프라이빗 키를 저장해야 한다.</p>
+<p><img src="/images/118.png" alt="lightsail4"></p>
+<p>연결 페이지 아래에 보면 위와 같은 안내와 함께 <code>계정 페이지</code> 링크가 있을 것이다. 클릭해보자.</p>
+<p><img src="/images/119.png" alt="lightsail5"></p>
+<p>그러면 이렇게 내 계정의 ssh 프라이빗 키를 다운로드 받을 수 있다. 이를 내 컴퓨터에 저장한다.</p>
+]]></content>
+      <categories>
+        <category>KBO Analytical Dashboard</category>
+      </categories>
+      <tags>
+        <tag>mariadb</tag>
+        <tag>DB</tag>
+        <tag>KBO</tag>
+        <tag>analysis</tag>
+        <tag>dashborad</tag>
+        <tag>aws</tag>
+        <tag>lightsail</tag>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>1. Ansible 설치하기</title>
     <url>/2021/07/18/Ansible/ansible-1/</url>
     <content><![CDATA[<p>Ansible 설치방법에 대해서 간단히 설명합니다.<br><a id="more"></a></p>
@@ -78,8 +127,8 @@
 <a id="more"></a>
 <h2 id="Linux-Filesystem"><a href="#Linux-Filesystem" class="headerlink" title="Linux Filesystem"></a>Linux Filesystem</h2><p>리눅스에서는 모든 것들을 파일 단위로 관리한다. 그렇다면 소켓, 디바이스, 폴더 등 파일이 아닌 객체들을 어떻게 파일 단위로 관리할까? 이에 대해서 하나씩 살펴보자.</p>
 <h3 id="File-Descriptor"><a href="#File-Descriptor" class="headerlink" title="File Descriptor"></a>File Descriptor</h3><p>파일 디스크립터(File Descriptor, 이하 fd)는 프로세스들이 파일에 접근할 수 있도록 관리하는 관리자이다. 파일 디스크립터는 프로세스마다 특정 파일이나 장치를 열게 되면 해당 파일에 대한 정보에 인덱스를 부여한 후 fd 관리 테이블에 입력한다.</p>
-<p>파일 디스크립터를 공부하면서 가장 이해하기 어려웠던 점은 fd 자체가 커널과 프로세스 중에서 어느 단에서 작동하는건지에 대해서이다. </p>
-<p>OS 입장에서는 연결된 장치의 개수 등을 파악하기 위해서라도 열린 파일의 개수를 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 FD테이블을 통해 관리한다. 이런 구조 속에서 파일 디스크립터는 프로세스가 접근하려고 하는 </p>
+<p>파일 디스크립터를 공부하면서 가장 이해하기 어려웠던 점은 fd 자체가 커널과 프로세스 중에서 어느 단에서 작동하는건지에 대해서이다.</p>
+<p>OS 입장에서는 연결된 장치의 개수 등을 파악하기 위해서라도 열린 파일의 개수를 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 FD테이블을 통해 관리한다. 이런 구조 속에서 파일 디스크립터는 프로세스가 접근하려고 하는</p>
 <p>어떤 프로세스가 특정 파일이나 장치를 열게 되면 디스크립터가 해당 파일에 대해 번호를 부여한 후 관리 테이블에 입력한다. 즉, fd는 프로세스들이 필요한 파일 및 장치에 접근할 수 있도록 도와주는 연결자의 역할이라도 봐도 된다. 따라서 관리 테이블은 프로세스 단에서 수정할 수 없으며, 커널단에서만 변경이 가능하다. fd 번호 중에서 0,1,2번은 </p>
 <div class="table-container">
 <table>
@@ -1210,7 +1259,7 @@
 <li>Dash</li>
 <li>Bootstrap5</li>
 <li>Plotly</li>
-<li>AWS ec2</li>
+<li>AWS ec2 or lightsail</li>
 </ul>
 <p>위에 언급된 것들에 대해서 간단히 살펴보자.</p>
 <h2 id="Flask"><a href="#Flask" class="headerlink" title="Flask"></a>Flask</h2><p>플라스크는 파이썬으로 구동되는 웹 프레임워크 중 하나이다. 상용으로 사용하는 웹 프레임워크인 장고(django)보다 가볍고 간단한 서버들도 생성할 수 있어서 데모 버전을 만드는 프로젝트에 적합하다.</p>
@@ -1218,7 +1267,7 @@
 <h2 id="Dash"><a href="#Dash" class="headerlink" title="Dash"></a>Dash</h2><p>대시보드를 만드는 데 특화된 파이썬 웹 프레임워크이다. html이나 css 코딩 없이 오로지 파이썬만으로 웹을 생성할 수 있다. 또한 plotly 시각화 툴을 바로 적용할 수 있다.</p>
 <h2 id="Bootstrap5"><a href="#Bootstrap5" class="headerlink" title="Bootstrap5"></a>Bootstrap5</h2><p>부스스트랩은 웹페이지를 쉽게 생성할 수 있도록 도와주는 HTML, CSS, JS 프레임워크이다. 직접 디자인들을 설정하지 않고도 괜찮은 테마를 사용할 수 있으며, 스크린 사이즈(PC, 태블릿, 스마트폰)에 맞춰서 반응하는 UI를 제공한다. 플라스크와 마찬가지로 사이드 프로젝트로 간단한 웹을 만들 때 사용하기 좋다. 현재 플라스크에서 사용할 수 있는 버전은 Bootstrap3이지만 새로 나온 Bootstrap5를 써보고 싶어서 라이브러리 코드를 수정해서 사용하였다. Bootstrap5를 적용하는 방법은 이후에 설명할 것이다.</p>
 <h2 id="Plotly"><a href="#Plotly" class="headerlink" title="Plotly"></a>Plotly</h2><p>Plotly는 파이썬으로 시각화를 할 수 있는 무료 오픈소스 그래프 라이브러리이다. 실시간으로 그래프를 확대 및 축소할 수도 있으며, 제공하는 그래프 종류도 다양하다. 그래프 종류가 궁금하다면 <a href="https://plotly.com/python/basic-charts/" target="_blank" rel="noopener">해당 링크</a>를 통해서 확인할 수 있다.</p>
-<h2 id="AWS-ec2"><a href="#AWS-ec2" class="headerlink" title="AWS ec2"></a>AWS ec2</h2><p>아마존 클라우드 서비스에서 제공하는 가상서버(ec2)를 웹 서버로 사용한다. 현재 프리 티어라서 무료로 사용하지만, 무료 기간이 끝나면 다른 방식으로 웹 서버를 구축할 예정이다.</p>
+<h2 id="AWS-ec2-or-lightsail"><a href="#AWS-ec2-or-lightsail" class="headerlink" title="AWS ec2 or lightsail"></a>AWS ec2 or lightsail</h2><p>아마존 클라우드 서비스에서 제공하는 가상서버(ec2)를 웹 서버로 사용한다. 현재 프리 티어라서 무료로 사용하지만, 무료 기간이 끝나면 lightsail로 웹 서버를 구축할 예정이다. lightsail은 AWS에서 제공하는 가상서버이지만, ec2와 달리 월마다 가격이 정해져 있어서 비교적 저렴하다.</p>
 <h2 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h2><p>위에서 사용하는 프레임워크나 라이브러리가 무엇인지 설명했기에 앞으로는 설명 없이 바로 진행할 것이다.</p>
 ]]></content>
       <categories>

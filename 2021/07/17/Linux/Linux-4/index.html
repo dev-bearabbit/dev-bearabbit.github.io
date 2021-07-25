@@ -54,7 +54,7 @@
 <meta property="og:description" content="리눅스 Linux Filesystem에 대해서 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2021-07-17T03:04:17.000Z">
-<meta property="article:modified_time" content="2021-07-24T08:08:54.889Z">
+<meta property="article:modified_time" content="2021-07-24T08:49:44.696Z">
 <meta property="article:author" content="Hyeonji Ryu">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="filesystem">
@@ -273,8 +273,8 @@
 <a id="more"></a>
 <h2 id="Linux-Filesystem"><a href="#Linux-Filesystem" class="headerlink" title="Linux Filesystem"></a>Linux Filesystem</h2><p>리눅스에서는 모든 것들을 파일 단위로 관리한다. 그렇다면 소켓, 디바이스, 폴더 등 파일이 아닌 객체들을 어떻게 파일 단위로 관리할까? 이에 대해서 하나씩 살펴보자.</p>
 <h3 id="File-Descriptor"><a href="#File-Descriptor" class="headerlink" title="File Descriptor"></a>File Descriptor</h3><p>파일 디스크립터(File Descriptor, 이하 fd)는 프로세스들이 파일에 접근할 수 있도록 관리하는 관리자이다. 파일 디스크립터는 프로세스마다 특정 파일이나 장치를 열게 되면 해당 파일에 대한 정보에 인덱스를 부여한 후 fd 관리 테이블에 입력한다.</p>
-<p>파일 디스크립터를 공부하면서 가장 이해하기 어려웠던 점은 fd 자체가 커널과 프로세스 중에서 어느 단에서 작동하는건지에 대해서이다. </p>
-<p>OS 입장에서는 연결된 장치의 개수 등을 파악하기 위해서라도 열린 파일의 개수를 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 FD테이블을 통해 관리한다. 이런 구조 속에서 파일 디스크립터는 프로세스가 접근하려고 하는 </p>
+<p>파일 디스크립터를 공부하면서 가장 이해하기 어려웠던 점은 fd 자체가 커널과 프로세스 중에서 어느 단에서 작동하는건지에 대해서이다.</p>
+<p>OS 입장에서는 연결된 장치의 개수 등을 파악하기 위해서라도 열린 파일의 개수를 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 FD테이블을 통해 관리한다. 이런 구조 속에서 파일 디스크립터는 프로세스가 접근하려고 하는</p>
 <p>어떤 프로세스가 특정 파일이나 장치를 열게 되면 디스크립터가 해당 파일에 대해 번호를 부여한 후 관리 테이블에 입력한다. 즉, fd는 프로세스들이 필요한 파일 및 장치에 접근할 수 있도록 도와주는 연결자의 역할이라도 봐도 된다. 따라서 관리 테이블은 프로세스 단에서 수정할 수 없으며, 커널단에서만 변경이 가능하다. fd 번호 중에서 0,1,2번은 </p>
 <div class="table-container">
 <table>
@@ -426,7 +426,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -439,7 +439,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">184</span>
+        <span class="site-state-item-count">187</span>
         <span class="site-state-item-name">태그</span></a>
       </div>
   </nav>

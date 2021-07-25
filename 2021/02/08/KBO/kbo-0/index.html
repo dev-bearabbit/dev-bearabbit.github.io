@@ -54,7 +54,7 @@
 <meta property="og:description" content="해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 크롤링한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2021-02-08T09:32:58.000Z">
-<meta property="article:modified_time" content="2021-03-01T13:44:11.731Z">
+<meta property="article:modified_time" content="2021-07-25T08:17:31.329Z">
 <meta property="article:author" content="Hyeonji Ryu">
 <meta property="article:tag" content="AWS">
 <meta property="article:tag" content="docker">
@@ -285,7 +285,7 @@
 <li>Dash</li>
 <li>Bootstrap5</li>
 <li>Plotly</li>
-<li>AWS ec2</li>
+<li>AWS ec2 or lightsail</li>
 </ul>
 <p>위에 언급된 것들에 대해서 간단히 살펴보자.</p>
 <h2 id="Flask"><a href="#Flask" class="headerlink" title="Flask"></a>Flask</h2><p>플라스크는 파이썬으로 구동되는 웹 프레임워크 중 하나이다. 상용으로 사용하는 웹 프레임워크인 장고(django)보다 가볍고 간단한 서버들도 생성할 수 있어서 데모 버전을 만드는 프로젝트에 적합하다.</p>
@@ -293,7 +293,7 @@
 <h2 id="Dash"><a href="#Dash" class="headerlink" title="Dash"></a>Dash</h2><p>대시보드를 만드는 데 특화된 파이썬 웹 프레임워크이다. html이나 css 코딩 없이 오로지 파이썬만으로 웹을 생성할 수 있다. 또한 plotly 시각화 툴을 바로 적용할 수 있다.</p>
 <h2 id="Bootstrap5"><a href="#Bootstrap5" class="headerlink" title="Bootstrap5"></a>Bootstrap5</h2><p>부스스트랩은 웹페이지를 쉽게 생성할 수 있도록 도와주는 HTML, CSS, JS 프레임워크이다. 직접 디자인들을 설정하지 않고도 괜찮은 테마를 사용할 수 있으며, 스크린 사이즈(PC, 태블릿, 스마트폰)에 맞춰서 반응하는 UI를 제공한다. 플라스크와 마찬가지로 사이드 프로젝트로 간단한 웹을 만들 때 사용하기 좋다. 현재 플라스크에서 사용할 수 있는 버전은 Bootstrap3이지만 새로 나온 Bootstrap5를 써보고 싶어서 라이브러리 코드를 수정해서 사용하였다. Bootstrap5를 적용하는 방법은 이후에 설명할 것이다.</p>
 <h2 id="Plotly"><a href="#Plotly" class="headerlink" title="Plotly"></a>Plotly</h2><p>Plotly는 파이썬으로 시각화를 할 수 있는 무료 오픈소스 그래프 라이브러리이다. 실시간으로 그래프를 확대 및 축소할 수도 있으며, 제공하는 그래프 종류도 다양하다. 그래프 종류가 궁금하다면 <a href="https://plotly.com/python/basic-charts/" target="_blank" rel="noopener">해당 링크</a>를 통해서 확인할 수 있다.</p>
-<h2 id="AWS-ec2"><a href="#AWS-ec2" class="headerlink" title="AWS ec2"></a>AWS ec2</h2><p>아마존 클라우드 서비스에서 제공하는 가상서버(ec2)를 웹 서버로 사용한다. 현재 프리 티어라서 무료로 사용하지만, 무료 기간이 끝나면 다른 방식으로 웹 서버를 구축할 예정이다.</p>
+<h2 id="AWS-ec2-or-lightsail"><a href="#AWS-ec2-or-lightsail" class="headerlink" title="AWS ec2 or lightsail"></a>AWS ec2 or lightsail</h2><p>아마존 클라우드 서비스에서 제공하는 가상서버(ec2)를 웹 서버로 사용한다. 현재 프리 티어라서 무료로 사용하지만, 무료 기간이 끝나면 lightsail로 웹 서버를 구축할 예정이다. lightsail은 AWS에서 제공하는 가상서버이지만, ec2와 달리 월마다 가격이 정해져 있어서 비교적 저렴하다.</p>
 <h2 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h2><p>위에서 사용하는 프레임워크나 라이브러리가 무엇인지 설명했기에 앞으로는 설명 없이 바로 진행할 것이다.</p>
 
     </div>
@@ -389,7 +389,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#시작하며"><span class="nav-number">1.</span> <span class="nav-text">시작하며</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flask"><span class="nav-number">2.</span> <span class="nav-text">Flask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mariaDB"><span class="nav-number">3.</span> <span class="nav-text">mariaDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dash"><span class="nav-number">4.</span> <span class="nav-text">Dash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap5"><span class="nav-number">5.</span> <span class="nav-text">Bootstrap5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plotly"><span class="nav-number">6.</span> <span class="nav-text">Plotly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWS-ec2"><span class="nav-number">7.</span> <span class="nav-text">AWS ec2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#마치며"><span class="nav-number">8.</span> <span class="nav-text">마치며</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#시작하며"><span class="nav-number">1.</span> <span class="nav-text">시작하며</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flask"><span class="nav-number">2.</span> <span class="nav-text">Flask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mariaDB"><span class="nav-number">3.</span> <span class="nav-text">mariaDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dash"><span class="nav-number">4.</span> <span class="nav-text">Dash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap5"><span class="nav-number">5.</span> <span class="nav-text">Bootstrap5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plotly"><span class="nav-number">6.</span> <span class="nav-text">Plotly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWS-ec2-or-lightsail"><span class="nav-number">7.</span> <span class="nav-text">AWS ec2 or lightsail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#마치며"><span class="nav-number">8.</span> <span class="nav-text">마치며</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -405,7 +405,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -418,7 +418,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">184</span>
+        <span class="site-state-item-count">187</span>
         <span class="site-state-item-name">태그</span></a>
       </div>
   </nav>
