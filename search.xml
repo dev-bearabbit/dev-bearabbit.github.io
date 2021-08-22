@@ -10,6 +10,7 @@
 <p><code>[그룹이름]</code>부분에 들어가는 단어가 앤서블에서 사용할 그룹이름이며 <code>[그룹이름:vars]</code> 아래로 입력한 부분은 해당 그룹에 대한 변수를 설정한 것이다. 보통 그룹에 속하는 노드들의 공통 속성은 <code>[그룹이름:vars]</code>에 하나로 입력한다. 위 예시를 보면 target1-3까지는 각각 IP가 다르므로 [all]에 작성하였고, ssh 비밀번호는 동일하므로 [all:vars]에 작성하였다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Ansible</category>
       </categories>
       <tags>
@@ -141,6 +142,7 @@
 <p>엔서블 설치가 완료되었다. 다음 글에서는 앤서블로 관리할 노드들을 셋팅하는 방법에 대해서 살펴보자</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Ansible</category>
       </categories>
       <tags>
@@ -328,6 +330,7 @@
 <p>앤서블에 대한 개괄적인 설명은 끝났다. 다음 글부터는 앤서블을 설치 및 사용법에 대해서 자세히 살펴보자.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Ansible</category>
       </categories>
       <tags>
@@ -499,6 +502,7 @@
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> lis: [<span class="built_in">i32</span>; <span class="number">10</span>] = [<span class="number">10</span>,<span class="number">9</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">3</span>];</span><br><span class="line">    insertion_sort(lis);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">insertion_sort</span></span>(<span class="keyword">mut</span> lis: [<span class="built_in">i32</span>; <span class="number">10</span>]) &#123;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>..lis.len()&#123;</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> (<span class="number">1</span>..i+<span class="number">1</span>).rev()&#123;</span><br><span class="line">            <span class="keyword">if</span> lis[j] &lt; lis[j-<span class="number">1</span>]&#123;</span><br><span class="line">                <span class="keyword">let</span> temp = lis[j];</span><br><span class="line">                lis[j] = lis[j-<span class="number">1</span>];</span><br><span class="line">                lis[j-<span class="number">1</span>]=temp</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;:?&#125;"</span>,lis)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Algorithms</category>
       </categories>
       <tags>
@@ -1454,6 +1458,7 @@
 <p>위 코드는 하둡의 yarn에서 리소스를 받아 실행하는 것이기 때문에 결과값 또한 하둡 웹 UI에서 찾아볼 수 있다. 따라서 <code>pi-master.local:8088</code>로 접속하여 실행된 잡(어플리케이션)의 로그를 클릭하면 결과값을 확인할 수 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Clustering</category>
       </categories>
       <tags>
@@ -1513,6 +1518,7 @@
 <p>다음 글에서는 하둡과 스파크에서 기본적으로 제공하는 테스트들을 실행해보자.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Clustering</category>
       </categories>
       <tags>
@@ -1556,6 +1562,7 @@
 <p>이렇게 하둡과 스파크 설치는 끝났다. 다음 글에서는 분산처리 설정하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Clustering</category>
       </categories>
       <tags>
@@ -1639,6 +1646,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc &amp;&amp; clusterscp ~/.bashrc</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Clustering</category>
       </categories>
       <tags>
@@ -1853,6 +1861,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo shutdown -h now</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Clustering</category>
       </categories>
       <tags>
@@ -1889,6 +1898,7 @@
 <p>지금까지 라즈베리 파이4를 살펴보았다. 다음 글에서는 라즈베리 파이의 초기 환경설정에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Clustering</category>
       </categories>
       <tags>
@@ -2214,6 +2224,7 @@
 <h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>지금까지 AWS를 가상서버를 사용하여 모델을 훈련한 후, 해당 모델을 서빙하는 방법에 대해서 알아보았다. 다음 글에서는 GPU를 사용하여 훈련하는 과정을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -2275,6 +2286,7 @@
 <p>이제 AWS를 사용하여 모델 훈련까지 완료하였다. 다음 글에서는 훈련된 모델에 사용하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -2347,6 +2359,7 @@
 <p>이제 EC2 인스턴스에서 모델을 훈련할 준비가 완료되었다. 다음 글에서는 지금까지 만든 것들을 바탕으로 EC2 인스턴스에서 모델을 훈련한 후 결과를 저장할 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -2405,6 +2418,7 @@
 <p>지금까지 AWS EC2 인스턴스를 생성하는 방법에 대해 알아보았다. 다음 글에서는 도커 이미지를 생성할 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -2468,6 +2482,7 @@
 <p>지금까지 커맨드라인에서 S3의 버킷을 생성하고 훈련 데이터를 업로드하는 방법을 살펴보았다. 다음 글에서는 EC2 인스턴스를 설정하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -2499,6 +2514,7 @@
 <p>이제 커맨드라인에서 AWS를 실행할 준비가 모두 완료되었다. 다음 글에서는 커맨드라인에서 S3 버킷을 만들고 데이터를 추가하는 방법에 대해 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -2544,6 +2560,7 @@
 <p>지금까지 AWS 계정의 종류와 생성 방법에 대해서 알아보았다. 다음 글에서는 생성한 IAM 계정을 통해 커맨드라인에서 AWS을 연결하는 방법에 대해서 알아볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -2582,6 +2599,7 @@
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>이번 글에서는 클라우드 컴퓨팅의 개념과 우리가 사용하게 될 AWS에 대해서 간단하게 살펴보았다. 다음 글에서는 본격적으로 AWS 계정 만드는 방법과 커맨드라인에서 AWS로 바로 접속하는 방법에 대해서 알아볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>AWS project</category>
       </categories>
       <tags>
@@ -5426,6 +5444,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>위의 순서를 보면, 상수함수가 가장 작고 지수함수가 가장 크다. 즉 상수함수는 데이터 수가 많아도 빠르게 작동하는 알고리즘이며, 지수함수는 데이터 수가 많아질수록 급격하게 느려지는 알고리즘이라는 뜻이다. 시간 효율성 관점에서는 상수함수가 더욱 우월하다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Algorithms</category>
       </categories>
       <tags>
