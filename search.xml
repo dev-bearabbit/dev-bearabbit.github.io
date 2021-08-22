@@ -1441,6 +1441,7 @@
 <p>다음 글에서는 정규표현식 기본 문법에 대해서 알아보자.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Regular expression</category>
       </categories>
       <tags>
@@ -3124,6 +3125,7 @@
 <p>집합 $V$에 속하는 요소인 $x$는 벡터이다. 따라서 $(V,+)$의 항등원 또한 영벡터($[0,\dots,0$^T)이다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>mathematics for machine learning</category>
       </categories>
       <tags>
@@ -3948,6 +3950,7 @@ x_1&+&x_3&-&x_4&=& 0\\
 <script type="math/tex; mode=display">x = (A^TA)^{-1}A^Tb, \quad A^TA \in R^{3 \times 3}</script><p>이 방법은 근사 해를 구할 수 있게 해주기에 매우 유용하지만, 많은 행렬 계산이 들어가고 근사값을 구하는 것이기에 일반적으로 사용하기를 추천하지는 않는다. 이의 대안으로 우리는 chapter2에서 벡터 사이의 유사성을 계산할 수 있는 방법을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>mathematics for machine learning</category>
       </categories>
       <tags>
@@ -4153,6 +4156,7 @@ a_{12} & \mathbf{a_{22}}\\
 <p>$\lambda(B + C)=\lambda B + \lambda C,\quad B,C \in \mathbb R^{m \times n}$</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>mathematics for machine learning</category>
       </categories>
       <tags>
@@ -5144,6 +5148,7 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>목표는 단지 프로그램을 작동시키는 것이 아니라는 점을 기억하라. 목표는 프로그램 작동 방법을 배우는 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -5276,6 +5281,7 @@ cos(x)=\frac{e^{ix}+e^{-1x}}{2}
 <p>여기서는 모든 디버그 정보를 얻기 위해서 모두 사용햇지만 특정 파일 또는 모듈에 대한 출력만 생성하도록 선택할 수도 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -5430,6 +5436,7 @@ cos(x)=\frac{e^{ix}+e^{-1x}}{2}
 <p>GDBM 라이브러리의 완전한 맵핑은 ThinkJulia 소스에서 예제로 찾을 수 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -5626,6 +5633,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -5673,6 +5681,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>mathematics for machine learning</category>
       </categories>
       <tags>
@@ -5791,6 +5800,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>이 예시에서는 <code>printtime()</code>가 2개의 메서드를 가지고 있으며, 하나는 <code>MyTime</code> 인수이고 다른 하나는 <code>Any</code> 인수이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -5858,6 +5868,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p><code>@assert</code> 매크로는 정상적인 조건을 처리하는 코드와 오류를 확인하는 코드를 구분하기 때문에 유용하다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -5963,6 +5974,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>첫 번째 인수는 어떤 객체든 들어갈 수 있다. 두 번째 인수에는 <code>:</code>기호를 넣고 뒤에 필드의 이름을 작성하면 된다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -6085,6 +6097,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>대부분의 시스템에는 한 형식에서 다른 형식으로 변환하는 응용 프로그램이 있다. 관련 정보는 <a href="https://en.wikipedia.org/wiki/Newline" target="_blank" rel="noopener">해당 링크</a>에서 확인할 수 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -6240,6 +6253,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">wordlist=sentencetoword(<span class="string">"words.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> findweird(t1,t2)</span><br><span class="line">    word1=keys(t1)</span><br><span class="line">    word2=keys(t2)</span><br><span class="line">    final=[]</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word1</span><br><span class="line">        <span class="keyword">if</span> word ∉ word2</span><br><span class="line">        push!(final,word)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> final</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -6357,6 +6371,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>줄리아는 시퀀스의 요소에 데이터 타입을 첨부할 수 있다. 이 작업을 수행하는 방법은 다중 디스패치 파트에서 자세하게 설명할 것이다. 데이터 타입을 지정하면 많은 형태 오류가 제거된다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -6492,6 +6507,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -6677,6 +6693,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -6797,6 +6814,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>“프로그램 테스팅은 버그를 미리 보기 위해 사용되지만, 버그가 없다는 결론을 보여주지는 않는다.”</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -6912,6 +6930,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
  <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> isreverse(word1, word2)</span><br><span class="line">    <span class="keyword">if</span> length(word1) != length(word2)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    i = firstindex(word1)</span><br><span class="line">    j = lastindex(word2)</span><br><span class="line">    <span class="keyword">while</span> j &gt;= <span class="number">0</span></span><br><span class="line">        <span class="meta">@show</span> i j</span><br><span class="line">        <span class="keyword">if</span> word1[i] != word2[j]</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        i = nextind(word1, i)</span><br><span class="line">        j = prevind(word2, j)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="literal">true</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -7010,6 +7029,7 @@ y= \frac{1}{2}\left(x+\frac{a}{x}\right)
 <p>하지만 실제 상황에서는 프로그램 중간이 무엇인지 명확하지 않을 수 있다. 코드 줄 개수에 맞춰 반으로 나누는 것은 합리적이지 않다. 따라서 프로그램에 오류가 있을 수 있는 장소와 코드를 먼저 점검한 후, 개발자가 생각하는 합리적인 중간점을 찾는 것이 좋다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -7150,6 +7170,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>만약에 실행 흐름이 헷갈리면, 위와 같은 출력들이 도움이 될 것이다. 효과적인 스캐폴딩을 개발하는 것은 조금 시간이 걸리겠지만, 작은 스캐폴딩으로도 많은 디버깅 요소들을 찾을 수 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -7255,6 +7276,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>오류를 찾기 위해서, 변수인 <code>ratio</code>의 값을 확인해보는 것이 좋을 것이다. 확인해보니 <code>ratio</code>는 0으로 밝혀졌다. 문제는 3번째 줄에서 버림 나눗셈을 하여 나머지들을 제거해버리는 데서 온 것으로 확인되었다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -7362,6 +7384,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>하지만 만약 전제 조건은 알맞게 작성했는데 사후 조건이 이상하다면, 이것은 함수에 버그가 있는 것이다. 따라서 해당 함수의 전제 조건과 사후 조건을 명확하게 아는 것은 디버깅에 많은 도움을 준다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -7467,6 +7490,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>어떤 사람들에게는 프로그래밍과 디버깅은 동일하다. 즉, 프로그래밍은 원하는 작업이 수행될 때까지 코드들을 점검하고 디버깅하는 과정이기 때문이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -7538,6 +7562,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p><strong>의미 오류(semantic error)</strong><br>의미 오류는 개발자의 의도와는 다른 방향으로 프로그램이 작동되는 현상이다. 이는 문법오류와 같이 컴퓨터가 파악할 수 있는 오류가 아니기 때문에 오류 메시지가 나타나지 않는다.<br>그렇기에 해당 오류를 찾기 위해서는 프로그램의 출력을 보고 수행중인 작업에서 예측가능한 결과인지를 파악하여 역으로 찾는 수밖에 없다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
@@ -7657,6 +7682,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>디버깅을 할 때 어려운 버그를 만난다면, 컴퓨터에 대한 분노로 인해 개발자를 그만두고 싶을 수 있다. 하지만 디버깅을 배우는 것은 어렵지만 프로그래밍 이외의 많은 활동에도 유용한 기술이기에 포기하지 않기를 바란다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Think Julia</category>
       </categories>
       <tags>
