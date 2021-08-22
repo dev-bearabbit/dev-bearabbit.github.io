@@ -1130,6 +1130,7 @@
 <p>그 다음 다시 소스 파일을 컴파일하면 문제 없이 진행된다.</p>
 ]]></content>
       <categories>
+        <category>ETC.</category>
         <category>error list</category>
       </categories>
       <tags>
@@ -1925,6 +1926,7 @@
 <p>이제 VS code를 재부팅하거나 해당 어플리케이션 폴더를 다시 열면 위의 오류가 사라져 있음을 볼 수 있다.</p>
 ]]></content>
       <categories>
+        <category>ETC.</category>
         <category>error list</category>
       </categories>
       <tags>
