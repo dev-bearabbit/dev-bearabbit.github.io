@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.1">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/test1.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -46,15 +46,24 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="DEV AnythinG">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/archives/2020/page/6/index.html">
+  <meta name="description" content="리눅스 Linux Filesystem에 대해서 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4. Linux Filesystem">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2021/07/17/Linux/Linux-4/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="리눅스 Linux Filesystem에 대해서 정리합니다.">
 <meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2021-07-17T03:04:17.000Z">
+<meta property="article:modified_time" content="2021-08-22T04:17:18.040Z">
 <meta property="article:author" content="Hyeonji Ryu">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="filesystem">
+<meta property="article:tag" content="boot">
+<meta property="article:tag" content="centos">
+<meta property="article:tag" content="ubuntu">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/archives/2020/page/6/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2021/07/17/Linux/Linux-4/">
 
 
 <script id="page-configurations">
@@ -62,11 +71,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>아카이브 | DEV AnythinG</title>
+  <title>4. Linux Filesystem | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -207,133 +216,206 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">좋아요! 총 90개의 포스트 :)</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2021/07/17/Linux/Linux-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/profile.jpg">
+      <meta itemprop="name" content="Hyeonji Ryu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          4. Linux Filesystem
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              <time title="Post created: 2021-07-17 12:04:17" itemprop="dateCreated datePublished" datetime="2021-07-17T12:04:17+09:00">2021-07-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/STUDY/" itemprop="url" rel="index">
+                    <span itemprop="name">STUDY</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/STUDY/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <p>리눅스 Linux Filesystem에 대해서 정리합니다.</p>
+<a id="more"></a>
+<h2 id="Linux-Filesystem"><a href="#Linux-Filesystem" class="headerlink" title="Linux Filesystem"></a>Linux Filesystem</h2><p>리눅스에서는 모든 것들을 파일 단위로 관리한다. 그렇다면 소켓, 디바이스, 폴더 등 파일이 아닌 객체들을 어떻게 구분할까? 이에 대해서 간단히 살펴보자.<br>아래의 표는 객체에 따른 파일 타입을 보여준다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>파일 타입</th>
+<th>의미</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>directory</td>
+<td>파일들을 카테코리별로 담고 있는 폴더</td>
+</tr>
+<tr>
+<td>-</td>
+<td>regular file</td>
+<td>이미지, 스크립트, 컨피그레이션, 데이터 등을 가지는 일반적인 파일들</td>
+</tr>
+<tr>
+<td>c</td>
+<td>character device</td>
+<td>키보드, 마우스, 모니터, 프린터 등의 장치(byte단위 데이터 전송)</td>
+</tr>
+<tr>
+<td>l</td>
+<td>link</td>
+<td>저장장치와 추상적인 디렉토리를 연결해주는 경로</td>
+</tr>
+<tr>
+<td>s</td>
+<td>socket file</td>
+</tr>
+<tr>
+<td>p</td>
+<td>pipe</td>
+</tr>
+<tr>
+<td>b</td>
+<td>block device</td>
+<td>하드디스크나 CD/DVD 등의 저장 장치(블록단위 데이터 전송)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>특정 파일 타입이 어떤 권한을</p>
+<p>그렇다면 소켓, 디바이스, 폴더 등 파일이 아닌 객체들을 어떻게 파일 단위로 관리할까? 이에 대해서 하나씩 살펴보자.</p>
+<p>OS는 연결된 장치의 개수 등을 파악하기 위해서라도 파일이 열리고 닫히는 과정들을 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 파일 테이블을 통해 관리한다. 그렇다면 프로세스는 필요한 파일을 어떻게 가져와 사용할까?</p>
+<h2 id="File-Descriptor"><a href="#File-Descriptor" class="headerlink" title="File Descriptor"></a>File Descriptor</h2><p>파일 디스크립터(File Descriptor, 이하 fd)는 프로세스들이 파일에 접근할 수 있도록 관리하는 관리자이다.</p>
+<p>shell에서 처음 프로세스가 시작할 때 1번인 init 프로세스는 커널의 파일테이블을 복사한다.</p>
+<p>파일 디스크립터는 프로세스마다 특정 파일이나 장치를 열게 되면 해당 파일에 대한 정보에 인덱스를 부여한 후 fd 테이블에 입력한다.</p>
+<p>OS 입장에서는 연결된 장치의 개수 등을 파악하기 위해서라도 열린 파일의 개수를 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 FD테이블을 통해 관리한다. 이런 구조 속에서 파일 디스크립터는 프로세스가 접근하려고 하는</p>
+<p>어떤 프로세스가 특정 파일이나 장치를 열게 되면 디스크립터가 해당 파일에 대해 번호를 부여한 후 관리 테이블에 입력한다. 즉, fd는 프로세스들이 필요한 파일 및 장치에 접근할 수 있도록 도와주는 연결자의 역할이라도 봐도 된다. 따라서 관리 테이블은 프로세스 단에서 수정할 수 없으며, 커널단에서만 변경이 가능하다. fd 번호 중에서 0,1,2번은 </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>파일 타입</th>
+<th>의미</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>directory</td>
+<td>파일들을 카테코리별로 담고 있는 폴더</td>
+</tr>
+<tr>
+<td>-</td>
+<td>regular file</td>
+<td>이미지, 스크립트, 컨피그레이션, 데이터 등을 가지는 일반적인 파일들</td>
+</tr>
+<tr>
+<td>c</td>
+<td>character device</td>
+<td>키보드, 마우스, 모니터, 프린터 등의 장치(byte단위 데이터 전송)</td>
+</tr>
+<tr>
+<td>l</td>
+<td>link</td>
+<td>저장장치와 추상적인 디렉토리를 연결해주는 경로</td>
+</tr>
+<tr>
+<td>s</td>
+<td>socket file</td>
+</tr>
+<tr>
+<td>p</td>
+<td>pipe</td>
+</tr>
+<tr>
+<td>b</td>
+<td>block device</td>
+<td>하드디스크나 CD/DVD 등의 저장 장치(블록단위 데이터 전송)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-20T15:04:49+09:00"
-              content="2020-06-20">
-          06-20
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/filesystem/" rel="tag"># filesystem</a>
+              <a href="/tags/boot/" rel="tag"># boot</a>
+              <a href="/tags/centos/" rel="tag"># centos</a>
+              <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/06/20/DeeplearningJulia/Deeplearning-14/" itemprop="url">
-            <span itemprop="name">14. CNN 시작하기</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-14T15:07:18+09:00"
-              content="2020-06-14">
-          06-14
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/06/14/DeeplearningJulia/Deeplearning-13/" itemprop="url">
-            <span itemprop="name">13. 인공신경망 최적화 - 드랍아웃(Dropout)</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-05-15T05:11:51+09:00"
-              content="2020-05-15">
-          05-15
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/05/15/DeeplearningJulia/Deeplearning-12/" itemprop="url">
-            <span itemprop="name">12. 인공신경망 최적화 - 가중치 초기값</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-05-14T21:45:33+09:00"
-              content="2020-05-14">
-          05-14
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/05/14/Mathematic/mathematic-3/" itemprop="url">
-            <span itemprop="name">1. Linear Algebra (3)</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-05-02T19:51:05+09:00"
-              content="2020-05-02">
-          05-02
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/05/02/DeeplearningJulia/Deeplearning-11/" itemprop="url">
-            <span itemprop="name">11. 인공신경망 최적화 - Optimizer</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
+        
 
 
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/16/Ansible/ansible-0/" rel="prev" title="0. Ansible 시작하기">
+      <i class="fa fa-chevron-left"></i> 0. Ansible 시작하기
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/18/Linux/Linux-5/" rel="next" title="5. Linux Package management">
+      5. Linux Package management <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
   </div>
-  
-  
-  
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2020/page/5/"><i class="fa fa-angle-left" aria-label="이전 페이지"></i></a><a class="page-number" href="/archives/2020/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2020/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/archives/2020/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2020/page/14/">14</a><a class="extend next" rel="next" href="/archives/2020/page/7/"><i class="fa fa-angle-right" aria-label="다음 페이지"></i></a>
-  </nav>
-
 
 
           </div>
@@ -384,6 +466,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-Filesystem"><span class="nav-number">1.</span> <span class="nav-text">Linux Filesystem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-Descriptor"><span class="nav-number">2.</span> <span class="nav-text">File Descriptor</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -503,6 +586,54 @@
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
