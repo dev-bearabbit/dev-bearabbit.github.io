@@ -89,14 +89,14 @@
         <category>KBO Analytical Dashboard</category>
       </categories>
       <tags>
-        <tag>DB</tag>
         <tag>mariadb</tag>
-        <tag>aws</tag>
-        <tag>lightsail</tag>
-        <tag>ssh</tag>
+        <tag>DB</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
+        <tag>aws</tag>
+        <tag>lightsail</tag>
+        <tag>ssh</tag>
       </tags>
   </entry>
   <entry>
@@ -166,10 +166,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
+        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
         <tag>repository</tag>
-        <tag>boot</tag>
       </tags>
   </entry>
   <entry>
@@ -285,10 +285,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
+        <tag>filesystem</tag>
+        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
-        <tag>boot</tag>
-        <tag>filesystem</tag>
       </tags>
   </entry>
   <entry>
@@ -428,10 +428,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
+        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
         <tag>repository</tag>
-        <tag>boot</tag>
       </tags>
   </entry>
   <entry>
@@ -535,10 +535,10 @@
         <tag>DAsP</tag>
         <tag>데이터아키텍처</tag>
         <tag>전사아키텍처</tag>
+        <tag>자격증</tag>
         <tag>데이터</tag>
         <tag>요건분석</tag>
         <tag>data</tag>
-        <tag>자격증</tag>
       </tags>
   </entry>
   <entry>
@@ -620,10 +620,10 @@
         <tag>DAsP</tag>
         <tag>데이터아키텍처</tag>
         <tag>전사아키텍처</tag>
+        <tag>자격증</tag>
         <tag>데이터</tag>
         <tag>요건분석</tag>
         <tag>data</tag>
-        <tag>자격증</tag>
       </tags>
   </entry>
   <entry>
@@ -640,10 +640,10 @@
         <tag>DAsP</tag>
         <tag>데이터아키텍처</tag>
         <tag>전사아키텍처</tag>
+        <tag>자격증</tag>
         <tag>데이터</tag>
         <tag>요건분석</tag>
         <tag>data</tag>
-        <tag>자격증</tag>
       </tags>
   </entry>
   <entry>
@@ -954,10 +954,10 @@
         <tag>DAsP</tag>
         <tag>데이터아키텍처</tag>
         <tag>전사아키텍처</tag>
+        <tag>자격증</tag>
         <tag>데이터</tag>
         <tag>요건분석</tag>
         <tag>data</tag>
-        <tag>자격증</tag>
       </tags>
   </entry>
   <entry>
@@ -1185,8 +1185,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>mariadb</tag>
+        <tag>sql</tag>
         <tag>mysql</tag>
         <tag>DATETIME</tag>
         <tag>HOUR</tag>
@@ -1253,10 +1253,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
-        <tag>boot</tag>
-        <tag>filesystem</tag>
         <tag>kernel</tag>
         <tag>systemd</tag>
+        <tag>filesystem</tag>
+        <tag>boot</tag>
         <tag>hardware</tag>
       </tags>
   </entry>
@@ -1401,10 +1401,10 @@
         <tag>docker</tag>
         <tag>mariaDB</tag>
         <tag>DB</tag>
+        <tag>flask</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
-        <tag>flask</tag>
         <tag>EC2</tag>
         <tag>plotly</tag>
         <tag>dash</tag>
@@ -1750,9 +1750,9 @@
         <category>Database</category>
       </categories>
       <tags>
+        <tag>database</tag>
         <tag>sql</tag>
         <tag>mariaDB</tag>
-        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>DB</tag>
         <tag>GROUPBY</tag>
@@ -1800,9 +1800,9 @@
         <category>Database</category>
       </categories>
       <tags>
+        <tag>database</tag>
         <tag>sql</tag>
         <tag>mariaDB</tag>
-        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>DB</tag>
         <tag>ALTER</tag>
@@ -2018,9 +2018,9 @@
         <category>Database</category>
       </categories>
       <tags>
+        <tag>database</tag>
         <tag>sql</tag>
         <tag>mariaDB</tag>
-        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>정규화</tag>
         <tag>nomalization</tag>
@@ -2096,9 +2096,9 @@
         <category>Database</category>
       </categories>
       <tags>
+        <tag>database</tag>
         <tag>sql</tag>
         <tag>mariaDB</tag>
-        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>명령어</tag>
         <tag>WHERE</tag>
@@ -2146,9 +2146,9 @@
         <category>Database</category>
       </categories>
       <tags>
+        <tag>database</tag>
         <tag>sql</tag>
         <tag>mariaDB</tag>
-        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>table</tag>
       </tags>
@@ -2204,9 +2204,9 @@
       </categories>
       <tags>
         <tag>docker</tag>
-        <tag>sql</tag>
-        <tag>database</tag>
         <tag>mariadb</tag>
+        <tag>database</tag>
+        <tag>sql</tag>
         <tag>vi</tag>
         <tag>vim</tag>
         <tag>도커</tag>
