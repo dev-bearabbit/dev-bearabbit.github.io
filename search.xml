@@ -633,7 +633,7 @@
 <hr>
 <h2 id="데이터-표준화"><a href="#데이터-표준화" class="headerlink" title="데이터 표준화"></a>데이터 표준화</h2><h2 id="데이터-표준-수립"><a href="#데이터-표준-수립" class="headerlink" title="데이터 표준 수립"></a>데이터 표준 수립</h2><h2 id="데이터-표준-관리"><a href="#데이터-표준-관리" class="headerlink" title="데이터 표준 관리"></a>데이터 표준 관리</h2>]]></content>
       <categories>
-        <category>.ETC</category>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -947,7 +947,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>.ETC</category>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -1119,7 +1119,7 @@
 </div>
 ]]></content>
       <categories>
-        <category>.ETC</category>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -3416,7 +3416,7 @@ x & \text{(x>0) $$}\\
 <p>그 다음 카테고리를 눌러보면 <code>about Hexo</code> 이름의 카테고리를 확인할 수 있다. 태그 또한 위에 입력한 키워드가 들어간 것을 볼 수 있다.</p>
 ]]></content>
       <categories>
-        <category>.ETC</category>
+        <category>etc.</category>
         <category>about Hexo</category>
       </categories>
       <tags>
@@ -6739,7 +6739,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>이제 NexT 테마 적용이 완료되었다! 본인의 블로그에 들어가면 테마가 변경된 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>.ETC</category>
+        <category>etc.</category>
         <category>about Hexo</category>
       </categories>
       <tags>
@@ -7606,7 +7606,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 해당 리소스 생성</span></span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 배포하기</span></span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>.ETC</category>
+        <category>etc.</category>
         <category>about Hexo</category>
       </categories>
       <tags>
