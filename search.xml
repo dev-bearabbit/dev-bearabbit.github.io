@@ -166,10 +166,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
-        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
         <tag>repository</tag>
+        <tag>boot</tag>
       </tags>
   </entry>
   <entry>
@@ -285,10 +285,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
-        <tag>filesystem</tag>
-        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
+        <tag>boot</tag>
+        <tag>filesystem</tag>
       </tags>
   </entry>
   <entry>
@@ -428,10 +428,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
-        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
         <tag>repository</tag>
+        <tag>boot</tag>
       </tags>
   </entry>
   <entry>
@@ -1253,10 +1253,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
+        <tag>boot</tag>
         <tag>kernel</tag>
         <tag>systemd</tag>
         <tag>filesystem</tag>
-        <tag>boot</tag>
         <tag>hardware</tag>
       </tags>
   </entry>
