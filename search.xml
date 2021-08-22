@@ -85,6 +85,7 @@
 <p>이러면 DB 서버가 완성된다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>KBO Analytical Dashboard</category>
       </categories>
       <tags>
@@ -160,6 +161,7 @@
 <a id="more"></a>
 <h2 id="패키지-관리-Package-management-란"><a href="#패키지-관리-Package-management-란" class="headerlink" title="패키지 관리(Package management)란"></a>패키지 관리(Package management)란</h2>]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -278,6 +280,7 @@
 </div>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -420,6 +423,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 재부팅 없이 변경</span></span><br><span class="line">systemctl isolate graphical.target</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -456,6 +460,7 @@
 <h2 id="DAsP-후기"><a href="#DAsP-후기" class="headerlink" title="DAsP 후기"></a>DAsP 후기</h2><p>DAsP 시험은 마냥 외우는 방식이 적합하지 않은 시험이라고 느꼈다. 그 이유는 시험 문제가 특정 절대 답안을 요구하는 것이 아니라, 상황에 따른 적합성을 물어보기 때문이다. 그래서 단순히 전문용어를 외우거나 순서를 외우는 공부방식은 효과적이지 않을 것 같다는 생각이 들었고, 현업에 있거나 실제 프로젝트 경험이 있는 사람들은 공부 벼락치기 하고 봐도 충분히 합격할 수도 있을 것 같다.</p>
 ]]></content>
       <categories>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -523,6 +528,7 @@
 <hr>
 <h2 id="데이터-모델링-단계"><a href="#데이터-모델링-단계" class="headerlink" title="데이터 모델링 단계"></a>데이터 모델링 단계</h2><h3 id="개념-데이터-모델링"><a href="#개념-데이터-모델링" class="headerlink" title="개념 데이터 모델링"></a>개념 데이터 모델링</h3><h3 id="논리-데이터-모델링"><a href="#논리-데이터-모델링" class="headerlink" title="논리 데이터 모델링"></a>논리 데이터 모델링</h3><h3 id="물리-데이터-모델링"><a href="#물리-데이터-모델링" class="headerlink" title="물리 데이터 모델링"></a>물리 데이터 모델링</h3>]]></content>
       <categories>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -607,6 +613,7 @@
 <h3 id="IE-Information-Engineering-표기법"><a href="#IE-Information-Engineering-표기법" class="headerlink" title="IE(Information Engineering) 표기법"></a>IE(Information Engineering) 표기법</h3><p><img src="/images/112.jpg" alt="IE"></p>
 ]]></content>
       <categories>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -626,6 +633,7 @@
 <hr>
 <h2 id="데이터-표준화"><a href="#데이터-표준화" class="headerlink" title="데이터 표준화"></a>데이터 표준화</h2><h2 id="데이터-표준-수립"><a href="#데이터-표준-수립" class="headerlink" title="데이터 표준 수립"></a>데이터 표준 수립</h2><h2 id="데이터-표준-관리"><a href="#데이터-표준-관리" class="headerlink" title="데이터 표준 관리"></a>데이터 표준 관리</h2>]]></content>
       <categories>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -939,6 +947,7 @@
 </ul>
 ]]></content>
       <categories>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -1110,6 +1119,7 @@
 </div>
 ]]></content>
       <categories>
+        <category>etc.</category>
         <category>DAsP</category>
       </categories>
       <tags>
@@ -1134,7 +1144,7 @@
 <p>그 다음 다시 소스 파일을 컴파일하면 문제 없이 진행된다.</p>
 ]]></content>
       <categories>
-        <category>ETC.</category>
+        <category>etc.</category>
         <category>error list</category>
       </categories>
       <tags>
@@ -1171,6 +1181,7 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">SECOND</span>(DATETIME) <span class="keyword">FROM</span> <span class="string">'테이블 이름'</span>;</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -1237,6 +1248,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ free -h</span><br><span class="line">            total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:          15G        4.3G        3.7G         29M        7.5G         10G</span><br><span class="line">Swap:        7.9G          0B        7.9G</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -1284,6 +1296,7 @@
 <p>위의 결과는 명령어 <code>which</code>를 통해서 java 실행파일의 절대 경로를 보여준 예시이다. <code>which</code>는 경로가 있는 실행파일들의 위치를 보여준다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -1342,6 +1355,7 @@
 <h3 id="apropos-키워드"><a href="#apropos-키워드" class="headerlink" title="apropos (키워드)"></a>apropos (키워드)</h3><p>키워드가 들어간 명령어를 찾아서 리스트업 해준다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -1379,6 +1393,7 @@
 <h2 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h2><p>위에서 사용하는 프레임워크나 라이브러리가 무엇인지 설명했기에 앞으로는 설명 없이 바로 진행할 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>KBO Analytical Dashboard</category>
       </categories>
       <tags>
@@ -1730,6 +1745,7 @@
 <p>위 코드는 3번째부터 아래로 3개의 데이터를 보여달라는 의미이다. SQL에서는 0부터 순서로 시작하기 때문에 2가 세 번째 레코드를 의미한다. 결과는 다음과 같다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -1779,6 +1795,7 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--예시--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'테이블 이름'</span></span><br><span class="line"><span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> <span class="string">'해당 열 이름'</span> <span class="built_in">INT</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'테이블 이름'</span></span><br><span class="line"><span class="keyword">CHANGE</span> <span class="keyword">COLUMN</span> <span class="string">'해당 열 이름'</span>  <span class="string">'해당 열 이름'</span> <span class="built_in">INT</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -1936,7 +1953,7 @@
 <p>이제 VS code를 재부팅하거나 해당 어플리케이션 폴더를 다시 열면 위의 오류가 사라져 있음을 볼 수 있다.</p>
 ]]></content>
       <categories>
-        <category>ETC.</category>
+        <category>etc.</category>
         <category>error list</category>
       </categories>
       <tags>
@@ -1996,6 +2013,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -2073,6 +2091,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -2122,6 +2141,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -2178,6 +2198,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
+        <category>STUDY</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -2670,6 +2691,7 @@
 <p>하지만 5에폭을 진행하는데 걸린 시간은 고작 약 25분 정도이다. 기존의 <code>simpleNet</code>은 1에폭에 1시간이었다는 것을 떠올려보면 엄청난 발전이라고 볼 수 있다. 하지만 <code>simpleNet</code>은 테스트셋의 정확도 99%를 넘기지는 못한다. 따라서 다음 시간에는 tensorflow에서 MNIST의 예제로 제공하는 <code>convNet</code>을 살펴보고 이와 동일하게 모델을 설계하여 테스트셋의 정확도 99%를 달성해볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -2706,6 +2728,7 @@
 <p>지금까지 <code>col2im()</code>을 사용하여 합성곱과 최대값 풀링의 역전파 과정을 구현하였다. 데이터 4차원을 유지한 채 이를 진행하면 매우 느리지만, <code>col2im()</code>을 사용하면 매우 빠른 속도로 계산이 가능하다. 다음 글에서는 지금까지 만든 CNN layers을 바탕으로 모델을 구현하고 학습시켜볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -2751,6 +2774,7 @@
 <p>지금까지 <code>col2im()</code>의 원리에 대해서 알아보았다. 다음 글에서는 오늘 만든 <code>col2im()</code>을 가지고 합성곱과 풀링을 구현할 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -2796,6 +2820,7 @@
 <p>지금까지 <code>im2col()</code>을 사용하여 구성한 계층들을 살펴보았다. 다음 글에서는 CNN의 역전파와 그때 사용되는 <code>col2im</code>에 대해서 알아보자.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -2882,6 +2907,7 @@
 <p>다음 글에서는 <code>im2col()</code>과  <code>col2im()</code>의 원리를 설명하고, 줄리아로 구현해볼 것이다. 또한 이를 바탕으로 합성곱층과 풀링층의 함수를 구현할 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -2939,6 +2965,7 @@
 <p>훈련데이터의 정확도와 실제데이터의 정확도 간격이 드랍아웃을 적용하지 않은 모델보다 훨씬 줄어든 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -3025,6 +3052,7 @@
 <p>다음 글에서는 오버피팅을 막아주는 드랍아웃(Dropout)에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -3160,6 +3188,7 @@
 <p>손실 함수 값 또한 RMSProp가 더 낮은 결과를 도출하는 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -3253,6 +3282,7 @@ x & \text{(x>0) $$}\\
 </blockquote>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -3344,6 +3374,7 @@ x & \text{(x>0) $$}\\
 <p>역전파 알고리즘은 순전파와 비슷한 학습 효과를 가지고 있지만 속도는 월등히 빠르다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -3383,7 +3414,7 @@ x & \text{(x>0) $$}\\
 <p>그 다음 카테고리를 눌러보면 <code>about Hexo</code> 이름의 카테고리를 확인할 수 있다. 태그 또한 위에 입력한 키워드가 들어간 것을 볼 수 있다.</p>
 ]]></content>
       <categories>
-        <category>ETC.</category>
+        <category>etc.</category>
         <category>about Hexo</category>
       </categories>
       <tags>
@@ -3528,6 +3559,7 @@ x & \text{(x>0) $$}\\
 <p>순전파와 역전파 알고리즘으로 도출된 미분값들의 차이가 매우 작은 것을 확인할 수 있다. 즉, 역전파가 잘 구현되었다는 것이다. 그렇다면 역전파는 어떻게 줄리아로 구현하였을까? 다음 글에서 확인해보자.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4229,6 +4261,7 @@ a_{12} & \mathbf{a_{22}}\\
 <p>순전파는 반복되는 매 횟수마다 활성화 함수를 미분하기 때문에 시간이 오래 걸린다. 그렇기에 실상 사용되는 미분법은 아니지만, 신경망의 원리를 파악하기 위해서는 알아야 한다. 다음 글에서는 5시간을 3분으로 줄여주는 마법같은 역전파를 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4281,6 +4314,7 @@ a_{12} & \mathbf{a_{22}}\\
 <h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>지금까지 인공신경망이 어떻게 학습되는지 그 과정을 살펴보았다. 신경망 학습은 인공신경망 구현에 있어 매우 중요한 부분이다. 신경망이 어떤 방식으로 학습되는지에 따라서 성능이 제각각이기 떄문이다. 학습에 있어 다양한 기술적인 튜닝이 있지만 핵심 원리는 이 글을 벗어나지 않는다. 다음 글에서 순전파 알고리즘 기반의 경사하강법을 구현해보고, 이후 역전파에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4361,6 +4395,7 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>아번 글에서는 신경망을 구현하기에 앞서 신경망의 원리를 수학식으로 풀이하였다. 이 과정은 이해를 위함이며, 다음 글에서는 손글씨 인식하는 신경망을 구현하면서 코드로 작동하는 과정을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4433,6 +4468,7 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <p>오차값이 거의 0에 도달하였다. 최적화에 성공한 것이다. 신경망은 이런 경사하강법을 통해서 적절한 가중치와 편향을 찾는다. 이제는 신경망을 구현하기 위한 모든 재료들을 살펴보았다. 다음 포스트에서는 지금까지 만들었던 함수들을 바탕으로 신경망을 직접 구현해보자.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4478,6 +4514,7 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <p>위의 결과를 보면 잘 예측한 <code>y1</code>이 잘못 예측한 <code>y2</code>보다 더 작은 것을 확인할 수 있다. 이처럼 손실 함수는 오차를 계산하여 오차율을 나타내며, 값이 0에 가까울수록 오차가 없다고 판단한다. 즉, 손실 함수의 값이 0에 가까울수록 해당 신경망은 잘 학습되었다고 평가되는 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4553,6 +4590,7 @@ x & \text{(x>0) $$}\\
 <p>요소들의 합이 $1$임을 확인할 수 있다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4835,6 +4873,7 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>사실 신경망을 구현하는 것은 위의 설명보다 더 복잡하다. 하지만 위의 원리를 이해하지 못한다면 신경망 자체를 파악할 수 없다.<br>다음 글에서는 신경망에 쓰이는 활성화 함수들을 살펴보고 줄리아로 구현할 것이다.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -4921,6 +4960,7 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>지금까지 신경망을 배우기 위한 기본적인 배열 처리 방법에 대해서 알아보았다. 이제는 본격적으로 신경망에 대해 알아보자.</p>
 ]]></content>
       <categories>
+        <category>PROJECT</category>
         <category>Deep learning in Julia</category>
       </categories>
       <tags>
@@ -6682,7 +6722,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>이제 NexT 테마 적용이 완료되었다! 본인의 블로그에 들어가면 테마가 변경된 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>ETC.</category>
+        <category>etc.</category>
         <category>about Hexo</category>
       </categories>
       <tags>
@@ -7541,7 +7581,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 해당 리소스 생성</span></span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 배포하기</span></span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>ETC.</category>
+        <category>etc.</category>
         <category>about Hexo</category>
       </categories>
       <tags>
