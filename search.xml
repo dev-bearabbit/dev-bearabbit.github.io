@@ -19,7 +19,7 @@
       </tags>
   </entry>
   <entry>
-    <title>2. Inventory 작성하기</title>
+    <title>Inventory 작성하기</title>
     <url>/2021/07/26/Ansible/ansible-2/</url>
     <content><![CDATA[<p>Ansible Inventory 의미 및 작성 과정을 설명합니다.<br><a id="more"></a></p>
 <hr>
@@ -121,7 +121,7 @@
       </tags>
   </entry>
   <entry>
-    <title>1. Ansible 설치하기</title>
+    <title>Ansible 설치하기</title>
     <url>/2021/07/18/Ansible/ansible-1/</url>
     <content><![CDATA[<p>Ansible 설치방법에 대해서 간단히 설명합니다.<br><a id="more"></a></p>
 <hr>
@@ -176,7 +176,7 @@
       </tags>
   </entry>
   <entry>
-    <title>5. Linux Package management</title>
+    <title>Linux Package management</title>
     <url>/2021/07/18/Linux/Linux-5/</url>
     <content><![CDATA[<p>리눅스 Package management에 대해서 정리합니다.</p>
 <a id="more"></a>
@@ -194,7 +194,7 @@
       </tags>
   </entry>
   <entry>
-    <title>4. Linux Filesystem</title>
+    <title>Linux Filesystem</title>
     <url>/2021/07/17/Linux/Linux-4/</url>
     <content><![CDATA[<p>리눅스 Linux Filesystem에 대해서 정리합니다.</p>
 <a id="more"></a>
@@ -313,7 +313,7 @@
       </tags>
   </entry>
   <entry>
-    <title>0. Ansible 시작하기</title>
+    <title>Ansible 시작하기</title>
     <url>/2021/07/16/Ansible/ansible-0/</url>
     <content><![CDATA[<p>Ansible에 대해서 간략하게 소개합니다.<br><a id="more"></a></p>
 <h2 id="Ansible을-공부하게-된-계기"><a href="#Ansible을-공부하게-된-계기" class="headerlink" title="Ansible을 공부하게 된 계기"></a>Ansible을 공부하게 된 계기</h2><p>앤서블(ansible)은 데이터 분산처리 플랫폼 구축을 위해 클러스터를 구성하면서 알게 되었다. 처음 클러스터를 구성할 때는 직접 쉘 스크립트로 함수를 작성하여 사용하였다. 그 때 사용했던 함수는 다음과 같다.</p>
@@ -366,7 +366,7 @@
       </tags>
   </entry>
   <entry>
-    <title>3. Linux core concepts</title>
+    <title>Linux core concepts</title>
     <url>/2021/07/16/Linux/Linux-3/</url>
     <content><![CDATA[<p>리눅스 기본 개념들에 대해서 정리합니다.</p>
 <a id="more"></a>
@@ -543,7 +543,7 @@
       </tags>
   </entry>
   <entry>
-    <title>5. 데이터 모델링 단계</title>
+    <title>데이터 모델링 단계</title>
     <url>/2021/06/04/DAsP/DAsP-4/</url>
     <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -563,7 +563,7 @@
       </tags>
   </entry>
   <entry>
-    <title>4. 데이터 모델링 이해</title>
+    <title>데이터 모델링 이해</title>
     <url>/2021/06/03/DAsP/DAsP-3/</url>
     <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -648,7 +648,7 @@
       </tags>
   </entry>
   <entry>
-    <title>3. 데이터 표준화</title>
+    <title>데이터 표준화</title>
     <url>/2021/06/03/DAsP/DAsP-2/</url>
     <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -668,7 +668,7 @@
       </tags>
   </entry>
   <entry>
-    <title>2. 데이터 요건 분석</title>
+    <title>데이터 요건 분석</title>
     <url>/2021/05/25/DAsP/DAsP-1/</url>
     <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -982,7 +982,7 @@
       </tags>
   </entry>
   <entry>
-    <title>1. 전사 아키텍처 이해</title>
+    <title>전사 아키텍처 이해</title>
     <url>/2021/05/16/DAsP/DAsP-0/</url>
     <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -1181,7 +1181,7 @@
       </tags>
   </entry>
   <entry>
-    <title>6. 날짜 데이터 일부만 추출하기</title>
+    <title>날짜 데이터 일부만 추출하기</title>
     <url>/2021/04/20/DB/Database-6/</url>
     <content><![CDATA[<p>DATETIME 형식의 날짜 데이터에서 일부만 추출하는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -1217,7 +1217,7 @@
       </tags>
   </entry>
   <entry>
-    <title>2. Linux Kernel</title>
+    <title>Linux Kernel</title>
     <url>/2021/04/04/Linux/Linux-2/</url>
     <content><![CDATA[<p>리눅스 커널에 대해서 정리합니다.</p>
 <a id="more"></a>
@@ -1282,7 +1282,7 @@
       </tags>
   </entry>
   <entry>
-    <title>1. Linux shell</title>
+    <title>Linux shell</title>
     <url>/2021/04/01/Linux/Linux-1/</url>
     <content><![CDATA[<p>리눅스에서 사용되는 shell의 종류와 bash에 대해 정리합니다.</p>
 <a id="more"></a>
@@ -1330,7 +1330,7 @@
       </tags>
   </entry>
   <entry>
-    <title>0. Basic Linux</title>
+    <title>Basic Linux</title>
     <url>/2021/02/12/Linux/Linux-0/</url>
     <content><![CDATA[<p>리눅스에 대해 간단하게 설명한 후, 리눅스의 기초적인 명령어를 정리합니다.</p>
 <a id="more"></a>
@@ -1432,7 +1432,7 @@
       </tags>
   </entry>
   <entry>
-    <title>0. python에서 정규표현식 사용하기</title>
+    <title>python에서 정규표현식 사용하기</title>
     <url>/2021/02/08/Regex/Regex-0/</url>
     <content><![CDATA[<p>해당 시리즈는 정규표현식 문법 및 python에서 정규표현식을 사용하는 방법들을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -1697,7 +1697,7 @@
       </tags>
   </entry>
   <entry>
-    <title>5. mariaDB 그룹핑과 연산 명령어 모음</title>
+    <title>mariaDB 그룹핑과 연산 명령어 모음</title>
     <url>/2020/11/08/DB/Database-5/</url>
     <content><![CDATA[<p>mariaDB에서 그룹핑을 하는 명령어 GROUP BY과 수학 연산을 처리해주는 다양한 명령어들의 사용법을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -1783,7 +1783,7 @@
       </tags>
   </entry>
   <entry>
-    <title>4. 명령어 ALTER 사용법</title>
+    <title>명령어 ALTER 사용법</title>
     <url>/2020/11/07/DB/Database-4/</url>
     <content><![CDATA[<p>mariaDB에서 ALTER 명령어를 사용하는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
@@ -1991,7 +1991,7 @@
       </tags>
   </entry>
   <entry>
-    <title>3. DB 정규화와 기본키 설정하기</title>
+    <title>DB 정규화와 기본키 설정하기</title>
     <url>/2020/10/19/DB/Database-3/</url>
     <content><![CDATA[<p>데이터베이스의 정규화와 기본키에 대해서 살펴본 후 mariaDB에서 기본키 설정하는 방법을 설명합니다.<br><a id="more"></a></p>
 <hr>
@@ -2050,7 +2050,7 @@
       </tags>
   </entry>
   <entry>
-    <title>2. mariaDB 기본적인 명령어 모음</title>
+    <title>mariaDB 기본적인 명령어 모음</title>
     <url>/2020/10/10/DB/Database-2/</url>
     <content><![CDATA[<p>mariaDB에서 기본적으로 사용하는 명령어들을 정리한 글입니다.<br><a id="more"></a></p>
 <hr>
@@ -2126,7 +2126,7 @@
       </tags>
   </entry>
   <entry>
-    <title>1. 데이터베이스와 테이블 생성하기</title>
+    <title>데이터베이스와 테이블 생성하기</title>
     <url>/2020/10/10/DB/Database-1/</url>
     <content><![CDATA[<p>mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다.<br><a id="more"></a></p>
 <hr>
@@ -2175,7 +2175,7 @@
       </tags>
   </entry>
   <entry>
-    <title>0. Docker로 MariaDB 사용하기</title>
+    <title>Docker로 MariaDB 사용하기</title>
     <url>/2020/10/09/DB/Database-0/</url>
     <content><![CDATA[<p>도커 컨테이너에 MariaDB를 올려서 데이터베이스를 구축합니다.<br><a id="more"></a></p>
 <hr>
@@ -3093,7 +3093,7 @@
       </tags>
   </entry>
   <entry>
-    <title>1. Linear Algebra (3)</title>
+    <title>Linear Algebra (3)</title>
     <url>/2020/05/14/Mathematic/mathematic-3/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
@@ -3410,7 +3410,7 @@ x & \text{(x>0) $$}\\
       </tags>
   </entry>
   <entry>
-    <title>2. 카테고리 및 태그 설정</title>
+    <title>카테고리 및 태그 설정</title>
     <url>/2020/04/20/AboutHexo/about-hexo-2/</url>
     <content><![CDATA[<p>NexT 테마에서 카테고리와 태그를 생성하고자 합니다.</p>
 <p>아직 블로그를 만들지 않았다면 <a href="https://hyeonji-ryu.github.io/2020/02/27/AboutHexo/about_hexo-0/">이전 글</a>을 참고해주시기 바랍니다.</p>
@@ -3595,7 +3595,7 @@ x & \text{(x>0) $$}\\
       </tags>
   </entry>
   <entry>
-    <title>1. Linear Algebra (2)</title>
+    <title>Linear Algebra (2)</title>
     <url>/2020/04/14/Mathematic/mathematic-2/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
@@ -3984,7 +3984,7 @@ x_1&+&x_3&-&x_4&=& 0\\
       </tags>
   </entry>
   <entry>
-    <title>1. Linear Algebra (1)</title>
+    <title>Linear Algebra (1)</title>
     <url>/2020/04/12/Mathematic/mathematic-1/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
@@ -5665,7 +5665,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
       </tags>
   </entry>
   <entry>
-    <title>0. introduction</title>
+    <title>introduction</title>
     <url>/2020/03/17/Mathematic/mathematic-0/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
@@ -6725,7 +6725,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
       </tags>
   </entry>
   <entry>
-    <title>1. Hexo에 NexT 테마 적용하기</title>
+    <title>Hexo에 NexT 테마 적용하기</title>
     <url>/2020/03/08/AboutHexo/about_hexo-1/</url>
     <content><![CDATA[<p>Hexo 블로그를 만든 다음 NexT 테마를 적용하고자 합니다.</p>
 <p>아직 블로그를 만들지 않았다면 <a href="https://hyeonji-ryu.github.io/2020/02/27/AboutHexo/about_hexo-0/">이전 글</a>을 참고해주시기 바랍니다.</p>
@@ -7594,7 +7594,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
       </tags>
   </entry>
   <entry>
-    <title>0. Github Page와 Hexo를 이용하여 블로그 만들기</title>
+    <title>Github Page와 Hexo를 이용하여 블로그 만들기</title>
     <url>/2020/02/27/AboutHexo/about_hexo-0/</url>
     <content><![CDATA[<p>Hexo 블로그를 만들기 위해서는 Github계정을 사용하는 것이 가장 편합니다. Github계정이 없는 분들은 <a href="https://github.com" target="_blank" rel="noopener">Github</a>에서 만들어 주세요! Github계정이 있는 분들이라면 바로 Hexo 블로그를 만들 수 있습니다</p>
 <a id="more"></a>
