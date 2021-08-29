@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Rust 소유권이란</title>
+    <url>/2021/08/30/Rust/rust-0/</url>
+    <content><![CDATA[<p>러스트의 소유권 원리에 대해 공부한 내용을 정리합니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="소유권"><a href="#소유권" class="headerlink" title="소유권"></a>소유권</h2>]]></content>
+      <categories>
+        <category>STUDY</category>
+        <category>Rust</category>
+      </categories>
+      <tags>
+        <tag>Rust</tag>
+        <tag>ownership</tag>
+        <tag>memory</tag>
+        <tag>slice</tag>
+        <tag>borrowing</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2. Inventory 작성하기</title>
     <url>/2021/07/26/Ansible/ansible-2/</url>
     <content><![CDATA[<p>Ansible Inventory 의미 및 작성 과정을 설명합니다.<br><a id="more"></a></p>
