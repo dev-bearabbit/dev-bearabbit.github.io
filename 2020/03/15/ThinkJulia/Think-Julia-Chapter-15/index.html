@@ -134,7 +134,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">Welcome :)</p>
+        <p class="site-subtitle">welcome :)</p>
   </div>
 
   <div class="site-nav-toggle">
@@ -152,31 +152,31 @@
   <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>홈</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>작성자</a>
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>태그</a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>카테고리</a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>아카이브</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>검색
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
         </a>
       </li>
   </ul>
@@ -233,7 +233,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/profile.jpg">
       <meta itemprop="name" content="Hyeonji Ryu">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -249,9 +249,9 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">작성일</span>
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Post created: 2020-03-15 02:04:23" itemprop="dateCreated datePublished" datetime="2020-03-15T02:04:23+09:00">2020-03-15</time>
+              <time title="Created: 2020-03-15 02:04:23" itemprop="dateCreated datePublished" datetime="2020-03-15T02:04:23+09:00">2020-03-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,6 +272,20 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/03/15/ThinkJulia/Think-Julia-Chapter-15/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/15/ThinkJulia/Think-Julia-Chapter-15/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -414,6 +428,13 @@
 
           </div>
           
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -451,10 +472,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          목차
+          Table of Contents
         </li>
         <li class="sidebar-nav-overview">
-          훑어보기
+          Overview
         </li>
       </ul>
 
@@ -469,7 +490,7 @@
     <img class="site-author-image" itemprop="image" alt="Hyeonji Ryu"
       src="/images/profile.jpg">
   <p class="site-author-name" itemprop="name">Hyeonji Ryu</p>
-  <div class="site-description" itemprop="description"></div>
+  <div class="site-description" itemprop="description">I love to learn, and try to be better than yesterday.</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -477,20 +498,20 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">92</span>
-          <span class="site-state-item-name">포스트</span>
+          <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
         <span class="site-state-item-count">18</span>
-        <span class="site-state-item-name">카테고리</span></a>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
         <span class="site-state-item-count">192</span>
-        <span class="site-state-item-name">태그</span></a>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -632,6 +653,37 @@
     
 
   
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://dev-anything.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hyeonji-ryu.github.io/2020/03/15/ThinkJulia/Think-Julia-Chapter-15/";
+    this.page.identifier = "2020/03/15/ThinkJulia/Think-Julia-Chapter-15/";
+    this.page.title = "14. 구조체와 객체";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://dev-anything.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
 
 </body>
 </html>
