@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>데이터 모델링의 이해</title>
+    <url>/2021/09/04/SQLD/sqld-0/</url>
+    <content><![CDATA[<p>해당 시리즈는 SQL 개발자(SQLD) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
+<h2 id="데이터-모델링"><a href="#데이터-모델링" class="headerlink" title="데이터 모델링"></a>데이터 모델링</h2><p>데이터 모델링이란 복잡한 현실 세계를 데이터베이스로 표현하기 위해서 추상화, 단순화, 명화학하는 과정을 의미한다.</p>
+<h3 id="데이터-모델링-특징"><a href="#데이터-모델링-특징" class="headerlink" title="데이터 모델링 특징"></a>데이터 모델링 특징</h3><ul>
+<li>추상화: 현실세계를 간략하게 표현</li>
+<li>단순화: 누구나 이해할 수 있게 표현</li>
+<li>명확화: 애매한 의미 제거</li>
+</ul>
+<h2 id="데이터-모델링-관점"><a href="#데이터-모델링-관점" class="headerlink" title="데이터 모델링 관점"></a>데이터 모델링 관점</h2><ul>
+<li>개념적 모델링:</li>
+<li>논리적 모델링:</li>
+<li>물리적 모델링:</li>
+</ul>
+]]></content>
+      <categories>
+        <category>etc.</category>
+        <category>SQLD</category>
+      </categories>
+      <tags>
+        <tag>자격증</tag>
+        <tag>SQLD</tag>
+        <tag>데이터자격시험</tag>
+        <tag>query</tag>
+        <tag>데이터모델링</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>소유권 참조와 대여</title>
     <url>/2021/09/04/Rust/rust-1/</url>
     <content><![CDATA[<p>러스트의 소유권 참조와 대여 방식에 대해 공부한 내용을 정리합니다.<br><a id="more"></a></p>
