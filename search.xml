@@ -10,11 +10,137 @@
 <li>단순화: 누구나 이해할 수 있게 표현</li>
 <li>명확화: 애매한 의미 제거</li>
 </ul>
-<h2 id="데이터-모델링-관점"><a href="#데이터-모델링-관점" class="headerlink" title="데이터 모델링 관점"></a>데이터 모델링 관점</h2><ul>
-<li>개념적 모델링:</li>
-<li>논리적 모델링:</li>
-<li>물리적 모델링:</li>
+<h2 id="데이터-모델링-단계"><a href="#데이터-모델링-단계" class="headerlink" title="데이터 모델링 단계"></a>데이터 모델링 단계</h2><ul>
+<li>개념적 모델링: 전사관점, 업무측면에서 모델링, 추상화 진행</li>
+<li>논리적 모델링: 식별자 정의, 관계, 속성 표현, 재사용성을 위한 정규화 진행</li>
+<li>물리적 모델링: DBMS에 실제 데이터 생성</li>
 </ul>
+<h2 id="데이터-모델링-관점"><a href="#데이터-모델링-관점" class="headerlink" title="데이터 모델링 관점"></a>데이터 모델링 관점</h2><ul>
+<li>데이터: 사용되는 데이터 구조분석, 정적분석</li>
+<li>프로세스: 수행하는 작업 시나리오 분석,  동적 분석</li>
+<li>데이터+프로세스: CRUD(Create, Read, Update, Delete) 분석</li>
+</ul>
+<h2 id="ERD-Entity-Relationship-Diagram"><a href="#ERD-Entity-Relationship-Diagram" class="headerlink" title="ERD(Entity Relationship Diagram)"></a>ERD(Entity Relationship Diagram)</h2><p>엔터티 간의 관계 표기법</p>
+<p><strong>엔터티란?</strong><br>업무에서 관리해야 하는 데이터 집합. 보통 고객의 비즈니스 프로세스에서 추출</p>
+<h3 id="ERD-작성-절차"><a href="#ERD-작성-절차" class="headerlink" title="ERD 작성 절차"></a>ERD 작성 절차</h3><ol>
+<li>엔터티 도출</li>
+<li>엔터티 배치</li>
+<li>엔터티 간의 관계 설정</li>
+<li>엔터티 간의 관계명 서술</li>
+<li>엔터티 간의 관계 참여도 표현</li>
+<li>엔터티 간의 관계 필수 여부를 표현</li>
+</ol>
+<h2 id="3층-스키마"><a href="#3층-스키마" class="headerlink" title="3층 스키마"></a>3층 스키마</h2><p>데이터 독립성을 위해 사용자, 설계자, 개발자가 바라보는 관점에 따라 데이터베이스를 기술하는 방법</p>
+<ul>
+<li>사용자: 외부스키마(업무살 관련 데이터 접근. 응용 프로그램 -&gt; 데이터)</li>
+<li>설계자: 개념스키마(전체 DB 내 구조 설계. 통합 DB 구조 설계)</li>
+<li>개발자: 내부스키마(DB 물리적 저장구조. 레코드, 칼럼, 인덱스 정리)</li>
+</ul>
+<h3 id="데이터-독립성"><a href="#데이터-독립성" class="headerlink" title="데이터 독립성"></a>데이터 독립성</h3><ul>
+<li>논리적 독립성: 개념스키마 변경이 외부 스키마에 영향을 주지 않는 것</li>
+<li>물리적 독립성: 내부스키마 변경이 개념 스키마에 영향을 주지 않는 것</li>
+</ul>
+<h3 id="데이터-독립의-장점"><a href="#데이터-독립의-장점" class="headerlink" title="데이터 독립의 장점"></a>데이터 독립의 장점</h3><ol>
+<li>복잡도 축소</li>
+<li>중복제거 가능</li>
+<li>사용자 요구사항 변경에 따른 대응 가능</li>
+<li>관리 및 유지보수 비용 축소</li>
+</ol>
+<h2 id="엔터티"><a href="#엔터티" class="headerlink" title="엔터티"></a>엔터티</h2><p>고객의 비즈니스 프로세스에서 관리되어야 하는 정보를 추출</p>
+<h2 id="엔터티-특징"><a href="#엔터티-특징" class="headerlink" title="엔터티 특징"></a>엔터티 특징</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>특징</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>식별자</td>
+<td>고유값 칼럼 필요</td>
+</tr>
+<tr>
+<td>인스턴스 집합</td>
+<td>인스턴스는 2개 이상</td>
+</tr>
+<tr>
+<td>속성</td>
+<td>반드시 속성 보유</td>
+</tr>
+<tr>
+<td>관계</td>
+<td>다른 엔터티와 최소 1개 이상의 관계 필요</td>
+</tr>
+<tr>
+<td>업무</td>
+<td>관리되어야 하는 집합</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="엔터티-종류"><a href="#엔터티-종류" class="headerlink" title="엔터티 종류"></a>엔터티 종류</h2><ul>
+<li>유형/무형</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>유형 엔터티</td>
+<td>물리적 형태 존재. 업무에서 사용되는 엔터티</td>
+<td>고객, 사원</td>
+</tr>
+<tr>
+<td>개념 엔터티</td>
+<td>물리적 형태 미존재</td>
+<td>거래소 종목, 코스닥 종목</td>
+</tr>
+<tr>
+<td>사건 엔터니</td>
+<td>비즈니스 상에서 생성</td>
+<td>주문, 취소, 수수료 청구</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>발생시점</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>기본 엔터티</td>
+<td>키 엔터티. 독립적으로 생성됨</td>
+<td>고객</td>
+</tr>
+<tr>
+<td>중심 엔터티</td>
+<td>기본과 행위 중간에 위치</td>
+<td>주문</td>
+</tr>
+<tr>
+<td>행위 엔터티</td>
+<td>2개 이상의 엔터티로부터 발생</td>
+<td>주문이력</td>
+</tr>
+</tbody>
+</table>
+</div>
 ]]></content>
       <categories>
         <category>etc.</category>
