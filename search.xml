@@ -30,7 +30,7 @@
 <li>엔터티 간의 관계 참여도 표현</li>
 <li>엔터티 간의 관계 필수 여부를 표현</li>
 </ol>
-<h2 id="3층-스키마"><a href="#3층-스키마" class="headerlink" title="3층 스키마"></a>3층 스키마</h2><p>데이터 독립성을 위해 사용자, 설계자, 개발자가 바라보는 관점에 따라 데이터베이스를 기술하는 방법</p>
+<h2 id="3층-스키마"><a href="#3층-스키마" class="headerlink" title="3층 스키마"></a>3층 스키마</h2><p>데이터 독립성을 위해 사용자, 설계자, 개발자가 바라보는 관점에 따라 데이터베이스를 기술하는 방법.</p>
 <ul>
 <li>사용자: 외부스키마(업무살 관련 데이터 접근. 응용 프로그램 -&gt; 데이터)</li>
 <li>설계자: 개념스키마(전체 DB 내 구조 설계. 통합 DB 구조 설계)</li>
@@ -210,11 +210,222 @@
 </table>
 </div>
 <h3 id="도메인"><a href="#도메인" class="headerlink" title="도메인"></a>도메인</h3><p>속성이 가질 수 있는 값의 범위. 예로 성별이라는 속성이 가질 수 있는 도메인은 남성/여성이다.</p>
-<h2 id="관계-relationship"><a href="#관계-relationship" class="headerlink" title="관계(relationship)"></a>관계(relationship)</h2><p>엔터티 간의 관련성을 의미</p>
+<h2 id="관계-Relationship"><a href="#관계-Relationship" class="headerlink" title="관계(Relationship)"></a>관계(Relationship)</h2><p>엔터티 간의 관련성을 의미</p>
 <ul>
-<li>존재관계: 엔터티 존재 여부를 표현</li>
-<li>행위관계: 엔터티 간 행위에 대한 관련성 표현</li>
+<li>분류</li>
 </ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>존재관계</td>
+<td>엔터티 간 상태를 표현</td>
+<td>회원가입 -&gt; 관리점 할당 -&gt; 관리점에서 고객관리</td>
+</tr>
+<tr>
+<td>행위관계</td>
+<td>엔터티 간 행위에 대한 관련성 표현</td>
+<td>계좌개설 -&gt;  주문 발주</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="관계-차수-Cardinality"><a href="#관계-차수-Cardinality" class="headerlink" title="관계 차수(Cardinality)"></a>관계 차수(Cardinality)</h3><p>두 엔터티 간에 관계에 참여하는 수를 의미.</p>
+<h3 id="관계-차수-종류"><a href="#관계-차수-종류" class="headerlink" title="관계 차수 종류"></a>관계 차수 종류</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1대1 관계</td>
+<td>완전 1대1 관계와 선택적 1대1 관계로 나눠진다.</td>
+<td>고객:고객등급</td>
+</tr>
+<tr>
+<td>1대N 관계</td>
+<td>엔터티 1행에 여러개의 값이 있는 관계</td>
+<td>고객:계좌</td>
+</tr>
+<tr>
+<td>M대N 관계</td>
+<td>2개의 엔터티가 서로 여러개의 값을 가진 관계</td>
+<td>학생:수업</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>M대N 관계의 조인은 카테시안 곱이 발생하기에 1대1 관계, 1대N 관계로 변경해야 한다. 예로 학생은 여러 개의 수업을 들을 수 있고, 수업 또한 여러 명의 학생이 신청할 수 있다. 이런 관계에서는 학생, 수업 2개의 엔터티를 생성하는 것보다 학생, 수강, 수업이라는 3개의 엔터티를 생성하는 것이 좋다.</p>
+</li>
+<li><p>필수적 관계는 O로 표현되고, 선택적 관계는 |로 표현된다.</p>
+</li>
+</ul>
+<h2 id="식별-관계와-비식별-관계"><a href="#식별-관계와-비식별-관계" class="headerlink" title="식별 관계와 비식별 관계"></a>식별 관계와 비식별 관계</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>식별 관계</td>
+<td>- 독립적으로 존재할 수 있는 강한 개체 (다른 엔터티에 의존X) <br>- 다른 엔터티와 관계를 가질 때 기본키를 공유 <br>- 식별 관계로 표현 <br>- 강한 개체의 값이 변경되면 식별관계에 있는 엔터티의 값도 변경된다.</td>
+</tr>
+<tr>
+<td>비식별 관계</td>
+<td>강한 개체의 기본키를 일반 칼럼으로 관계를 받는 가지는 것</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="엔터티-식별자"><a href="#엔터티-식별자" class="headerlink" title="엔터티 식별자"></a>엔터티 식별자</h2><p>엔터티를 대표할 수 있는 유일성을 만족하는 속성.</p>
+<h3 id="주식별자-기본키"><a href="#주식별자-기본키" class="headerlink" title="주식별자(기본키)"></a>주식별자(기본키)</h3><ul>
+<li><p>요건: 최소성, 대표성, 유일성, 불변성</p>
+</li>
+<li><p>키의 종류</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>기본키</td>
+<td>후보키 중 엔터티를 대표하는 키</td>
+</tr>
+<tr>
+<td>후보키</td>
+<td>유일성과 최소성을 만족하는 키</td>
+</tr>
+<tr>
+<td>슈퍼키</td>
+<td>유일성은 만족하지만 최소성을 만족하지 않는 키</td>
+</tr>
+<tr>
+<td>대체키</td>
+<td>여러 개의  후보키 중에서 기본키를 제외한 남은 키</td>
+</tr>
+<tr>
+<td>외래키</td>
+<td>키본키 필드를 가리키는 것으로 참조무결성을 확인하기 위해 사용</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="식별자의-종류"><a href="#식별자의-종류" class="headerlink" title="식별자의 종류"></a>식별자의 종류</h3><ul>
+<li>대표성 여부</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>주식별자</td>
+<td>엔터티를 대표하는 식별자, 참조관계로 연결</td>
+</tr>
+<tr>
+<td>보조 식별자</td>
+<td>유일성과 최소성은 만족하지만 대표성을 만족하지 못하는 식별자</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>생성 여부</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>내부 식별자</td>
+<td>엔터티 내부에서 스스로 생성하는 식별자</td>
+<td>부서코드, 주문번호 등</td>
+</tr>
+<tr>
+<td>외부 식별자</td>
+<td>다른 엔터티와의 관계로 인해 생성되는 식별자</td>
+<td>계좌엔터티의 회원 ID</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>속성의 수</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>단일 식별자</td>
+<td>하나의 속성으로 구성</td>
+</tr>
+<tr>
+<td>복합 식별자</td>
+<td>두 개 이상의 속성으로 구성</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>대체 여부</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>본질 식별자</td>
+<td>비즈니스 프로세스에서 만들어지는 식별자</td>
+</tr>
+<tr>
+<td>인조 식별자</td>
+<td>인위적으로 만들어지는 식별자</td>
+</tr>
+</tbody>
+</table>
+</div>
 ]]></content>
       <categories>
         <category>etc.</category>
