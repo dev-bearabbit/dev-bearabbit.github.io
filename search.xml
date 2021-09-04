@@ -92,6 +92,25 @@
       </tags>
   </entry>
   <entry>
+    <title>소유권 참조와 대여</title>
+    <url>/2021/08/30/Rust/rust-1/</url>
+    <content><![CDATA[<p>러스트의 소유권 참조와 대여 방식에 대해 공부한 내용을 정리합니다.<br><a id="more"></a></p>
+<hr>
+<p>이전 글에서는 러스트 소유권 원리에 대해 살펴보았다. 힙 메모리에 사용된 변수의 경우, 복제(clone)라는 방식을 통해서만 특정 변수를 복사할 수 있었다. 하지만 이 방식은 경우에 따라 효율적이지 못하다. 만약 특정 변수값을 전달하기만 하면 되는 경우에는 특히 더 비효율적이다. 그렇기에 러스트는 참조와 대여라는 방법을 제공한다. 즉, 도서관에서 책 빌려주듯이 러스트도 특정 변수를 범위 내의 다른 함수에 빌려줄 수 있는 것이다. 물론 해당 변수의 소유권은 그대로 가진 채 말이다.</p>
+<h2 id="변수-참조"><a href="#변수-참조" class="headerlink" title="변수 참조"></a>변수 참조</h2>]]></content>
+      <categories>
+        <category>STUDY</category>
+        <category>Rust</category>
+      </categories>
+      <tags>
+        <tag>Rust</tag>
+        <tag>ownership</tag>
+        <tag>memory</tag>
+        <tag>slice</tag>
+        <tag>borrowing</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Inventory 작성하기</title>
     <url>/2021/07/26/Ansible/ansible-2/</url>
     <content><![CDATA[<p>Ansible Inventory 의미 및 작성 과정을 설명합니다.<br><a id="more"></a></p>
