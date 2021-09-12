@@ -440,25 +440,6 @@
       </tags>
   </entry>
   <entry>
-    <title>소유권 참조와 대여</title>
-    <url>/2021/09/04/Rust/rust-1/</url>
-    <content><![CDATA[<p>러스트의 소유권 참조와 대여 방식에 대해 공부한 내용을 정리합니다.<br><a id="more"></a></p>
-<hr>
-<p>이전 글에서는 러스트 소유권 원리에 대해 살펴보았다. 힙 메모리에 사용된 변수의 경우, 복제(clone)라는 방식을 통해서만 특정 변수를 복사할 수 있었다. 하지만 이 방식은 경우에 따라 효율적이지 못하다. 만약 특정 변수값을 전달하기만 하면 되는 경우에는 특히 더 비효율적이다. 그렇기에 러스트는 참조와 대여라는 방법을 제공한다. 즉, 도서관에서 책 빌려주듯이 러스트도 특정 변수를 범위 내의 다른 함수에 빌려줄 수 있는 것이다. 물론 해당 변수의 소유권은 그대로 가진 채 말이다.</p>
-<h2 id="변수-참조"><a href="#변수-참조" class="headerlink" title="변수 참조"></a>변수 참조</h2>]]></content>
-      <categories>
-        <category>STUDY</category>
-        <category>Rust</category>
-      </categories>
-      <tags>
-        <tag>Rust</tag>
-        <tag>ownership</tag>
-        <tag>memory</tag>
-        <tag>slice</tag>
-        <tag>borrowing</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>움직이는 배경 설정하기</title>
     <url>/2021/09/01/AboutHexo/about-hexo-3/</url>
     <content><![CDATA[<p>NexT 테마에서 움직이는 배경을 설정합니다.</p>
@@ -547,30 +528,6 @@
         <tag>memory</tag>
         <tag>slice</tag>
         <tag>borrowing</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Inventory 작성하기</title>
-    <url>/2021/07/26/Ansible/ansible-2/</url>
-    <content><![CDATA[<p>Ansible Inventory 의미 및 작성 과정을 설명합니다.<br><a id="more"></a></p>
-<hr>
-<h2 id="Ansible-inventory"><a href="#Ansible-inventory" class="headerlink" title="Ansible inventory"></a>Ansible inventory</h2><p>인벤토리는 관리 노드들에 대한 정보를 기술한 파일이다. 보통은 노드 목록과 그룹핑을 정의하기 때문에 호스트파일(hostfile)이라고도 부른다. 또한 인벤토리는 그룹에 따라 변수들을 생성할 수 있다. 형태는 다음과 같다.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[all]</span><br><span class="line">target1 ansible_host=<span class="variable">$IP</span></span><br><span class="line">target2 ansible_host=<span class="variable">$IP</span></span><br><span class="line">target3 ansible_host=<span class="variable">$IP</span></span><br><span class="line"></span><br><span class="line">[all:vars]</span><br><span class="line">ansible_python_interpreter=/usr/bin/python</span><br><span class="line">ansible_ssh_pass=<span class="variable">$passwd</span></span><br></pre></td></tr></table></figure>
-<p><code>[그룹이름]</code>부분에 들어가는 단어가 앤서블에서 사용할 그룹이름이며 <code>[그룹이름:vars]</code> 아래로 입력한 부분은 해당 그룹에 대한 변수를 설정한 것이다. 보통 그룹에 속하는 노드들의 공통 속성은 <code>[그룹이름:vars]</code>에 하나로 입력한다. 위 예시를 보면 target1-3까지는 각각 IP가 다르므로 [all]에 작성하였고, ssh 비밀번호는 동일하므로 [all:vars]에 작성하였다.</p>
-<p>인벤토리 파일은 확장자 없이도 사용할 수 있으며, 보통 txt, ini 확장자로 저장하여 사용한다. 물론 yaml 파일 형식으로도 작성할 수는 있지만 yaml 형식이 익숙하지 않다면 txt, ini로 쓰는 것을 추천한다. 위 예시를 yaml 파일 방식으로 작성하면 다음과 같다.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">all:</span><br><span class="line">    hosts:</span><br><span class="line">        target1:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">        target2:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">        target3:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">    vars:</span><br><span class="line">        ansible_python_interpreter: /usr/bin/python</span><br><span class="line">        ansible_ssh_pass: <span class="variable">$passwd</span></span><br></pre></td></tr></table></figure>
-<p>yaml 파일 형식은 playbook 파트에서 더 자세히 알아보자.</p>
-<h2 id="Inventory-Parameters"><a href="#Inventory-Parameters" class="headerlink" title="Inventory Parameters"></a>Inventory Parameters</h2>]]></content>
-      <categories>
-        <category>STUDY</category>
-        <category>Ansible</category>
-      </categories>
-      <tags>
-        <tag>sshpass</tag>
-        <tag>docker</tag>
-        <tag>script</tag>
-        <tag>앤서블</tag>
-        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -704,143 +661,6 @@
         <tag>script</tag>
         <tag>앤서블</tag>
         <tag>ansible</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux Package management</title>
-    <url>/2021/07/18/Linux/Linux-5/</url>
-    <content><![CDATA[<p>리눅스 Package management에 대해서 정리합니다.</p>
-<a id="more"></a>
-<h2 id="패키지-관리-Package-management-란"><a href="#패키지-관리-Package-management-란" class="headerlink" title="패키지 관리(Package management)란"></a>패키지 관리(Package management)란</h2>]]></content>
-      <categories>
-        <category>STUDY</category>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>centos</tag>
-        <tag>ubuntu</tag>
-        <tag>repository</tag>
-        <tag>boot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux Filesystem</title>
-    <url>/2021/07/17/Linux/Linux-4/</url>
-    <content><![CDATA[<p>리눅스 Linux Filesystem에 대해서 정리합니다.</p>
-<a id="more"></a>
-<h2 id="Linux-Filesystem"><a href="#Linux-Filesystem" class="headerlink" title="Linux Filesystem"></a>Linux Filesystem</h2><p>리눅스에서는 모든 것들을 파일 단위로 관리한다. 그렇다면 소켓, 디바이스, 폴더 등 파일이 아닌 객체들을 어떻게 구분할까? 이에 대해서 간단히 살펴보자.<br>아래의 표는 객체에 따른 파일 타입을 보여준다.</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>파일 타입</th>
-<th>의미</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>d</td>
-<td>directory</td>
-<td>파일들을 카테코리별로 담고 있는 폴더</td>
-</tr>
-<tr>
-<td>-</td>
-<td>regular file</td>
-<td>이미지, 스크립트, 컨피그레이션, 데이터 등을 가지는 일반적인 파일들</td>
-</tr>
-<tr>
-<td>c</td>
-<td>character device</td>
-<td>키보드, 마우스, 모니터, 프린터 등의 장치(byte단위 데이터 전송)</td>
-</tr>
-<tr>
-<td>l</td>
-<td>link</td>
-<td>저장장치와 추상적인 디렉토리를 연결해주는 경로</td>
-</tr>
-<tr>
-<td>s</td>
-<td>socket file</td>
-</tr>
-<tr>
-<td>p</td>
-<td>pipe</td>
-</tr>
-<tr>
-<td>b</td>
-<td>block device</td>
-<td>하드디스크나 CD/DVD 등의 저장 장치(블록단위 데이터 전송)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>특정 파일 타입이 어떤 권한을</p>
-<p>그렇다면 소켓, 디바이스, 폴더 등 파일이 아닌 객체들을 어떻게 파일 단위로 관리할까? 이에 대해서 하나씩 살펴보자.</p>
-<p>OS는 연결된 장치의 개수 등을 파악하기 위해서라도 파일이 열리고 닫히는 과정들을 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 파일 테이블을 통해 관리한다. 그렇다면 프로세스는 필요한 파일을 어떻게 가져와 사용할까?</p>
-<h2 id="File-Descriptor"><a href="#File-Descriptor" class="headerlink" title="File Descriptor"></a>File Descriptor</h2><p>파일 디스크립터(File Descriptor, 이하 fd)는 프로세스들이 파일에 접근할 수 있도록 관리하는 관리자이다.</p>
-<p>shell에서 처음 프로세스가 시작할 때 1번인 init 프로세스는 커널의 파일테이블을 복사한다.</p>
-<p>파일 디스크립터는 프로세스마다 특정 파일이나 장치를 열게 되면 해당 파일에 대한 정보에 인덱스를 부여한 후 fd 테이블에 입력한다.</p>
-<p>OS 입장에서는 연결된 장치의 개수 등을 파악하기 위해서라도 열린 파일의 개수를 관리해야 할 필요가 있다. 그래서 리눅스는 기본적으로 커널이 파일 접근을 관리 및 통솔하며, 해당 정보들은 FD테이블을 통해 관리한다. 이런 구조 속에서 파일 디스크립터는 프로세스가 접근하려고 하는</p>
-<p>어떤 프로세스가 특정 파일이나 장치를 열게 되면 디스크립터가 해당 파일에 대해 번호를 부여한 후 관리 테이블에 입력한다. 즉, fd는 프로세스들이 필요한 파일 및 장치에 접근할 수 있도록 도와주는 연결자의 역할이라도 봐도 된다. 따라서 관리 테이블은 프로세스 단에서 수정할 수 없으며, 커널단에서만 변경이 가능하다. fd 번호 중에서 0,1,2번은 </p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>파일 타입</th>
-<th>의미</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>d</td>
-<td>directory</td>
-<td>파일들을 카테코리별로 담고 있는 폴더</td>
-</tr>
-<tr>
-<td>-</td>
-<td>regular file</td>
-<td>이미지, 스크립트, 컨피그레이션, 데이터 등을 가지는 일반적인 파일들</td>
-</tr>
-<tr>
-<td>c</td>
-<td>character device</td>
-<td>키보드, 마우스, 모니터, 프린터 등의 장치(byte단위 데이터 전송)</td>
-</tr>
-<tr>
-<td>l</td>
-<td>link</td>
-<td>저장장치와 추상적인 디렉토리를 연결해주는 경로</td>
-</tr>
-<tr>
-<td>s</td>
-<td>socket file</td>
-</tr>
-<tr>
-<td>p</td>
-<td>pipe</td>
-</tr>
-<tr>
-<td>b</td>
-<td>block device</td>
-<td>하드디스크나 CD/DVD 등의 저장 장치(블록단위 데이터 전송)</td>
-</tr>
-</tbody>
-</table>
-</div>
-]]></content>
-      <categories>
-        <category>STUDY</category>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>centos</tag>
-        <tag>ubuntu</tag>
-        <tag>boot</tag>
-        <tag>filesystem</tag>
       </tags>
   </entry>
   <entry>
@@ -1074,26 +894,6 @@
       </tags>
   </entry>
   <entry>
-    <title>데이터 모델링 단계</title>
-    <url>/2021/06/04/DAsP/DAsP-4/</url>
-    <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
-<hr>
-<h2 id="데이터-모델링-단계"><a href="#데이터-모델링-단계" class="headerlink" title="데이터 모델링 단계"></a>데이터 모델링 단계</h2><h3 id="개념-데이터-모델링"><a href="#개념-데이터-모델링" class="headerlink" title="개념 데이터 모델링"></a>개념 데이터 모델링</h3><h3 id="논리-데이터-모델링"><a href="#논리-데이터-모델링" class="headerlink" title="논리 데이터 모델링"></a>논리 데이터 모델링</h3><h3 id="물리-데이터-모델링"><a href="#물리-데이터-모델링" class="headerlink" title="물리 데이터 모델링"></a>물리 데이터 모델링</h3>]]></content>
-      <categories>
-        <category>etc.</category>
-        <category>DAsP</category>
-      </categories>
-      <tags>
-        <tag>DAsP</tag>
-        <tag>데이터아키텍처</tag>
-        <tag>전사아키텍처</tag>
-        <tag>자격증</tag>
-        <tag>데이터</tag>
-        <tag>요건분석</tag>
-        <tag>data</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>데이터 모델링 이해</title>
     <url>/2021/06/03/DAsP/DAsP-3/</url>
     <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
@@ -1164,26 +964,6 @@
 <h2 id="데이터-모델링-표기법"><a href="#데이터-모델링-표기법" class="headerlink" title="데이터 모델링 표기법"></a>데이터 모델링 표기법</h2><h3 id="바커-표기법"><a href="#바커-표기법" class="headerlink" title="바커 표기법"></a>바커 표기법</h3><p><img src="/images/111.jpg" alt="barker"></p>
 <h3 id="IE-Information-Engineering-표기법"><a href="#IE-Information-Engineering-표기법" class="headerlink" title="IE(Information Engineering) 표기법"></a>IE(Information Engineering) 표기법</h3><p><img src="/images/112.jpg" alt="IE"></p>
 ]]></content>
-      <categories>
-        <category>etc.</category>
-        <category>DAsP</category>
-      </categories>
-      <tags>
-        <tag>DAsP</tag>
-        <tag>데이터아키텍처</tag>
-        <tag>전사아키텍처</tag>
-        <tag>자격증</tag>
-        <tag>데이터</tag>
-        <tag>요건분석</tag>
-        <tag>data</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>데이터 표준화</title>
-    <url>/2021/06/03/DAsP/DAsP-2/</url>
-    <content><![CDATA[<p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
-<hr>
-<h2 id="데이터-표준화"><a href="#데이터-표준화" class="headerlink" title="데이터 표준화"></a>데이터 표준화</h2><h2 id="데이터-표준-수립"><a href="#데이터-표준-수립" class="headerlink" title="데이터 표준 수립"></a>데이터 표준 수립</h2><h2 id="데이터-표준-관리"><a href="#데이터-표준-관리" class="headerlink" title="데이터 표준 관리"></a>데이터 표준 관리</h2>]]></content>
       <categories>
         <category>etc.</category>
         <category>DAsP</category>
