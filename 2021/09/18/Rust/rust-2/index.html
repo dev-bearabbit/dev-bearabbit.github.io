@@ -54,7 +54,7 @@
 <meta property="og:description" content="러스트의 슬라이스 타입에 대해 공부한 내용을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2021-09-18T07:28:53.000Z">
-<meta property="article:modified_time" content="2021-09-18T08:36:25.661Z">
+<meta property="article:modified_time" content="2021-09-18T09:03:19.772Z">
 <meta property="article:author" content="Hyeonji Ryu">
 <meta property="article:tag" content="Rust">
 <meta property="article:tag" content="ownership">
@@ -314,6 +314,8 @@
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> sen = <span class="built_in">String</span>::from(<span class="string">"Hello world!"</span>);</span><br><span class="line">    <span class="keyword">let</span> num = first_word(&amp;sen);</span><br><span class="line">    <span class="keyword">let</span> sen = <span class="built_in">String</span>::from(<span class="string">"changed"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,num);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,sen);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">first_word</span></span>(s: &amp;<span class="built_in">String</span>) -&gt; &amp;<span class="built_in">str</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> bytes = s.as_bytes();</span><br><span class="line">    <span class="keyword">for</span> (i, &amp;item) <span class="keyword">in</span> bytes.iter().enumerate()&#123;</span><br><span class="line">        <span class="keyword">if</span> item == <span class="string">b' '</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> &amp;s[..i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;s[..]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>위 코드의 결과는 다음과 같다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello</span><br><span class="line">changed</span><br></pre></td></tr></table></figure>
+<h2 id="문자열-슬라이스-타입"><a href="#문자열-슬라이스-타입" class="headerlink" title="문자열 슬라이스 타입"></a>문자열 슬라이스 타입</h2><p>문자열 슬라이스의 타입은 <code>&amp;str</code>이다. 해당 타입이 어딘가 익숙하지 않은가? <code>&amp;str</code>은 문자열 리터럴 타입이다. 즉, 스택 메모리에 저장되는 바이너리 문자 리터럴</p>
+<p>유니코드로 슬라이스가 안된다.</p>
 
     </div>
 
@@ -406,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#첫-번째-문자를-도출하기"><span class="nav-number">1.</span> <span class="nav-text">첫 번째 문자를 도출하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#슬라이스-타입이란"><span class="nav-number">2.</span> <span class="nav-text">슬라이스 타입이란</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#슬라이스를-사용하여-첫-번째-문자를-도출하기"><span class="nav-number">3.</span> <span class="nav-text">슬라이스를 사용하여 첫 번째 문자를 도출하기</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#첫-번째-문자를-도출하기"><span class="nav-number">1.</span> <span class="nav-text">첫 번째 문자를 도출하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#슬라이스-타입이란"><span class="nav-number">2.</span> <span class="nav-text">슬라이스 타입이란</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#슬라이스를-사용하여-첫-번째-문자를-도출하기"><span class="nav-number">3.</span> <span class="nav-text">슬라이스를 사용하여 첫 번째 문자를 도출하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#문자열-슬라이스-타입"><span class="nav-number">4.</span> <span class="nav-text">문자열 슬라이스 타입</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
