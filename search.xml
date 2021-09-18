@@ -24,7 +24,6 @@
 <p>위 코드의 결과는 다음과 같다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Hello</span><br><span class="line">changed</span><br></pre></td></tr></table></figure>
 <h2 id="문자열-슬라이스-타입"><a href="#문자열-슬라이스-타입" class="headerlink" title="문자열 슬라이스 타입"></a>문자열 슬라이스 타입</h2><p>문자열 슬라이스의 타입은 <code>&amp;str</code>이다. 해당 타입이 어딘가 익숙하지 않은가? <code>&amp;str</code>은 문자열 리터럴 타입이다. 즉, 스택 메모리에 저장되는 바이너리 문자 리터럴</p>
-<p>유니코드로 슬라이스가 안된다.</p>
 ]]></content>
       <categories>
         <category>STUDY</category>
