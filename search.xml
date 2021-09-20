@@ -23,7 +23,6 @@
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> sen = <span class="built_in">String</span>::from(<span class="string">"Hello world!"</span>);</span><br><span class="line">    <span class="keyword">let</span> num = first_word(&amp;sen);</span><br><span class="line">    <span class="keyword">let</span> sen = <span class="built_in">String</span>::from(<span class="string">"changed"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,num);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,sen);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">first_word</span></span>(s: &amp;<span class="built_in">String</span>) -&gt; &amp;<span class="built_in">str</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> bytes = s.as_bytes();</span><br><span class="line">    <span class="keyword">for</span> (i, &amp;item) <span class="keyword">in</span> bytes.iter().enumerate()&#123;</span><br><span class="line">        <span class="keyword">if</span> item == <span class="string">b' '</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> &amp;s[..i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;s[..]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>위 코드의 결과는 다음과 같다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Hello</span><br><span class="line">changed</span><br></pre></td></tr></table></figure>
-<h2 id="문자열-슬라이스-타입"><a href="#문자열-슬라이스-타입" class="headerlink" title="문자열 슬라이스 타입"></a>문자열 슬라이스 타입</h2><p>문자열 슬라이스의 타입은 <code>&amp;str</code>이다. 해당 타입이 어딘가 익숙하지 않은가? <code>&amp;str</code>은 문자열 리터럴 타입이다. 즉, 스택 메모리에 저장되는 바이너리 문자 리터럴</p>
 ]]></content>
       <categories>
         <category>STUDY</category>
@@ -629,6 +628,30 @@
         <tag>memory</tag>
         <tag>slice</tag>
         <tag>borrowing</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Inventory 작성하기</title>
+    <url>/2021/07/26/Ansible/ansible-2/</url>
+    <content><![CDATA[<p>Ansible Inventory 의미 및 작성 과정을 설명합니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="Ansible-inventory"><a href="#Ansible-inventory" class="headerlink" title="Ansible inventory"></a>Ansible inventory</h2><p>인벤토리는 관리 노드들에 대한 정보를 기술한 파일이다. 보통은 노드 목록과 그룹핑을 정의하기 때문에 호스트파일(hostfile)이라고도 부른다. 또한 인벤토리는 그룹에 따라 변수들을 생성할 수 있다. 형태는 다음과 같다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[all]</span><br><span class="line">target1 ansible_host=<span class="variable">$IP</span></span><br><span class="line">target2 ansible_host=<span class="variable">$IP</span></span><br><span class="line">target3 ansible_host=<span class="variable">$IP</span></span><br><span class="line"></span><br><span class="line">[all:vars]</span><br><span class="line">ansible_python_interpreter=/usr/bin/python</span><br><span class="line">ansible_ssh_pass=<span class="variable">$passwd</span></span><br></pre></td></tr></table></figure>
+<p><code>[그룹이름]</code>부분에 들어가는 단어가 앤서블에서 사용할 그룹이름이며 <code>[그룹이름:vars]</code> 아래로 입력한 부분은 해당 그룹에 대한 변수를 설정한 것이다. 보통 그룹에 속하는 노드들의 공통 속성은 <code>[그룹이름:vars]</code>에 하나로 입력한다. 위 예시를 보면 target1-3까지는 각각 IP가 다르므로 [all]에 작성하였고, ssh 비밀번호는 동일하므로 [all:vars]에 작성하였다.</p>
+<p>인벤토리 파일은 확장자 없이도 사용할 수 있으며, 보통 txt, ini 확장자로 저장하여 사용한다. 물론 yaml 파일 형식으로도 작성할 수는 있지만 yaml 형식이 익숙하지 않다면 txt, ini로 쓰는 것을 추천한다. 위 예시를 yaml 파일 방식으로 작성하면 다음과 같다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">all:</span><br><span class="line">    hosts:</span><br><span class="line">        target1:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">        target2:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">        target3:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">    vars:</span><br><span class="line">        ansible_python_interpreter: /usr/bin/python</span><br><span class="line">        ansible_ssh_pass: <span class="variable">$passwd</span></span><br></pre></td></tr></table></figure>
+<p>yaml 파일 형식은 playbook 파트에서 더 자세히 알아보자.</p>
+<h2 id="Inventory-Parameters"><a href="#Inventory-Parameters" class="headerlink" title="Inventory Parameters"></a>Inventory Parameters</h2>]]></content>
+      <categories>
+        <category>STUDY</category>
+        <category>Ansible</category>
+      </categories>
+      <tags>
+        <tag>sshpass</tag>
+        <tag>docker</tag>
+        <tag>script</tag>
+        <tag>앤서블</tag>
+        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
