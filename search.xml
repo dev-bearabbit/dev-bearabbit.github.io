@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Inventory 작성하기</title>
+    <url>/2021/09/20/Ansible/ansible-2/</url>
+    <content><![CDATA[<p>Ansible Inventory 의미 및 작성 과정을 설명합니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="Ansible-inventory"><a href="#Ansible-inventory" class="headerlink" title="Ansible inventory"></a>Ansible inventory</h2><p>인벤토리는 관리 노드들에 대한 정보를 기술한 파일이다. 보통은 노드 목록과 그룹핑을 정의하기 때문에 호스트파일(hostfile)이라고도 부른다. 또한 인벤토리는 그룹에 따라 변수들을 생성할 수 있다. 형태는 다음과 같다.</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[all]</span></span><br><span class="line">target1 ansible_host=$IP</span><br><span class="line">target2 ansible_host=$IP</span><br><span class="line">target3 ansible_host=$IP</span><br><span class="line"></span><br><span class="line"><span class="section">[all:vars]</span></span><br><span class="line"><span class="attr">ansible_python_interpreter</span>=/usr/bin/python</span><br><span class="line"><span class="attr">ansible_ssh_pass</span>=<span class="variable">$passwd</span></span><br></pre></td></tr></table></figure>
+<p><code>[그룹이름]</code>부분에 들어가는 단어가 앤서블에서 사용할 그룹이름이며 <code>[그룹이름:vars]</code> 아래로 입력한 부분은 해당 그룹에 대한 변수를 설정한 것이다. 보통 그룹에 속하는 노드들의 공통 속성은 <code>[그룹이름:vars]</code>에 하나로 입력한다. 위 예시를 보면 target1-3까지는 각각 IP가 다르므로 [all]에 작성하였고, ssh 비밀번호는 동일하므로 [all:vars]에 작성하였다.</p>
+<p>또한 만약 사용되는 호스트 이름이 비슷한 패턴으로 구성되어 있다면 [start:end]규칙을 사용하여 그룹 변수를 작성할 수 있다.</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="section">[EXAMPLE]</span></span><br><span class="line">target[1:3]</span><br></pre></td></tr></table></figure>
+<p>위의 예시처럼 숫자 패턴을 지정할 수도 있고, 또 아래 예시처럼 문자 패턴도 가능하다.</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">targetA ansible_host=$IP</span><br><span class="line">targetB ansible_host=$IP</span><br><span class="line">targetC ansible_host=$IP</span><br><span class="line"></span><br><span class="line"><span class="section">[EXAMPLE]</span></span><br><span class="line">target[A:C]</span><br></pre></td></tr></table></figure>
+<p>인벤토리 파일은 확장자 없이도 사용할 수 있으며, 보통 txt, ini 확장자로 저장하여 사용한다. 물론 yaml 파일 형식으로도 작성할 수는 있지만 yaml 형식이 익숙하지 않다면 txt, ini로 쓰는 것을 추천한다. 위 예시를 yaml 파일 방식으로 작성하면 다음과 같다.</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">all:</span></span><br><span class="line">    <span class="attr">hosts:</span></span><br><span class="line">        <span class="attr">target1:</span></span><br><span class="line">            <span class="attr">ansible_host:</span> <span class="string">$IP</span></span><br><span class="line">        <span class="attr">target2:</span></span><br><span class="line">            <span class="attr">ansible_host:</span> <span class="string">$IP</span></span><br><span class="line">        <span class="attr">target3:</span></span><br><span class="line">            <span class="attr">ansible_host:</span> <span class="string">$IP</span></span><br><span class="line">    <span class="attr">vars:</span></span><br><span class="line">        <span class="attr">ansible_python_interpreter:</span> <span class="string">/usr/bin/python</span></span><br><span class="line">        <span class="attr">ansible_ssh_pass:</span> <span class="string">$passwd</span></span><br></pre></td></tr></table></figure>
+<p>yaml 파일 형식은 playbook 파트에서 더 자세히 알아보자. 이처럼 인벤토리에 작성된 노드들은 네트워크 상에서 통신만 가능하다면 컨트롤러 서버에서 관리할 수 있다. 보통 앤서블을 설치하면 <code>/etc/ansible</code> 디렉토리 내부에 자동으로 <code>hosts</code> 파일이 생성된다. 해당 파일에 노드 정보를 입력하면 옵션 <code>-i</code>없이 앤서블 명령어를 사용할 수 있다. 만약 여러 개의 인벤토리를 구성하고 싶다면 호스트 디렉토리를 따로 생성하여 관리할 수도 있다.</p>
+<h2 id="Inventory-Parameters"><a href="#Inventory-Parameters" class="headerlink" title="Inventory Parameters"></a>Inventory Parameters</h2><p>아래는 앤서블 인벤토리를 작성할 때 사용되는 요건들을 정리한 목록이다.</p>
+<ul>
+<li><p>호스트 연결 타입<br>ansible_connection: 기본값은 ssh, 호스트와 연결할 방법 [local, smart, ssh, paramiko]</p>
+</li>
+<li><p>SSH 연결 관련<br>ansible_host: 연결할 호스트의 IP<br>ansible_port: SSH 포트 번호, 기본값인 22일 경우에는 작성할 필요 없음<br>ansible_user: 접속에 사용할 유저 이름, 사용하는 유저가 root인 경우 작성할 필요 없음<br>ansible_ssh_pass: SSH 연결시 사용할 비밀번호<br>ansible_ssh_private_key_file: 연결시에 사용할 SSH 비밀키 파일, 비밀번호로 연결하는 경우 필요 없음</p>
+</li>
+<li><p>권한 관련<br>ansible_become: sudo와 동일. 권한을 확대 [yes / no]<br>ansible_become_method: 권한 확대 방법 [su]<br>ansible_become_user: 입력된 유저로 권한을 확대<br>ansible_become_password: 권환 확대할 유저의 비밀번호<br>ansible_become_exe: 선택한 권한 확대 방법을 어떻게 실행할지 설정 [“sudo su -“]<br>ansible_become_flags: 권한 확대 방법 실행 시 추가적으로 옵션을 설정</p>
+</li>
+</ul>
+<h2 id="with-Docker-container"><a href="#with-Docker-container" class="headerlink" title="with Docker container"></a>with Docker container</h2><ul>
+<li>호스트 연결 타입<br>ansible_host: 연결할 Docker 컨테이너의 이름<br>ansible_user: 컨테이너 내에서 작동할 유저 이름, 컨테이너 안에 유저가 있어야 함<br>ansible_become: true, become_user로 설정하면 컨테이너 내에서 작동하는데 사용<br>ansible_docker_extra_args: Docker에 접속할 때 추가할 args들을 입력</li>
+</ul>
+]]></content>
+      <categories>
+        <category>STUDY</category>
+        <category>Ansible</category>
+      </categories>
+      <tags>
+        <tag>sshpass</tag>
+        <tag>docker</tag>
+        <tag>script</tag>
+        <tag>앤서블</tag>
+        <tag>ansible</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>슬라이스 타입이란</title>
     <url>/2021/09/18/Rust/rust-2/</url>
     <content><![CDATA[<p>러스트의 슬라이스 타입에 대해 공부한 내용을 정리합니다.<br><a id="more"></a></p>
@@ -10,7 +50,7 @@
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> sen = <span class="built_in">String</span>::from(<span class="string">"Hello world!"</span>);</span><br><span class="line">    <span class="keyword">let</span> num = first_word(&amp;sen);</span><br><span class="line">    sen.clear();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,num);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">first_word</span></span>(s: &amp;<span class="built_in">String</span>) -&gt; <span class="built_in">usize</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> bytes = s.as_bytes();</span><br><span class="line">    <span class="keyword">for</span> (i, &amp;item) <span class="keyword">in</span> bytes.iter().enumerate()&#123;</span><br><span class="line">        <span class="keyword">if</span> item == <span class="string">b' '</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    s.len()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>위 코드는 “Hello world!”에서 첫 번째 단어의 글자 수를 반환해주는 함수이다. <code>first_word()</code>를 자세히 살펴보자.</p>
 <p>먼저  <code>first_word()</code>는 문자열을 받아 이를 byte로 변환한다. 이렇게 변환하면 변수 <code>bytes</code>는 [72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33] 배열로 저장된다. 이를 <code>for</code>문으로 통해 인덱스와 함께 하나씩 살펴보면서 공백(32)과 동일한 수가 있다면 인덱스인 <code>i</code>를 반환한다.</p>
-<p>위 함수는 그럴 듯 해보인다. 하지만 문자열 변수 <code>sen</code>가 변경되거나 사라져도 <code>num</code>값은 계속 유지된다. 위 코드에서 <code>sen.clear()</code>를 통해 변수 <code>sen</code>을 제거하였음에도 <code>num</code>은 사라지지 않는다. 이런 변수들의 독립성은 추후 컴파일단에서 잡히지 않는 버그가 될 수 있다. 나중에 변수 <code>sen</code>이 변경된 상태에서 <code>num</code>값을 사용하여 첫 번째 단어를 추출해도 어떤 문제도 프로그램 상 어떤 오류도 발생하지 않기 때문이다.</p>
+<p>위 함수는 그럴 듯 해보인다. 하지만 문자열 변수 <code>sen</code>가 변경되거나 사라져도 <code>num</code>값은 계속 유지된다. 위 코드에서 <code>sen.clear()</code>를 통해 변수 <code>sen</code>을 제거하였음에도 <code>num</code>은 사라지지 않는다. 이런 변수들의 독립성은 추후 컴파일단에서 잡히지 않는 버그가 될 수 있다. 나중에 변수 <code>sen</code>이 변경된 상태에서 <code>num</code>값을 사용하여 첫 번째 단어를 추출해도 프로그램 상 어떤 오류도 발생하지 않기 때문이다.</p>
 <p>따라서 변수 <code>sen</code>이 변경되거나 사라지면 에러가 도출되는 함수를 만들고 싶다. 그럴 때 러스트의 슬라이스 타입을 사용할 수 있다.</p>
 <h2 id="슬라이스-타입이란"><a href="#슬라이스-타입이란" class="headerlink" title="슬라이스 타입이란"></a>슬라이스 타입이란</h2><p>슬라이스(Slice) 타입은 소유권을 갖지 않으며, 문자열의 일부를 참조하는 방식이다. 위 예시에서 사용된 문자열 변수 <code>sen</code>을 통해 예시를 살펴보자.</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> sen = <span class="built_in">String</span>::from(<span class="string">"Hello world!"</span>);</span><br><span class="line">    <span class="keyword">let</span> first = &amp;sen[..<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">let</span> second = &amp;sen[<span class="number">5</span>..];</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, first);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, second);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -628,30 +668,6 @@
         <tag>memory</tag>
         <tag>slice</tag>
         <tag>borrowing</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Inventory 작성하기</title>
-    <url>/2021/07/26/Ansible/ansible-2/</url>
-    <content><![CDATA[<p>Ansible Inventory 의미 및 작성 과정을 설명합니다.<br><a id="more"></a></p>
-<hr>
-<h2 id="Ansible-inventory"><a href="#Ansible-inventory" class="headerlink" title="Ansible inventory"></a>Ansible inventory</h2><p>인벤토리는 관리 노드들에 대한 정보를 기술한 파일이다. 보통은 노드 목록과 그룹핑을 정의하기 때문에 호스트파일(hostfile)이라고도 부른다. 또한 인벤토리는 그룹에 따라 변수들을 생성할 수 있다. 형태는 다음과 같다.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[all]</span><br><span class="line">target1 ansible_host=<span class="variable">$IP</span></span><br><span class="line">target2 ansible_host=<span class="variable">$IP</span></span><br><span class="line">target3 ansible_host=<span class="variable">$IP</span></span><br><span class="line"></span><br><span class="line">[all:vars]</span><br><span class="line">ansible_python_interpreter=/usr/bin/python</span><br><span class="line">ansible_ssh_pass=<span class="variable">$passwd</span></span><br></pre></td></tr></table></figure>
-<p><code>[그룹이름]</code>부분에 들어가는 단어가 앤서블에서 사용할 그룹이름이며 <code>[그룹이름:vars]</code> 아래로 입력한 부분은 해당 그룹에 대한 변수를 설정한 것이다. 보통 그룹에 속하는 노드들의 공통 속성은 <code>[그룹이름:vars]</code>에 하나로 입력한다. 위 예시를 보면 target1-3까지는 각각 IP가 다르므로 [all]에 작성하였고, ssh 비밀번호는 동일하므로 [all:vars]에 작성하였다.</p>
-<p>인벤토리 파일은 확장자 없이도 사용할 수 있으며, 보통 txt, ini 확장자로 저장하여 사용한다. 물론 yaml 파일 형식으로도 작성할 수는 있지만 yaml 형식이 익숙하지 않다면 txt, ini로 쓰는 것을 추천한다. 위 예시를 yaml 파일 방식으로 작성하면 다음과 같다.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">all:</span><br><span class="line">    hosts:</span><br><span class="line">        target1:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">        target2:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">        target3:</span><br><span class="line">            ansible_host: <span class="variable">$IP</span></span><br><span class="line">    vars:</span><br><span class="line">        ansible_python_interpreter: /usr/bin/python</span><br><span class="line">        ansible_ssh_pass: <span class="variable">$passwd</span></span><br></pre></td></tr></table></figure>
-<p>yaml 파일 형식은 playbook 파트에서 더 자세히 알아보자.</p>
-<h2 id="Inventory-Parameters"><a href="#Inventory-Parameters" class="headerlink" title="Inventory Parameters"></a>Inventory Parameters</h2>]]></content>
-      <categories>
-        <category>STUDY</category>
-        <category>Ansible</category>
-      </categories>
-      <tags>
-        <tag>sshpass</tag>
-        <tag>docker</tag>
-        <tag>script</tag>
-        <tag>앤서블</tag>
-        <tag>ansible</tag>
       </tags>
   </entry>
   <entry>
