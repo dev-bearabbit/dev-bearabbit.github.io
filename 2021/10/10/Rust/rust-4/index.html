@@ -46,16 +46,21 @@
   };
 </script>
 
-  <meta name="description" content="I love to learn, and try to be better than yesterday.">
+  <meta name="description" content="러스트 구조체(struct)를 바탕으로 사각형 면적 구하는 프로그램을 작성한 내용을 정리합니다.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="rust-4">
+<meta property="og:title" content="구조체로 실습하기">
 <meta property="og:url" content="https://hyeonji-ryu.github.io/2021/10/10/Rust/rust-4/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
-<meta property="og:description" content="I love to learn, and try to be better than yesterday.">
+<meta property="og:description" content="러스트 구조체(struct)를 바탕으로 사각형 면적 구하는 프로그램을 작성한 내용을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2021-10-10T10:13:02.000Z">
-<meta property="article:modified_time" content="2021-10-10T10:13:07.186Z">
+<meta property="article:modified_time" content="2021-10-10T12:50:33.733Z">
 <meta property="article:author" content="Hyeonji Ryu">
+<meta property="article:tag" content="Rust">
+<meta property="article:tag" content="structure">
+<meta property="article:tag" content="struct">
+<meta property="article:tag" content="field">
+<meta property="article:tag" content="instance">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://hyeonji-ryu.github.io/2021/10/10/Rust/rust-4/">
@@ -70,7 +75,7 @@
   };
 </script>
 
-  <title>rust-4 | DEV AnythinG</title>
+  <title>구조체로 실습하기 | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -229,7 +234,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          rust-4
+          구조체로 실습하기
         </h1>
 
         <div class="post-meta">
@@ -240,6 +245,23 @@
               <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2021-10-10 19:13:02" itemprop="dateCreated datePublished" datetime="2021-10-10T19:13:02+09:00">2021-10-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/STUDY/" itemprop="url" rel="index">
+                    <span itemprop="name">STUDY</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/STUDY/Rust/" itemprop="url" rel="index">
+                    <span itemprop="name">Rust</span>
+                  </a>
+                </span>
             </span>
 
           
@@ -253,7 +275,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>러스트 구조체(struct)를 바탕으로 사각형 면적 구하는 프로그램을 작성한 내용을 정리합니다.<br><a id="more"></a></p>
+<hr>
+<p><a href="https://hyeonji-ryu.github.io/2021/10/09/Rust/rust-3/#more">이전 글</a>에서 러스트 구조체에 대해서 간단하게 알아보았다. 이번 글에서는 구조체를 사용하여 간단한 프로그램을 작성해보려고 한다.</p>
+<h2 id="사각형-면적-구하기"><a href="#사각형-면적-구하기" class="headerlink" title="사각형 면적 구하기"></a>사각형 면적 구하기</h2><p>사각형의 면적을 구하는 식은 대부분의 사람들이 알고 있다. 바로 ‘(밑변) x (높이)’이다. 구조체나 튜플 등 없이 가장 간단하게 코드를 작성한다면 아래와 같다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> width = <span class="number">30</span>;</span><br><span class="line">    <span class="keyword">let</span> height = <span class="number">40</span>;</span><br><span class="line">    <span class="keyword">let</span> area = width * height;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"사각형의 면적은 &#123;&#125; 제곱픽셀 입니다."</span>, area);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>위 코드는 하나의 함수에서 모든 일들을 처리한다. 가장 간단하지만 </p>
+
     </div>
 
     
@@ -261,6 +289,13 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rust/" rel="tag"># Rust</a>
+              <a href="/tags/structure/" rel="tag"># structure</a>
+              <a href="/tags/struct/" rel="tag"># struct</a>
+              <a href="/tags/field/" rel="tag"># field</a>
+              <a href="/tags/instance/" rel="tag"># instance</a>
+          </div>
 
         
 
@@ -334,6 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#사각형-면적-구하기"><span class="nav-number">1.</span> <span class="nav-text">사각형 면적 구하기</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -32,9 +32,26 @@
       </tags>
   </entry>
   <entry>
-    <title>rust-4</title>
+    <title>구조체로 실습하기</title>
     <url>/2021/10/10/Rust/rust-4/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>러스트 구조체(struct)를 바탕으로 사각형 면적 구하는 프로그램을 작성한 내용을 정리합니다.<br><a id="more"></a></p>
+<hr>
+<p><a href="https://hyeonji-ryu.github.io/2021/10/09/Rust/rust-3/#more">이전 글</a>에서 러스트 구조체에 대해서 간단하게 알아보았다. 이번 글에서는 구조체를 사용하여 간단한 프로그램을 작성해보려고 한다.</p>
+<h2 id="사각형-면적-구하기"><a href="#사각형-면적-구하기" class="headerlink" title="사각형 면적 구하기"></a>사각형 면적 구하기</h2><p>사각형의 면적을 구하는 식은 대부분의 사람들이 알고 있다. 바로 ‘(밑변) x (높이)’이다. 구조체나 튜플 등 없이 가장 간단하게 코드를 작성한다면 아래와 같다.</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> width = <span class="number">30</span>;</span><br><span class="line">    <span class="keyword">let</span> height = <span class="number">40</span>;</span><br><span class="line">    <span class="keyword">let</span> area = width * height;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"사각형의 면적은 &#123;&#125; 제곱픽셀 입니다."</span>, area);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>위 코드는 하나의 함수에서 모든 일들을 처리한다. 가장 간단하지만 </p>
+]]></content>
+      <categories>
+        <category>STUDY</category>
+        <category>Rust</category>
+      </categories>
+      <tags>
+        <tag>Rust</tag>
+        <tag>structure</tag>
+        <tag>struct</tag>
+        <tag>field</tag>
+        <tag>instance</tag>
+      </tags>
   </entry>
   <entry>
     <title>Rust 구조체란</title>
