@@ -54,7 +54,7 @@
 <meta property="og:description" content="러스트 구조체(struct)를 바탕으로 사각형 면적 구하는 프로그램을 작성한 내용을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2021-10-10T10:13:02.000Z">
-<meta property="article:modified_time" content="2021-10-10T13:33:59.472Z">
+<meta property="article:modified_time" content="2021-10-11T11:26:32.179Z">
 <meta property="article:author" content="Hyeonji Ryu">
 <meta property="article:tag" content="Rust">
 <meta property="article:tag" content="structure">
@@ -296,7 +296,10 @@
 <li>특정 사각형의 밑변과 높이의 값이 정확히 무엇인지 파악할 수 있어야 한다.</li>
 </ol>
 <p>위 조건들을 모두 만족할 수 있는 데이터 타입을 구조체로 직접 만들 수 있다면, 보다 가독성 있는 소스 코드를 작성할 수 있을 것이다.</p>
-<h2 id="사각형-면적-구하기-step-3-구조체"><a href="#사각형-면적-구하기-step-3-구조체" class="headerlink" title="사각형 면적 구하기 step 3: 구조체"></a>사각형 면적 구하기 step 3: 구조체</h2>
+<h2 id="사각형-면적-구하기-step-3-구조체"><a href="#사각형-면적-구하기-step-3-구조체" class="headerlink" title="사각형 면적 구하기 step 3: 구조체"></a>사각형 면적 구하기 step 3: 구조체</h2><p>드디어 구조체를 사용할 기회가 왔다. 위 조건을 모두 포함하는 데이터 타입을 만들어보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rectangle</span></span> &#123;</span><br><span class="line">    width: <span class="built_in">i32</span>,</span><br><span class="line">    height: <span class="built_in">i32</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> rec1 = Rectangle &#123;width: <span class="number">30</span>, height: <span class="number">40</span>&#125;;</span><br><span class="line">    <span class="keyword">let</span> rec2 = Rectangle &#123;width: <span class="number">50</span>, height: <span class="number">50</span>&#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"사각형의 면적은 &#123;&#125; 입니다."</span>, area(&amp;rec1));</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"사각형의 면적은 &#123;&#125; 입니다."</span>, area(&amp;rec2));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">area</span></span>(rec: &amp;Rectangle) -&gt; <span class="built_in">i32</span>&#123;</span><br><span class="line">    rec.width * rec.height</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>위 코드는 <code>Rectangle</code>이라는 구조체를 생성 및 사용하여 변수를 정의하고, <code>area()</code>에서는 밑변인 <code>width</code>와 높이인 <code>height</code>를 필드로 선택하여 구현하였다. 위와 같이 작성된 프로그램은 이후 다른 프로그래머가 소스 코드를 이해함에 있어 훨씬 명확한 의미를 전달해 줄 것이다.</p>
+
     </div>
 
     
