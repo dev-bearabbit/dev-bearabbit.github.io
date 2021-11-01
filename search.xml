@@ -281,7 +281,8 @@
     <title>Rust 메서드 문법</title>
     <url>/2021/10/24/Rust/rust-5/</url>
     <content><![CDATA[<p>러스트 메서드 문법에 대해 공부한 내용을 정리합니다.<br><a id="more"></a></p>
-<h2 id="메서드-문법"><a href="#메서드-문법" class="headerlink" title="메서드 문법"></a>메서드 문법</h2>]]></content>
+<h2 id="메서드-문법"><a href="#메서드-문법" class="headerlink" title="메서드 문법"></a>메서드 문법</h2><p>메서드는 간단하게 말하면 특정 데이터 타입에서 사용할 수 있는 함수라고 볼 수 있다. 메서드는 함수와 동일하게 <code>fn</code>으로 정의하고, 매개변수와 결과값도 지정한다. 또 함수와 마찬가지로 </p>
+]]></content>
       <categories>
         <category>STUDY</category>
         <category>Rust</category>
