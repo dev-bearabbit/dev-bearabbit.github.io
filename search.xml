@@ -94,6 +94,18 @@
 </tbody>
 </table>
 </div>
+<h3 id="기술통계와-추리통계"><a href="#기술통계와-추리통계" class="headerlink" title="기술통계와 추리통계"></a>기술통계와 추리통계</h3><ul>
+<li>기술통계: 표본 자체의 속성이나 특징을 파악하기 위한 통계기법. 모집단의 특성을 유추하는 데 사용.</li>
+<li>추리통계: 수집한 데이터를 바탕으로 추론 및 예측하는 통계기법. 모집단의 특성 파악, 가설 검증, 확률적 가능성 파악 등에 사용.</li>
+</ul>
+<hr>
+<p><strong>NOTE. 통계기초상식</strong><br>통계를 이해하기 위해서는 기본적으로 3가지 개념을 알고 있어야 한다.</p>
+<ul>
+<li>편차(difference): 데이터의 평균으로부터 떨어져 있는 정도</li>
+<li>분산(variance): 데이터 편차를 나타내는 분포. 편차 제곱 합의 평균. 보통 산점도(scatter)로 표현.</li>
+<li>표준편차(standard deviation): 분산의 단위 오류를 해결. 분산에 루트를 씌워 값 도출.</li>
+</ul>
+<hr>
 ]]></content>
       <categories>
         <category>etc.</category>
