@@ -54,7 +54,7 @@
 <meta property="og:description" content="해당 시리즈는 데이터분석 준전문가(ADsP) 자격증 공부 내용을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2021-11-01T06:23:56.000Z">
-<meta property="article:modified_time" content="2021-11-01T07:45:49.045Z">
+<meta property="article:modified_time" content="2021-11-04T02:09:02.213Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="자격증">
 <meta property="article:tag" content="python">
@@ -381,6 +381,149 @@
 <li>표준편차(standard deviation): 분산의 단위 오류를 해결. 분산에 루트를 씌워 값 도출.</li>
 </ul>
 <hr>
+<h2 id="확률과-확률분포"><a href="#확률과-확률분포" class="headerlink" title="확률과 확률분포"></a>확률과 확률분포</h2><h3 id="개념-정리"><a href="#개념-정리" class="headerlink" title="개념 정리"></a>개념 정리</h3><ul>
+<li>확률: 모든 사건들의 집합 표본에서 부분집합인 특정 사건 A가 발생할 수 있는 비율을 나타내는 값. 총 확률의 합은 항상 1이다.<script type="math/tex; mode=display">P(A)</script></li>
+<li>조건부 확률: 특정 사건 A가 발생했다는 전제 하에 특정 사건 B가 발생할 확률을 나타내는 값. 0과 1사이의 값을 갖는다.<script type="math/tex; mode=display">P(B|A) = \frac{P(B\cap A)}{P(A)}</script></li>
+<li>독립사건: 서로에게 영향을 주지 않는 두 개의 사건.<script type="math/tex; mode=display">P(B\cap A) = P(B)P(A)</script><script type="math/tex; mode=display">P(B|A) = P(B)</script></li>
+<li><p>배반사건: 두 사건의 교집합이 없는 경우. 즉, 동시에 일어날 수 없는 사건.</p>
+<script type="math/tex; mode=display">B\cap A = \phi</script></li>
+<li><p>확률변수: 무작위 실험 시 특정 확률로 발생하는 각각의 결과를 값으로 표현하는 변수.</p>
+</li>
+<li>확률분포: 확률변수의 모든 값과 그에 대응하고 있는 확률의 분포.</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>변수</th>
+<th>분포</th>
+<th>함수</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>이산확률변수</td>
+<td>이산확률분포</td>
+<td>확률질량함수</td>
+</tr>
+<tr>
+<td>연속확률변수</td>
+<td>연속확률분포</td>
+<td>확률밀도함수</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="이산확률"><a href="#이산확률" class="headerlink" title="이산확률"></a>이산확률</h3><ul>
+<li><p>이산확률변수: 셀 수 있는 변수. 서로 배반인 사건들의 합집합의 확률은 1이다.</p>
+<script type="math/tex; mode=display">0\le p(X) \le 1</script><script type="math/tex; mode=display">\sum p(X) = 1</script></li>
+<li><p>이산확률분포: 이산확률변수의 모든 값과 그에 대응하고 있는 확률의 분포.</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+<th>기호</th>
+<th>식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>베르누이 분포</td>
+<td>확률이 2가지이며 확률변수가 0,1 또는 1,-1인 분포</td>
+<td>$B(1,p)$</td>
+<td>$p(x)=p^x(1-p)^{(1-x)}$</td>
+</tr>
+<tr>
+<td>이항 분포</td>
+<td>$n$번의 베르누이 시행에서 $x$번 성공할 확률의 분포</td>
+<td>$B(n,p)$</td>
+<td>$p(x)=\dbinom{n}{x}p^x(1-p)^{(N-x)}$</td>
+</tr>
+<tr>
+<td>기하 분포</td>
+<td>성공확률이 $p$인 베르누이 실행에서 처음으로 성공이 나올 때까지 $x$번 실패할 확률의 분포</td>
+<td>$Geo(p)$</td>
+<td>$p(x)=p(1-p)^x$</td>
+</tr>
+<tr>
+<td>다항 분포</td>
+<td>$n$의 시행에서 각 시행이 3개 이상의 결과를 가질 수 있는 분포</td>
+<td>$M(n,p_1,p_2,…)$</td>
+<td>$p(x_1,x_2…)=\frac{n!}{x_1!+x_2!,…}p_1^{x_1}p_2^{x_2}…$</td>
+</tr>
+<tr>
+<td>포아송 분포</td>
+<td>단위 시간 또는 단위 공간 내에서 발생할 수 있는 사건의 발생 횟수에 대한 확률 분포</td>
+<td>$Pois(\lambda)$</td>
+<td>$p(x)=\frac{e^{-\lambda} \cdot \lambda^x}{x!}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>이산확률변수 기댓값</p>
+<script type="math/tex; mode=display">E(X)=\sum xf(x)</script></li>
+<li><p>이산확률변수 분산</p>
+<script type="math/tex; mode=display">Var(X)=E[(X-E(X))^2]=E(X^2)-E(X)^2</script></li>
+<li><p>이산확률변수 표준편차</p>
+<script type="math/tex; mode=display">sd(X)=\sqrt{Var(X)}</script></li>
+</ul>
+<h2 id="연속확률"><a href="#연속확률" class="headerlink" title="연속확률"></a>연속확률</h2><ul>
+<li><p>연속확률변수: 해당하는 실수 값이 어떤 특정 구간에 해당하여 그 수를 셀 수 없는 변수. 확률밀도함수의 아래 면적이 확률을 의미한다.</p>
+<script type="math/tex; mode=display">p(a \le x \le b) = \int_{a}^{b} xf(x)dx</script></li>
+<li><p>연속확률분포: 연속확률변수의 모든 값과 그에 대응하고 있는 확률의 분포.</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>균일 분포</td>
+<td>연속확률변수 X가 취할 수 있는 모든 값에 대하여 같은 확률을 가진 분포</td>
+</tr>
+<tr>
+<td>정규 분포</td>
+<td>평균이 $\mu$이고 표준편차가 $\alpha$인 분포 ($X \sim N(\mu, \alpha^2)$)</td>
+</tr>
+<tr>
+<td>t-분포</td>
+<td>자유도가 $n$인 분포. 자유도가 커질수록 표준정규분포애 가까워진다.</td>
+</tr>
+<tr>
+<td>카이제곱 분포</td>
+<td>$n$의 독립적인 표준졍규분포의 제곱의 합으로 얻을 수 있는 분포로 모집단의 구성을 파악하기 위한 동질성검정에 사용된다.</td>
+</tr>
+<tr>
+<td>F 분포</td>
+<td>정규분포를 이루는 모집단에서 독립적으로 추출한 표본들의 분산비율을 나타내며, 등분산검정, 분산분석에 활용된다.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>연속확률변수 기댓값</p>
+<script type="math/tex; mode=display">E(X)=\int xf(x)dx</script></li>
+<li><p>연속확률변수 분산</p>
+<script type="math/tex; mode=display">Var(X)=\int (x-E(X))^2xf(x)dx=\int x^2f(x)dx - \int xf(x)dx^2</script></li>
+<li><p>연속확률변수 표준편차</p>
+<script type="math/tex; mode=display">sd(X)=\sqrt{Var(X)}</script></li>
+</ul>
+<h3 id="통계-개념-정리"><a href="#통계-개념-정리" class="headerlink" title="통계 개념 정리"></a>통계 개념 정리</h3><ul>
+<li>기댓값($E(X)$): 특정 사건이 시행되었을 때 확률변수가 취할 수 있는 값의 평균. 확률변수와 그 사건이 발생할 확률의 곱들의 합으로 구할 수 있다.</li>
+<li>분산($Var(X)$): 데이터들이 중심에서 얼마나 떨어져이는지 알아보기 위한 측도. 값이 크면 확률 값이 기댓값에서 멀리 떨어져 있다고 해석한다.</li>
+<li>첨도($k$): 확률분포의 뾰족한 정도를 나타내는 측도로서 값이 3에 가까울수록 정규분포 모양을 갖는다.</li>
+<li>왜도($\gamma$): 호가률분포의 비대칭 정도를 나타내는 측도로서 값이 0인 경우 정규분포와 유사한 모습을 갖는다.</li>
+</ul>
 
     </div>
 
@@ -469,7 +612,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#통계-개요"><span class="nav-number">1.</span> <span class="nav-text">통계 개요</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#표본조사"><span class="nav-number">1.1.</span> <span class="nav-text">표본조사</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#표본추출방법"><span class="nav-number">1.2.</span> <span class="nav-text">표본추출방법</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#측정과-척도"><span class="nav-number">1.3.</span> <span class="nav-text">측정과 척도</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#기술통계와-추리통계"><span class="nav-number">1.4.</span> <span class="nav-text">기술통계와 추리통계</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#통계-개요"><span class="nav-number">1.</span> <span class="nav-text">통계 개요</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#표본조사"><span class="nav-number">1.1.</span> <span class="nav-text">표본조사</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#표본추출방법"><span class="nav-number">1.2.</span> <span class="nav-text">표본추출방법</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#측정과-척도"><span class="nav-number">1.3.</span> <span class="nav-text">측정과 척도</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#기술통계와-추리통계"><span class="nav-number">1.4.</span> <span class="nav-text">기술통계와 추리통계</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#확률과-확률분포"><span class="nav-number">2.</span> <span class="nav-text">확률과 확률분포</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#개념-정리"><span class="nav-number">2.1.</span> <span class="nav-text">개념 정리</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#이산확률"><span class="nav-number">2.2.</span> <span class="nav-text">이산확률</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#연속확률"><span class="nav-number">3.</span> <span class="nav-text">연속확률</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#통계-개념-정리"><span class="nav-number">3.1.</span> <span class="nav-text">통계 개념 정리</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
