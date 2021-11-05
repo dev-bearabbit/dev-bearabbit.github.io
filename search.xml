@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[ADsP] 회귀분석</title>
+    <url>/2021/11/04/Certificate/ADsP-3/</url>
+    <content><![CDATA[<p>해당 시리즈는 데이터분석 준전문가(ADsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
+<h2 id="회귀분석"><a href="#회귀분석" class="headerlink" title="회귀분석"></a>회귀분석</h2><ul>
+<li>하나 이상의 독립변수들이 종속변수에 얼마나 영향을 미치는지 추정하는 통계기법.</li>
+<li>기본적으로 연속형 변수일 때 사용하며, 범주형 변수일 경우 파생변수로 변환하여 사용.</li>
+<li>종속변수가 범주형일 경우 로지스틱 회귀분석방법을 사용.</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>식</th>
+<th>모형</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>단순회귀</td>
+<td>$Y=\beta_0+\beta_1X+\epsilon$</td>
+<td>1개의 독립변수와 반응변수가 직선(선형) 관계</td>
+</tr>
+<tr>
+<td>다중회귀</td>
+<td>$Y=\beta_0+\beta_1X_1+\cdots+\beta_kX_k+\epsilon$</td>
+<td>k개의 독립변수와 반응변수가 선형 관계</td>
+</tr>
+<tr>
+<td>다항회귀</td>
+<td>$Y=\beta_0+\beta_1X^1+\cdots+\beta_kX^k+\epsilon$</td>
+<td>k개의 독립변수와 반응변수가 2차함수 이상의 관계</td>
+</tr>
+<tr>
+<td>비선형회귀</td>
+<td>$Y=\alpha e^{\beta_1X}+\epsilon$ <Br> $Y=\alpha \ln \beta_1X+\epsilon$</td>
+<td>회귀식이 미지의 모수들과 선형관게가 아닌 경우 <Br> (지수함수, 로그함수, 삼각함수 등)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>회귀계수: 독립변수가 종속변수에 미치는 영향의 정도. 회귀함수의 기울기를 의미.</li>
+<li>회귀결정계수: 0-1 사이의 수로 인과관계의 정도를 나타내는 수.</li>
+</ul>
+]]></content>
+      <categories>
+        <category>etc.</category>
+        <category>certificate</category>
+      </categories>
+      <tags>
+        <tag>자격증</tag>
+        <tag>python</tag>
+        <tag>데이터자격시험</tag>
+        <tag>ADsP</tag>
+        <tag>데이터분석</tag>
+        <tag>R</tag>
+        <tag>통계</tag>
+        <tag>통계분석</tag>
+        <tag>회귀분석</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[ADsP] 기초 통계</title>
     <url>/2021/11/04/Certificate/ADsP-2/</url>
     <content><![CDATA[<p>해당 시리즈는 데이터분석 준전문가(ADsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
