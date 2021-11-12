@@ -137,27 +137,11 @@
 </ul>
 <h3 id="부분집합법"><a href="#부분집합법" class="headerlink" title="부분집합법"></a>부분집합법</h3><p>가능한 모든 모델을 고려하여 가장 좋은 모델을 선정하는 방법</p>
 <h3 id="변수선택법"><a href="#변수선택법" class="headerlink" title="변수선택법"></a>변수선택법</h3><p>일정한 단계를 거치면서 변수를 추가하거나 제거하는 방식으로 최적의 방정식을 도출하는 방법</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>종류</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>전진선택법</td>
-</tr>
-<tr>
-<td>후진제거법</td>
-</tr>
-<tr>
-<td>단계별 방법</td>
-</tr>
-</tbody>
-</table>
-</div>
+<ul>
+<li>전진선택법</li>
+<li>후진제거법</li>
+<li>단계별 방법</li>
+</ul>
 ]]></content>
       <categories>
         <category>etc.</category>
