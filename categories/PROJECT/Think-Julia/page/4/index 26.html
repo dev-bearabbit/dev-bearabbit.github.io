@@ -46,25 +46,17 @@
   };
 </script>
 
-  <meta name="description" content="해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="[Intro] 빅데이터 플랫폼">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2021/11/21/Bigdata/bigdata-0/index.html">
+  <meta name="description" content="I love to learn, and try to be better than yesterday.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DEV AnythinG">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/categories/PROJECT/Think-Julia/page/4/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
-<meta property="og:description" content="해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.">
+<meta property="og:description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:locale" content="ko_KR">
-<meta property="article:published_time" content="2021-11-21T05:50:07.000Z">
-<meta property="article:modified_time" content="2021-11-21T05:05:44.228Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="빅데이터">
-<meta property="article:tag" content="hadoop">
-<meta property="article:tag" content="ecosystem">
-<meta property="article:tag" content="hdfs">
-<meta property="article:tag" content="hive">
-<meta property="article:tag" content="impala">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2021/11/21/Bigdata/bigdata-0/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/categories/PROJECT/Think-Julia/page/4/">
 
 
 <script id="page-configurations">
@@ -72,11 +64,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: true
+    isPost: false
   };
 </script>
 
-  <title>[Intro] 빅데이터 플랫폼 | DEV AnythinG</title>
+  <title>카테고리: Think Julia | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -217,107 +209,133 @@
           <div class="content">
             
 
-  <div class="posts-expand">
-      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2021/11/21/Bigdata/bigdata-0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/madcat.gif">
-      <meta itemprop="name" content="Jess">
-      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="DEV AnythinG">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          [Intro] 빅데이터 플랫폼
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h1 class="collection-header">Think Julia
+          <small>카테고리</small>
         </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">작성일</span>
-
-              <time title="Post created: 2021-11-21 14:50:07" itemprop="dateCreated datePublished" datetime="2021-11-21T14:50:07+09:00">2021-11-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/STUDY/" itemprop="url" rel="index">
-                    <span itemprop="name">STUDY</span>
-                  </a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/STUDY/Bigdata/" itemprop="url" rel="index">
-                    <span itemprop="name">Bigdata</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+      </div>
 
       
-        <p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
-<h2 id="빅데이터"><a href="#빅데이터" class="headerlink" title="빅데이터"></a>빅데이터</h2><p>요즘 4차 산업혁명이라는 말과 함께 여기저기에서 <code>빅데이터</code>라는 단어를 들을 수 있다. 또한 빅데이터에 대한 정의는 아직까지 사람마다, 업계마다 조금씩 다른 것 같다. 그런 의미에서 빅데이터에 관심있는 사람들은 한 번쯤 “빅데이터란 어느정도 크기의 데이터를 말하는걸까?” 하는 고민이 있었을 것이다. 개인적으로 생각했던 빅데이터의 기준은 “하나의 컴퓨터(서버)로 핸들링할 수 없는 크기의 데이터”이다. 이렇게 생각한 근거는 개인적인 경험에 있다.</p>
-<p>옛날에 주식데이터 분석 프로젝트에서 예상치 못한 난관을 만났던 적이 있다. 주식데이터를 열심히 크롤링해서 많은 데이터 소스를 가지게 되었고 이를 바탕으로 데이터 분석을 진행하려고 하였으나, 하나의 컴퓨터에서 모아둔 모든 데이터를 매니징 할 수 없었다. 파일을 전부 열 수도 없었고, 그렇기에 분석도 진행할 수 없었다. 물론 아마도 실제 운영에 사용하는 서버였다면 가능했겠지만 우리는 현재 사용중인 노트북이 전부였기에 이런 부분은 예상하지 못한 문제였던 것이다. 그 때 “아, 이게 빅데이터구나” 라는 것을 느꼈다. 빅데이터는 절대적인 크기가 있는 것이 아니라 제공된 자원에서 일반적인 방식으로 관리할 수 없는 크기의 데이터라는 생각이 문뜩 스쳐갔다.</p>
-<h2 id="빅데이터-플랫폼"><a href="#빅데이터-플랫폼" class="headerlink" title="빅데이터 플랫폼"></a>빅데이터 플랫폼</h2><p>그렇다면 위 상황에서 우리의 선택은 무엇이겠는가? 바로 빅데이터를 처리할 수 있는 여러 도구들을 찾아봤으며, 그 중 현실적으로 가능한 방안이 바로 저렴한 라즈베리 파이로  하둡 클러스터를 구축하는 것이다. (클러스터 구축 관련된 글은 <a href="https://hyeonji-ryu.github.io/categories/PROJECT/Clustering/">이 링크</a>를 클릭하면 볼 수 있다) 이때 처음 서버 여러 대를 하나의 컴퓨터처럼 사용하는 빅데이터 플랫폼에 대해서 알게 되었다.</p>
-<h3 id="하둡-Hadoop"><a href="#하둡-Hadoop" class="headerlink" title="하둡(Hadoop)"></a>하둡(Hadoop)</h3><p>하둡은 대표적인 빅데이터 플랫폼 중 하나로, 여러 대의 서버를 클러스터로 구축하여 데이터들을 분산처리를 할 수 있는 플랫폼이다. 하둡의 구성은 크게 파일 저장소인 HDFS와 리소스 매니징을 담당하는 YARN으로 구성되어 있으며, 하둡에 저장된 모든 데이터에 관련된 처리는 맵리듀스(MR, MapReduce)라는 엔진으로 이루어진다. 즉, 하둡을 사용하기 위해서는 맵리듀스 코드를 직접 작성할 수 있어야 한다. 하둡은 자바(JAVA) 언어로 만들어졌기에 맵리듀스 자바로 작성한다. 그 후 “jar” 파일을 생성해서 MR엔진이 있는 YARN을 통해 실행시키면 된다.</p>
-<p>그렇다면 자바 개발자만 하둡을 사용할 수 있는가? 과거에는 그랬다. 하지만 지금은 많은 에코 시스템이 생겼기 때문에 sql문으로도 하둡 클러스터에 저장된 데이터를 가져올 수 있다. sql엔진으로는 하이브(hive)와 임팔라(impala), 스파크(spark) 등이 있다. 이처럼 하둡을 기반으로 한 여러 에코 시스템들이 존재한다. 현재 빅데이터 엔지니어로 일하면서 하둡 및 에코 시스템들을 실제 업무에서 사용하고 있으며, 또 공부한 내용들을 블로그에 하나씩 저장해두려고 한다. 다음 글부터는 하둡의 코어 서비스인 HDFS와 YARN를 시작으로 삼아 각각의 에코 시스템들을 기본 아키텍쳐에 대해서 정리할 계획이다.</p>
-
+    <div class="collection-year">
+      <h1 class="collection-header">2020</h1>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 빅데이터</a>
-              <a href="/tags/hadoop/" rel="tag"># hadoop</a>
-              <a href="/tags/ecosystem/" rel="tag"># ecosystem</a>
-              <a href="/tags/hdfs/" rel="tag"># hdfs</a>
-              <a href="/tags/hive/" rel="tag"># hive</a>
-              <a href="/tags/impala/" rel="tag"># impala</a>
-          </div>
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-03-03T22:30:30+09:00"
+              content="2020-03-03">
+          03-03
+        </time>
+      </div>
 
-        
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2020/03/03/ThinkJulia/Think-Julia-Chapter-6/" itemprop="url">
+            <span itemprop="name">5. 결과 있는 함수</span>
+          </a>
+      </h2>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2021/11/13/Rust/rust-7/" rel="prev" title="Rust Cargo 사용하기">
-      <i class="fa fa-chevron-left"></i> Rust Cargo 사용하기
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-03-03T13:24:12+09:00"
+              content="2020-03-03">
+          03-03
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2020/03/03/ThinkJulia/Think-Julia-Chapter-5/" itemprop="url">
+            <span itemprop="name">4. 조건문과 재귀</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-03-02T22:11:41+09:00"
+              content="2020-03-02">
+          03-02
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2020/03/02/ThinkJulia/Think-Julia-Chapter-4/" itemprop="url">
+            <span itemprop="name">3. 사례 연구 - 인터페이스 디자인</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-02-29T22:11:41+09:00"
+              content="2020-02-29">
+          02-29
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2020/02/29/ThinkJulia/Think-Julia-Chapter-3/" itemprop="url">
+            <span itemprop="name">2. 함수</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-02-28T14:58:12+09:00"
+              content="2020-02-28">
+          02-28
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2020/02/28/ThinkJulia/Think-Julia-Chapter-2/" itemprop="url">
+            <span itemprop="name">1. 변수 , 표현식과 명령문</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
+
+    </div>
+  </div>
   
   
   
 
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/categories/PROJECT/Think-Julia/page/3/"><i class="fa fa-angle-left" aria-label="이전 페이지"></i></a><a class="page-number" href="/categories/PROJECT/Think-Julia/">1</a><span class="space">&hellip;</span><a class="page-number" href="/categories/PROJECT/Think-Julia/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/categories/PROJECT/Think-Julia/page/5/">5</a><a class="extend next" rel="next" href="/categories/PROJECT/Think-Julia/page/5/"><i class="fa fa-angle-right" aria-label="다음 페이지"></i></a>
+  </nav>
+
 
 
           </div>
@@ -368,7 +386,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#빅데이터"><span class="nav-number">1.</span> <span class="nav-text">빅데이터</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#빅데이터-플랫폼"><span class="nav-number">2.</span> <span class="nav-text">빅데이터 플랫폼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#하둡-Hadoop"><span class="nav-number">2.1.</span> <span class="nav-text">하둡(Hadoop)</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
