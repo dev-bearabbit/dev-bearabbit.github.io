@@ -48,24 +48,33 @@
 
   <meta name="description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="3. Hadoop &amp; Spark 설치하기">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/11/10/Cluster/Clustering-3/index.html">
+<meta property="og:title" content="0. Raspberry Pi 4 unboxing">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/11/02/Cluster/Cluster-0/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="article:published_time" content="2020-11-10T08:23:03.000Z">
-<meta property="article:modified_time" content="2021-08-22T04:06:42.413Z">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/96.jpg">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/97.jpg">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/98.jpg">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/99.jpg">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/100.jpg">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/101.jpg">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/102.jpg">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/103.jpg">
+<meta property="article:published_time" content="2020-11-02T07:37:25.000Z">
+<meta property="article:modified_time" content="2021-11-26T12:44:42.704Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="raspberrypi">
-<meta property="article:tag" content="clustering">
 <meta property="article:tag" content="하둡">
 <meta property="article:tag" content="스파크">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="bigdata">
+<meta property="article:tag" content="cluster">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/96.jpg">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/11/10/Cluster/Clustering-3/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/11/02/Cluster/Cluster-0/">
 
 
 <script id="page-configurations">
@@ -77,7 +86,7 @@
   };
 </script>
 
-  <title>3. Hadoop & Spark 설치하기 | DEV AnythinG</title>
+  <title>0. Raspberry Pi 4 unboxing | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -223,7 +232,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/11/10/Cluster/Clustering-3/">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/11/02/Cluster/Cluster-0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/madcat.gif">
@@ -236,7 +245,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          3. Hadoop & Spark 설치하기
+          0. Raspberry Pi 4 unboxing
         </h1>
 
         <div class="post-meta">
@@ -246,7 +255,7 @@
               </span>
               <span class="post-meta-item-text">작성일</span>
 
-              <time title="Post created: 2020-11-10 17:23:03" itemprop="dateCreated datePublished" datetime="2020-11-10T17:23:03+09:00">2020-11-10</time>
+              <time title="Post created: 2020-11-02 16:37:25" itemprop="dateCreated datePublished" datetime="2020-11-02T16:37:25+09:00">2020-11-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,8 +269,8 @@
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PROJECT/Clustering/" itemprop="url" rel="index">
-                    <span itemprop="name">Clustering</span>
+                  <a href="/categories/PROJECT/Cluster/" itemprop="url" rel="index">
+                    <span itemprop="name">Cluster</span>
                   </a>
                 </span>
             </span>
@@ -279,30 +288,23 @@
       
         <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
-<p>이번 글에서는 마스터 라즈베리 파이에서 하둡과 스파크를 다운받은 후 클러스터링을 진행할 것이다. 먼저 마스터로 지정한 라즈베리 파이에 접속한 후 아래의 순서대로 진행하자.</p>
-<h2 id="Hadoop-3-2-1-다운로드"><a href="#Hadoop-3-2-1-다운로드" class="headerlink" title="Hadoop 3.2.1 다운로드"></a>Hadoop 3.2.1 다운로드</h2><p>먼저 아래의 코드를 입력하여 하둡을 다운받고 압축을 풀어준다. (마스터에서만 진행한다.)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 다운</span></span><br><span class="line">wget https://downloads.apache.org/hadoop/common/hadoop-3.2.1/hadoop-3.2.1.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 압축 해제</span></span><br><span class="line">sudo tar -xvf hadoop-3.2.1.tar.gz -C /opt/</span><br></pre></td></tr></table></figure>
-<p>그 다음 압축 해제된 파일을 <code>/opt/hadoop</code>으로 옮긴 후, 해당 디렉토리의 권한을 변경한다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> opt</span><br><span class="line">sudo mv hadoop-3.2.1 hadoop</span><br><span class="line">sudo chown pi:pi -R /opt/hadoop</span><br></pre></td></tr></table></figure>
-<p>각각의 실행파일들의 경로를 지정해야 한다. <code>~/.bashrc</code>에 들어가서 아래의 코드를 <strong>가장 윗부분</strong>에 붙여넣는다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=$(readlink –f /usr/bin/java | sed <span class="string">"s:bin/java::"</span>)</span><br><span class="line"><span class="built_in">export</span> HADOOP_HOME=/opt/hadoop</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HADOOP_INSTALL=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_MAPRED_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_COMMON_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_HDFS_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_INSTALL=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> YARN_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_COMMON_LIB_NATIVE_DIR=<span class="variable">$HADOOP_HOME</span>/lib/native</span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</span><br><span class="line"><span class="built_in">export</span> HADOOP_OPTS=<span class="string">"-Djava.library.path=<span class="variable">$HADOOP_HOME</span>/lib/native"</span></span><br></pre></td></tr></table></figure>
-<p>그 다음 해당 변경사항을 적용하자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
-<p>마지막으로 하둡 환경설정에도 자바 경로를 입력한다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /opt/hadoop/etc/hadoop/hadoop-env.sh</span><br></pre></td></tr></table></figure>
-<p>위 경로에 있는 스크립트 파일에서 아래의 코드를 추가해준다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=$(readlink –f /usr/bin/java | sed <span class="string">"s:bin/java::"</span>)</span><br></pre></td></tr></table></figure>
-<p>다 끝난 후 아래의 명령어로 하둡이 잘 설치되었는지 확인해보자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop version | grep Hadoop</span><br></pre></td></tr></table></figure>
-<h2 id="Spark-2-4-7-다운로드"><a href="#Spark-2-4-7-다운로드" class="headerlink" title="Spark 2.4.7 다운로드"></a>Spark 2.4.7 다운로드</h2><p>Sparkd도 Hadoop과 동일하게 진행하면 된다. 먼저 스파크를 다운받고 압축을 푼다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 다운</span></span><br><span class="line">wget https://downloads.apache.org/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 압축 해제</span></span><br><span class="line">sudo tar -xvf spark-2.4.7-bin-hadoop2.7.tgz -C /opt/</span><br></pre></td></tr></table></figure>
-<p>그 다음 압축 해제된 파일을 <code>/opt/spark</code>으로 옮긴 후, 해당 디렉토리의 권한을 변경한다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> opt</span><br><span class="line">sudo mv spark-2.4.7-bin-hadoop2.7 spark</span><br><span class="line">sudo chown pi:pi -R /opt/spark</span><br></pre></td></tr></table></figure>
-<p>하둡과 동일하게 각각의 실행파일들의 경로를 지정해야 한다. <code>~/.bashrc</code>에 들어가서 아래의 코드를 붙여넣는다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> SPARK_HOME=/opt/spark</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$SPARK_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> YARN_CONF_DIR=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</span><br></pre></td></tr></table></figure>
-<p>변경사항을 적용해준 뒤 스파크가 잘 작동하는지 확인해보자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line">spark-shell --version</span><br></pre></td></tr></table></figure>
-<p>이렇게 하둡과 스파크 설치는 끝났다. 다음 글에서는 분산처리 설정하는 방법에 대해서 살펴볼 것이다.</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>이제는 대부분의 데이터가 ‘빅데이터’라고 불리는 만큼 그 용량이 매우 크며, 이런 데이터들을 전부 저장하고 불러오기 위해서는 정말 좋은 컴퓨터 사양이 필요하다. 하지만 컴퓨터는 고성능일수록 가격이 가파르게 상승한다. 그렇다면 데이터를 다루기 위해 모든 사람들이 슈퍼컴퓨터를 살 필요가 있을까? 오히려 적당한 컴퓨터 여러 개를 붙여서 하나처럼 사용할 수 있다면 훨씬 저렴하게 빅데이터를 다룰 수 있을 것이다. 이처럼 여러 개의 컴퓨터를 연결하여 하나의 좋은 컴퓨터처럼 사용하는 시스템을 클러스터(Cluster)라고 한다. 결국 클러스터링(Clustering)은 클러스터를 만드는 과정인 것이다. 해당 프로젝트에서는 라즈베리 파이4 3개를 연결하여 클러스터링하는 과정들을 공부하고, 이를 기록하는 데 목적이 있다. 라즈베리 파이 3개를 연결한 모습은 다음과 같다.</p>
+<p><img src="/images/96.jpg" alt="rasp1"></p>
+<h2 id="라즈베리-파이4-키트"><a href="#라즈베리-파이4-키트" class="headerlink" title="라즈베리 파이4 키트"></a>라즈베리 파이4 키트</h2><p>라즈베리 파이는 영국의 라즈베리 파이 재단에서 생성하는 초소형, 최저가 컴퓨터이다. 라즈베리 파이를 구매하면 간단한 개발 보드의 형태로 배송되며, 키트로 구매할 시 설명서와 키보스, 마우스 등을 포함하여 제공한다. 이번엔 EU 2020년 기준 최신 모델인 라즈베리 파이4를 키트로 구매하였다. 라즈베리 파이4 언박싱을 시작해보자.</p>
+<p><img src="/images/97.jpg" alt="rasp2"></p>
+<p>위 사진은 키트 박스이다. 해당 박스 한쪽 면에는 키트 구성품들을 설명하고 있다.</p>
+<p><img src="/images/98.jpg" alt="rasp3"></p>
+<p>박스를 처음 개봉하면 구성품들이 깔끔하게 패키징되어 있다. 아래 사진의 중간에 있는 케이스 안에 라즈베리 파이4가 들어 있다.</p>
+<p><img src="/images/99.jpg" alt="rasp4"></p>
+<p>아래의 사진은 모든 구성품들을 꺼낸 것이다. 키트에는 라즈베리 파이 공식 설명서도 포함되어 있다. 포장지가 참 귀엽다.</p>
+<p><img src="/images/100.jpg" alt="rasp5"></p>
+<p>이번에 키트를 구매하면서 사실  키보드와 마우스는 별 기대 안했는데 생각보다 컬러도 예쁘고 퀄리티도 괜찮았다. 아래 사진은 구성품들을 모두 꺼낸 모습이다.</p>
+<p><img src="/images/101.jpg" alt="rasp6"></p>
+<p>SD 메모리 카드도 깔끔하게 포장되어 왔다. 안의 메모리 카드를 확인해보면 16GB 이다.</p>
+<p><img src="/images/102.jpg" alt="rasp7"></p>
+<h2 id="라즈베리-파이4-3개-연결"><a href="#라즈베리-파이4-3개-연결" class="headerlink" title="라즈베리 파이4 3개 연결"></a>라즈베리 파이4 3개 연결</h2><p>라즈베리 파이들을 연결하기 위해서는 몇 가지의 준비물이 필요하다. 바로 PoE 스위칭 허브와 PoE 랜선이다. PoE란 Power over Ethernet의 약자로 한 개의 랜선이 전원과 데이터 송신을 모두 공급하는 기술을 말한다. 기본적으로 컴퓨터는 전기를 공급받는 전원선과 네트워크를 연결하여 데이터를 받는 랜선 2가지가 필요하다. 따라서 여러 개의 컴퓨터를 동시에 연결해야 하는 경우, 각 컴퓨터 당 최소 2개의 선이 발생하고 전원 어댑터를 연결할 콘센트도 컴퓨터 갯수만큼 필요하다. 한마디로 정신없다. 이럴 때 PoE 기술이 포함된 랜선과 스위칭 허브를 사용하면 선 하나로 깔끔하게 정리할 수 있다. 또한 멀티 콘센트도 필요 없다. 이런 방법은 연결할 컴퓨터의 갯수가 많을수록 더욱 의미있다. 라즈베리 파이 3개를 스위칭 허브와 연결한 모습은 아래와 같다.</p>
+<p><img src="/images/103.jpg" alt="rasp8"></p>
+<p>지금까지 라즈베리 파이4를 살펴보았다. 다음 글에서는 라즈베리 파이의 초기 환경설정에 대해서 살펴볼 것이다.</p>
 
     </div>
 
@@ -314,11 +316,11 @@
           <div class="post-tags">
               <a href="/tags/Docker/" rel="tag"># Docker</a>
               <a href="/tags/raspberrypi/" rel="tag"># raspberrypi</a>
-              <a href="/tags/clustering/" rel="tag"># clustering</a>
               <a href="/tags/%ED%95%98%EB%91%A1/" rel="tag"># 하둡</a>
               <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/" rel="tag"># 스파크</a>
               <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 빅데이터</a>
               <a href="/tags/bigdata/" rel="tag"># bigdata</a>
+              <a href="/tags/cluster/" rel="tag"># cluster</a>
           </div>
 
         
@@ -327,12 +329,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/09/Cluster/Clustering-2/" rel="prev" title="2. Raspberry Pi SSH 셋팅하기">
-      <i class="fa fa-chevron-left"></i> 2. Raspberry Pi SSH 셋팅하기
+    <a href="/2020/10/22/ERROR/error-0/" rel="prev" title="SQLAlchemy ORM 사용 중 pylint 에러">
+      <i class="fa fa-chevron-left"></i> SQLAlchemy ORM 사용 중 pylint 에러
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/11/11/Cluster/Clustering-4/" rel="next" title="4. Hadoop 분산시스템 설정하기">
-      4. Hadoop 분산시스템 설정하기 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/11/02/Cluster/Cluster-1/" rel="next" title="1. Raspberry Pi 환경설정하기">
+      1. Raspberry Pi 환경설정하기 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -393,7 +395,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop-3-2-1-다운로드"><span class="nav-number">1.</span> <span class="nav-text">Hadoop 3.2.1 다운로드</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark-2-4-7-다운로드"><span class="nav-number">2.</span> <span class="nav-text">Spark 2.4.7 다운로드</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#라즈베리-파이4-키트"><span class="nav-number">2.</span> <span class="nav-text">라즈베리 파이4 키트</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#라즈베리-파이4-3개-연결"><span class="nav-number">3.</span> <span class="nav-text">라즈베리 파이4 3개 연결</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

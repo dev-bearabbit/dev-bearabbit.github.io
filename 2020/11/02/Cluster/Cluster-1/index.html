@@ -48,24 +48,28 @@
 
   <meta name="description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="5. Hadoop과 spark 테스트하기">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/11/12/Cluster/Clustering-5/index.html">
+<meta property="og:title" content="1. Raspberry Pi 환경설정하기">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/11/02/Cluster/Cluster-1/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="article:published_time" content="2020-11-12T10:18:14.000Z">
-<meta property="article:modified_time" content="2021-08-22T04:06:42.413Z">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/104.png">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/105.png">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/106.png">
+<meta property="article:published_time" content="2020-11-02T11:14:04.000Z">
+<meta property="article:modified_time" content="2021-11-26T12:44:48.300Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="raspberrypi">
-<meta property="article:tag" content="clustering">
 <meta property="article:tag" content="하둡">
 <meta property="article:tag" content="스파크">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="bigdata">
+<meta property="article:tag" content="cluster">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/104.png">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/11/12/Cluster/Clustering-5/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/11/02/Cluster/Cluster-1/">
 
 
 <script id="page-configurations">
@@ -77,7 +81,7 @@
   };
 </script>
 
-  <title>5. Hadoop과 spark 테스트하기 | DEV AnythinG</title>
+  <title>1. Raspberry Pi 환경설정하기 | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -223,7 +227,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/11/12/Cluster/Clustering-5/">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/11/02/Cluster/Cluster-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/madcat.gif">
@@ -236,7 +240,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          5. Hadoop과 spark 테스트하기
+          1. Raspberry Pi 환경설정하기
         </h1>
 
         <div class="post-meta">
@@ -246,7 +250,7 @@
               </span>
               <span class="post-meta-item-text">작성일</span>
 
-              <time title="Post created: 2020-11-12 19:18:14" itemprop="dateCreated datePublished" datetime="2020-11-12T19:18:14+09:00">2020-11-12</time>
+              <time title="Post created: 2020-11-02 20:14:04" itemprop="dateCreated datePublished" datetime="2020-11-02T20:14:04+09:00">2020-11-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,8 +264,8 @@
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PROJECT/Clustering/" itemprop="url" rel="index">
-                    <span itemprop="name">Clustering</span>
+                  <a href="/categories/PROJECT/Cluster/" itemprop="url" rel="index">
+                    <span itemprop="name">Cluster</span>
                   </a>
                 </span>
             </span>
@@ -279,21 +283,70 @@
       
         <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
-<h2 id="Hadoop-WordCount-Test"><a href="#Hadoop-WordCount-Test" class="headerlink" title="Hadoop WordCount Test"></a>Hadoop WordCount Test</h2><p>하둡에서 기본적으로 제공해주는 단어 개수 세는 맵리듀스 잡 예시가 있다. 이를 사용하여 우리가 구축한 하둡 분산시스템이 잘 작동하는지 확인해보자.<br>먼저 테스트에 사용할 데이터들을 가져오자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget -O alice.txt https://www.gutenberg.org/files/11/11-0.txt</span><br><span class="line">wget -O holmes.txt https://www.gutenberg.org/files/1661/1661-0.txt</span><br><span class="line">wget -O frankenstein.txt https://www.gutenberg.org/files/84/84-0.txt</span><br></pre></td></tr></table></figure>
-<p>그다음 HDFS 내에 위에서 받아온 데이터들을 저장할 디렉토리를 생성해주자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -mkdir -p /user/pi</span><br><span class="line">hdfs dfs -mkdir books</span><br></pre></td></tr></table></figure>
-<p>그리고 파일들을 해당 디렉토리에 넣으면 준비는 끝난다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -put alice.txt holmes.txt frankenstein.txt books</span><br></pre></td></tr></table></figure>
-<p>파일이 HDFS로 잘 들어갔는지 확인하고 싶다면 아래의 코드를 입력해보자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls books</span><br></pre></td></tr></table></figure>
-<p>이제 하둡에서 제공하는 <code>jar</code>파일을 사용하여 <code>books</code>에 있는 파일들의 단어 개수를 세는 잡을 실행한다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn jar /opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.2.1.jar wordcount <span class="string">"books/*"</span> output</span><br></pre></td></tr></table></figure>
-<p>잡이 완료되면 <code>output</code> 폴더에 들어간 결과를 확인한다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls output</span><br><span class="line">hdfs dfs -cat output/part-r-00000 | less</span><br></pre></td></tr></table></figure>
-<h2 id="Spark-Pi-π-value-Test"><a href="#Spark-Pi-π-value-Test" class="headerlink" title="Spark Pi(π) value Test"></a>Spark Pi(π) value Test</h2><p>스파크에서는 기본적으로 파이 값(3.14..)을 찾는 예제를 제공한다. 아래의 코드를 입력하여 예제를 실행해보자.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master yarn --deploy-mode cluster --class org.apache.spark.examples.SparkPi <span class="variable">$SPARK_HOME</span>/examples/jars/spark-examples_2.11-2.4.7.jar</span><br></pre></td></tr></table></figure>
-<p>위 코드는 하둡의 yarn에서 리소스를 받아 실행하는 것이기 때문에 결과값 또한 하둡 웹 UI에서 찾아볼 수 있다. 따라서 <code>pi-master.local:8088</code>로 접속하여 실행된 잡(어플리케이션)의 로그를 클릭하면 결과값을 확인할 수 있다.</p>
+<p>이번 글에서는 라즈베리 파이 초기 환경설정 하는 방법에 대해서 알아볼 것이다. 순서는 다음과 같다.</p>
+<ul>
+<li>라즈베리 파이 OS 설정하기</li>
+<li>초기 ssh 설정하기</li>
+<li>라즈베리 파이 노트북에서 접속하기</li>
+<li>OpenJDK 8 설치하기</li>
+<li>파이썬 설치하기</li>
+<li>도커 설치하고 mariaDB 구축하기</li>
+</ul>
+<h2 id="라즈베리-파이-OS-설정하기"><a href="#라즈베리-파이-OS-설정하기" class="headerlink" title="라즈베리 파이 OS 설정하기"></a>라즈베리 파이 OS 설정하기</h2><p>처음 개봉한 라즈베리 파이는 운영체제부터 설정해야 한다. 키트에 제공되는 SD 메모리 카드를 사용하여 운영체제 이미지를 다운받는다. <a href="https://www.raspberrypi.org/downloads/" target="_blank" rel="noopener">해당 링크</a>로 들어가서 각 컴퓨터 운영체제에 맞는 소프트웨어를 다운받은 후 실행시키면 아래와 같은 화면이 보일 것이다.</p>
+<p><img src="/images/104.png" alt="rasp2-1"></p>
+<p>헤당 화면이 보인다면 <code>Operating system</code>을 클릭하자. 그러면 다음과 같은 선택지가 반환된다.</p>
+<p><img src="/images/105.png" alt="rasp2-2"></p>
+<p>가장 위에 있는 OS는 일반 데스크탑처럼 사용할 수 있는 운영체제이다. 만약 라즈베리 파이를 모니터와 연결하여 테스크탑처럼 사용하려면 해당 사항을 선택해야 한다. 하지만 테스크탑이 아니라 터미널만 사용할 것이라면 아래에 있는 <code>other</code> 버전을 선택하자.</p>
+<p><img src="/images/106.png" alt="rasp2-3"></p>
+<p>그럼 위와 같은 화면이 반환될 것이다. 여기서 <code>lite</code>버전 이미지를 선택하면 된다. 그 다음 SD 메모리 카드를 해당 노트북에 삽입하여 이미지를 다운받으면 OS 설치가 완료된다.</p>
+<h2 id="초기-ssh-설정하기"><a href="#초기-ssh-설정하기" class="headerlink" title="초기 ssh 설정하기"></a>초기 ssh 설정하기</h2><p>라즈베리 파이를 안전하게 사용하기 위해서는 ssh가 설정되어 있어야 한다. ssh란 Secure Shell Protocol의 약자로 네트워크와 안전하게 통신하기 위해 사용하는 보안 프로토콜이다. 설정하는 방법은 아래와 같다.</p>
+<ul>
+<li><p>이미지를 다운받은 SD 메모리 카드를 한번 제거 했다가 다시 노트북에 삽입한다.</p>
+</li>
+<li><p>터미널에서 해당 노트북의 Volumes 디렉토리로 접속한다.</p>
+</li>
+<li><p>Volumes에 있는 boot(라즈베리 파이 SD card) 디렉토리로 접속한다.</p>
+</li>
+<li><p>아래의 코드를 입력하여 ssh 빈 파일을 생성한다.</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch ssh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>해당 경로에서 나온 후, SD 메모리 카드를 노트북으로부터 분리한다.</li>
+</ul>
+<p>이렇게 하면 라즈베리 파이의 기본 환경설정이 완료되었다. 나머지 부분들은 라즈베리 파이에 접속한 후 설정해야 한다.</p>
+<h2 id="라즈베리-파이-노트북에서-접속하기"><a href="#라즈베리-파이-노트북에서-접속하기" class="headerlink" title="라즈베리 파이 노트북에서 접속하기"></a>라즈베리 파이 노트북에서 접속하기</h2><p>이미지 및 ssh 파일이 포함된 SD 메모리 카드를 라즈베리 파이 개발 보드에 삽입한 후 해당 스위칭 허브에 연결한다.</p>
+<p>그 후, 라즈베리 파이에 접속할 컴퓨터도 동일한 스위칭 허브에 연결하고 노트북의 터미널을 연다.</p>
+<p>아래의 코드를 입력하여 노트북과 라즈베리 파이가 잘 연결되는지 확인해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping raspberrypi.local</span><br></pre></td></tr></table></figure>
+<p>정상적으로 응답이 돌아온다면 이제 연결하면 된다. 아래의 코드를 입력하여 라즈베리 파이 접속으로 시도한다.<br>라즈베리 파이는 초기 비밀번호가 <code>raspberry</code>로 모두 동일하다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberrypi.local</span><br></pre></td></tr></table></figure>
+<p>만약 위 코드에서 permission denied 된다면 아래의 코드로 ssh를 초기화한 후 다시 입력해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -R raspberrypi.local</span><br><span class="line">ssh pi@raspberrypi.local</span><br></pre></td></tr></table></figure>
+<p>초기 비밀번호를 입력하면 접속할 것인지를 묻는다. <code>yes</code>를 입력하면 라즈베리 파이에 접속할 수 있다.</p>
+<p>해당 OS 이미지는 리눅스이기 때문에 아래의 코드를 입력하여 기본적인 라이브러리들을 업데이트 한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+<p>해당 라즈베리 파이의 이름이나 비밀번호 변경은 아래의 코드를 입력하면 나오는 셋팅 창에서 할 수 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
+<h2 id="OpenJDK-8-설치하기"><a href="#OpenJDK-8-설치하기" class="headerlink" title="OpenJDK 8 설치하기"></a>OpenJDK 8 설치하기</h2><p>이후 설치할 하둡(Hadoop)이 Java를 기반으로 하고 있기에 Java를 미리 다운받자. 아래의 코드를 입력하면 Java 8의 오픈소스 버전이 다운된다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openjdk-8-jdk openjdk-8-jre</span><br></pre></td></tr></table></figure>
+<h2 id="파이썬-설치하기"><a href="#파이썬-설치하기" class="headerlink" title="파이썬 설치하기"></a>파이썬 설치하기</h2><p>라즈베리 파이에서 파이썬을 사용하려면 다운받아야 한다. 아래의 코드 한 줄로 간단하게 다운받을 수 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3</span><br></pre></td></tr></table></figure>
+<p>위 코드는 파이썬3 최신 버전을 설치한다.</p>
+<h2 id="도커-설치하고-mariaDB-구축하기"><a href="#도커-설치하고-mariaDB-구축하기" class="headerlink" title="도커 설치하고 mariaDB 구축하기"></a>도커 설치하고 mariaDB 구축하기</h2><p>아래의 코드를 입력하여 도커를 설치하자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -fsSL https://get.docker.com/ | sudo sh</span><br></pre></td></tr></table></figure>
+<p>도커 설치가 제대로 되었는지 확인하기 위해 간단히 버전을 확인해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker version</span><br></pre></td></tr></table></figure>
+<p>잘 설치되었다면 도커 유저를 변경해준 후, 재부팅한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker pi</span><br></pre></td></tr></table></figure>
+<p>재부팅한 후 버전을 확인해보면 도커가 잘 작동되는 것을 확인할 수 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
+<p>이제 설치한 도커에 간단하게 mariaDB 컨테이너를 생성해보자. 도커에 mariaDB 컨테이너를 생성하는 과정은 <a href="https://hyeonji-ryu.github.io/2020/10/09/DB/Database-0/">해당 글</a>에서 살펴볼 수 있다. 다만 한 가지 다른 점은 다른 이미지를 사용해야 한다는 것이다.</p>
+<p>라즈베리 파이는 ARM의 CPU이기 때문에 해당 CPU에 맞는 이미지로 다운받아야 한다. ARM CPU에서도 사용가능한 여러 이미지가 있으며, 그 중 하나를 사용하면 된다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull linuxserver/mariadb</span><br></pre></td></tr></table></figure>
+<p>다음 과정은 위에서 소개한 글을 참고하기 바란다.</p>
+<h2 id="라즈베리-파이-종료하기"><a href="#라즈베리-파이-종료하기" class="headerlink" title="라즈베리 파이 종료하기"></a>라즈베리 파이 종료하기</h2><p>라즈베리 파이를 종료하려면 아래의 코드를 입력하면 된다. 주의할 점은 라즈베리 파이는 컴퓨터이기 때문에 종료하면 도커 컨테이너도 자동으로 종료된다. 또한 컨테이너가 종료되면 내부에 있던 데이터들도 유실된다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo shutdown -h now</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -305,11 +358,11 @@
           <div class="post-tags">
               <a href="/tags/Docker/" rel="tag"># Docker</a>
               <a href="/tags/raspberrypi/" rel="tag"># raspberrypi</a>
-              <a href="/tags/clustering/" rel="tag"># clustering</a>
               <a href="/tags/%ED%95%98%EB%91%A1/" rel="tag"># 하둡</a>
               <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/" rel="tag"># 스파크</a>
               <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 빅데이터</a>
               <a href="/tags/bigdata/" rel="tag"># bigdata</a>
+              <a href="/tags/cluster/" rel="tag"># cluster</a>
           </div>
 
         
@@ -318,12 +371,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/11/Cluster/Clustering-4/" rel="prev" title="4. Hadoop 분산시스템 설정하기">
-      <i class="fa fa-chevron-left"></i> 4. Hadoop 분산시스템 설정하기
+    <a href="/2020/11/02/Cluster/Cluster-0/" rel="prev" title="0. Raspberry Pi 4 unboxing">
+      <i class="fa fa-chevron-left"></i> 0. Raspberry Pi 4 unboxing
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/02/08/Regex/Regex-0/" rel="next" title="python에서 정규표현식 사용하기">
-      python에서 정규표현식 사용하기 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/11/07/DB/Database-4/" rel="next" title="명령어 ALTER 사용법">
+      명령어 ALTER 사용법 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -384,7 +437,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop-WordCount-Test"><span class="nav-number">1.</span> <span class="nav-text">Hadoop WordCount Test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark-Pi-π-value-Test"><span class="nav-number">2.</span> <span class="nav-text">Spark Pi(π) value Test</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#라즈베리-파이-OS-설정하기"><span class="nav-number">1.</span> <span class="nav-text">라즈베리 파이 OS 설정하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#초기-ssh-설정하기"><span class="nav-number">2.</span> <span class="nav-text">초기 ssh 설정하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#라즈베리-파이-노트북에서-접속하기"><span class="nav-number">3.</span> <span class="nav-text">라즈베리 파이 노트북에서 접속하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenJDK-8-설치하기"><span class="nav-number">4.</span> <span class="nav-text">OpenJDK 8 설치하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#파이썬-설치하기"><span class="nav-number">5.</span> <span class="nav-text">파이썬 설치하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#도커-설치하고-mariaDB-구축하기"><span class="nav-number">6.</span> <span class="nav-text">도커 설치하고 mariaDB 구축하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#라즈베리-파이-종료하기"><span class="nav-number">7.</span> <span class="nav-text">라즈베리 파이 종료하기</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
