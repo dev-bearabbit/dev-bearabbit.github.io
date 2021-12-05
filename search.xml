@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>세부 레이아웃 완성</title>
+    <title>Resume 세부 레이아웃 완성</title>
     <url>/2021/12/05/Resume/resume-2/</url>
     <content><![CDATA[<p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><a id="more"></a></p>
 <p>섹션을 어떻게 나눌지는 <a href="https://hyeonji-ryu.github.io/2021/11/12/Resume/resume-1/#more">이전 글</a>에서 다뤘다. 이제 각 섹션 별로 어떻게 내용을 작성할지 고민해보자.</p>
@@ -154,7 +154,7 @@
       </tags>
   </entry>
   <entry>
-    <title>1차 레이아웃 완성</title>
+    <title>Resume 1차 레이아웃 완성</title>
     <url>/2021/11/12/Resume/resume-1/</url>
     <content><![CDATA[<p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><a id="more"></a></p>
 <h2 id="레이아웃-설계"><a href="#레이아웃-설계" class="headerlink" title="레이아웃 설계"></a>레이아웃 설계</h2><p>이전 글에서 결정한 요구조건은 다음과 같다.</p>
