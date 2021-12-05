@@ -16,9 +16,13 @@
 <h2 id="HDFS-Process"><a href="#HDFS-Process" class="headerlink" title="HDFS Process"></a>HDFS Process</h2><p>위 정보들을 바탕으로 HDFS가 작동하는 프로세스를 확인해보자. 아래의 그림에는 세컨더리 네임 노드(2NN)의 역할 또한 자세하게 설명되어 있다.</p>
 <p><img src="/images/126.png" alt="hdfsprc"></p>
 <p>네임 노드는 데이터 노드에게 지속적으로 HeartBeat를 받으며 상태를 모니터링한다. 네임 노드는 블록 변경 정보들을 edits이라는 파일에 저장해두었다가 일정 시간이 되면 세컨더리 네임 노드(2NN)에게 보낸다. 2NN은 edits의 내용들을 fsimage에 업데이트 하여 새로운 메타 정보(fsimage)를 생성하고 이를 다시 네임 노드에 보낸다.</p>
-<h2 id="HDFS-HA-Process"><a href="#HDFS-HA-Process" class="headerlink" title="HDFS HA Process"></a>HDFS HA Process</h2><p><img src="/images/127.png" alt="hdfsHA"></p>
-<h2 id="Fault-tolerance"><a href="#Fault-tolerance" class="headerlink" title="Fault tolerance"></a>Fault tolerance</h2><p>HDFS는 워커노드들의 내결함성 또한 보장하기 위해서 데이터 블록들을 복제하여 저장한다. 이는</p>
-<h3 id="Basic-Replication-factor"><a href="#Basic-Replication-factor" class="headerlink" title="Basic Replication factor"></a>Basic Replication factor</h3><h3 id="Erasure-Coding"><a href="#Erasure-Coding" class="headerlink" title="Erasure Coding"></a>Erasure Coding</h3><p><img src="/images/128.png" alt="EC"></p>
+<h2 id="HDFS-HA-Process"><a href="#HDFS-HA-Process" class="headerlink" title="HDFS HA Process"></a>HDFS HA Process</h2><p>HA는 High Availability의 약자로 고가용성이라고도 한다. 일반적인 HDFS 구조에서는 네임노드가 어떤 이유로 정상작동을 하지 않을 시 즉각적으로 운영 상에 문제가 생긴다. 이런 부분을 방지하고자 네임 노드를 Active-StandBy 구조로 설정하여 액티브 네임 노드에 문제가 있을 시 바로 스탠바이 네임 노드가 작동할 수 있도록 한다. HA 구조로 설정한 HDFS의 프로세스는 아래의 그림과 같다.</p>
+<p><img src="/images/127.png" alt="hdfsHA"></p>
+<p>일반 HDFS 구조에서는 2NN이 존재했지만, HA구조에서는 스탠바이 네임 노드가 이를 대신한다. 또한 스탠바이 네임 노드가 액티브 네임 노드와 동일하게 업데이트가 진행되어야 하기에 저널 노드를 추가한다. 저널 노드는 블록 변경 기록을 바로 받아서 스탠바이 노드에 넘기는 역할을 한다. 저널노드를 3개 배치한 이유는 저널 노드끼리도 변경 기록이 유효한 정보인지를 검증하기 때문이다. 또한 액티브 네임노드는 더이상 edits를 생성 및 저장하지 않기 때문에 네임 노드의 할 일도 줄어든다.</p>
+<h2 id="Fault-tolerance"><a href="#Fault-tolerance" class="headerlink" title="Fault tolerance"></a>Fault tolerance</h2><p>HA구조로 네임노드의 가용성을 높였으니 그 다음은 내결함성을 보장하는 것이다. 이를 위해서 HDFS의 데이터 노드들은 데이터 블록들을 복제하여 저장한다. 이는 특정 데이터 노드가 정상작동하지 않을 시 유실될 데이터 블록들을 방지하기 위한 방법 중 하나이다.</p>
+<h3 id="Basic-Replication-factor"><a href="#Basic-Replication-factor" class="headerlink" title="Basic Replication factor"></a>Basic Replication factor</h3><p>HDFS는 3벌 복제를 디폴트 값으로 가진다. 즉, 데이터 블록들은 총 3개로 복제되어 다른 데이터 노드에 저장된다. 이 방법은 데이터 노드 2대까지 정상작동하지 않아도 시스템 운영상에는 문제 없도록 하지만 데이터 노드 3대 이상 문제가 생긴다면 데이터 유실이 발생하게 된다. 기본이 3벌 복제라는 말은 한 가지를 암시하고 있다. 바로 HDFS의 데이터 노드는 최소 3대가 필요하다는 것이다. 복제된 데이터 블록들이 각각 다른 노드에 저장되어야 하기 때문에 복제 수에 따라 최소 데이터 노드 수도 달라진다.</p>
+<h3 id="Erasure-Coding"><a href="#Erasure-Coding" class="headerlink" title="Erasure Coding"></a>Erasure Coding</h3><p>이레이저 코딩은 3벌 복제의 단점을 해결하기 위해 나온 방법이며, 하둡에는 버전 3부터 도입되었다. 원리는 아래의 그림을 참고하자.</p>
+<p><img src="/images/128.png" alt="EC"></p>
 <h3 id="두-가지-방법-비교"><a href="#두-가지-방법-비교" class="headerlink" title="두 가지 방법 비교"></a>두 가지 방법 비교</h3><p><img src="/images/129.png" alt="compare"></p>
 ]]></content>
       <categories>
