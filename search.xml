@@ -4,10 +4,11 @@
     <title>[HDFS] HDFS 아키텍쳐</title>
     <url>/2021/12/01/Bigdata/bigdata-1/</url>
     <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
-<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p>하둡은 크게 클러스터의 데이터를 저장하는 HDFS와 리소스를 관리하는 YARN, 이 2가지의 형태로 구분된다.</p>
+<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p>하둡은 크게 클러스터의 데이터를 저장하는 HDFS와 리소스를 관리하는 YARN, 이 2가지의 형태로 이루어져 있다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
 <p>이번 글에서는 이 중 클러스터의 스토리지를 관리하고 데이터를 분산 저장하는 HDFS에 대해서 살펴볼 것이다.</p>
-<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><p>HDFS는 Hadoop Data File System</p>
+<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><p>HDFS는 Hadoop Data File System의 줄임말로 클러스터에 속한 노드들의 스토리지를 관리하며 데이터들을 분산 저장한다. 즉, 여러 개의 노드에 들어있는 스토리지들을 하나의 저장소처럼 사용할 수 있는 것이다. HDFS에서는 <code>블록</code>이라는 개념으로 데이터를 분산저장한다. 아래의 그림을 참고하자.</p>
+<p><img src="/images/124.png" alt="hdfsblock"></p>
 ]]></content>
       <categories>
         <category>STUDY</category>
