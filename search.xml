@@ -60,11 +60,11 @@
 <p><img src="/images/127.png" alt="hdfsHA"></p>
 <p>일반 HDFS 구조에서는 2NN이 존재했지만, HA구조에서는 스탠바이 네임 노드가 이를 대신한다. 또한 스탠바이 네임 노드가 액티브 네임 노드와 동일하게 업데이트가 진행되어야 하기에 저널 노드를 추가한다. 저널 노드는 블록 변경 기록을 바로 받아서 스탠바이 노드에 넘기는 역할을 한다. 저널노드를 3개 배치한 이유는 저널 노드끼리도 변경 기록이 유효한 정보인지를 검증하기 때문이다. 또한 액티브 네임노드는 더이상 edits를 생성 및 저장하지 않기 때문에 네임 노드의 할 일도 줄어든다.</p>
 <h2 id="Fault-tolerance"><a href="#Fault-tolerance" class="headerlink" title="Fault tolerance"></a>Fault tolerance</h2><p>HA구조로 네임노드의 가용성을 높였으니 그 다음은 내결함성을 보장하는 것이다. 이를 위해서 HDFS의 데이터 노드들은 데이터 블록들을 복제하여 저장한다. 이는 특정 데이터 노드가 정상작동하지 않을 시 유실될 데이터 블록들을 방지하기 위한 방법 중 하나이다.</p>
-<h3 id="Basic-Replication-factor"><a href="#Basic-Replication-factor" class="headerlink" title="Basic Replication factor"></a>Basic Replication factor</h3><p>HDFS는 3벌 복제를 디폴트 값으로 가진다. 즉, 데이터 블록들은 총 3개로 복제되어 다른 데이터 노드에 저장된다. 이 방법은 데이터 노드 2대까지 정상작동하지 않아도 시스템 운영상에는 문제 없도록 하지만 데이터 노드 3대 이상 문제가 생긴다면 데이터 유실이 발생하게 된다. 기본이 3벌 복제라는 말은 한 가지를 암시하고 있다. 바로 HDFS의 데이터 노드는 최소 3대가 필요하다는 것이다. 복제된 데이터 블록들이 각각 다른 노드에 저장되어야 하기 때문에 복제 수에 따라 최소 데이터 노드 수도 달라진다.</p>
+<h3 id="Basic-Replication-factor"><a href="#Basic-Replication-factor" class="headerlink" title="Basic Replication factor"></a>Basic Replication factor</h3><p>HDFS는 3벌 복제를 디폴트 값으로 가진다. 즉, 데이터 블록들은 총 3개로 복제되어 다른 데이터 노드에 저장된다. 이 방법은 데이터 노드 2대까지 정상작동하지 않아도 시스템 운영상에는 문제 없도록 하지만 데이터 노드 3대 이상 문제가 생긴다면 데이터 유실이 발생하게 된다. 또한 기본이 3벌 복제라는 말은 한 가지를 암시하고 있다. 바로 HDFS의 데이터 노드는 최소 3대가 필요하다는 것이다. 복제된 데이터 블록들이 각각 다른 노드에 저장되어야 하기 때문에 복제 수에 따라 최소 데이터 노드 수도 달라진다.</p>
 <h3 id="Erasure-Coding"><a href="#Erasure-Coding" class="headerlink" title="Erasure Coding"></a>Erasure Coding</h3><p>이레이저 코딩은 3벌 복제의 단점을 해결하기 위해 나온 방법이며, 하둡에는 버전 3부터 도입되었다. 원리는 아래의 그림을 참고하자.</p>
 <p><img src="/images/128.png" alt="EC"></p>
-<p>위 그림처럼 이레이저 코딩은 인코딩, 디코딩 방식으로 손실된 데이터를 복구하는 방식이다. 데이터 블럭을 n개의 청크(덩어리)로 나눈 후, 이를 인코딩하여 n의 절반인 parity block를 생성한다. 이후 원본 청크 n개 중에 parity block개수보다 이하로 손실이 된다면 이는 디코딩을 통해 원본을 복구할 수 있다.</p>
-<p>그렇다면 인코딩 방식은 무엇일까? 이레지저 코딩에서는 RAID에서 주로 사용하는 Reed-Solomon 알고리즘을 사용한다. Reed-Solomon 알고리즘 원리는 아래 그림과 같다.</p>
+<p>위 그림처럼 이레이저 코딩은 인코딩, 디코딩 방식으로 손실된 데이터를 복구한다. 데이터 블럭을 n개의 청크(덩어리)로 나눈 후, 이를 인코딩하여 n의 절반인 parity block를 생성한다. 이후 원본 청크 n개 중에 parity block 개수보다 이하로 손실이 된다면 이는 디코딩을 통해 원본을 복구할 수 있다.</p>
+<p>그렇다면 인코딩 방식은 무엇일까? 이레이저 코딩에서는 RAID에서 주로 사용하는 Reed-Solomon 알고리즘을 사용한다. Reed-Solomon 알고리즘 원리는 아래 그림과 같다.</p>
 <p><img src="/images/140.png" alt="Reed-Solomon"></p>
 <h3 id="두-가지-방법-비교"><a href="#두-가지-방법-비교" class="headerlink" title="두 가지 방법 비교"></a>두 가지 방법 비교</h3><p>두 가지 방법은 확실한 장단점이 있다. 3벌 복제는 간단하고, 어떤 연산도 요구되지 않지만 잘 사용하지 않는 데이터도 디스크 공간을 원데이터의 3배나 차지하게 된다. 그와 반면 이레이저 코딩은 인코딩, 디코딩 작업에서 연산이 필요하지만 차지하는 디스크 용량이 확실하게 줄어든다.</p>
 <p><img src="/images/129.png" alt="compare"></p>
