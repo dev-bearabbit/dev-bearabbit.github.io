@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[YARN] YARN 아키텍쳐</title>
+    <url>/2021/12/23/Bigdata/bigdata-2/</url>
+    <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
+<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Bigdata/bigdata-1/#more">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
+<p><img src="/images/123.png" alt="corehadoop"></p>
+<p>이번 글에서는 클러스터의 리소스를 관리 및 할당하는 YARN에 대해서 자세히 살펴볼 것이다.</p>
+<h2 id="YARN"><a href="#YARN" class="headerlink" title="YARN"></a>YARN</h2><p>YARN은 Yet Another Resource Negotiaor의 줄임말로, 클러스터 내 서버들의 CPU와 메모리, 네트워크 등 시스템 리소스를 하나로 묶어 관리한다. YARN에서 자원을 할당하는 단위를 <code>컨테이너</code>라고 하며, YARN은 자원 할당 요청이 들어오면 자원을 제공하고 사용이 끝나면 회수한다.</p>
+<p>그렇다면 컨테이너에서는 어떤 일이 진행될까? 아래의 사진을 살펴보자.</p>
+<p><img src="/images/141.png" alt="Yarn"></p>
+<p>위 사진은 Hadoop에서 기본적으로 사용하는 MapReduce 이며, YARN 컨테이너에서 작동할 수 있는 엔진 중 하나이다. 여기서 말하는 엔진이란 HDFS에 저장되어 있는 데이터들을 분산 컴퓨팅하여 결과를 도출하는 방법론이며, 결국 엔진 또한 하나의 실행 프로그램이다. 즉, YARN에서 프로그램을 돌릴 수 있는 환경을 제공받고 그 환경 내에서 MapReduce라는 프로그램을 작동하는 것이다. 현재는 MapReduce 엔진 외에도 Tez, Spark 도 사용되고 있다. 엔진에 대해서는 차후 다른 글에서 자세히 설명하고자 한다.</p>
+<h2 id="YARN-Roles"><a href="#YARN-Roles" class="headerlink" title="YARN Roles"></a>YARN Roles</h2><p>YARN은 크게 두 가지로 나뉜다. 바로 Resource Manager와 Node Manager이다. 이름에서 유추할 수 있듯이 Resource Manager(RM)는 클러스터의 모든 리소스들을 관리하며, Node Manager(NM)는 각 노드에서 RM에게 지속적으로 노드 자원의 상태를 전달하고 실제 리소스들을 사용하여 컨테이너를 제공한다.</p>
+<p><img src="/images/142.png" alt="Yarn"></p>
+<h2 id="YARN-Process"><a href="#YARN-Process" class="headerlink" title="YARN Process"></a>YARN Process</h2><p><img src="/images/143.png" alt="Yarn"></p>
+<h2 id="Fault-tolerance"><a href="#Fault-tolerance" class="headerlink" title="Fault tolerance"></a>Fault tolerance</h2><p><img src="/images/144.png" alt="Yarn"></p>
+<h2 id="YARN-HA-Process"><a href="#YARN-HA-Process" class="headerlink" title="YARN HA Process"></a>YARN HA Process</h2><p><img src="/images/145.png" alt="Yarn"></p>
+]]></content>
+      <categories>
+        <category>STUDY</category>
+        <category>Bigdata</category>
+      </categories>
+      <tags>
+        <tag>빅데이터</tag>
+        <tag>hadoop</tag>
+        <tag>ecosystem</tag>
+        <tag>datastorage</tag>
+        <tag>Yarn</tag>
+        <tag>resource</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Resume 세부 레이아웃 완성</title>
     <url>/2021/12/05/Resume/resume-2/</url>
     <content><![CDATA[<p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><a id="more"></a></p>
@@ -160,7 +190,7 @@
 <h2 id="레이아웃-설계"><a href="#레이아웃-설계" class="headerlink" title="레이아웃 설계"></a>레이아웃 설계</h2><p>이전 글에서 결정한 요구조건은 다음과 같다.</p>
 <ul>
 <li>PDF로 내보내기 위해서는 한 페이지에 모든 내용을 볼 수 있어야 한다.</li>
-<li>Header에 GIF를 배경으로 해서 생동감을 살리고 Navbar에 section을 연동시키자.</li>
+<li>Header에 애니메이션이 가미된 배경을 사용하여 생동감을 살리고 Navbar에 section을 연동시키자.</li>
 <li>반응형에서도 문제없도록 심플한 구조로 작성하자.</li>
 <li>구체적인 설명을 최대한 압축해서 작성하자.</li>
 <li>PDF에서도 해당 웹페이지로 들어올 수 있도록 링크를 걸어두자.</li>
@@ -195,7 +225,7 @@
 <td>기술스택</td>
 </tr>
 <tr>
-<td>Arching</td>
+<td>Archiving</td>
 <td>블로그 &amp; 깃허브</td>
 </tr>
 <tr>
