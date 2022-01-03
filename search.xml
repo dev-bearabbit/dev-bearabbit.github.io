@@ -1,13 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[Hive] Hive 아키텍쳐</title>
+    <url>/2021/12/30/Bigdata/bigdata-3/</url>
+    <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
+<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Bigdata/bigdata-0/#more">인트로 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
+<h2 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h2><p>하이브(hive)는 Hadoop용 RDB 서비스이다. HDFS를 사용함에 있어 데이터베이스와 테이블 개념으로 디렉토리를 구성하고 관리하며, 이를 바탕으로 SQL과 유사한 HiveQL이라는 문법을 지원한다. 즉, 자바로 맵리듀스 프로그램을 작성하는 것이 아니라 간단한 sql 문법만으로도 Hadoop에 데이터를 저장하거나 가져올 수 있다. 이렇게만 보면 사용방법은 mysql과 같은 RDB와 매우 유사해보인다.<br>하지만 스키마를 정의하고 데이터를 입력하는 구조는 기존 RDB와는 다르다. 스키마를 먼저 작성하고 그 다음 데이터를 입력해야 하는 기존 RDB와 달리 하이브는 데이터를 HDFS에 파일단위로 저장한 후에 스키마를 정의하여 데이터를 가져올 수 있다. 하이브는 RDB에 요구되는 스키마 정보들을 metastore에 저장하며, metastore는 다른 DBMS를 사용한다.</p>
+<h2 id="Hive-Roles"><a href="#Hive-Roles" class="headerlink" title="Hive Roles"></a>Hive Roles</h2><p>하이브를 구성하고 있는 컴포넌트는 아래 시진과 같다.</p>
+<p><img src="/images/146.png" alt="hive1"></p>
+<p>하이브는 크게 metastore 관리, SQL 쿼리 실행의 업무로 나눠지며 이에 따라 컴포넌트들도 분리된다. HiveServer2(HS2)의 경우 하이브 서비스에 대한 모든 클라이언트들의 요청을 받으며, metastore 서버는 HS2에서 요청하는 메타정보들을 API로 제공한다.</p>
+<h2 id="Hive-Architecture"><a href="#Hive-Architecture" class="headerlink" title="Hive Architecture"></a>Hive Architecture</h2><p>하이브 아키텍처는 매우 간단하다.</p>
+<p><img src="/images/147.png" alt="hive2"></p>
+<p>하이브에 접근할 수 있는 방법은 Beeline, Hue, JDBC or ODBC 크게 3가지이다. 여기서 Beeline이란 노드 터미널에서 HS2에 바로 접속할 수 있는 방법이며 eeline을 사용하면 터미널에서 직접 하이브로 쿼리를 날릴 수 있다. 다음 방법인 Hue는 apache의 오픈소스 서비스 중 하나로 하둡 에코 시스템들을 통합 사용할 수 있는 에디터이다. 마지막으로 JDBC or ODBC는 하둡을 DB로 사용하거나 데이터 IO가 있는 어플리케이션들과 연동할 때 보통 사용되는 방법이다.</p>
+<p><strong>NOTE</strong><br>JDBC or ODBC 란?<br>특정 언어로 구현된 어플리케이션들이 데이터베이스에 접속할 때 두 언어를 변역해주는 인터페이스의 역할을 한다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JDBC(Java DataBase Connectivity)</td>
+<td>JAVA기반 앱들에서만 사용가능한 API</td>
+</tr>
+<tr>
+<td>ODBC(Open DataBase Connectivity)</td>
+<td>특정 언어와 상관없이 독립적으로 사용가능한 API</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Hive-Process"><a href="#Hive-Process" class="headerlink" title="Hive Process"></a>Hive Process</h2><p>다음으로는 하이브에서 쿼리가 작동되는 과정에 대해서 살펴보고자 한다.</p>
+<p><img src="/images/148.png" alt="hive3"></p>
+<h2 id="Tez-engine"><a href="#Tez-engine" class="headerlink" title="Tez engine"></a>Tez engine</h2><p><img src="/images/149.png" alt="hive4"></p>
+]]></content>
+      <categories>
+        <category>STUDY</category>
+        <category>Bigdata</category>
+      </categories>
+      <tags>
+        <tag>빅데이터</tag>
+        <tag>hadoop</tag>
+        <tag>ecosystem</tag>
+        <tag>Hive</tag>
+        <tag>SQL</tag>
+        <tag>Tez</tag>
+        <tag>mapreduce</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[YARN] YARN 아키텍쳐</title>
     <url>/2021/12/23/Bigdata/bigdata-2/</url>
     <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Bigdata/bigdata-1/#more">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
 <p>이번 글에서는 클러스터의 리소스를 관리 및 할당하는 YARN에 대해서 자세히 살펴볼 것이다.</p>
-<h2 id="YARN"><a href="#YARN" class="headerlink" title="YARN"></a>YARN</h2><p>YARN은 Yet Another Resource Negotiaor의 줄임말로, 클러스터 내 서버들의 CPU와 메모리, 네트워크 등 시스템 리소스를 하나로 묶어 관리한다. YARN에서 자원을 할당하는 단위를 <code>컨테이너</code>라고 하며, YARN은 자원 할당 요청이 들어오면 자원을 제공하고 사용이 끝나면 회수한다.</p>
+<h2 id="YARN"><a href="#YARN" class="headerlink" title="YARN"></a>YARN</h2><p>YARN은 Yet Another Resource Negotiator의 줄임말로, 클러스터 내 서버들의 CPU와 메모리, 네트워크 등 시스템 리소스를 하나로 묶어 관리한다. YARN에서 자원을 할당하는 단위를 <code>컨테이너</code>라고 하며, YARN은 자원 할당 요청이 들어오면 자원을 제공하고 사용이 끝나면 회수한다.</p>
 <p>그렇다면 컨테이너에서는 어떤 일이 진행될까? 아래의 사진을 살펴보자.</p>
 <p><img src="/images/141.png" alt="Yarn"></p>
 <p>위 사진은 Hadoop에서 기본적으로 사용하는 MapReduce 이며, YARN 컨테이너에서 작동할 수 있는 엔진 중 하나이다. 여기서 말하는 엔진이란 HDFS에 저장되어 있는 데이터들을 분산 컴퓨팅하여 결과를 도출하는 방법론이며, 결국 엔진 또한 하나의 실행 프로그램이다. 즉, YARN에서 프로그램을 돌릴 수 있는 환경을 제공받고 그 환경 내에서 MapReduce라는 프로그램을 작동하는 것이다. 현재는 MapReduce 엔진 외에도 Tez, Spark 도 사용되고 있다. 엔진에 대해서는 차후 다른 글에서 자세히 설명하고자 한다.</p>
@@ -56,7 +107,7 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; num = (<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>)</span><br><span class="line">&gt; num[<span class="number">-1</span>]</span><br><span class="line"><span class="number">7</span></span><br><span class="line">&gt; num[<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">&gt;num[<span class="number">0</span>:<span class="number">4</span>:<span class="number">2</span>]</span><br><span class="line">(<span class="number">2</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="자체-시퀀스-생성"><a href="#자체-시퀀스-생성" class="headerlink" title="자체 시퀀스 생성"></a>자체 시퀀스 생성</h2><p>슬라이스를 가져오는 또 다른 방법이 있다. 아래의 예시를 보자.</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;interval = slice(<span class="number">0</span>,<span class="number">4</span>,<span class="number">2</span>)</span><br><span class="line">&gt;num[interval]</span><br><span class="line">(<span class="number">2</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-<p>결과는 위에서 직접 슬라이스를 한 결과와 같다. 위 방법은 클래스 내부에 내장되어 있는 <code>__getitem__</code>이라는 메서드를 이용한 것이다. 파이썬의 클래스는 기본적으로 내장한 몇 가지의 매서드가 존재한다. 이런 기능들을 <strong>매직 메서드</strong>라고 한다.</p>
+<p>결과는 위에서 직접 슬라이스를 한 결과와 같다. 위 방법은 클래스 내부에 내장되어 있는 <code>__getitem__</code>이라는 메서드를 이용한 것이다. 파이썬의 클래스는 기본적으로 내장된 몇 가지의 매서드가 존재한다. 이런 기능들을 <strong>매직 메서드</strong>라고 한다.</p>
 <p><strong>매직 메서드란</strong><br>매직 메서드란 사용자가 클래스안에 정의할 수 있는 스페셜 메서드로서 클래스를 int, str, list등의 파이썬의 빌트인 타입(built-in type)과 같은 작동을 하게 해준다.</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">items</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *values)</span>:</span></span><br><span class="line">        self._values = list(values)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self._values)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._values.__getitem__(item)</span><br></pre></td></tr></table></figure>
 <p>위의 예시에서는 클래스 <code>items</code>에 3개의 매직 메서드를 정의했다. 하나씩 간단하게 기능을 살펴보자.</p>
