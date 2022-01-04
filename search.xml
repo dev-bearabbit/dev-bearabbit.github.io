@@ -24,7 +24,7 @@
 <tbody>
 <tr>
 <td>JDBC(Java DataBase Connectivity)</td>
-<td>JAVA기반 앱들에서만 사용가능한 API</td>
+<td>JAVA 기반 앱들에서만 사용가능한 API</td>
 </tr>
 <tr>
 <td>ODBC(Open DataBase Connectivity)</td>
@@ -33,8 +33,9 @@
 </tbody>
 </table>
 </div>
-<h2 id="Hive-Process"><a href="#Hive-Process" class="headerlink" title="Hive Process"></a>Hive Process</h2><p>다음으로는 하이브에서 쿼리가 작동되는 과정에 대해서 살펴보고자 한다.</p>
+<h2 id="Hive-Process"><a href="#Hive-Process" class="headerlink" title="Hive Process"></a>Hive Process</h2><p>다음으로는 하이브가 작동되는 과정에 대해서 살펴보고자 한다.</p>
 <p><img src="/images/148.png" alt="hive3"></p>
+<p>간단하게 생각해보면 하이브는 SQL 쿼리를 받아서 </p>
 <h2 id="Tez-engine"><a href="#Tez-engine" class="headerlink" title="Tez engine"></a>Tez engine</h2><p><img src="/images/149.png" alt="hive4"></p>
 ]]></content>
       <categories>
