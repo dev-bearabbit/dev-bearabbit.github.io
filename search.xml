@@ -45,8 +45,9 @@
 <li>드라이버는 해당 결과를 인터페이스 단으로 다시 송부한다.</li>
 </ol>
 <p>이런 아키텍처를 이해하고 있다면 차후 플랫폼을 사용하다가 발생하는 문제들에 대한 원인을 파악하는 데 도움이 된다. 예를 들어 Hue에서 쿼리를 날렸는데 문제가 발생했다면 HS2와의 세션에서 문제가 생긴 것인지, HS2 내부에서 진행되는 컴파일에서 문제가 생긴 것인지, YARN에서 작업이 돌다가 문제가 생긴 것인지 등을 파악할 수 있다.</p>
-<h2 id="Tez-engine"><a href="#Tez-engine" class="headerlink" title="Tez engine"></a>Tez engine</h2><p>초기 Hive는 기본 실행 엔진으로 맵리듀스를 사용하였지만 Hive 3.0부터는 테즈(Tez)엔진을 기본 실행 엔진으로 사용한다. 실행 엔진에 대해서는 따로 글을 작성할 예정이라서 간단하게만 짚고 넘어가보자. 먼저 맵리듀스 엔진과 테즈 엔진의 차이는 다음 사진에 잘 나타나 있다.</p>
+<h2 id="Tez-engine"><a href="#Tez-engine" class="headerlink" title="Tez engine"></a>Tez engine</h2><p>초기 Hive는 기본 실행 엔진으로 맵리듀스를 사용하였지만 Hive 3.0부터는 테즈(Tez)를 기본 실행 엔진으로 사용한다. 실행 엔진에 대해서는 따로 글을 작성할 예정이라서 간단하게만 짚고 넘어가보자. 먼저 맵리듀스 엔진과 테즈 엔진의 차이는 다음 사진에 잘 나타나 있다.</p>
 <p><img src="/images/149.png" alt="hive4"></p>
+<p>엔진에 대한 자세한 비교는 다음 글에서 이야기 해보자.</p>
 ]]></content>
       <categories>
         <category>STUDY</category>
