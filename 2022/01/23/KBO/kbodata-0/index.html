@@ -53,8 +53,9 @@
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/150.png">
 <meta property="article:published_time" content="2022-01-23T07:15:58.000Z">
-<meta property="article:modified_time" content="2022-02-01T13:06:52.742Z">
+<meta property="article:modified_time" content="2022-02-02T10:06:39.363Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="data">
 <meta property="article:tag" content="KBO">
@@ -64,6 +65,7 @@
 <meta property="article:tag" content="패키지">
 <meta property="article:tag" content="한국프로야구">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/150.png">
 
 <link rel="canonical" href="https://hyeonji-ryu.github.io/2022/01/23/KBO/kbodata-0/">
 
@@ -284,13 +286,22 @@
       
         <p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
 <a id="more"></a>
-<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>해당 프로젝트의 목표는 크게 2가지아다.</p>
+<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>이 프로젝트의 목표는 크게 2가지아다.</p>
 <ul>
 <li>KBO 데이터를 가져오는 패키지 생성</li>
 <li>파이썬 패키지를 생성하는 방법 공부</li>
 </ul>
-<h2 id="KBO-data"><a href="#KBO-data" class="headerlink" title="KBO-data"></a>KBO-data</h2><p>KBO-data는 KBO 공식 사이트에서 경기 정보들을 스크래핑하는 패키지이다. 해당 패키지는 <a href="https://www.koreabaseball.com/Default.aspx" target="_blank" rel="noopener">KBO 공식 사이트</a>에 있는 데이터들을 가져와 사용하기 편한 구조로 변형해준다.</p>
-<h2 id="패키지-작업"><a href="#패키지-작업" class="headerlink" title="패키지 작업"></a>패키지 작업</h2>
+<p>해당 시리즈는 작업 중에 필요한 정보들을 정리할 예정이다.</p>
+<h2 id="KBO-data"><a href="#KBO-data" class="headerlink" title="KBO-data"></a>KBO-data</h2><p>KBO-data는 KBO 공식 사이트에서 경기 정보들을 스크래핑하는 패키지이다. 해당 패키지는 <a href="https://www.koreabaseball.com/Default.aspx" target="_blank" rel="noopener">KBO 공식 사이트</a>에 있는 데이터들을 가져와 사용하기 편한 구조로 변형해준다. 패키지에 대한 자세한 설명은 <a href="https://github.com/Hyeonji-Ryu/kbo-data" target="_blank" rel="noopener">깃허브</a>의 README에서 확인할 수 있다.</p>
+<p>먼저 패키지를 사용하기 위해서는 2가지의</p>
+<p>패키지는 크게 3가지로 나누어진다.</p>
+<h3 id="1-경기-스케쥴-가져오기"><a href="#1-경기-스케쥴-가져오기" class="headerlink" title="1. 경기 스케쥴 가져오기"></a>1. 경기 스케쥴 가져오기</h3><p>먼저 요청한 날짜에 맞춰서 스케쥴을 가져와야 한다. 스케쥴은 특정 날짜, 특정 월, 특정 년도를 선택하여 받을 수 있디. 스케쥴을 가져오는 함수는 아래와 같다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 2021년 4월 20일의 KBO 경기 스케쥴을 가져온다.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>day = kbodata.get_daily_schedule(<span class="number">2021</span>,<span class="number">4</span>,<span class="number">20</span>,<span class="string">'chromedriver_path'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2021년 4월 KBO 경기 스케쥴을 가져온다.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>month = kbodata.get_monthly_schedule(<span class="number">2021</span>,<span class="number">4</span>,<span class="string">'chromedriver_path'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2021년 KBO 경기 스케쥴을 가져온다.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>year = kbodata.get_yearly_schedule(<span class="number">2021</span>,<span class="string">'chromedriver_path'</span>)</span><br></pre></td></tr></table></figure>
+<p>이렇게 스케쥴을 받으면 Pandas의 DataFrame 형태로 결과가 반환된다. 결과는 아래와 같다.</p>
+<p><img src="/images/150.png" alt="KBO"></p>
+<h3 id="2-경기-자료-가져오기"><a href="#2-경기-자료-가져오기" class="headerlink" title="2. 경기 자료 가져오기"></a>2. 경기 자료 가져오기</h3><p>스케쥴 데이터에 있는 날짜와 게임 ID를 바탕으로 경기 결과들을 가져온다. 경기 결과를 받기 위해서는 </p>
+<h3 id="3-데이터-타입-변형하기"><a href="#3-데이터-타입-변형하기" class="headerlink" title="3. 데이터 타입 변형하기"></a>3. 데이터 타입 변형하기</h3><h2 id="패키지-작업"><a href="#패키지-작업" class="headerlink" title="패키지 작업"></a>패키지 작업</h2><p>이 프로젝트에서는 KBO 데이터를 스크래핑하는 패키지를 만들어 파이썬 패키지 사이트인 <a href="https://pypi.org" target="_blank" rel="noopener">PyPI</a>에 업로드할 예정이다. PyPI에 업로드된 패키지는 python 패키지 관리 시스템인 Pip로 바로 다운받을 수 있다. 좀 더 편리한 패키지 작업을 위해서 Poetry를 사용하여 진행할 예정이다. Poetry에 대한 자세한 내용은 <a href="https://python-poetry.org" target="_blank" rel="noopener">이 사이트</a>에서 확인할 수 있다. 가능하다면 Poetry에 대한 글도 작성할 예정이다.</p>
+
     </div>
 
     
@@ -377,7 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#시작하며"><span class="nav-number">1.</span> <span class="nav-text">시작하며</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KBO-data"><span class="nav-number">2.</span> <span class="nav-text">KBO-data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#패키지-작업"><span class="nav-number">3.</span> <span class="nav-text">패키지 작업</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#시작하며"><span class="nav-number">1.</span> <span class="nav-text">시작하며</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KBO-data"><span class="nav-number">2.</span> <span class="nav-text">KBO-data</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-경기-스케쥴-가져오기"><span class="nav-number">2.1.</span> <span class="nav-text">1. 경기 스케쥴 가져오기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-경기-자료-가져오기"><span class="nav-number">2.2.</span> <span class="nav-text">2. 경기 자료 가져오기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-데이터-타입-변형하기"><span class="nav-number">2.3.</span> <span class="nav-text">3. 데이터 타입 변형하기</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#패키지-작업"><span class="nav-number">3.</span> <span class="nav-text">패키지 작업</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
