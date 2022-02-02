@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>1. Poetry 사용법</title>
+    <url>/2022/02/02/KBO/kbodata-1/</url>
+    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
+<a id="more"></a>
+<h2 id="Poetry-란"><a href="#Poetry-란" class="headerlink" title="Poetry 란"></a>Poetry 란</h2>]]></content>
+      <categories>
+        <category>PROJECT</category>
+        <category>KBO-data</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>package</tag>
+        <tag>pypi</tag>
+        <tag>패키지</tag>
+        <tag>poetry</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>0. KBO-data 패키지</title>
     <url>/2022/01/23/KBO/kbodata-0/</url>
     <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
@@ -2432,7 +2450,7 @@
 ]]></content>
       <categories>
         <category>PROJECT</category>
-        <category>KBO Analytical Dashboard</category>
+        <category>KBO Dashboard</category>
       </categories>
       <tags>
         <tag>mariadb</tag>
@@ -3563,7 +3581,7 @@
 ]]></content>
       <categories>
         <category>PROJECT</category>
-        <category>KBO Analytical Dashboard</category>
+        <category>KBO Dashboard</category>
       </categories>
       <tags>
         <tag>AWS</tag>
