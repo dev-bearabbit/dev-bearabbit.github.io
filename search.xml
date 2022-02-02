@@ -12,8 +12,11 @@
 <p><em>“데이터는 돈이다”</em></p>
 </blockquote>
 <p>데이터 분야에서 일하면서 마음속에 새겨진 말이다. 실제로 현 사회는 데이터를 기반으로 많은 의사결정이 진행되며, 또 이를 위해 더 좋은 더 많은 데이터를 얻기 위해 노력한다. 즉, 사용자에게 보여지는 데이터라고 해서 마음대로 가져가 사용하라는 의미는 아닌 경우가 태반이다.</p>
-<p>그래서 위와 같은 문제들로 대부분의 웹 사이트는 <code>robots.txt</code>를 작성하여 스크래핑이 가능한 페이지를 제한하고 있다.</p>
-<h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><h3 id="작성-규칙"><a href="#작성-규칙" class="headerlink" title="작성 규칙"></a>작성 규칙</h3><h3 id="확인-방법"><a href="#확인-방법" class="headerlink" title="확인 방법"></a>확인 방법</h3><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3>]]></content>
+<p>그래서 위와 같은 문제들로 스크래핑 방식에도 어떤 규약이 필요했다. 그렇게 등장한 것이 <code>robots.txt</code>이다.</p>
+<h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><p><code>robots.txt</code>는 웹 사이트를 스크래핑할 수 있게 허용하거나 제한하는 내용을 담은 웹 페이지이다. 물론 <code>robots.txt</code>에 작성되었다고 해서 기술적으로 수집이 불가한 것은 아니지만 대부분의 웹 스크래핑 로봇들은 해당 페이지를 먼저 확인하고 허용된 페이지만을 수집한다. 따라서 스크래핑 작업을 진행할 때는 <code>robots.txt</code>를 먼저 확인하는 것이 좋다.</p>
+<h3 id="확인-방법"><a href="#확인-방법" class="headerlink" title="확인 방법"></a>확인 방법</h3><p>기본적으로 <code>robots.txt</code>는 웹페이지 메인 URL 뒤에 </p>
+<p>KBO 공식 사이트에도 <code>robots.txt</code> 페이지가 존재한다. </p>
+<h3 id="작성-규칙"><a href="#작성-규칙" class="headerlink" title="작성 규칙"></a>작성 규칙</h3>]]></content>
       <categories>
         <category>PROJECT</category>
         <category>KBO-data</category>
