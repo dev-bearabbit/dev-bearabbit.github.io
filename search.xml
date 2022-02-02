@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2. robots.txt 확인</title>
+    <url>/2022/02/02/KBO/kbodata-2/</url>
+    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
+<a id="more"></a>
+<h2 id="Web-Scraping"><a href="#Web-Scraping" class="headerlink" title="Web Scraping"></a>Web Scraping</h2><p>스크래핑(scraping)은 말 그대로 다양한 매체에 있는 데이터를 모으는 행위를 의미한다. 흔히 신문이나 잡지 등을 “스크랩한다”라는 표현을 사용하는데 웹 스크래핑 또한 동일한 범주이다. 즉, 웹 스크래핑이란 웹 기반 프로그램에서 데이터들을 가져와 모으는 방법들을 통칭한다.</p>
+<p>스크래핑을 통해 다른 웹사이트에 제공된 데이터를 가져가서 사용하는 것은 어떨까? 대부분은 스크래핑 자체가 사용자들의 브라우저에 보여지는 데이터를 가져와 사용하는 것이기에 당연히 불법이 아니라고 생각한다. 우리가 신문을 스크랩해두는 행위가 불법은 아니니 말이다. 맞다. 웹 스크랩핑 행위 자체는 문제가 되지 않는다. 하지만 그 행위가 초래하는 결과가 상업적인 피해를 주는 경우에는 당연히 법적인 문제가 될 수 있다.</p>
+<h3 id="트래픽-문제"><a href="#트래픽-문제" class="headerlink" title="트래픽 문제"></a>트래픽 문제</h3><p>스크래핑은 사실 서버 입장에서는 사용자와 동일하다. 그렇기에 스크래핑이 제한없이 이루어지면 서버 트래픽이 증가되고 </p>
+<h3 id="데이터-무단사용"><a href="#데이터-무단사용" class="headerlink" title="데이터 무단사용"></a>데이터 무단사용</h3><blockquote>
+<p><em>“데이터는 돈이다”</em></p>
+</blockquote>
+<p>데이터 분야에서 일하면서 마음속에 새겨진 말이다. 실제로 현 사회는 데이터를 기반으로 많은 의사결정이 진행되며, 또 이를 위해 더 좋은 더 많은 데이터를 얻기 위해 노력한다. 즉, 사용자에게 보여지는 데이터라고 해서 마음대로 가져가 사용하라는 의미는 아닌 경우가 태반이다.</p>
+<h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><h3 id="작성-규칙"><a href="#작성-규칙" class="headerlink" title="작성 규칙"></a>작성 규칙</h3><h3 id="확인-방법"><a href="#확인-방법" class="headerlink" title="확인 방법"></a>확인 방법</h3><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3>]]></content>
+      <categories>
+        <category>PROJECT</category>
+        <category>KBO-data</category>
+      </categories>
+      <tags>
+        <tag>data</tag>
+        <tag>스크래핑</tag>
+        <tag>scraping</tag>
+        <tag>robots</tag>
+        <tag>웹스크래핑</tag>
+        <tag>webscraping</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>1. Poetry 사용법</title>
     <url>/2022/02/02/KBO/kbodata-1/</url>
     <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
 <a id="more"></a>
-<h2 id="Poetry-란"><a href="#Poetry-란" class="headerlink" title="Poetry 란"></a>Poetry 란</h2>]]></content>
+<h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 </p>
+]]></content>
       <categories>
         <category>PROJECT</category>
         <category>KBO-data</category>
