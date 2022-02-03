@@ -14,9 +14,31 @@
 <p>데이터 분야에서 일하면서 마음속에 새겨진 말이다. 실제로 현 사회는 데이터를 기반으로 많은 의사결정이 진행되며, 또 이를 위해 더 좋은 더 많은 데이터를 얻기 위해 노력한다. 즉, 사용자에게 보여지는 데이터라고 해서 마음대로 가져가 사용하라는 의미는 아닌 경우가 태반이다.</p>
 <p>그래서 위와 같은 문제들로 스크래핑 방식에도 어떤 규약이 필요했다. 그렇게 등장한 것이 <code>robots.txt</code>이다.</p>
 <h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><p><code>robots.txt</code>는 웹 사이트를 스크래핑할 수 있게 허용하거나 제한하는 내용을 담은 웹 페이지이다. 물론 <code>robots.txt</code>에 작성되었다고 해서 기술적으로 수집이 불가한 것은 아니지만 대부분의 웹 스크래핑 로봇들은 해당 페이지를 먼저 확인하고 허용된 페이지만을 수집한다. 따라서 스크래핑 작업을 진행할 때는 <code>robots.txt</code>를 먼저 확인하는 것이 좋다.</p>
-<h3 id="확인-방법"><a href="#확인-방법" class="headerlink" title="확인 방법"></a>확인 방법</h3><p>기본적으로 <code>robots.txt</code>는 웹페이지 메인 URL 뒤에 </p>
-<p>KBO 공식 사이트에도 <code>robots.txt</code> 페이지가 존재한다. </p>
-<h3 id="작성-규칙"><a href="#작성-규칙" class="headerlink" title="작성 규칙"></a>작성 규칙</h3>]]></content>
+<h3 id="확인-방법"><a href="#확인-방법" class="headerlink" title="확인 방법"></a>확인 방법</h3><p>기본적으로 <code>robots.txt</code>는 웹페이지 도메인 뒤에 바로 붙어서 올라와야 한다. 따라서 개발자 입장에서는 웹 구축 당시에 최상위 디렉토리에 <code>robots.txt</code>를 작성하여 같이 올리면 된다.</p>
+<p>예시: <a href="https://www.koreabaseball.com/robots.txt" target="_blank" rel="noopener">https://www.koreabaseball.com/robots.txt</a></p>
+<p>위 예시는 KBO 공식 사이트의 <code>robots.txt</code> 페이지이다. 해당 URL로 접속하면 아래와 같이 <code>robots.txt</code>의 내용을 확인할 수 있다.</p>
+<p><img src="/images/151.png" alt="robots"></p>
+<h3 id="작성-규칙"><a href="#작성-규칙" class="headerlink" title="작성 규칙"></a>작성 규칙</h3><p><code>robots.txt</code>의 존재 여부에 따른 내용은 다음과 같다.</p>
+<ul>
+<li>페이지가 없는 경우: 스크래핑 허용</li>
+<li>페이지가 공백인 경우: 스크래핑 허용</li>
+</ul>
+<p>페이지가 존재하지 않거나 페이지에 아무것도 쓰여있지 않다면 해당 도메인의 모든 하위 페이지들을 스크래핑해도 된다는 의미로 해석된다.</p>
+<p>패이지가 있는 경우, 페이지 구조는 다음과 같다.</p>
+<ul>
+<li>User-agent: 검색 봇 이름 작성</li>
+<li>Disallow: 허용되지 않은 페이지</li>
+<li>Allow: 허용된 페이지</li>
+</ul>
+<p><code>robots.txt</code>에 대해 자세히 알고 싶다면 <a href="https://developers.google.com/search/docs/advanced/robots/create-robots-txt?hl=ko" target="_blank" rel="noopener">해당 페이지</a>를 참고하면 된다.</p>
+<p>마지막으로 위에서 봤던 KBO 사이트의 <code>robots.txt</code>를 한번 분석해보자.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow: /Common/</span><br><span class="line">Disallow: /Help/</span><br><span class="line">Disallow: /Member/</span><br><span class="line">Disallow: /ws/</span><br></pre></td></tr></table></figure>
+<p>먼저 모든 스크래핑 봇들을 대상으로 <code>/Common/</code>,<code>/Help/</code>,<code>/Member/</code>,<code>/ws/</code> 디렉토리의 스크래핑을 제한하고 있다. 즉, KBO 사이트를 스크래핑할 때 사용하는 URL에 위 디렉토리가 들어가 있으면 안된다는 의미이다.</p>
+<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>이 글의 결론은 간단하다.</p>
+<blockquote>
+<p>스크래핑을 하기전에 무조건 해당 사이트에 <code>robots.txt</code>를 확인하고 그 내용을 준수하자</p>
+</blockquote>
+]]></content>
       <categories>
         <category>PROJECT</category>
         <category>KBO-data</category>
