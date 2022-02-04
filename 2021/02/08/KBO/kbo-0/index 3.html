@@ -46,21 +46,30 @@
   };
 </script>
 
-  <meta name="description" content="안녕하세요 안녕하세요, 축적된 데이터로 세상을 바꿀 수 있다고 믿는 1년차 빅데이터 엔지니어 류현지 입니다.엔지니어로서 제가 추구하는 가치는 다음과 같습니다.  사회 이슈에 대해 관심이 많으며 이를 해결할 수 있는 방법들을 고민합니다. 문제 해결을 위해서는 협업이 중요하다고 생각합니다. 반복적인 업무를 자동화하고 비효율적인 프로세스를 개선하는 것을 추구합니">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/about/index.html">
+  <meta name="description" content="해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 스크래핑한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0. Intro">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2021/02/08/KBO/kbo-0/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
-<meta property="og:description" content="안녕하세요 안녕하세요, 축적된 데이터로 세상을 바꿀 수 있다고 믿는 1년차 빅데이터 엔지니어 류현지 입니다.엔지니어로서 제가 추구하는 가치는 다음과 같습니다.  사회 이슈에 대해 관심이 많으며 이를 해결할 수 있는 방법들을 고민합니다. 문제 해결을 위해서는 협업이 중요하다고 생각합니다. 반복적인 업무를 자동화하고 비효율적인 프로세스를 개선하는 것을 추구합니">
+<meta property="og:description" content="해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 스크래핑한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/main.png">
-<meta property="article:published_time" content="2020-03-02T05:27:14.000Z">
-<meta property="article:modified_time" content="2022-02-04T09:55:10.477Z">
+<meta property="article:published_time" content="2021-02-08T09:32:58.000Z">
+<meta property="article:modified_time" content="2022-02-02T10:47:19.496Z">
 <meta property="article:author" content="Jess">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="mariaDB">
+<meta property="article:tag" content="DB">
+<meta property="article:tag" content="flask">
+<meta property="article:tag" content="KBO">
+<meta property="article:tag" content="analysis">
+<meta property="article:tag" content="dashborad">
+<meta property="article:tag" content="EC2">
+<meta property="article:tag" content="plotly">
+<meta property="article:tag" content="dash">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/main.png">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/about/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2021/02/08/KBO/kbo-0/">
 
 
 <script id="page-configurations">
@@ -68,12 +77,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>about | DEV AnythinG
-  </title>
+  <title>0. Intro | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -215,59 +223,132 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
           <div class="content">
             
 
   <div class="posts-expand">
-    
-    
-    
-    <div class="post-block" lang="ko">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2021/02/08/KBO/kbo-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/madcat.gif">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          0. Intro
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">about
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
 
-<div class="post-meta">
+              <time title="Post created: 2021-02-08 18:32:58" itemprop="dateCreated datePublished" datetime="2021-02-08T18:32:58+09:00">2021-02-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PROJECT/" itemprop="url" rel="index">
+                    <span itemprop="name">PROJECT</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PROJECT/KBO-dashboard/" itemprop="url" rel="index">
+                    <span itemprop="name">KBO dashboard</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 스크래핑한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.</p>
+<a id="more"></a>
+<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>해당 시리즈는 데이터 스크래핑을 진행한 이후부터 설명한다. 아마도 데이터 스크래핑은 현재 패키지 작업을 하고 있기에 따로 시리즈를 만들어 글을 쓰게 될 것 같다. 또한 해당 시리즈는 웹 개발을 배워보고 싶다는 마음으로 간단하게 만든 사이드 프로젝트이다. 따라서 상업적인 목적으로 웹을 만드는 사람들은 재미로만 봐주면 될 것 같다.</p>
+<p>KBO 대시보드를 만들 때 사용하는 것들을 다음과 같다.</p>
+<ul>
+<li>Flask</li>
+<li>mariaDB</li>
+<li>Dash</li>
+<li>Bootstrap5</li>
+<li>Plotly</li>
+<li>AWS ec2 or lightsail</li>
+</ul>
+<p>위에 언급된 것들에 대해서 간단히 살펴보자.</p>
+<h2 id="Flask"><a href="#Flask" class="headerlink" title="Flask"></a>Flask</h2><p>플라스크는 파이썬으로 구동되는 웹 프레임워크 중 하나이다. 상용으로 사용하는 웹 프레임워크인 장고(django)보다 가볍고 간단한 서버들도 생성할 수 있어서 데모 버전을 만드는 프로젝트에 적합하다.</p>
+<h2 id="mariaDB"><a href="#mariaDB" class="headerlink" title="mariaDB"></a>mariaDB</h2><p>mySQL과 동일하게 작동하는 데이터베이스 관리 시스템이다. 무료로 사용 가능하다.</p>
+<h2 id="Dash"><a href="#Dash" class="headerlink" title="Dash"></a>Dash</h2><p>대시보드를 만드는 데 특화된 파이썬 웹 프레임워크이다. html이나 css 코딩 없이 오로지 파이썬만으로 웹을 생성할 수 있다. 또한 plotly 시각화 툴을 바로 적용할 수 있다.</p>
+<h2 id="Bootstrap5"><a href="#Bootstrap5" class="headerlink" title="Bootstrap5"></a>Bootstrap5</h2><p>부스스트랩은 웹페이지를 쉽게 생성할 수 있도록 도와주는 HTML, CSS, JS 프레임워크이다. 직접 디자인들을 설정하지 않고도 괜찮은 테마를 사용할 수 있으며, 스크린 사이즈(PC, 태블릿, 스마트폰)에 맞춰서 반응하는 UI를 제공한다. 플라스크와 마찬가지로 사이드 프로젝트로 간단한 웹을 만들 때 사용하기 좋다. 현재 플라스크에서 사용할 수 있는 버전은 Bootstrap3이지만 새로 나온 Bootstrap5를 써보고 싶어서 라이브러리 코드를 수정해서 사용하였다. Bootstrap5를 적용하는 방법은 이후에 설명할 것이다.</p>
+<h2 id="Plotly"><a href="#Plotly" class="headerlink" title="Plotly"></a>Plotly</h2><p>Plotly는 파이썬으로 시각화를 할 수 있는 무료 오픈소스 그래프 라이브러리이다. 실시간으로 그래프를 확대 및 축소할 수도 있으며, 제공하는 그래프 종류도 다양하다. 그래프 종류가 궁금하다면 <a href="https://plotly.com/python/basic-charts/" target="_blank" rel="noopener">해당 링크</a>를 통해서 확인할 수 있다.</p>
+<h2 id="AWS-ec2-or-lightsail"><a href="#AWS-ec2-or-lightsail" class="headerlink" title="AWS ec2 or lightsail"></a>AWS ec2 or lightsail</h2><p>아마존 클라우드 서비스에서 제공하는 가상서버(ec2)를 웹 서버로 사용한다. 현재 프리 티어라서 무료로 사용하지만, 무료 기간이 끝나면 lightsail로 웹 서버를 구축할 예정이다. lightsail은 AWS에서 제공하는 가상서버이지만, ec2와 달리 월마다 가격이 정해져 있어서 비교적 저렴하다.</p>
+<h2 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h2><p>위에서 사용하는 프레임워크나 라이브러리가 무엇인지 설명했기에 앞으로는 설명 없이 바로 진행할 것이다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AWS/" rel="tag"># AWS</a>
+              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/mariaDB/" rel="tag"># mariaDB</a>
+              <a href="/tags/DB/" rel="tag"># DB</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+              <a href="/tags/KBO/" rel="tag"># KBO</a>
+              <a href="/tags/analysis/" rel="tag"># analysis</a>
+              <a href="/tags/dashborad/" rel="tag"># dashborad</a>
+              <a href="/tags/EC2/" rel="tag"># EC2</a>
+              <a href="/tags/plotly/" rel="tag"># plotly</a>
+              <a href="/tags/dash/" rel="tag"># dash</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/08/Regex/Regex-0/" rel="prev" title="python에서 정규표현식 사용하기">
+      <i class="fa fa-chevron-left"></i> python에서 정규표현식 사용하기
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/12/Linux/Linux-0/" rel="next" title="Basic Linux">
+      Basic Linux <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <h2 id="안녕하세요"><a href="#안녕하세요" class="headerlink" title="안녕하세요"></a>안녕하세요</h2><p><img src="/images/main.png" alt="cat"></p>
-<p>안녕하세요, 축적된 데이터로 세상을 바꿀 수 있다고 믿는 1년차 빅데이터 엔지니어 류현지 입니다.<br>엔지니어로서 제가 추구하는 가치는 다음과 같습니다.</p>
-<ul>
-<li>사회 이슈에 대해 관심이 많으며 이를 해결할 수 있는 방법들을 고민합니다.</li>
-<li>문제 해결을 위해서는 협업이 중요하다고 생각합니다.</li>
-<li>반복적인 업무를 자동화하고 비효율적인 프로세스를 개선하는 것을 추구합니다.</li>
-<li>배우는 것을 좋아하며, 어제보다 더 발전된 사람이 되려고 노력합니다.</li>
-</ul>
-<h2 id="INFO"><a href="#INFO" class="headerlink" title="INFO"></a>INFO</h2><p>간략한 제 정보입니다. 블로그 글 관련 문의나 질문이 있으시다면 아래의 메일로 연락 부탁드립니다.</p>
- <div class="col-xs-12 col-sm-12 col-md-8 col-print-12">
-     <P class="lead"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16"><path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2H2Z"/></svg>&nbsp;&nbsp;류현지 | 빅데이터 엔지니어<Br><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>&nbsp;&nbsp;서울, 대한민국
-     <Br><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg>&nbsp;&nbsp;guswl3940@gmail.com</P>
- </div>
-
-<h2 id="RESUME"><a href="#RESUME" class="headerlink" title="RESUME"></a>RESUME</h2><p>Resume는 시간될 때마다 업로드하고 있습니다. <a href="https://hyeonji-ryu.github.io/Resume/">Resume 보러가기</a></p>
-
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
   </div>
 
 
@@ -319,7 +400,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#안녕하세요"><span class="nav-number">1.</span> <span class="nav-text">안녕하세요</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#INFO"><span class="nav-number">2.</span> <span class="nav-text">INFO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RESUME"><span class="nav-number">3.</span> <span class="nav-text">RESUME</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#시작하며"><span class="nav-number">1.</span> <span class="nav-text">시작하며</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flask"><span class="nav-number">2.</span> <span class="nav-text">Flask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mariaDB"><span class="nav-number">3.</span> <span class="nav-text">mariaDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dash"><span class="nav-number">4.</span> <span class="nav-text">Dash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap5"><span class="nav-number">5.</span> <span class="nav-text">Bootstrap5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plotly"><span class="nav-number">6.</span> <span class="nav-text">Plotly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWS-ec2-or-lightsail"><span class="nav-number">7.</span> <span class="nav-text">AWS ec2 or lightsail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#마치며"><span class="nav-number">8.</span> <span class="nav-text">마치며</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -46,21 +46,26 @@
   };
 </script>
 
-  <meta name="description" content="안녕하세요 안녕하세요, 축적된 데이터로 세상을 바꿀 수 있다고 믿는 1년차 빅데이터 엔지니어 류현지 입니다.엔지니어로서 제가 추구하는 가치는 다음과 같습니다.  사회 이슈에 대해 관심이 많으며 이를 해결할 수 있는 방법들을 고민합니다. 문제 해결을 위해서는 협업이 중요하다고 생각합니다. 반복적인 업무를 자동화하고 비효율적인 프로세스를 개선하는 것을 추구합니">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/about/index.html">
+  <meta name="description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5. Hadoop과 spark 테스트하기">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/11/12/Cluster/Cluster-5/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
-<meta property="og:description" content="안녕하세요 안녕하세요, 축적된 데이터로 세상을 바꿀 수 있다고 믿는 1년차 빅데이터 엔지니어 류현지 입니다.엔지니어로서 제가 추구하는 가치는 다음과 같습니다.  사회 이슈에 대해 관심이 많으며 이를 해결할 수 있는 방법들을 고민합니다. 문제 해결을 위해서는 협업이 중요하다고 생각합니다. 반복적인 업무를 자동화하고 비효율적인 프로세스를 개선하는 것을 추구합니">
+<meta property="og:description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/main.png">
-<meta property="article:published_time" content="2020-03-02T05:27:14.000Z">
-<meta property="article:modified_time" content="2022-02-04T09:55:10.477Z">
+<meta property="article:published_time" content="2020-11-12T10:18:14.000Z">
+<meta property="article:modified_time" content="2021-11-26T12:45:13.905Z">
 <meta property="article:author" content="Jess">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="raspberrypi">
+<meta property="article:tag" content="하둡">
+<meta property="article:tag" content="스파크">
+<meta property="article:tag" content="빅데이터">
+<meta property="article:tag" content="bigdata">
+<meta property="article:tag" content="cluster">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/main.png">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/about/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/11/12/Cluster/Cluster-5/">
 
 
 <script id="page-configurations">
@@ -68,12 +73,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>about | DEV AnythinG
-  </title>
+  <title>5. Hadoop과 spark 테스트하기 | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -215,59 +219,125 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
           <div class="content">
             
 
   <div class="posts-expand">
-    
-    
-    
-    <div class="post-block" lang="ko">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/11/12/Cluster/Cluster-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/madcat.gif">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5. Hadoop과 spark 테스트하기
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">about
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
 
-<div class="post-meta">
+              <time title="Post created: 2020-11-12 19:18:14" itemprop="dateCreated datePublished" datetime="2020-11-12T19:18:14+09:00">2020-11-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PROJECT/" itemprop="url" rel="index">
+                    <span itemprop="name">PROJECT</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PROJECT/Cluster/" itemprop="url" rel="index">
+                    <span itemprop="name">Cluster</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="Hadoop-WordCount-Test"><a href="#Hadoop-WordCount-Test" class="headerlink" title="Hadoop WordCount Test"></a>Hadoop WordCount Test</h2><p>하둡에서 기본적으로 제공해주는 단어 개수 세는 맵리듀스 잡 예시가 있다. 이를 사용하여 우리가 구축한 하둡 분산시스템이 잘 작동하는지 확인해보자.<br>먼저 테스트에 사용할 데이터들을 가져오자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget -O alice.txt https://www.gutenberg.org/files/11/11-0.txt</span><br><span class="line">wget -O holmes.txt https://www.gutenberg.org/files/1661/1661-0.txt</span><br><span class="line">wget -O frankenstein.txt https://www.gutenberg.org/files/84/84-0.txt</span><br></pre></td></tr></table></figure>
+<p>그다음 HDFS 내에 위에서 받아온 데이터들을 저장할 디렉토리를 생성해주자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -mkdir -p /user/pi</span><br><span class="line">hdfs dfs -mkdir books</span><br></pre></td></tr></table></figure>
+<p>그리고 파일들을 해당 디렉토리에 넣으면 준비는 끝난다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -put alice.txt holmes.txt frankenstein.txt books</span><br></pre></td></tr></table></figure>
+<p>파일이 HDFS로 잘 들어갔는지 확인하고 싶다면 아래의 코드를 입력해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls books</span><br></pre></td></tr></table></figure>
+<p>이제 하둡에서 제공하는 <code>jar</code>파일을 사용하여 <code>books</code>에 있는 파일들의 단어 개수를 세는 잡을 실행한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn jar /opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.2.1.jar wordcount <span class="string">"books/*"</span> output</span><br></pre></td></tr></table></figure>
+<p>잡이 완료되면 <code>output</code> 폴더에 들어간 결과를 확인한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls output</span><br><span class="line">hdfs dfs -cat output/part-r-00000 | less</span><br></pre></td></tr></table></figure>
+<h2 id="Spark-Pi-π-value-Test"><a href="#Spark-Pi-π-value-Test" class="headerlink" title="Spark Pi(π) value Test"></a>Spark Pi(π) value Test</h2><p>스파크에서는 기본적으로 파이 값(3.14..)을 찾는 예제를 제공한다. 아래의 코드를 입력하여 예제를 실행해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master yarn --deploy-mode cluster --class org.apache.spark.examples.SparkPi <span class="variable">$SPARK_HOME</span>/examples/jars/spark-examples_2.11-2.4.7.jar</span><br></pre></td></tr></table></figure>
+<p>위 코드는 하둡의 yarn에서 리소스를 받아 실행하는 것이기 때문에 결과값 또한 하둡 웹 UI에서 찾아볼 수 있다. 따라서 <code>pi-master.local:8088</code>로 접속하여 실행된 잡(어플리케이션)의 로그를 클릭하면 결과값을 확인할 수 있다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/raspberrypi/" rel="tag"># raspberrypi</a>
+              <a href="/tags/%ED%95%98%EB%91%A1/" rel="tag"># 하둡</a>
+              <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/" rel="tag"># 스파크</a>
+              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 빅데이터</a>
+              <a href="/tags/bigdata/" rel="tag"># bigdata</a>
+              <a href="/tags/cluster/" rel="tag"># cluster</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/11/Cluster/Cluster-4/" rel="prev" title="4. Hadoop 분산시스템 설정하기">
+      <i class="fa fa-chevron-left"></i> 4. Hadoop 분산시스템 설정하기
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/08/Regex/Regex-0/" rel="next" title="python에서 정규표현식 사용하기">
+      python에서 정규표현식 사용하기 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <h2 id="안녕하세요"><a href="#안녕하세요" class="headerlink" title="안녕하세요"></a>안녕하세요</h2><p><img src="/images/main.png" alt="cat"></p>
-<p>안녕하세요, 축적된 데이터로 세상을 바꿀 수 있다고 믿는 1년차 빅데이터 엔지니어 류현지 입니다.<br>엔지니어로서 제가 추구하는 가치는 다음과 같습니다.</p>
-<ul>
-<li>사회 이슈에 대해 관심이 많으며 이를 해결할 수 있는 방법들을 고민합니다.</li>
-<li>문제 해결을 위해서는 협업이 중요하다고 생각합니다.</li>
-<li>반복적인 업무를 자동화하고 비효율적인 프로세스를 개선하는 것을 추구합니다.</li>
-<li>배우는 것을 좋아하며, 어제보다 더 발전된 사람이 되려고 노력합니다.</li>
-</ul>
-<h2 id="INFO"><a href="#INFO" class="headerlink" title="INFO"></a>INFO</h2><p>간략한 제 정보입니다. 블로그 글 관련 문의나 질문이 있으시다면 아래의 메일로 연락 부탁드립니다.</p>
- <div class="col-xs-12 col-sm-12 col-md-8 col-print-12">
-     <P class="lead"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16"><path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2H2Z"/></svg>&nbsp;&nbsp;류현지 | 빅데이터 엔지니어<Br><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>&nbsp;&nbsp;서울, 대한민국
-     <Br><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg>&nbsp;&nbsp;guswl3940@gmail.com</P>
- </div>
-
-<h2 id="RESUME"><a href="#RESUME" class="headerlink" title="RESUME"></a>RESUME</h2><p>Resume는 시간될 때마다 업로드하고 있습니다. <a href="https://hyeonji-ryu.github.io/Resume/">Resume 보러가기</a></p>
-
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
   </div>
 
 
@@ -319,7 +389,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#안녕하세요"><span class="nav-number">1.</span> <span class="nav-text">안녕하세요</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#INFO"><span class="nav-number">2.</span> <span class="nav-text">INFO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RESUME"><span class="nav-number">3.</span> <span class="nav-text">RESUME</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop-WordCount-Test"><span class="nav-number">1.</span> <span class="nav-text">Hadoop WordCount Test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark-Pi-π-value-Test"><span class="nav-number">2.</span> <span class="nav-text">Spark Pi(π) value Test</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
