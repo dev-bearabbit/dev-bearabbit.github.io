@@ -42,7 +42,7 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":"flase","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
     path: 'search.xml',
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
@@ -51,14 +51,14 @@
   <meta name="description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="DEV AnythinG">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/tags/SQLD/index.html">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/tags/sqld/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:author" content="Jess">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/tags/SQLD/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/tags/sqld/">
 
 
 <script id="page-configurations">
@@ -70,7 +70,7 @@
   };
 </script>
 
-  <title>tag: SQLD | DEV AnythinG</title>
+  <title>tag: sqld | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -188,34 +188,9 @@
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>archives</a>
 
   </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>search
-        </a>
-      </li>
   </ul>
 
 </nav>
-  <div class="site-search">
-    <div class="popup search-popup">
-    <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
-           placeholder="Searching..." spellcheck="false"
-           type="text" id="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result"></div>
-
-</div>
-<div class="search-pop-overlay"></div>
-
-  </div>
 </div>
     </header>
 
@@ -242,7 +217,7 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <h1 class="collection-header">SQLD
+        <h1 class="collection-header">sqld
           <small>tag</small>
         </h1>
       </div>
@@ -266,26 +241,6 @@
       <h2 class="post-title">
           <a class="post-title-link" href="/2021/10/10/Certificate/sqld-1/" itemprop="url">
             <span itemprop="name">[SQLD] 합격 후기</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-09-04T21:15:17+09:00"
-              content="2021-09-04">
-          09-04
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2021/09/04/Certificate/sqld-0/" itemprop="url">
-            <span itemprop="name">[SQLD] 데이터 모델링의 이해</span>
           </a>
       </h2>
 
@@ -448,10 +403,6 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
-
 
 
 
@@ -478,6 +429,31 @@
     const h = canvas.height = document.body.offsetHeight;
     const cols = Math.floor(w / 20) + 1;
     const ypos = Array(cols).fill(0);
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+
+    function matrix () {
+      ctx.fillStyle = '#0001';
+      ctx.fillRect(0, 0, w, h);
+  
+      ctx.fillStyle = '#009600';
+      ctx.font = '14pt monospace';
+  
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(Math.random() * 512);
+        const x = ind * 20;
+        ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+        else ypos[ind] = y + 20;
+      });
+    }
+    setInterval(matrix, 50);
+  </script>
+
+</body>
+</html>
+;
 
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, w, h);
