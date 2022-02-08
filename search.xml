@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>3. chrome driver 설치</title>
+    <url>/2022/02/07/KBO/kbodata-3/</url>
+    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
+<a id="more"></a>
+<h2 id="Requests-vs-Selenium"><a href="#Requests-vs-Selenium" class="headerlink" title="Requests vs. Selenium"></a>Requests vs. Selenium</h2><p>파이썬으로 스크래핑을 하기 위해서는 대부분 2가지의 방식을 사용한다. 바로 <code>requests</code>와 <code>selenium</code>이라는 라이브러리이다. 둘은 웹 페이지 정보를 가져온다는 공통점이 있지만 실제 작동방식은 완전히 다르다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>비교점</th>
+<th>requests</th>
+<th>selenium</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>범위</td>
+<td>정적 사이트만 가능</td>
+<td>모두 가능</td>
+</tr>
+<tr>
+<td>속도</td>
+<td>상대적으로 빠름</td>
+<td>상대적으로 느림</td>
+</tr>
+<tr>
+<td>조건</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2>]]></content>
+      <categories>
+        <category>PROJECT</category>
+        <category>KBO-data</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>스크래핑</tag>
+        <tag>chromedriver</tag>
+        <tag>chrome</tag>
+        <tag>selenium</tag>
+        <tag>파이썬</tag>
+        <tag>mac</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2. robots.txt 확인</title>
     <url>/2022/02/02/KBO/kbodata-2/</url>
     <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
