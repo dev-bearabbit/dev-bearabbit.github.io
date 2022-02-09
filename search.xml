@@ -39,10 +39,10 @@
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>스크래핑</tag>
         <tag>chromedriver</tag>
         <tag>chrome</tag>
         <tag>selenium</tag>
+        <tag>스크래핑</tag>
         <tag>파이썬</tag>
         <tag>mac</tag>
       </tags>
@@ -113,9 +113,9 @@
       <tags>
         <tag>python</tag>
         <tag>package</tag>
-        <tag>pypi</tag>
-        <tag>패키지</tag>
         <tag>poetry</tag>
+        <tag>패키지</tag>
+        <tag>pypi</tag>
       </tags>
   </entry>
   <entry>
@@ -156,10 +156,10 @@
       <tags>
         <tag>python</tag>
         <tag>data</tag>
-        <tag>KBO</tag>
         <tag>package</tag>
-        <tag>pypi</tag>
         <tag>패키지</tag>
+        <tag>pypi</tag>
+        <tag>KBO</tag>
         <tag>한국프로야구</tag>
       </tags>
   </entry>
@@ -1695,8 +1695,8 @@
       </categories>
       <tags>
         <tag>Rust</tag>
-        <tag>method</tag>
         <tag>struct</tag>
+        <tag>method</tag>
         <tag>context</tag>
         <tag>impl</tag>
       </tags>
@@ -1766,8 +1766,8 @@
       </categories>
       <tags>
         <tag>Rust</tag>
-        <tag>struct</tag>
         <tag>structure</tag>
+        <tag>struct</tag>
         <tag>field</tag>
         <tag>instance</tag>
       </tags>
@@ -1809,8 +1809,8 @@
       </categories>
       <tags>
         <tag>Rust</tag>
-        <tag>struct</tag>
         <tag>structure</tag>
+        <tag>struct</tag>
         <tag>field</tag>
         <tag>instance</tag>
       </tags>
@@ -2755,10 +2755,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
-        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
         <tag>repository</tag>
+        <tag>boot</tag>
       </tags>
   </entry>
   <entry>
@@ -3540,10 +3540,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
+        <tag>boot</tag>
         <tag>kernel</tag>
         <tag>systemd</tag>
         <tag>filesystem</tag>
-        <tag>boot</tag>
         <tag>hardware</tag>
       </tags>
   </entry>
@@ -4490,8 +4490,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>docker</tag>
+        <tag>sql</tag>
         <tag>mariadb</tag>
         <tag>database</tag>
         <tag>vi</tag>
