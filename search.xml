@@ -66,9 +66,9 @@
       <tags>
         <tag>python</tag>
         <tag>package</tag>
-        <tag>pypi</tag>
-        <tag>패키지</tag>
         <tag>poetry</tag>
+        <tag>패키지</tag>
+        <tag>pypi</tag>
       </tags>
   </entry>
   <entry>
@@ -109,10 +109,10 @@
       <tags>
         <tag>python</tag>
         <tag>data</tag>
-        <tag>KBO</tag>
         <tag>package</tag>
-        <tag>pypi</tag>
         <tag>패키지</tag>
+        <tag>pypi</tag>
+        <tag>KBO</tag>
         <tag>한국프로야구</tag>
       </tags>
   </entry>
@@ -314,8 +314,8 @@
         <category>CleanCode</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>Cleancode</tag>
+        <tag>python</tag>
         <tag>클린코드</tag>
         <tag>책리뷰</tag>
         <tag>review</tag>
@@ -378,8 +378,8 @@
         <category>CleanCode</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>Cleancode</tag>
+        <tag>python</tag>
         <tag>클린코드</tag>
         <tag>책리뷰</tag>
         <tag>review</tag>
@@ -775,12 +775,12 @@
         <category>certificate</category>
       </categories>
       <tags>
+        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
-        <tag>python</tag>
         <tag>통계</tag>
         <tag>통계분석</tag>
         <tag>회귀분석</tag>
@@ -911,12 +911,12 @@
         <category>certificate</category>
       </categories>
       <tags>
+        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
-        <tag>python</tag>
         <tag>통계</tag>
         <tag>통계분석</tag>
       </tags>
@@ -1268,12 +1268,12 @@
         <category>certificate</category>
       </categories>
       <tags>
+        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
-        <tag>python</tag>
         <tag>통계</tag>
         <tag>통계분석</tag>
       </tags>
@@ -1613,12 +1613,12 @@
         <category>certificate</category>
       </categories>
       <tags>
+        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
-        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -1648,8 +1648,8 @@
       </categories>
       <tags>
         <tag>Rust</tag>
-        <tag>method</tag>
         <tag>struct</tag>
+        <tag>method</tag>
         <tag>context</tag>
         <tag>impl</tag>
       </tags>
@@ -1719,8 +1719,8 @@
       </categories>
       <tags>
         <tag>Rust</tag>
-        <tag>struct</tag>
         <tag>structure</tag>
+        <tag>struct</tag>
         <tag>field</tag>
         <tag>instance</tag>
       </tags>
@@ -1762,8 +1762,8 @@
       </categories>
       <tags>
         <tag>Rust</tag>
-        <tag>struct</tag>
         <tag>structure</tag>
+        <tag>struct</tag>
         <tag>field</tag>
         <tag>instance</tag>
       </tags>
@@ -4443,8 +4443,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>docker</tag>
+        <tag>sql</tag>
         <tag>mariadb</tag>
         <tag>database</tag>
         <tag>vi</tag>
@@ -5213,8 +5213,8 @@
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
+        <tag>줄리아</tag>
         <tag>Dropout</tag>
         <tag>드랍아웃</tag>
         <tag>MLP</tag>
@@ -5300,8 +5300,8 @@
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
+        <tag>줄리아</tag>
         <tag>std</tag>
         <tag>Xavier</tag>
         <tag>He</tag>
@@ -5437,7 +5437,6 @@
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>optimizer</tag>
         <tag>옵티마이저</tag>
@@ -5446,6 +5445,7 @@
         <tag>SGD</tag>
         <tag>Momentum</tag>
         <tag>RMSProp</tag>
+        <tag>줄리아</tag>
       </tags>
   </entry>
   <entry>
@@ -5531,8 +5531,8 @@ x & \text{(x>0) $$}\\
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
+        <tag>줄리아</tag>
         <tag>ReLU</tag>
         <tag>렐루</tag>
         <tag>시그모이드</tag>
@@ -5623,8 +5623,8 @@ x & \text{(x>0) $$}\\
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
+        <tag>줄리아</tag>
         <tag>역전파</tag>
       </tags>
   </entry>
@@ -5808,8 +5808,8 @@ x & \text{(x>0) $$}\\
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
+        <tag>줄리아</tag>
         <tag>역전파</tag>
       </tags>
   </entry>
@@ -6512,8 +6512,8 @@ a_{12} & \mathbf{a_{22}}\\
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
+        <tag>줄리아</tag>
         <tag>순전파</tag>
       </tags>
   </entry>
@@ -6646,8 +6646,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>줄리아</tag>
         <tag>신경망</tag>
+        <tag>줄리아</tag>
         <tag>순전파</tag>
       </tags>
   </entry>
