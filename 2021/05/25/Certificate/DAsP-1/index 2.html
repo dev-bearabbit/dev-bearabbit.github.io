@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/test1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[DAsP] 데이터 요건 분석">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2021/05/25/Certificate/DAsP-1/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/113.jpg">
+<meta property="article:published_time" content="2021-05-25T04:03:41.000Z">
+<meta property="article:modified_time" content="2021-10-29T12:10:00.689Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="DAsP">
+<meta property="article:tag" content="데이터아키텍처">
+<meta property="article:tag" content="전사아키텍처">
+<meta property="article:tag" content="자격증">
+<meta property="article:tag" content="데이터">
+<meta property="article:tag" content="요건분석">
+<meta property="article:tag" content="data">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/113.jpg">
+
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2021/05/25/Certificate/DAsP-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>[DAsP] 데이터 요건 분석 | DEV AnythinG</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163411677-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DEV AnythinG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">welcome :)</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>about</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Hyeonji-Ryu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2021/05/25/Certificate/DAsP-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/madcat.gif">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [DAsP] 데이터 요건 분석
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              <time title="Post created: 2021-05-25 13:03:41" itemprop="dateCreated datePublished" datetime="2021-05-25T13:03:41+09:00">2021-05-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/etc/" itemprop="url" rel="index">
+                    <span itemprop="name">etc.</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/etc/certificate/" itemprop="url" rel="index">
+                    <span itemprop="name">certificate</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="정보-요구사항이란"><a href="#정보-요구사항이란" class="headerlink" title="정보 요구사항이란"></a>정보 요구사항이란</h2><p>업무의 개선 사항이나 신규 개발 사항 등을 물어보고 정리한 자료이다. 일반적으로 사용자들이 해당 시스템에 어떤 기능들을 바라는지 묻고 정리한다.</p>
+<h3 id="정보-요구사항-생명주기"><a href="#정보-요구사항-생명주기" class="headerlink" title="정보 요구사항 생명주기"></a>정보 요구사항 생명주기</h3><ul>
+<li><strong>정보 요구사항 수집</strong>: 사용자 인터뷰, 설문지, 워크숍, 현행 시스템 분석 등으로 요구사항 수집</li>
+<li><strong>정보 요구사항 분석 및 정의</strong>: 수집된 요구사항을 프로세스별, 단계별로 종합하고 중요성과 긴급성을 기준으로 우선순위 설정</li>
+<li><strong>정보 요구사항 상세화</strong>: 우선순위가 높은 것들을 중심으로 개별 사항을 세밀하게 분석</li>
+<li><strong>정보 요구사항 검증</strong>: 비즈니스 관점, 조직 관점, 어플리케이션 관점과 상관분석을 통해 검증</li>
+</ul>
+<h3 id="정보-요구사항-유형"><a href="#정보-요구사항-유형" class="headerlink" title="정보 요구사항 유형"></a>정보 요구사항 유형</h3><p>정보 요구사항 수집 시 아래의 조건들을 기준으로 한다.</p>
+<h4 id="외부-인터페이스-요건"><a href="#외부-인터페이스-요건" class="headerlink" title="외부 인터페이스 요건"></a>외부 인터페이스 요건</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정의</td>
+<td>모든 입출력에 관한 요건</td>
+</tr>
+<tr>
+<td>관리기준</td>
+<td>중복성: 동일한 인터페이스가 존재하는가 <br> 표준 준수도: 국내외 표준 존재 시 그에 적합한 형태로 제공되는가</td>
+</tr>
+<tr>
+<td>관리방법</td>
+<td>항목 이름, 목적 설명, 입출력 위치, 데이터 포맷 등이 관리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="기능-개선-요건"><a href="#기능-개선-요건" class="headerlink" title="기능 개선 요건"></a>기능 개선 요건</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정의</td>
+<td>시스템에서 입력을 받은 후 출력을 만들어내는 과정 전체</td>
+</tr>
+<tr>
+<td>관리기준</td>
+<td>불가변성: 향후에 변경될 필요가 없는가 <br> 범용성: 많은 사용자가 편리하게 사용할 수 있는가</td>
+</tr>
+<tr>
+<td>관리방법</td>
+<td>입력 유효 체크, 처리 순서, 비정상 상태의 반응, 변환 공식 등이 관리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="성능-개선-요건"><a href="#성능-개선-요건" class="headerlink" title="성능 개선 요건"></a>성능 개선 요건</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정의</td>
+<td>동시 사용자 수, 처리하는 정보 양과 종류, 트랜잭션 소요시한 등</td>
+</tr>
+<tr>
+<td>관리기준</td>
+<td>실현 가능성: 현행 기술 수준에서 구현 가능한가 <br> 측정 가능성: 측정 가능할 만큼 명확한가</td>
+</tr>
+<tr>
+<td>관리방법</td>
+<td>각 서비스 특성에 따른 정적, 동적 기준을 만들고 모니터링 실시</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="보안-개선-요건"><a href="#보안-개선-요건" class="headerlink" title="보안 개선 요건"></a>보안 개선 요건</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정의</td>
+<td>물리적 접근통제(통제구역)와 사용 통제(인증, 암호화, 방화벽) 등</td>
+</tr>
+<tr>
+<td>관리기준</td>
+<td>불가변성: 향후에 변경될 필요가 없는가 <br>  실현 가능성: 현행 기술 수준에서 구현 가능한가</td>
+</tr>
+<tr>
+<td>관리방법</td>
+<td>보안 장비 등급 관리, 접근 방식 기준 생성, 이에 따른 모니터링 실시</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="정보-요구사항-관리"><a href="#정보-요구사항-관리" class="headerlink" title="정보 요구사항 관리"></a>정보 요구사항 관리</h3><ul>
+<li><strong>요구사항 발송</strong>: 요구사항 정의서 양식에 맞춰 작성 후 담당자에게 발송</li>
+<li><strong>요구사항 수렴</strong>: 수집된 정의서를 양식 확인 후 처리할 담당자에 맞춰 전송</li>
+<li><strong>요구사항 검토</strong>: 반영 여부 판단 후 미반영 시 사유와 함께 정의서 보낸 담당자에게 발송</li>
+<li><strong>영향도 분석</strong>: 변경에 영향을 받는 설계서, 기존 앱, 데이터베이스 등을 확인</li>
+<li><strong>공식화</strong>: 담당자들과 협의하여 규모, 시간, 긴급성에 따라 반영 유형 결정</li>
+<li><strong>반영작업계획 수립</strong>: 영향도 분석 결과를 바탕으로 반영계획수립(설계서 변경, 테스트, 이관 등)</li>
+</ul>
+<h2 id="정보-요구사항-조사"><a href="#정보-요구사항-조사" class="headerlink" title="정보 요구사항 조사"></a>정보 요구사항 조사</h2><ul>
+<li>정보 요구사항 수집</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>관련 문서 수집</td>
+<td>구현시스템의 대상과 범위를 명확하게 정의하기 위해 기존 자료 수집</td>
+</tr>
+<tr>
+<td>사용자 면담</td>
+<td>실무자와 질의응답, 면담자, 기록자, 관찰자로 구성하여 면담 진행</td>
+</tr>
+<tr>
+<td>워크숍</td>
+<td>프로젝트 이해관계에 있는 부서들을 모아 한번에 면담을 진행</td>
+</tr>
+<tr>
+<td>현행업무조사서</td>
+<td>전체부서에 동일한 기준으로 조사</td>
+</tr>
+<tr>
+<td>형행 프로그램/데이터 관련 문서</td>
+<td>현행 시스템을 파악하기 위한 작업</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>정보 요구사항 정리</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사용자 면담 정리</td>
+<td>자료샘플이나 관련문서를 체계적으로 정리 및 기록</td>
+</tr>
+<tr>
+<td>업무 조사서 정리</td>
+<td>수행중인 프로세스, 외부기관 문서, 사용중인 시스템 목록 등을 정리</td>
+</tr>
+<tr>
+<td>워크숍 정리</td>
+<td>워크숍의 목적, 진행내용, 해결 상태, 기타 등의 내용을 정리</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>정보 요구사항 분석</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>화폐가치산출방법</td>
+<td>기업차원 중요성과 시스템 차원 중요성 각각 점수를 부여한 후 백분율로 변환하여 중요도 도출</td>
+</tr>
+<tr>
+<td>상대적중요도산정방법</td>
+<td>업무에 기여하는 정도, 현행 정보시스템 상태, 관련성 기준으로 점수를 부여한 뒤 가중치 도출</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>정보 요구사항 통합</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정보 요구사항 목록 검토</td>
+<td>전사 관점에서 동일한 요구사항이 있는지 확인</td>
+</tr>
+<tr>
+<td>정보 요구사항 목록 통합/분할</td>
+<td>부서간 중복 요구사항이 있는지 확인</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="정보-요구사항-분석"><a href="#정보-요구사항-분석" class="headerlink" title="정보 요구사항 분석"></a>정보 요구사항 분석</h2><h3 id="분석-대상-정의"><a href="#분석-대상-정의" class="headerlink" title="분석 대상 정의"></a>분석 대상 정의</h3><ol>
+<li>분석 대상 자료 수집: 현행 업무 흐름도, 현행 업무 설명서, 현행 업무 분장</li>
+<li>분석 대상 업무 영역 선정: 분류 기준에 따른 현행 업무 목록 작성</li>
+<li>분석 대상 현행 시스템 선정: 업무 영역별 선정 작업 실시</li>
+<li>보완작업: 유용성(활용가능성), 완정성(누락여부), 정확성, 유효성(최신반영)을 기준으로 보완</li>
+</ol>
+<h3 id="정보-요구사항-상세화"><a href="#정보-요구사항-상세화" class="headerlink" title="정보 요구사항 상세화"></a>정보 요구사항 상세화</h3><ul>
+<li>프로세스 관점의 정보 요구사항 상세화</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>작업</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>프로세스 분해/상세화</td>
+<td>- 업무별 기능별 하향식으로 프로세스 분해 및 도출 <br> - 프로세스 계층도(높은 응집도, 낮은 결합도)와 프로세스 정의서 작성</td>
+</tr>
+<tr>
+<td>정보 항목 도출 및 표준화</td>
+<td>- 분해한 프로세스를 CURD로 구분 <br> - 정보항목에 대한 표준화 정리 <br>- 정보항목 목록 정의</td>
+</tr>
+<tr>
+<td>정보 항목별 통합성, 분리성 여부 검토</td>
+<td>- 나눠진 정보 항목 분류  <br> - 동음이의, 이음동의 존재 파악 <br>- 검토 후 최종 정보항목 목록 정의</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>객체지향 관점의 정보 요구사항 상세화<br><img src="/images/113.jpg" alt="usecase"></li>
+</ul>
+<h3 id="정보-요구사항-확인"><a href="#정보-요구사항-확인" class="headerlink" title="정보 요구사항 확인"></a>정보 요구사항 확인</h3><ol>
+<li><p>재검토 계획 수립<br>재검토 계획서를 생성하고, 완전성, 일관성, 정확성, 안정성 등의 평가할 기준점을 결정한다.</p>
+</li>
+<li><p>재검토 실시<br>재검토가 필요한 산출물을 참여자에게 배포하고 재검토 일정을 안내한다.<br>통합성 검증을 위해 담당자는 전부 참여해야 하며, 결과가 정리되면 요구사항별 보완 목록을 작성한다.</p>
+</li>
+<li><p>보완 결과 확인<br>반영되지 않은 사항들을 재검토허고 미반영 사유가 타당하지 않다면 보완 목록에 추가한다.</p>
+</li>
+</ol>
+<h3 id="정보-요구사항-분석-방법"><a href="#정보-요구사항-분석-방법" class="headerlink" title="정보 요구사항 분석 방법"></a>정보 요구사항 분석 방법</h3><h4 id="구조적-분석-방법"><a href="#구조적-분석-방법" class="headerlink" title="구조적 분석 방법"></a>구조적 분석 방법</h4><p>개발될 시스템의 모형을 만들어 데이터보다는 기능(처리)적 관점에서 평가한다.<br>분석 순서는 다음과 같다.</p>
+<ul>
+<li>배경도 작성</li>
+<li>상위 자료 흐름도 작성</li>
+<li>하위 자료 흐름도 작성</li>
+<li>자료 사전 작성</li>
+<li>소단위 명세서 작성</li>
+</ul>
+<p>자료 흐름도 작성 원칙은 다음과 같다.</p>
+<ul>
+<li>자료 보존의 원칙: 출력 자료 흐름은 반드시 입력 자료 흐름으로 생성된 것이어야 한다.</li>
+<li>최소 자료 입력의 원칙: 어떤 처리의 자료 흐름은 최소한의 흐름으로 입력되어야 한다.</li>
+<li>독립성의 원칙: 각 자료흐름은 본인의 입력과 출력만 알면 된다.</li>
+<li>지속성의 원칙: 처리는 항상 진행되어야 한다.</li>
+<li>순차 처리의 원칙: 입력된 순서대로 출력되어야 한다.</li>
+<li>영구성의 원칙: 자료저장소의 자료는 제거되지 않는다.</li>
+<li>자료 변환의 원칙: 자료 본질의 변환(편짐, 계산), 자료 합성의 변환(여러 입력)</li>
+</ul>
+<h4 id="객체지향-분석-방법"><a href="#객체지향-분석-방법" class="headerlink" title="객체지향 분석 방법"></a>객체지향 분석 방법</h4><p>데이터와 적용될 기능을 함께 추상화하는 방법</p>
+<h2 id="정보-요구사항-검증"><a href="#정보-요구사항-검증" class="headerlink" title="정보 요구사항 검증"></a>정보 요구사항 검증</h2><p>도출된 정보 요구사항을 다른 영역(프로새스, 기능 등)과 비교분석함으로써 요구사항의 도출이 정확히 이루어졌는지 검증할 수 있다.</p>
+<h3 id="정보-요구-어플리케이션-상관분석"><a href="#정보-요구-어플리케이션-상관분석" class="headerlink" title="정보 요구/어플리케이션 상관분석"></a>정보 요구/어플리케이션 상관분석</h3><ul>
+<li>정보 요구사항과 어플리케이션 프로세스 항목으로 매트릭스를 생성</li>
+<li>프로세스 액션인 C(Create, 생성), D(Delete, 삭제) , U(Update, 수정), R(Read, 조회)을 대입</li>
+<li>동시다발적인 복수의 액션 발생 시 C &gt; D &gt; U &gt; R 순서에 따라 하나만 기록</li>
+<li>정보 요구사항과 어플리케이션 프로세스 항목 둘 중 하나만 누락되어도 검증 불가</li>
+</ul>
+<h3 id="정보-요구-업무-기능-상관분석"><a href="#정보-요구-업무-기능-상관분석" class="headerlink" title="정보 요구/업무 기능 상관분석"></a>정보 요구/업무 기능 상관분석</h3><ul>
+<li>정보 요구사항과 BA에서 도출된 업무 기능을 항목으로 매트릭스를 생성</li>
+<li>생성, 수정, 삭제는 C(Create, Change)로 표시하고, 검색만 하는 경우는 U(Use)로 표시</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DAsP/" rel="tag"># DAsP</a>
+              <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/" rel="tag"># 데이터아키텍처</a>
+              <a href="/tags/%EC%A0%84%EC%82%AC%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/" rel="tag"># 전사아키텍처</a>
+              <a href="/tags/%EC%9E%90%EA%B2%A9%EC%A6%9D/" rel="tag"># 자격증</a>
+              <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 데이터</a>
+              <a href="/tags/%EC%9A%94%EA%B1%B4%EB%B6%84%EC%84%9D/" rel="tag"># 요건분석</a>
+              <a href="/tags/data/" rel="tag"># data</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/16/Certificate/DAsP-0/" rel="prev" title="[DAsP] 전사 아키텍처 이해">
+      <i class="fa fa-chevron-left"></i> [DAsP] 전사 아키텍처 이해
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/03/Certificate/DAsP-3/" rel="next" title="[DAsP] 데이터 모델링 이해">
+      [DAsP] 데이터 모델링 이해 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          목차
+        </li>
+        <li class="sidebar-nav-overview">
+          훑어보기
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#정보-요구사항이란"><span class="nav-number">1.</span> <span class="nav-text">정보 요구사항이란</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구사항-생명주기"><span class="nav-number">1.1.</span> <span class="nav-text">정보 요구사항 생명주기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구사항-유형"><span class="nav-number">1.2.</span> <span class="nav-text">정보 요구사항 유형</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#외부-인터페이스-요건"><span class="nav-number">1.2.1.</span> <span class="nav-text">외부 인터페이스 요건</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#기능-개선-요건"><span class="nav-number">1.2.2.</span> <span class="nav-text">기능 개선 요건</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#성능-개선-요건"><span class="nav-number">1.2.3.</span> <span class="nav-text">성능 개선 요건</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#보안-개선-요건"><span class="nav-number">1.2.4.</span> <span class="nav-text">보안 개선 요건</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구사항-관리"><span class="nav-number">1.3.</span> <span class="nav-text">정보 요구사항 관리</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#정보-요구사항-조사"><span class="nav-number">2.</span> <span class="nav-text">정보 요구사항 조사</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#정보-요구사항-분석"><span class="nav-number">3.</span> <span class="nav-text">정보 요구사항 분석</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#분석-대상-정의"><span class="nav-number">3.1.</span> <span class="nav-text">분석 대상 정의</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구사항-상세화"><span class="nav-number">3.2.</span> <span class="nav-text">정보 요구사항 상세화</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구사항-확인"><span class="nav-number">3.3.</span> <span class="nav-text">정보 요구사항 확인</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구사항-분석-방법"><span class="nav-number">3.4.</span> <span class="nav-text">정보 요구사항 분석 방법</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#구조적-분석-방법"><span class="nav-number">3.4.1.</span> <span class="nav-text">구조적 분석 방법</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#객체지향-분석-방법"><span class="nav-number">3.4.2.</span> <span class="nav-text">객체지향 분석 방법</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#정보-요구사항-검증"><span class="nav-number">4.</span> <span class="nav-text">정보 요구사항 검증</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구-어플리케이션-상관분석"><span class="nav-number">4.1.</span> <span class="nav-text">정보 요구&#x2F;어플리케이션 상관분석</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#정보-요구-업무-기능-상관분석"><span class="nav-number">4.2.</span> <span class="nav-text">정보 요구&#x2F;업무 기능 상관분석</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jess"
+      src="/images/madcat.gif">
+  <p class="site-author-name" itemprop="name">Jess</p>
+  <div class="site-description" itemprop="description">I love to learn, and try to be better than yesterday.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">카테고리</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">252</span>
+        <span class="site-state-item-name">태그</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jess</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
