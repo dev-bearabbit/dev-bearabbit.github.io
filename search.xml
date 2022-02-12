@@ -57,9 +57,17 @@
     <url>/2022/02/02/KBO/kbodata-1/</url>
     <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
 <a id="more"></a>
-<h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 파이썬</p>
-<h2 id="Poetry-설치"><a href="#Poetry-설치" class="headerlink" title="Poetry 설치"></a>Poetry 설치</h2><h2 id="새-프로젝트-생성"><a href="#새-프로젝트-생성" class="headerlink" title="새 프로젝트 생성"></a>새 프로젝트 생성</h2><p>이제 본격적으로 프로젝트를 생성해보자. 이 프로젝트에서는 소스코드를 <code>git</code>으로 관리하고 있었기 때문에 깃허브에 레파지토리를 새로 만들고 </p>
-<h2 id="pyproject-toml-작성"><a href="#pyproject-toml-작성" class="headerlink" title="pyproject.toml 작성"></a>pyproject.toml 작성</h2><h2 id="PyPi에-업로드"><a href="#PyPi에-업로드" class="headerlink" title="PyPi에 업로드"></a>PyPi에 업로드</h2>]]></content>
+<h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 파이썬 패키지 및 의존성을 관리해주는 도구이다. 즉, 어떤 프로젝트가 사용하고 있는<br>기본적으로 파이썬은 Pip라는  <code>requirement.txt</code></p>
+<h2 id="Poetry-설치"><a href="#Poetry-설치" class="headerlink" title="Poetry 설치"></a>Poetry 설치</h2><p>Poetry는 </p>
+<h2 id="새-프로젝트-생성"><a href="#새-프로젝트-생성" class="headerlink" title="새 프로젝트 생성"></a>새 프로젝트 생성</h2><p>이제 본격적으로 프로젝트를 생성해보자. 이 프로젝트에서는 소스코드를 <code>git</code>으로 관리하고 있었기 때문에 깃허브에 레파지토리를 새로 만들고 아래의 코드를 입력하여 로컬 환경으로 가져온다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> &#123;repository URL&#125;</span><br></pre></td></tr></table></figure>
+<p>그 다음 </p>
+<h2 id="pyproject-toml-작성"><a href="#pyproject-toml-작성" class="headerlink" title="pyproject.toml 작성"></a>pyproject.toml 작성</h2><p>처음 생성된 <code>pyproject.toml</code> 파일에는 필수로 작성해야 하는 내용들이 포함되어 있으며, 그 양식은 아래와 같다.</p>
+<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[tool.poetry]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">"kbodata"</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">"0.1.0"</span></span><br><span class="line"><span class="attr">description</span> = <span class="string">""</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">"Hyeonji-Ryu &lt;guswl3940@gmail.com&gt;"</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[tool.poetry.dependencies]</span></span><br><span class="line"><span class="attr">python</span> = <span class="string">"^3.9"</span></span><br><span class="line"></span><br><span class="line"><span class="section">[tool.poetry.dev-dependencies]</span></span><br><span class="line"><span class="attr">pytest</span> = <span class="string">"^5.2"</span></span><br><span class="line"></span><br><span class="line"><span class="section">[build-system]</span></span><br><span class="line"><span class="attr">requires</span> = [<span class="string">"poetry-core&gt;=1.0.0"</span>]</span><br><span class="line"><span class="attr">build-backend</span> = <span class="string">"poetry.core.masonry.api"</span></span><br></pre></td></tr></table></figure>
+<p>[양식 설명]</p>
+<p>그렇게 패키징에 필요한 내용들을 추가한 <code>pyproject.toml</code>은 아래와 같다.</p>
+<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[tool.poetry]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">"kbodata"</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">"0.1.0"</span></span><br><span class="line"><span class="attr">description</span> = <span class="string">"Scraping Korea Baseball Game information"</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">"Hyeonji-Ryu &lt;guswl3940@gmail.com&gt;"</span>]</span><br><span class="line"><span class="attr">license</span> = <span class="string">"MIT"</span></span><br><span class="line"><span class="attr">readme</span> = <span class="string">"README.md"</span></span><br><span class="line"><span class="attr">repository</span> = <span class="string">"https://github.com/Hyeonji-Ryu/kbo-data"</span></span><br><span class="line"><span class="attr">documentation</span> = <span class="string">"https://github.com/Hyeonji-Ryu/kbo-data/tree/main/docs"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Requirements</span></span><br><span class="line"><span class="section">[tool.poetry.dependencies]</span></span><br><span class="line"><span class="attr">python</span> = <span class="string">"^3.7.1"</span></span><br><span class="line"><span class="attr">selenium</span> = <span class="string">"^3.141.0"</span></span><br><span class="line"><span class="attr">pandas</span> = <span class="string">"^1.2.2"</span></span><br><span class="line"><span class="attr">bs4</span> = <span class="string">"^0.0.1"</span></span><br><span class="line"><span class="attr">lxml</span> = <span class="string">"^4.6.2"</span></span><br><span class="line"><span class="attr">requests</span> = <span class="string">"^2.25.1"</span></span><br><span class="line"></span><br><span class="line"><span class="section">[tool.poetry.dev-dependencies]</span></span><br><span class="line"><span class="attr">pytest</span> = <span class="string">"^5.2"</span></span><br><span class="line"></span><br><span class="line"><span class="section">[build-system]</span></span><br><span class="line"><span class="attr">requires</span> = [<span class="string">"poetry-core&gt;=1.0.0"</span>]</span><br><span class="line"><span class="attr">build-backend</span> = <span class="string">"poetry.core.masonry.api"</span></span><br></pre></td></tr></table></figure>
+<h2 id="PyPi에-업로드"><a href="#PyPi에-업로드" class="headerlink" title="PyPi에 업로드"></a>PyPi에 업로드</h2>]]></content>
       <categories>
         <category>PROJECT</category>
         <category>KBO-data</category>
@@ -230,7 +238,7 @@
       </tags>
   </entry>
   <entry>
-    <title>[Python] 2. 파이썬스러운 코드</title>
+    <title>[Python] 파이썬스러운 코드</title>
     <url>/2021/12/10/CleanCode/Clean-code-1/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
@@ -327,7 +335,7 @@
       </tags>
   </entry>
   <entry>
-    <title>[Python] 1. 소개, 코드 포매팅과 도구</title>
+    <title>[Python] 소개, 코드 포매팅과 도구</title>
     <url>/2021/12/06/CleanCode/Clean-code-0/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
@@ -395,14 +403,14 @@
     <url>/2021/12/05/Resume/resume-2/</url>
     <content><![CDATA[<p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><a id="more"></a></p>
 <p>섹션을 어떻게 나눌지는 <a href="https://hyeonji-ryu.github.io/2021/11/12/Resume/resume-1/#more">이전 글</a>에서 다뤘다. 이제 각 섹션 별로 어떻게 내용을 작성할지 고민해보자.</p>
-<h2 id="인트로-페이지"><a href="#인트로-페이지" class="headerlink" title="인트로 페이지"></a>인트로 페이지</h2><p>레쥬메 페이지를 들어오면 가장 먼저 만나게 되는 페이지이다. 해당 페이지는 깔끔하고 한눈에 어떤 목적의 페이지인지 알 수 있었으면 좋겠다고 생각하였다. 그래서 아래와 같이 중간에 크게 언어를 선택해 달라는 문구를 입력하였다.</p>
-<p><img src="/images/138.png" alt="intro0"></p>
-<p>문구 아래에 있는 Bootstrap의 선택 스크롤을 추가하였다. 해당 폼에 대한 자세한 내용은 <a href="https://getbootstrap.com/docs/5.1/forms/select/" target="_blank" rel="noopener">문서</a>에서 찾아볼 수 있다. 스크롤을 클릭하면 아래의 사진처럼 선택할 수 있는 언어가 나열된다.</p>
+<h2 id="상단-바"><a href="#상단-바" class="headerlink" title="상단 바"></a>상단 바</h2><p>상단 바에는 크게 페이지 타이틀, 섹션, 언어 선택을 포함시켰다. 타이틀의 경우 블로그 이름과 동일하게 사용하였으며, 섹션 버튼은 누르면 바로 해당 자료가 있는 곳으로 이동할 수 있게 설정하였다. 마지막으로 언어 선택은 Bootstrap의 선택 폼을 사용하여 추가하였다.</p>
 <p><img src="/images/139.png" alt="intro1"></p>
-<p>이 중 언어를 하나 선택하면 해당 언어로 된 이력서 페이지로 이동한다.</p>
-<h2 id="헤더"><a href="#헤더" class="headerlink" title="헤더"></a>헤더</h2><p>헤더는 가장 윗 부분에 위치한 섹션이다. 여기에는 언어를 선택하는 인트로 페이지와 동일한 백그라운드를 사용하였으며, 이름과 현재 하고 있는 일과 최종적으로 하고 싶은 일을 작성하였다.</p>
+<p>위 사진은 완성된 상단 바의 모습니다. 해당 폼에 대한 자세한 내용은 <a href="https://getbootstrap.com/docs/5.1/forms/select/" target="_blank" rel="noopener">문서</a>에서 찾아볼 수 있다. 스크롤을 클릭하면 아래의 사진처럼 선택할 수 있는 언어가 나열된다.</p>
+<p><img src="/images/138.png" alt="intro0"></p>
+<p>이 중 언어를 하나 선택하면 해당 언어로 된 Resume 페이지로 이동한다.</p>
+<h2 id="헤더"><a href="#헤더" class="headerlink" title="헤더"></a>헤더</h2><p>헤더는 가장 윗 부분에 위치한 섹션이다. 여기에는 블로그와 동일한 백그라운드를 사용하였으며, 이름과 현재 하고 있는 일과 엔지니어로서의 가지고 있는 가치관을 짧게 한줄로 적어두었다.</p>
 <p><img src="/images/130.png" alt="resume1"></p>
-<h2 id="개인정보-amp-간단한-소개"><a href="#개인정보-amp-간단한-소개" class="headerlink" title="개인정보 &amp; 간단한 소개"></a>개인정보 &amp; 간단한 소개</h2><p>개인 정보는 이름, 현재 직업, 거주 위치, 이메일을 간단하게 작성하였다. 너무 많은 개인 정보를 입력하는 것은 모든 사람들에게 공개된 웹페이지라는 특성상 조금 부담스러웠기 때문이다. 또한 현재 나를 대표하는 이모티콘으로 사용하고 있는 사진을 추가하였으며, 간단한 소개를 넣는 것도 잊지 않았다. 해당 부분의 결과는 다음과 같다.</p>
+<h2 id="개인정보-amp-간단한-소개"><a href="#개인정보-amp-간단한-소개" class="headerlink" title="개인정보 &amp; 간단한 소개"></a>개인정보 &amp; 간단한 소개</h2><p>개인 정보는 이름, 현재 직업, 거주 위치, 이메일을 간단하게 작성하였다. 너무 많은 개인 정보를 입력하는 것은 모든 사람들에게 공개된 웹페이지라는 특성상 조금 부담스러웠기 때문이다. 또한 현재 나를 대표하는 이모티콘으로 사용하고 있는 사진을 추가하였으며, 엔지니어로서 중요하게 생각하는 가치들을 적어두었다. 해당 부분의 결과는 다음과 같다.</p>
 <p><img src="/images/131.png" alt="resume2"></p>
 <h2 id="기술스택"><a href="#기술스택" class="headerlink" title="기술스택"></a>기술스택</h2><p>기술스택의 경우 고민이 많았다. 어느 정도로 사용해야 입력할 수 있을까? 또 입력해도 어느정도 잘하는지의 여부를 작성해야 할까? 할 수 있다의 기준이 무엇인가? 등등. 그 결과 비교적 원리를 이해하고 사용했던 툴(tool)들과 프로그램을 작성할 때 사용한 적이 있는 언어를 입력하기로 결정하였다. 또한 실력이란 것은 혼자 객관적으로 판단이 어렵다고 생각했기에 추가로 작성하지는 않았다. 그 결과는 아래의 사진과 같다. 아래 사진에서 사용한 아이콘들은 <a href="https://fontello.com" target="_blank" rel="noopener">fontello</a>라는 사이트에서 css로 변환하여 사용하였다.</p>
 <p><img src="/images/132.png" alt="resume3"></p>
@@ -414,6 +422,8 @@
 <p><img src="/images/135.png" alt="resume6"></p>
 <p>위 사진과 같은 구조에서 프로젝트 이름을 클릭하면 아래의 사진처럼 프로젝트에 대한 상세한 정보들이 보여진다. 상세한 정보들은 테이블 구조로 정리하였다.</p>
 <p><img src="/images/136.png" alt="resume7"></p>
+<h2 id="개인-활동"><a href="#개인-활동" class="headerlink" title="개인 활동"></a>개인 활동</h2><p>일이 아닌 개인적인 활동들을 적어두었다. 현재 활동 중인 개발 커뮤니티나 스터디에서 발표했던 것들, 또는 개인적으로 공부했던 것들을 적어두었다.</p>
+<p><img src="/images/152.png" alt="resume7"></p>
 <h2 id="학력"><a href="#학력" class="headerlink" title="학력"></a>학력</h2><p>힉력은 간단하게 학교이름, 전공, 기간을 입력하였다. 이후 대학원이나 Coursera에서 대학 강의를 듣는다면 추가할 예정이다. 아래의 사진이 학력의 레이아웃이다.</p>
 <p><img src="/images/137.png" alt="resume8"></p>
 ]]></content>
@@ -613,9 +623,7 @@
 <p>먼저 테마 컬러이다. 사실 색상의 경우 “블로그와 컬러감이 유지 될 것”이라는 제한조건이 있었다. 그리하여 블로그 색상을 그래도 가져왔다. 색상은 크게 3가지이고 검정색, 회베이지색, 흰색이다. 검정색의 경우 부트스트랩에서 제공하는 <code>dark</code> 색상을 사용하였다.</p>
 <p>그다음 글씨체이다. 처음에는 예쁜 글씨체를 다운받아서 사용하려고 했으나 이력서 특성 상 너무 가벼워보이면 안될 것 같아 제공된 고딕체를 사용하였다.</p>
 <p>Header 배경은 정말 고민이 많았다. 웹페이지라는 부분을 살리고 싶어 애니메이션이 가미되었으면 좋겠다고 생각했는데, 화려한 애니메이션들은 생각보다 정신이 없었다. 그래서 배경화면은 “개발자스러운 표현, 컬러는 3개 이하, 흰색 또는 검은색 글씨가 오버레이 되어도 잘 보일 것”으로 제한을 걸고 찾아보았다. 그 결과 영화 매트릭스에 등장하는 검은색 배경에 숫자가 내려오는 애니메이션이 선택되었다.</p>
-<h2 id="언어-설정하기"><a href="#언어-설정하기" class="headerlink" title="언어 설정하기"></a>언어 설정하기</h2><p>이전 페이지는 한글과 영어를 같이 써두었다가 나중에는 영어만 남겨두었다. 인터넷에서 누구나 볼 수 있기에 세계공용어인 영어로도 작성을 하고 싶었고, 또 이후 국내에서 이직을 할 때 사용하려면 한국어 버전도 필요하였다. 처음에는 번역처럼 한글 아래에 영어를 작성하려고 하였으나 가독성도 좋지 못했고, 글이 너무 많아져서 해당 방법은 포기하였다. 어떻게 할까 하다가 아래와 같은 결론이 났다.</p>
-<p><img src="/images/122.png" alt="resume"></p>
-<p>이렇게 하면 나중에 이력서를 PDF로 만들어서 제출할 때도 언어에 따라서 제출할 수도 있고, 글도 추가되지 않는다.</p>
+<h2 id="언어-설정하기"><a href="#언어-설정하기" class="headerlink" title="언어 설정하기"></a>언어 설정하기</h2><p>이전 페이지는 한글과 영어를 같이 써두었다가 나중에는 영어만 남겨두었다. 인터넷에서 누구나 볼 수 있기에 세계공용어인 영어로도 작성을 하고 싶었고, 또 이후 국내에서 이직을 할 때 사용하려면 한국어 버전도 필요하였다. 처음에는 번역처럼 한글 아래에 영어를 작성하려고 하였으나 가독성도 좋지 못했고, 글이 너무 많아져서 해당 방법은 포기하였다. 어떻게 할까 하다가 상단 바에 언어를 선택할 수 있는 폼을 추가하였다. 이렇게 하면 나중에 이력서를 PDF로 만들어서 제출할 때도 언어에 따라서 제출할 수도 있고, 글도 추가되지 않는다.</p>
 <p>일단 완성된 이력서는 <a href="https://hyeonji-ryu.github.io/Resume/">해당 링크</a>에서 확인할 수 있다. 완성된 페이지는 이미 각 섹션 별로 레이아웃이 잡혀있고 글도 채워져 있다. 다음 글에서는 섹션 별 레이아웃과 내용 정리 등에 대해서 이야기해보고자 한다.</p>
 ]]></content>
       <categories>
@@ -1323,7 +1331,7 @@
     <title>Resume 페이지 만들기</title>
     <url>/2021/10/28/Resume/resume-0/</url>
     <content><![CDATA[<p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><a id="more"></a></p>
-<h2 id="시작"><a href="#시작" class="headerlink" title="시작"></a>시작</h2><p>엔지니어로 커리어를 시작한지 3개월이 되었을 즈음, 시간이 남아 간단한 이력서 웹페이지를 만들었다. 막 수습 기간이 지나고 본격적으로 업무를 시작할 때라서 지금까지 해왔던 것들 또 앞으로 해나갈 것들을 한 페이지에 담아두고 싶었다. 또 이렇게 정리를 하다보면 스스로에 대한 메타인지도 향상되고 커리어 방향을 정하는 데 있어 도움이 될 것이라는 생각도 들었다. 그래서 부트스트랩에 있는 무료 템플릿 하나를 선택하여 커스터마이징 하였다. 사용된 템플릿 소스코드가 필요한 사람들은 해당 <a href="https://github.com/startbootstrap/startbootstrap-resume" target="_blank" rel="noopener">깃허브</a>로 들어가서 가져오면 된다. (오픈소스이다)</p>
+<h2 id="시작"><a href="#시작" class="headerlink" title="시작"></a>시작</h2><p>엔지니어로 커리어를 시작한지 3개월이 되었을 즈음, 시간이 남아 간단한 Resume 웹페이지를 만들었다. 막 수습 기간이 지나고 본격적으로 업무를 시작할 때라서 지금까지 해왔던 것들 또 앞으로 해나갈 것들을 한 페이지에 담아두고 싶었다. 또 이렇게 정리를 하다보면 스스로에 대한 메타인지도 향상되고 커리어 방향을 정하는 데 있어 도움이 될 것이라는 생각도 들었다. 그래서 부트스트랩에 있는 무료 템플릿 하나를 선택하여 커스터마이징 하였다. 사용된 템플릿 소스코드가 필요한 사람들은 해당 <a href="https://github.com/startbootstrap/startbootstrap-resume" target="_blank" rel="noopener">깃허브</a>로 들어가서 가져오면 된다. (오픈소스이다)</p>
 <p><img src="/images/121.png" alt="resume"></p>
 <p>처음에는 테마도 깔끔하고 소스 코드도 비교적 커스터마이징하기 좋아서 선택했고 만족했었다. 하지만 최근 resume 업데이트를 위해 이것저것 시도해보면서 Navbar가 옆쪽에 위치한 것이 불편하게 느껴졌고, 추가해야 할 내용도 생각보다 많았다. 그래서 결국 2021년이 가기 전에 resume를 완전히 바꿔보려고 한다.</p>
 <h2 id="레이아웃"><a href="#레이아웃" class="headerlink" title="레이아웃"></a>레이아웃</h2><p>배포방식은 이전과 동일하게 깃허브의 Pages 기능을 사용할 예정이며, 기본적인 HTML 레이아웃은 부트스트랩 예시를 가져올 것이다. 사용한 예시 소스코드는 <a href="https://github.com/startbootstrap/startbootstrap-scrolling-nav" target="_blank" rel="noopener">홈페이지</a>에 들어가면 받을 수 있다. 이번에 사용하는 코드의 경우 이전과 다르게 정말 레이아웃 코드만 들어있기 때문에 자유도가 높은 만큼 신경써야 할 것들이 많다. 예로 든다면 이전 페이지는 인스턴스 식품이라서 간단한 조리로도 먹을 수 있었지만 지금은 재료를 산 경우라서 직접 요리를 해 먹어야 하는 정도라고 볼 수 있을 것 같다.</p>
