@@ -57,8 +57,9 @@
     <url>/2022/02/02/KBO/kbodata-1/</url>
     <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
 <a id="more"></a>
-<h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 </p>
-]]></content>
+<h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 파이썬</p>
+<h2 id="Poetry-설치"><a href="#Poetry-설치" class="headerlink" title="Poetry 설치"></a>Poetry 설치</h2><h2 id="새-프로젝트-생성"><a href="#새-프로젝트-생성" class="headerlink" title="새 프로젝트 생성"></a>새 프로젝트 생성</h2><p>이제 본격적으로 프로젝트를 생성해보자. 이 프로젝트에서는 소스코드를 <code>git</code>으로 관리하고 있었기 때문에 깃허브에 레파지토리를 새로 만들고 </p>
+<h2 id="pyproject-toml-작성"><a href="#pyproject-toml-작성" class="headerlink" title="pyproject.toml 작성"></a>pyproject.toml 작성</h2><h2 id="PyPi에-업로드"><a href="#PyPi에-업로드" class="headerlink" title="PyPi에 업로드"></a>PyPi에 업로드</h2>]]></content>
       <categories>
         <category>PROJECT</category>
         <category>KBO-data</category>
@@ -83,7 +84,10 @@
 </ul>
 <p>해당 시리즈는 작업 중에 필요한 정보들을 정리할 예정이다.</p>
 <h2 id="KBO-data"><a href="#KBO-data" class="headerlink" title="KBO-data"></a>KBO-data</h2><p>KBO-data는 KBO 공식 사이트에서 경기 정보들을 스크래핑하는 패키지이다. 해당 패키지는 <a href="https://www.koreabaseball.com/Default.aspx" target="_blank" rel="noopener">KBO 공식 사이트</a>에 있는 데이터들을 가져와 사용하기 편한 구조로 변형해준다. 패키지에 대한 자세한 설명은 <a href="https://github.com/Hyeonji-Ryu/kbo-data" target="_blank" rel="noopener">깃허브</a>의 README에서 확인할 수 있다.</p>
-<p>먼저 패키지를 사용하기 위해서는 2가지의</p>
+<p>먼저 패키지를 사용하기 위해서는 설치를 해주어야 한다. 아래의 코드로 설치를 진행하자.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install kbodata</span><br></pre></td></tr></table></figure>
+<p>설치 후 파이썬 환경에서 임포트 하면 바로 사용할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> kbodata</span><br></pre></td></tr></table></figure>
 <p>패키지는 크게 3가지로 나누어진다.</p>
 <h3 id="1-경기-스케쥴-가져오기"><a href="#1-경기-스케쥴-가져오기" class="headerlink" title="1. 경기 스케쥴 가져오기"></a>1. 경기 스케쥴 가져오기</h3><p>먼저 요청한 날짜에 맞춰서 스케쥴을 가져와야 한다. 스케쥴은 특정 날짜, 특정 월, 특정 년도를 선택하여 받을 수 있디. 스케쥴을 가져오는 함수는 아래와 같다.</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 2021년 4월 20일의 KBO 경기 스케쥴을 가져온다.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>day = kbodata.get_daily_schedule(<span class="number">2021</span>,<span class="number">4</span>,<span class="number">20</span>,<span class="string">'chromedriver_path'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2021년 4월 KBO 경기 스케쥴을 가져온다.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>month = kbodata.get_monthly_schedule(<span class="number">2021</span>,<span class="number">4</span>,<span class="string">'chromedriver_path'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2021년 KBO 경기 스케쥴을 가져온다.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>year = kbodata.get_yearly_schedule(<span class="number">2021</span>,<span class="string">'chromedriver_path'</span>)</span><br></pre></td></tr></table></figure>
@@ -127,7 +131,7 @@
 <p>하이브는 크게 metastore 관리, SQL 쿼리 실행의 업무로 나눠지며 이에 따라 컴포넌트들도 분리된다. HiveServer2(HS2)의 경우 하이브 서비스에 대한 모든 클라이언트들의 요청을 받으며, metastore 서버는 HS2에서 요청하는 메타정보들을 API로 제공한다.</p>
 <h2 id="Hive-Architecture"><a href="#Hive-Architecture" class="headerlink" title="Hive Architecture"></a>Hive Architecture</h2><p>하이브 아키텍처는 매우 간단하다.</p>
 <p><img src="/images/147.png" alt="hive2"></p>
-<p>하이브에 접근할 수 있는 방법은 Beeline, Hue, JDBC or ODBC 크게 3가지이다. 여기서 Beeline이란 노드 터미널에서 HS2에 바로 접속할 수 있는 방법이며 eeline을 사용하면 터미널에서 직접 하이브로 쿼리를 날릴 수 있다. 다음 방법인 Hue는 apache의 오픈소스 서비스 중 하나로 하둡 에코 시스템들을 통합 사용할 수 있는 에디터이다. 마지막으로 JDBC or ODBC는 하둡을 DB로 사용하거나 데이터 IO가 있는 어플리케이션들과 연동할 때 보통 사용되는 방법이다.</p>
+<p>하이브에 접근할 수 있는 방법은 Beeline, Hue, JDBC or ODBC 크게 3가지이다. 여기서 Beeline이란 노드 터미널에서 HS2에 바로 접속할 수 있는 방법이며 Beeline을 사용하면 터미널에서 직접 하이브로 쿼리를 날릴 수 있다. 다음 방법인 Hue는 apache의 오픈소스 서비스 중 하나로 하둡 에코 시스템들을 통합 사용할 수 있는 에디터이다. 마지막으로 JDBC or ODBC는 하둡을 DB로 사용하거나 데이터 IO가 있는 어플리케이션들과 연동할 때 보통 사용되는 방법이다.</p>
 <p><strong>NOTE</strong><br>JDBC or ODBC 란?<br>특정 언어로 구현된 어플리케이션들이 데이터베이스에 접속할 때 두 언어를 변역해주는 인터페이스의 역할을 한다.</p>
 <div class="table-container">
 <table>
@@ -7165,7 +7169,7 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 </li>
 </ol>
 <h2 id="줄리아-사용법"><a href="#줄리아-사용법" class="headerlink" title="줄리아 사용법"></a>줄리아 사용법</h2><p>위 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)를 사용한다. 그렇다면 왜 파이썬이 아니라 줄리아로 구현하는가? 그 이유는 간단하다. 머신러닝을 구현하는 데 있어 줄리아는 오로지 내장 함수만을 사용하여 모든 구현이 가능하다. 만약 줄리아 언어 자체를 배우고 싶다면 블로그 내에 <a href="https://hyeonji-ryu.github.io/categories/Think-Julia/">“Think Julia”</a>을 정리한 시리즈가 있다.</p>
-<h3 id="배열-생성하기"><a href="#배열-생성하기" class="headerlink" title="배열 생성하기"></a>배열 생성하기</h3><p>신경망의 데이터들은 모두 배열로 구성되어 있기 떄문에 배열을 필수적으로 생성해야 한다. 따라서 본격적으로 딥러닝을 구현하기 전에 줄리아에서는 어떻게 배열을 생성하는지에 대해 다뤄볼 것이다.</p>
+<h3 id="배열-생성하기"><a href="#배열-생성하기" class="headerlink" title="배열 생성하기"></a>배열 생성하기</h3><p>신경망의 데이터들은 모두 배열로 구성되어 있기 때문에 배열을 필수적으로 생성해야 한다. 따라서 본격적으로 딥러닝을 구현하기 전에 줄리아에서는 어떻게 배열을 생성하는지에 대해 다뤄볼 것이다.</p>
 <p>줄리아의 큰 장점 중 하나는 파이썬이나 R과는 다르게 1차원부터 n차원까지의 배열을 한 가지의 자료형으로 표현한다는 것이다. 그렇기에 우리는 차원의 구분없이 간단한 코드로 여러 차원의 배열을 생성할 수 있다. 줄리아에서 2차원 배열을 구현하는 방법은 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">Julia&gt; [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]</span><br><span class="line"><span class="number">1</span>×<span class="number">6</span> <span class="built_in">Array</span>&#123;<span class="built_in">Int64</span>,<span class="number">2</span>&#125;:</span><br><span class="line"> <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line"></span><br><span class="line">Julia&gt; [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]</span><br><span class="line"><span class="number">2</span>×<span class="number">3</span> <span class="built_in">Array</span>&#123;<span class="built_in">Int64</span>,<span class="number">2</span>&#125;:</span><br><span class="line"> <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span></span><br><span class="line"> <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br></pre></td></tr></table></figure>
 <p>줄리아는 배열에 <code>;</code>를 추가하면 2차원 배열을 반환한다. 위의 예시는 직접 데이터를 입력하는 경우이다. 만약 데이터가 랜덤 값인 배열을 생성하고 싶다면 어떻게 해야 하는가? 지금부터는 다양한 배열들을 구현하는 함수들을 살펴볼 것이다.</p>

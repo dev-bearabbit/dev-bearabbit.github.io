@@ -58,7 +58,7 @@
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/148.png">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/149.png">
 <meta property="article:published_time" content="2021-12-30T00:48:06.000Z">
-<meta property="article:modified_time" content="2022-01-09T15:55:34.638Z">
+<meta property="article:modified_time" content="2022-02-12T13:30:39.804Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="hadoop">
@@ -291,7 +291,7 @@
 <p>하이브는 크게 metastore 관리, SQL 쿼리 실행의 업무로 나눠지며 이에 따라 컴포넌트들도 분리된다. HiveServer2(HS2)의 경우 하이브 서비스에 대한 모든 클라이언트들의 요청을 받으며, metastore 서버는 HS2에서 요청하는 메타정보들을 API로 제공한다.</p>
 <h2 id="Hive-Architecture"><a href="#Hive-Architecture" class="headerlink" title="Hive Architecture"></a>Hive Architecture</h2><p>하이브 아키텍처는 매우 간단하다.</p>
 <p><img src="/images/147.png" alt="hive2"></p>
-<p>하이브에 접근할 수 있는 방법은 Beeline, Hue, JDBC or ODBC 크게 3가지이다. 여기서 Beeline이란 노드 터미널에서 HS2에 바로 접속할 수 있는 방법이며 eeline을 사용하면 터미널에서 직접 하이브로 쿼리를 날릴 수 있다. 다음 방법인 Hue는 apache의 오픈소스 서비스 중 하나로 하둡 에코 시스템들을 통합 사용할 수 있는 에디터이다. 마지막으로 JDBC or ODBC는 하둡을 DB로 사용하거나 데이터 IO가 있는 어플리케이션들과 연동할 때 보통 사용되는 방법이다.</p>
+<p>하이브에 접근할 수 있는 방법은 Beeline, Hue, JDBC or ODBC 크게 3가지이다. 여기서 Beeline이란 노드 터미널에서 HS2에 바로 접속할 수 있는 방법이며 Beeline을 사용하면 터미널에서 직접 하이브로 쿼리를 날릴 수 있다. 다음 방법인 Hue는 apache의 오픈소스 서비스 중 하나로 하둡 에코 시스템들을 통합 사용할 수 있는 에디터이다. 마지막으로 JDBC or ODBC는 하둡을 DB로 사용하거나 데이터 IO가 있는 어플리케이션들과 연동할 때 보통 사용되는 방법이다.</p>
 <p><strong>NOTE</strong><br>JDBC or ODBC 란?<br>특정 언어로 구현된 어플리케이션들이 데이터베이스에 접속할 때 두 언어를 변역해주는 인터페이스의 역할을 한다.</p>
 <div class="table-container">
 <table>
