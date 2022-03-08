@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2. Flask 웹 서버 구축하기</title>
+    <url>/2022/03/01/KBO/kbo-2/</url>
+    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 스크래핑한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.</p>
+<a id="more"></a>
+<h2 id="웹-서버-환경-셋팅하기"><a href="#웹-서버-환경-셋팅하기" class="headerlink" title="웹 서버 환경 셋팅하기"></a>웹 서버 환경 셋팅하기</h2><p>원래는 스터디 팀원과 같이 사용할 목적으로 DB 서버와 웹 서버를 구분했었다. 하지만 팀원분이 취업하시면서 해당 프로젝트는 혼자서 마무리하게 되었고, 결국 DB 서버와 웹 서버를 구분할 필요가 없어졌다. 그래서 하나의 서버에 모두 셋팅을 하려고 한다.</p>
+<h3 id="Static-IP-setting"><a href="#Static-IP-setting" class="headerlink" title="Static IP setting"></a>Static IP setting</h3><p>관리의 편리함을 위해 서버가 재가동 되어도 동일한 IP를 유지하도록 설정하고자 한다. 현재 사용하고 있는 것은 AWS의 가상 서버이기에 콘솔에서 변경해보자.</p>
+<p><img src="/images/154.png" alt="server"></p>
+<p>lightsail 콘솔에 들어가면 네트워킹이라는 섹션이 있다. 이를 클릭하면 위 사진과 같이 “고정 IP 생성”이라는 버튼을 찾을 수 있다.</p>
+<p><img src="/images/155.png" alt="server"></p>
+<p>“고정 IP 생성”을 클릭하면 위 사진과 같이 고정 IP를 내가 보유하고 있는 인스턴스에 설정할 수 있다. 나의 경우 이미 붙여놓은 상태라서 연결에 사용할 인스턴스가 없다고 보여진다. 인스턴스 선택하고 해당 IP의 이름을 붙여준 뒤 생성 버튼을 누르면 설정은 끝난다.</p>
+<h3 id="Firewall-setting"><a href="#Firewall-setting" class="headerlink" title="Firewall setting"></a>Firewall setting</h3><p>그 다음으로는 웹 서버가 사용할 포트를 오픈해야 한다. AWS lightsail의 경우 기본적으로 Http와 Https 포트는 개방되어 있다. 사용하고자 하는 포트를 추가하려면 “규칙 추가”를 눌러 포트를 추가해준다.</p>
+<p><img src="/images/156.png" alt="server"></p>
+<h3 id="Python-setting"><a href="#Python-setting" class="headerlink" title="Python setting"></a>Python setting</h3><p>이 프로젝트에서 사용하는 프레임워크는 플라스크(Flask)이다. 파이썬 기반의 환경을 셋팅해보자.</p>
+<p>먼저 파이썬 버전을 확인한다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; python3 --version</span><br></pre></td></tr></table></figure>
+<p>python3이 설치되어 있다면 다음으로 파이썬 패키지 매니저인 pip를 설치한다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 패키지 업데이트</span></span><br><span class="line">&gt; sudo apt update</span><br><span class="line"><span class="comment"># pip 설치</span></span><br><span class="line">&gt; sudo apt-get install python3-pip</span><br></pre></td></tr></table></figure>
+<h2 id="Flask-웹-서버-구동하기"><a href="#Flask-웹-서버-구동하기" class="headerlink" title="Flask 웹 서버 구동하기"></a>Flask 웹 서버 구동하기</h2><p>다음으로는 웹 서버를 구동해보자. 이를 위해 해당 서버에 소스 파일을 가져온다. 나의 경우 로컬에 있는 소스들을 tar로 묶은 다음 scp로 복사했다.<br>이제 웹 서버를 올리기 위해 필요한 패키지들을 설치한다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 파이썬 컴파일러 업데이트</span></span><br><span class="line">pip3 install --upgrade cython</span><br><span class="line"><span class="comment"># 필요한 라이브러리 설치</span></span><br><span class="line">pip3 install -r requirement.txt</span><br></pre></td></tr></table></figure>
+<p>소스 파일 <code>requirement.txt</code>에는 해당 웹 서버 구동에 필요한 라이브러리들이 정리되어 있다. 이를 위 코드처럼 한번에 설치할 수 있다. <code>requirement.txt</code>의 내용은 아래와 같다.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># requirement.txt list</span><br><span class="line">flask</span><br><span class="line">sqlalchemy</span><br><span class="line">pandas</span><br><span class="line">plotly</span><br><span class="line">dash</span><br><span class="line">dash_bootstrap_components&#x3D;&#x3D;0.13</span><br><span class="line">pymysql</span><br><span class="line">pyarrow&#x3D;&#x3D;0.16.0</span><br><span class="line">dominate</span><br><span class="line">visitor</span><br></pre></td></tr></table></figure>
+<p>설치가 완료되었다면 아래의 명령어로 웹 서버를 실행한 후, 접속해보자.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo python3 __init__.py run</span><br></pre></td></tr></table></figure>
+<p>정상적으로 접속이 된다면 이제 백그라운드에서 웹 서버를 구동시키면 된다. 웹 서버를 구동시키는 방법은 아래와 같다.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nohup sudo python3 -u __init__.py run &amp;</span><br></pre></td></tr></table></figure>
+<p>nohup을 사용하여 구동하면 웹 서버에 로그가 nohup.out에 작성된다.</p>
+]]></content>
+      <categories>
+        <category>PROJECT</category>
+        <category>KBO Dashboard</category>
+      </categories>
+      <tags>
+        <tag>aws</tag>
+        <tag>lightsail</tag>
+        <tag>KBO</tag>
+        <tag>analysis</tag>
+        <tag>flask</tag>
+        <tag>플라스크</tag>
+        <tag>Web-server</tag>
+        <tag>대시보드</tag>
+        <tag>dashbooard</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo 카테고리 404 에러</title>
     <url>/2022/02/18/AboutHexo/about-hexo-4/</url>
     <content><![CDATA[<p>Hexo에서 카테고리의 이름을 변경했을 때 404 에러가 발생하는 경우의 해결 방법을 정리합니다.</p>
