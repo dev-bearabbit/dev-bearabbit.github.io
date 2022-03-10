@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>[재귀] 하노이 탑</title>
+    <title>하노이 탑 문제</title>
     <url>/2022/03/08/Algorithms/Algorithms-2/</url>
     <content><![CDATA[<p>하노이 탑 문제를 재귀 알고리즘으로 해결합니다.<br><a id="more"></a></p>
 <h2 id="하노이-탑-문제"><a href="#하노이-탑-문제" class="headerlink" title="하노이 탑 문제"></a>하노이 탑 문제</h2><p>하노이 탑은 3개의 기둥에서 원판을 옮기는 과정을 찾는 문제이다. 아래의 글은 <a href="https://www.acmicpc.net/problem/1914" target="_blank" rel="noopener">백준의 하노이 탑 문제</a>의 설명을 가져온 것이다.</p>
