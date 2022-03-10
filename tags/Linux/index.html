@@ -49,14 +49,14 @@
   <meta name="description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="DEV AnythinG">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/tags/Linux/index.html">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/tags/linux/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:author" content="Jess">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/tags/Linux/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/tags/linux/">
 
 
 <script id="page-configurations">
@@ -68,7 +68,7 @@
   };
 </script>
 
-  <title>tag: Linux | DEV AnythinG</title>
+  <title>tag: linux | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -216,7 +216,7 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <h1 class="collection-header">Linux
+        <h1 class="collection-header">linux
           <small>tag</small>
         </h1>
       </div>
@@ -231,15 +231,35 @@
 
       <div class="post-meta">
         <time itemprop="dateCreated"
-              datetime="2021-02-12T22:45:26+09:00"
-              content="2021-02-12">
-          02-12
+              datetime="2021-07-16T18:00:23+09:00"
+              content="2021-07-16">
+          07-16
         </time>
       </div>
 
       <h2 class="post-title">
-          <a class="post-title-link" href="/2021/02/12/Linux/Linux-0/" itemprop="url">
-            <span itemprop="name">Basic Linux</span>
+          <a class="post-title-link" href="/2021/07/16/Linux/Linux-3/" itemprop="url">
+            <span itemprop="name">Linux core concepts</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-04-04T22:56:02+09:00"
+              content="2021-04-04">
+          04-04
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2021/04/04/Linux/Linux-2/" itemprop="url">
+            <span itemprop="name">Linux Kernel</span>
           </a>
       </h2>
 
@@ -319,7 +339,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">115</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -332,7 +352,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">259</span>
+        <span class="site-state-item-count">263</span>
         <span class="site-state-item-name">태그</span></a>
       </div>
   </nav>
@@ -430,29 +450,6 @@
     const ypos = Array(cols).fill(0);
 
     ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, w, h);
-
-    function matrix () {
-      ctx.fillStyle = '#0001';
-      ctx.fillRect(0, 0, w, h);
-  
-      ctx.fillStyle = '#009600';
-      ctx.font = '14pt monospace';
-  
-      ypos.forEach((y, ind) => {
-        const text = String.fromCharCode(Math.random() * 512);
-        const x = ind * 20;
-        ctx.fillText(text, x, y);
-        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
-        else ypos[ind] = y + 20;
-      });
-    }
-    setInterval(matrix, 50);
-  </script>
-
-</body>
-</html>
-= '#000';
     ctx.fillRect(0, 0, w, h);
 
     function matrix () {
