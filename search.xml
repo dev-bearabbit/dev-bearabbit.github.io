@@ -62,6 +62,9 @@
         <tag>recursive</tag>
         <tag>hanoi</tag>
         <tag>퍼포먼스</tag>
+        <tag>시간초과</tag>
+        <tag>println</tag>
+        <tag>print</tag>
       </tags>
   </entry>
   <entry>
