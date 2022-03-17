@@ -284,11 +284,11 @@
         <category>KBO Dashboard</category>
       </categories>
       <tags>
-        <tag>aws</tag>
-        <tag>lightsail</tag>
+        <tag>flask</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
-        <tag>flask</tag>
+        <tag>aws</tag>
+        <tag>lightsail</tag>
         <tag>플라스크</tag>
         <tag>Web-server</tag>
         <tag>대시보드</tag>
@@ -2052,8 +2052,8 @@
       <tags>
         <tag>자격증</tag>
         <tag>SQLD</tag>
-        <tag>sqld</tag>
         <tag>sql</tag>
+        <tag>sqld</tag>
       </tags>
   </entry>
   <entry>
@@ -2879,12 +2879,12 @@
       <tags>
         <tag>mariadb</tag>
         <tag>DB</tag>
-        <tag>aws</tag>
-        <tag>lightsail</tag>
-        <tag>ssh</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
+        <tag>aws</tag>
+        <tag>lightsail</tag>
+        <tag>ssh</tag>
       </tags>
   </entry>
   <entry>
@@ -3796,8 +3796,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>mariadb</tag>
+        <tag>sql</tag>
         <tag>mysql</tag>
         <tag>DATETIME</tag>
         <tag>HOUR</tag>
@@ -4012,10 +4012,10 @@
         <tag>docker</tag>
         <tag>mariaDB</tag>
         <tag>DB</tag>
+        <tag>flask</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
-        <tag>flask</tag>
         <tag>EC2</tag>
         <tag>plotly</tag>
         <tag>dash</tag>
@@ -4361,8 +4361,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>database</tag>
+        <tag>sql</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>DB</tag>
@@ -4411,8 +4411,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>database</tag>
+        <tag>sql</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>DB</tag>
@@ -4629,8 +4629,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>database</tag>
+        <tag>sql</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>정규화</tag>
@@ -4707,8 +4707,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>database</tag>
+        <tag>sql</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>명령어</tag>
@@ -4757,8 +4757,8 @@
         <category>Database</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>database</tag>
+        <tag>sql</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>table</tag>
@@ -4815,9 +4815,9 @@
       </categories>
       <tags>
         <tag>docker</tag>
-        <tag>sql</tag>
         <tag>mariadb</tag>
         <tag>database</tag>
+        <tag>sql</tag>
         <tag>vi</tag>
         <tag>vim</tag>
         <tag>도커</tag>
