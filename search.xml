@@ -34,7 +34,7 @@
 </ul>
 </li>
 <li><strong>플랫폼끼리의 통신 보안을 위해 TLS 공부</strong><ul>
-<li>은행은 보통 폐쇄망이라서 RootCA로 구축(self TLS)</li>
+<li>은행은 보통 폐쇄망이라서 self TLS로 구축한 뒤 인증서버에 추가한다.</li>
 <li>RootCA 바탕으로 호스트 별 키 생성해서 배포하는 방식</li>
 <li>서로의 truststore에 넣어주어야 함</li>
 </ul>
