@@ -36,7 +36,7 @@
 <li><strong>플랫폼끼리의 통신 보안을 위해 TLS 공부</strong><ul>
 <li>은행은 보통 폐쇄망이라서 RootCA로 구축(self TLS)</li>
 <li>RootCA 바탕으로 호스트 별 키 생성해서 배포하는 방식</li>
-<li>서로의 truststore에 널어주어여 함</li>
+<li>서로의 truststore에 넣어주어야 함</li>
 </ul>
 </li>
 </ul>
@@ -284,11 +284,11 @@
         <category>KBO Dashboard</category>
       </categories>
       <tags>
-        <tag>flask</tag>
-        <tag>KBO</tag>
-        <tag>analysis</tag>
         <tag>aws</tag>
         <tag>lightsail</tag>
+        <tag>KBO</tag>
+        <tag>analysis</tag>
+        <tag>flask</tag>
         <tag>플라스크</tag>
         <tag>Web-server</tag>
         <tag>대시보드</tag>
@@ -685,8 +685,8 @@
         <category>Clean Code</category>
       </categories>
       <tags>
-        <tag>Cleancode</tag>
         <tag>python</tag>
+        <tag>Cleancode</tag>
         <tag>클린코드</tag>
         <tag>책리뷰</tag>
         <tag>review</tag>
@@ -749,8 +749,8 @@
         <category>Clean Code</category>
       </categories>
       <tags>
-        <tag>Cleancode</tag>
         <tag>python</tag>
+        <tag>Cleancode</tag>
         <tag>클린코드</tag>
         <tag>책리뷰</tag>
         <tag>review</tag>
@@ -1146,12 +1146,12 @@
         <category>Certificate</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
+        <tag>python</tag>
         <tag>통계</tag>
         <tag>통계분석</tag>
         <tag>회귀분석</tag>
@@ -1282,12 +1282,12 @@
         <category>Certificate</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
+        <tag>python</tag>
         <tag>통계</tag>
         <tag>통계분석</tag>
       </tags>
@@ -1639,12 +1639,12 @@
         <category>Certificate</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
+        <tag>python</tag>
         <tag>통계</tag>
         <tag>통계분석</tag>
       </tags>
@@ -1984,12 +1984,12 @@
         <category>Certificate</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>ADsP</tag>
         <tag>데이터자격시험</tag>
         <tag>데이터분석</tag>
         <tag>자격증</tag>
         <tag>R</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -2879,12 +2879,12 @@
       <tags>
         <tag>mariadb</tag>
         <tag>DB</tag>
-        <tag>KBO</tag>
-        <tag>analysis</tag>
-        <tag>dashborad</tag>
         <tag>aws</tag>
         <tag>lightsail</tag>
         <tag>ssh</tag>
+        <tag>KBO</tag>
+        <tag>analysis</tag>
+        <tag>dashborad</tag>
       </tags>
   </entry>
   <entry>
@@ -3164,12 +3164,12 @@
       <tags>
         <tag>Algorithms</tag>
         <tag>알고리즘</tag>
-        <tag>기초</tag>
         <tag>버블정렬</tag>
         <tag>삽입정렬</tag>
         <tag>선택정렬</tag>
         <tag>정렬알고리즘</tag>
         <tag>sort</tag>
+        <tag>기초</tag>
       </tags>
   </entry>
   <entry>
@@ -3759,13 +3759,13 @@
         <category>Error List</category>
       </categories>
       <tags>
-        <tag>error</tag>
         <tag>windows</tag>
         <tag>rust</tag>
         <tag>compiler</tag>
         <tag>msvc</tag>
         <tag>gnu</tag>
         <tag>vscode</tag>
+        <tag>error</tag>
         <tag>toolchain</tag>
         <tag>linkerror</tag>
       </tags>
@@ -4012,10 +4012,10 @@
         <tag>docker</tag>
         <tag>mariaDB</tag>
         <tag>DB</tag>
-        <tag>flask</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
+        <tag>flask</tag>
         <tag>EC2</tag>
         <tag>plotly</tag>
         <tag>dash</tag>
@@ -4570,12 +4570,12 @@
       </categories>
       <tags>
         <tag>mysql</tag>
+        <tag>error</tag>
         <tag>sqlalchemy</tag>
         <tag>flask_sqlalchemy</tag>
         <tag>pylint</tag>
         <tag>db</tag>
         <tag>scoped_session</tag>
-        <tag>error</tag>
         <tag>Registrant</tag>
         <tag>SQLObject</tag>
       </tags>
@@ -4633,10 +4633,10 @@
         <tag>database</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
-        <tag>DB</tag>
         <tag>정규화</tag>
         <tag>nomalization</tag>
         <tag>기본키</tag>
+        <tag>DB</tag>
       </tags>
   </entry>
   <entry>
@@ -5314,10 +5314,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>im2col</tag>
-        <tag>col2im</tag>
         <tag>Julia</tag>
         <tag>모델</tag>
+        <tag>im2col</tag>
+        <tag>col2im</tag>
       </tags>
   </entry>
   <entry>
@@ -5351,10 +5351,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>im2col</tag>
-        <tag>col2im</tag>
         <tag>Julia</tag>
         <tag>모델</tag>
+        <tag>im2col</tag>
+        <tag>col2im</tag>
       </tags>
   </entry>
   <entry>
@@ -5397,10 +5397,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>im2col</tag>
-        <tag>col2im</tag>
         <tag>Julia</tag>
         <tag>모델</tag>
+        <tag>im2col</tag>
+        <tag>col2im</tag>
       </tags>
   </entry>
   <entry>
@@ -5443,10 +5443,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>im2col</tag>
-        <tag>col2im</tag>
         <tag>Julia</tag>
         <tag>모델</tag>
+        <tag>im2col</tag>
+        <tag>col2im</tag>
       </tags>
   </entry>
   <entry>
@@ -5530,10 +5530,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>Julia</tag>
-        <tag>모델</tag>
         <tag>flatten</tag>
         <tag>convolution</tag>
+        <tag>Julia</tag>
+        <tag>모델</tag>
       </tags>
   </entry>
   <entry>
@@ -8108,9 +8108,9 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
       <tags>
         <tag>Algorithms</tag>
         <tag>알고리즘</tag>
+        <tag>기초</tag>
         <tag>빅오 표기법</tag>
         <tag>피보나치</tag>
-        <tag>기초</tag>
       </tags>
   </entry>
   <entry>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/test1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideDownIn"}}
+  };
+</script>
+
+  <meta name="description" content="해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Resume 1차 레이아웃 완성">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2021/11/12/Resume/resume-1/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://hyeonji-ryu.github.io/images/122.png">
+<meta property="article:published_time" content="2021-11-12T01:36:36.000Z">
+<meta property="article:modified_time" content="2021-12-23T16:10:16.506Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="resume">
+<meta property="article:tag" content="이력서">
+<meta property="article:tag" content="커리어">
+<meta property="article:tag" content="career">
+<meta property="article:tag" content="개발자">
+<meta property="article:tag" content="엔지니어">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/122.png">
+
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2021/11/12/Resume/resume-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Resume 1차 레이아웃 완성 | DEV AnythinG</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163411677-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <style>
+    body {
+    margin:0;
+    padding:0;
+    }
+    canvas{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left:0;
+    z-index:-1;
+    }
+    div{
+    z-index:0;
+    }
+  </style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <canvas id="canvas" style="width: 100%; height: 100%; padding: 0; margin: 0;"></canvas>
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DEV AnythinG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">welcome :)</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/Resume/" rel="section"><i class="fa fa-fw fa-user"></i>about</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Hyeonji-Ryu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2021/11/12/Resume/resume-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/madcat.gif">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Resume 1차 레이아웃 완성
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              <time title="Post created: 2021-11-12 10:36:36" itemprop="dateCreated datePublished" datetime="2021-11-12T10:36:36+09:00">2021-11-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/etc/" itemprop="url" rel="index">
+                    <span itemprop="name">etc.</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/etc/resume/" itemprop="url" rel="index">
+                    <span itemprop="name">resume</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><a id="more"></a></p>
+<h2 id="레이아웃-설계"><a href="#레이아웃-설계" class="headerlink" title="레이아웃 설계"></a>레이아웃 설계</h2><p>이전 글에서 결정한 요구조건은 다음과 같다.</p>
+<ul>
+<li>PDF로 내보내기 위해서는 한 페이지에 모든 내용을 볼 수 있어야 한다.</li>
+<li>Header에 애니메이션이 가미된 배경을 사용하여 생동감을 살리고 Navbar에 section을 연동시키자.</li>
+<li>반응형에서도 문제없도록 심플한 구조로 작성하자.</li>
+<li>구체적인 설명을 최대한 압축해서 작성하자.</li>
+<li>PDF에서도 해당 웹페이지로 들어올 수 있도록 링크를 걸어두자.</li>
+</ul>
+<p>이를 바탕으로 설계를 시작하였으며, 먼저 단락을 어떻게 나눌지 고민하였다.</p>
+<h2 id="섹션-나누기"><a href="#섹션-나누기" class="headerlink" title="섹션 나누기"></a>섹션 나누기</h2><p>어떤 내용이 들어가야 할까? 처음 떠오른 것들은 기본적인 개인정보, 간단한 소개글, 학력, 경력, 프로젝트, 블로그, 깃허브 등 이었다. 이를 몇 개의 섹션으로, 또 어떤 순서로 배열하는게 좋을까? 고민하다가 읽는 이가 자연스럽게 나에 대한 정보를 쌓아갈 수 있으면 좋을 것 같다는 생각이 들었다. 그 결과 순서는 다음과 같다.</p>
+<ul>
+<li>개인정보 &amp; 간단한 소개</li>
+<li>기술스택</li>
+<li>블로그 &amp; 깃허브</li>
+<li>경력</li>
+<li>프로젝트</li>
+<li>학력</li>
+</ul>
+<p>이렇게 나열한 이유는 아직 엔지니어로 일을 시작한지 1년도 안되었기 때문이다. 경력보다는 기술 스택이나 개인적으로 운영하는 블로그 &amp; 깃허브가 나를 표현하는 데 있어 좋은 방식이라고 생각했다. 그러면 경력은 왜 프로젝트보다 앞으로 배치했을까? 바로 차후에 진행되는 프로젝트들도 경력과 연관되어 있을 가능성이 99%기 때문이다. 즉, 내가 어떤 직무를 맡았을 때 했던 프로젝트인지를 연계하고자 경력을 먼저 언급하고 이후에 프로젝트의 세부적인 내용들을 제시한 것이다. 학력의 경우 사실 비전공자에 컴퓨터와는 전혀 상관이 없으므로 메리트 있는 요소는 아니라고 생각하여 맨 마지막에 배치하였다.</p>
+<p>이제 위 섹션들의 이름을 정할 차례이다. 섹션 제목의 경우 한글보다는 영어로 작성하는 것이 단어의 길이가 짧아서 인식되기 쉬울 것으로 예상하였다. 결정한 제목들은 다음과 같다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>섹션제목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>About</td>
+<td>개인정보 &amp; 간단한 소개</td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>기술스택</td>
+</tr>
+<tr>
+<td>Archiving</td>
+<td>블로그 &amp; 깃허브</td>
+</tr>
+<tr>
+<td>Experience</td>
+<td>경력</td>
+</tr>
+<tr>
+<td>Project</td>
+<td>프로젝트</td>
+</tr>
+<tr>
+<td>Education</td>
+<td>학력</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>이제 디자인적인 요소들을 확인해보자.</p>
+<h2 id="테마-설정하기"><a href="#테마-설정하기" class="headerlink" title="테마 설정하기"></a>테마 설정하기</h2><p>자 어려운 문제에 도착하였다. 먼저 크게 3가지 정도를 결정해보기로 하였다.</p>
+<ul>
+<li>테마 컬러</li>
+<li>글씨체</li>
+<li>Header 배경</li>
+</ul>
+<p>먼저 테마 컬러이다. 사실 색상의 경우 “블로그와 컬러감이 유지 될 것”이라는 제한조건이 있었다. 그리하여 블로그 색상을 그래도 가져왔다. 색상은 크게 3가지이고 검정색, 회베이지색, 흰색이다. 검정색의 경우 부트스트랩에서 제공하는 <code>dark</code> 색상을 사용하였다.</p>
+<p>그다음 글씨체이다. 처음에는 예쁜 글씨체를 다운받아서 사용하려고 했으나 이력서 특성 상 너무 가벼워보이면 안될 것 같아 제공된 고딕체를 사용하였다.</p>
+<p>Header 배경은 정말 고민이 많았다. 웹페이지라는 부분을 살리고 싶어 애니메이션이 가미되었으면 좋겠다고 생각했는데, 화려한 애니메이션들은 생각보다 정신이 없었다. 그래서 배경화면은 “개발자스러운 표현, 컬러는 3개 이하, 흰색 또는 검은색 글씨가 오버레이 되어도 잘 보일 것”으로 제한을 걸고 찾아보았다. 그 결과 영화 매트릭스에 등장하는 검은색 배경에 숫자가 내려오는 애니메이션이 선택되었다.</p>
+<h2 id="언어-설정하기"><a href="#언어-설정하기" class="headerlink" title="언어 설정하기"></a>언어 설정하기</h2><p>이전 페이지는 한글과 영어를 같이 써두었다가 나중에는 영어만 남겨두었다. 인터넷에서 누구나 볼 수 있기에 세계공용어인 영어로도 작성을 하고 싶었고, 또 이후 국내에서 이직을 할 때 사용하려면 한국어 버전도 필요하였다. 처음에는 번역처럼 한글 아래에 영어를 작성하려고 하였으나 가독성도 좋지 못했고, 글이 너무 많아져서 해당 방법은 포기하였다. 어떻게 할까 하다가 아래와 같은 결론이 났다.</p>
+<p><img src="/images/122.png" alt="resume"></p>
+<p>이렇게 하면 나중에 이력서를 PDF로 만들어서 제출할 때도 언어에 따라서 제출할 수도 있고, 글도 추가되지 않는다.</p>
+<p>일단 완성된 이력서는 <a href="https://hyeonji-ryu.github.io/Resume/">해당 링크</a>에서 확인할 수 있다. 완성된 페이지는 이미 각 섹션 별로 레이아웃이 잡혀있고 글도 채워져 있다. 다음 글에서는 섹션 별 레이아웃과 내용 정리 등에 대해서 이야기해보고자 한다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/resume/" rel="tag"># resume</a>
+              <a href="/tags/%EC%9D%B4%EB%A0%A5%EC%84%9C/" rel="tag"># 이력서</a>
+              <a href="/tags/%EC%BB%A4%EB%A6%AC%EC%96%B4/" rel="tag"># 커리어</a>
+              <a href="/tags/career/" rel="tag"># career</a>
+              <a href="/tags/%EA%B0%9C%EB%B0%9C%EC%9E%90/" rel="tag"># 개발자</a>
+              <a href="/tags/%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4/" rel="tag"># 엔지니어</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/04/Certificate/ADsP-3/" rel="prev" title="[ADsP] 회귀분석">
+      <i class="fa fa-chevron-left"></i> [ADsP] 회귀분석
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/13/Rust/rust-7/" rel="next" title="Rust Cargo 사용하기">
+      Rust Cargo 사용하기 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          목차
+        </li>
+        <li class="sidebar-nav-overview">
+          훑어보기
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#레이아웃-설계"><span class="nav-number">1.</span> <span class="nav-text">레이아웃 설계</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#섹션-나누기"><span class="nav-number">2.</span> <span class="nav-text">섹션 나누기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#테마-설정하기"><span class="nav-number">3.</span> <span class="nav-text">테마 설정하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#언어-설정하기"><span class="nav-number">4.</span> <span class="nav-text">언어 설정하기</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jess"
+      src="/images/madcat.gif">
+  <p class="site-author-name" itemprop="name">Jess</p>
+  <div class="site-description" itemprop="description">I love to learn, and try to be better than yesterday.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">카테고리</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">257</span>
+        <span class="site-state-item-name">태그</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jess</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const w = canvas.width = document.body.offsetWidth;
+    const h = canvas.height = document.body.offsetHeight;
+    const cols = Math.floor(w / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+
+    function matrix () {
+      ctx.fillStyle = '#0001';
+      ctx.fillRect(0, 0, w, h);
+  
+      ctx.fillStyle = '#009600';
+      ctx.font = '14pt monospace';
+  
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(Math.random() * 512);
+        const x = ind * 20;
+        ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+        else ypos[ind] = y + 20;
+      });
+    }
+    setInterval(matrix, 50);
+  </script>
+
+</body>
+</html>
