@@ -40,22 +40,22 @@
 <h2 id="아키텍처-종류"><a href="#아키텍처-종류" class="headerlink" title="아키텍처 종류"></a>아키텍처 종류</h2><p>어떤 서비스가 예상치 못한 중단 없이 안정적으로 지속되는 비율을 가용성이라고 하며, 가용성은 시스템의 안정성을 검증하는 하나의 요소이다. 가용성을 높이기 위한 전략으로는 크게 소수의 고품질을 지향하는 심장전략과 다수의 저품질을 지향하는 신장전략 2가지가 언급되며, 현재는 이 중에서 신장전략을 대부분 채택한다. 서비스 컴포넌트 하나에 문제가 생겨도 서비스가 중단되지 않도록 여러 개의 동일한 컴포너트를 마련해두는 것이다.</p>
 <h3 id="클러스터링"><a href="#클러스터링" class="headerlink" title="클러스터링"></a>클러스터링</h3><p>클러스터링은 DB서버와 저장소를 수평적인 구조로 설계된 아키텍처이다. 여러 대의 개별 컴퓨터가 데이터 트랜젝션을 처리하다보니 데이터 정합성에 대한 검증이 중요한 요소로 </p>
 <h3 id="Shared-Disk"><a href="#Shared-Disk" class="headerlink" title="Shared Disk"></a>Shared Disk</h3><p>Shared Disk란 이름 그대로 여러 대의 DB서버가 저장소(Disk)를 공유하는 구조이다. 여러 대의 DB서버가 사용되므로 단일 DB서버 구조에 비해 장애가능성이 현져히 낮아지지만, 단일 저장소로 운영하다보니 저장소에 장애가 발생한 경우 서비스가 중단될 수 있다.<br>Shared Disk 구조는 아래와 같다.</p>
-<p><img src="/images/159.jpg" alt="SD"></p>
+<p><img src="/images/159.png" alt="SD"></p>
 <p>Shared Disk 구조는 운영 방식에 따라서 Active-Active, Active-Standby 2가지로 구분된다.</p>
 <ul>
-<li>Active-Active: DB서버 여러 대를 동시에 작동하는 운영방식.<ul>
+<li>Active-Active: DB서버 여러 대를 동시에 작동하는 운영방식<ul>
 <li>장점: 여러 대 리소스를 사용하여 성능 향상, 시스템 다운 시간 미미</li>
 <li>단점: 서버 대수가 늘어날수록 저장소 병목현상 발생가능성 증가</li>
 </ul>
 </li>
-<li>Active-Standby: Active DB서버 한대만 운영하다가 장애 시 Standby DB서버를 사용하는 운영방식.<ul>
-<li>장점: </li>
-<li>단점:</li>
+<li>Active-Standby: Active DB서버 한대만 운영하다가 장애 시 Standby DB서버를 사용하는 운영방식<ul>
+<li>장점: 비용 절약하며 다중화 가능</li>
+<li>단점: 전환 시에 시스템 다운 시간 발생</li>
 </ul>
 </li>
 </ul>
 <h4 id="Shared-Nothing"><a href="#Shared-Nothing" class="headerlink" title="Shared Nothing"></a>Shared Nothing</h4><p>Shared Nothing이란 DB서버뿐만 아니라 저장소도 분리한 구조이다. 각 DB서버는 로컬에 위치한 데이터만 관리하면 되므로 </p>
-<p><img src="/images/160.jpg" alt="SD"></p>
+<p><img src="/images/160.png" alt="SND"></p>
 <h3 id="레플리케이션"><a href="#레플리케이션" class="headerlink" title="레플리케이션"></a>레플리케이션</h3><p>레플리케이션은 마스터(master)-슬레이브(slave)구조로 설계된 아키텍처이다. 보통 마스터는 </p>
 ]]></content>
       <categories>
