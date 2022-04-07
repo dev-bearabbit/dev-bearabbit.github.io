@@ -56,7 +56,7 @@
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/159.png">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/160.png">
 <meta property="article:published_time" content="2022-03-24T00:53:44.000Z">
-<meta property="article:modified_time" content="2022-03-27T15:13:04.406Z">
+<meta property="article:modified_time" content="2022-04-05T09:01:05.966Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="database">
 <meta property="article:tag" content="DB">
@@ -259,13 +259,13 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/STUDY/" itemprop="url" rel="index">
-                    <span itemprop="name">STUDY</span>
+                  <a href="/categories/PROGRAMMING/" itemprop="url" rel="index">
+                    <span itemprop="name">PROGRAMMING</span>
                   </a>
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/STUDY/Database/" itemprop="url" rel="index">
+                  <a href="/categories/PROGRAMMING/Database/" itemprop="url" rel="index">
                     <span itemprop="name">Database</span>
                   </a>
                 </span>
@@ -316,7 +316,7 @@
 <p>위 정보를 기반으로 데이터베이스 아키텍처에 대해 알아보자.</p>
 <h2 id="데이터베이스-아키텍처란"><a href="#데이터베이스-아키텍처란" class="headerlink" title="데이터베이스 아키텍처란"></a>데이터베이스 아키텍처란</h2><p>아키텍처는 어떤 시스템을 구성한 설계도이다. 그렇기에 어떤 아키텍처를 채택했는가에 따라서 해당 시스템의 견고함과 안정성이 결정된다. 만약 달성하려는 목적에 적합하지 않은 아키텍처를 사용한다면 당연히 시스템은 여러 문제들에 부딪힐 것이다. 예로 건물을 건축하는 과정을 생각해보자. 만약 어떤 사람이 10층 규모의 빌딩을 건설하려고 하는데 3층 규모의 설계도를 사용한다면 당연히 그 건물은 안정성을 보장받을 수 없다. 또한 내부균열이나 자연재해 등에 의해 문제가 발생할 가능성이 높아지며 이를 해결하기가 훨씬 어려워진다. 그래서 보통 설계를 진행할 때는 건물이 완공되고 유지되면서 부딪힐 수 있는 외부변수들을 모두 고려하여 건물의 견고함과 안정성을 향상시키고자 한다. 시스템도 마찬가지다.</p>
 <p>위 내용을 바탕으로 고민해보자. 데이터베이스 아키텍처란 무엇일까? 데이터베이스 서버들이 견고하고 안정적으로 운영될 수 있도록 구성된 설계도라고 설명할 수 있을 것이다.</p>
-<h2 id="데이터베이스-아키텍처-종류"><a href="#데이터베이스-아키텍처-종류" class="headerlink" title="데이터베이스 아키텍처 종류"></a>데이터베이스 아키텍처 종류</h2><p>어떤 서비스가 예상치 못한 중단 없이 안정적으로 지속되는 비율을 가용성이라고 하며, 가용성은 시스템의 안정성을 검증하는 하나의 요소이다. 가용성을 높이기 위한 전략으로는 크게 소수의 고품질을 지향하는 심장전략과 다수의 저품질을 지향하는 신장전략 2가지가 언급되며, 현재는 이 중에서 신장전략을 대부분 채택한다. 서비스 컴포넌트 하나에 문제가 생겨도 서비스가 중단되지 않도록 여러 개의 동일한 컴포너트를 마련해두는 것이다.</p>
+<h2 id="데이터베이스-아키텍처-종류"><a href="#데이터베이스-아키텍처-종류" class="headerlink" title="데이터베이스 아키텍처 종류"></a>데이터베이스 아키텍처 종류</h2><p>어떤 서비스가 예상치 못한 중단 없이 안정적으로 지속되는 비율을 가용성이라고 하며, 가용성은 시스템의 안정성을 검증하는 하나의 요소이다. 가용성을 높이기 위한 전략으로는 크게 소수의 고품질을 지향하는 심장전략과 다수의 저품질을 지향하는 신장전략 2가지가 언급되며, 현재는 이 중에서 신장전략을 대부분 채택한다. 서비스 컴포넌트 하나에 문제가 생겨도 서비스가 중단되지 않도록 여러 개의 동일한 컴포넌트를 마련해두는 것이다.</p>
 <h3 id="클러스터링"><a href="#클러스터링" class="headerlink" title="클러스터링"></a>클러스터링</h3><p>클러스터링은 DB서버와 저장소를 수평적인 구조로 설계된 아키텍처이다. 여러 대의 컴퓨터가 데이터 트랜젝션을 처리하다보니 데이터 정합성 유지하는 것이 중요하기 때문에 동기 방식으로 노드들 간의 데이터를 동기화한다.</p>
 <h4 id="Shared-Disk"><a href="#Shared-Disk" class="headerlink" title="Shared Disk"></a>Shared Disk</h4><p>Shared Disk란 이름 그대로 여러 대의 DB서버가 저장소(Disk)를 공유하는 구조이다. 여러 대의 DB서버가 사용되므로 단일 DB서버 구조에 비해 장애가능성이 현져히 낮아지지만, 단일 저장소로 운영하다보니 저장소에 장애가 발생한 경우 서비스가 중단될 수 있다.<br>Shared Disk 구조는 아래와 같다.</p>
 <p><img src="/images/159.png" alt="SD"></p>
@@ -443,20 +443,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">120</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">카테고리</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">283</span>
+        <span class="site-state-item-count">299</span>
         <span class="site-state-item-name">태그</span></a>
       </div>
   </nav>

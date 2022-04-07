@@ -1,6 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>입양 시각 구하기(2) 해설</title>
+    <url>/2022/04/07/DB/Database-8/</url>
+    <content><![CDATA[<p>프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.<br><a id="more"></a></p>
+<hr>
+<p>해당 문제는 프로그래머스에 가입이 되어 있다면 <a href="https://programmers.co.kr/learn/courses/30/lessons/59413" target="_blank" rel="noopener">이 페이지</a>에서 직접 풀어볼 수 있다.</p>
+<h2 id="문제-정보"><a href="#문제-정보" class="headerlink" title="문제 정보"></a>문제 정보</h2><p>ANIMAL_OUTS 테이블은 동물 보호소에서 입양 보낸 동물의 정보를 담은 테이블입니다. ANIMAL_OUTS 테이블 구조는 다음과 같으며, ANIMAL_ID, ANIMAL_TYPE, DATETIME, NAME, SEX_UPON_OUTCOME는 각각 동물의 아이디, 생물 종, 입양일, 이름, 성별 및 중성화 여부를 나타냅니다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>NAME</th>
+<th>TYPE</th>
+<th>NULLABLE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ANIMAL_ID</td>
+<td>VARCHAR(N)</td>
+<td>FALSE</td>
+</tr>
+<tr>
+<td>ANIMAL_TYPE</td>
+<td>VARCHAR(N)</td>
+<td>FALSE</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>DATETIME</td>
+<td>FALSE</td>
+</tr>
+<tr>
+<td>NAME</td>
+<td>VARCHAR(N)</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>SEX_UPON_OUTCOME</td>
+<td>VARCHAR(N)</td>
+<td>FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>보호소에서는 몇 시에 입양이 가장 활발하게 일어나는지 알아보려 합니다. 0시부터 23시까지, 각 시간대별로 입양이 몇 건이나 발생했는지 조회하는 SQL문을 작성해주세요. 이때 결과는 시간대 순으로 정렬해야 합니다.</p>
+<h2 id="해설"><a href="#해설" class="headerlink" title="해설"></a>해설</h2>]]></content>
+      <categories>
+        <category>PROGRAMMING</category>
+        <category>Database</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+        <tag>programmers</tag>
+        <tag>question</tag>
+        <tag>groupby</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Schema on Read란</title>
+    <url>/2022/04/05/Engineering/engineering-1/</url>
+    <content><![CDATA[<p>Hive에서 주로 언급되는 Schema on Read에 대해서 정리합니다.<br><a id="more"></a></p>
+<h2 id="시작하기-전에"><a href="#시작하기-전에" class="headerlink" title="시작하기 전에"></a>시작하기 전에</h2><p>보통 데이터를 관리하는 시스템들은 크게 Schema on Read, Schema on Write 2가지 타입의 구조를 가진다. 두 타입은 데이터 프로세싱 과정에서 언제 스키마를 정의할 것인지에 따라 나눠지며 일반적으로 사용하는 RDB의 경우 Schema on Write, Hive는 Schema on Read에 해당한다. 두 용어에 대해서 자세히 알아보자.</p>
+<h2 id="Schema-on-Write"><a href="#Schema-on-Write" class="headerlink" title="Schema on Write"></a>Schema on Write</h2><p>Schema on Write는 데이터를 적재하기 전에 스키마를 먼저 생성해야 하는 방식을 말한다. 이를 그림으로 나타내면 아래와 같다.</p>
+<p><img src="/images/161.png" alt="SW"></p>
+<p>이 방식은 일반 RDB처럼 데이터를 저장하기 위해서는 먼저 스키마를 생성해야 하고 그 다음 데이터를 추가할 수 있는 구조이다. 따라서 스키마에 정의된 데이터 타입이 아닌 데이터를 추가하려고 한다면 에러가 발생한다.</p>
+<h2 id="Schema-on-Read"><a href="#Schema-on-Read" class="headerlink" title="Schema on Read"></a>Schema on Read</h2><p>하지만 하둡 기반의 빅데이터 플랫폼은 구조가 다르다. HDFS라는 파일분산시스템을 통해 데이터를 적재하고 이를 SQL엔진인 Hive가 RDB형태로 가져오는 구조이기 때문이다. 따라서 Hive는 자연스레 Schema on Read 구조를 따를 수 밖에 없다.</p>
+<p><img src="/images/162.png" alt="SR"></p>
+<p>이 방식은 Raw 데이터를 일단 저장한 후 차후에 필요한 스키마를 생성함으로써 데이터를 읽어온다. 따라서 정의된 스키마 데이터 타입과 실제 저장된 데이터 형식은 일치하지 않을 수 있다. 또한 동일한 데이터를 가지고 여러 개의 스키마를 정의할 수도 있다.</p>
+<h2 id="비교"><a href="#비교" class="headerlink" title="비교"></a>비교</h2><p>두 구조는 각각의 특징이 존재하며, 이를 정리하면 아래와 같다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>타입</th>
+<th>Schema on Write</th>
+<th>Schema on Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>데이터 확인</td>
+<td>적재 전</td>
+<td>읽기 전</td>
+</tr>
+<tr>
+<td>적재 속도</td>
+<td>비교적 느림</td>
+<td>비교적 빠름</td>
+</tr>
+<tr>
+<td>읽는 속도</td>
+<td>비교적 빠름</td>
+<td>비교적 느림</td>
+</tr>
+<tr>
+<td>오류 빈도</td>
+<td>비교적 낮음</td>
+<td>비교적 높음</td>
+</tr>
+<tr>
+<td>유연성</td>
+<td>비교적 낮음</td>
+<td>비교적 높음</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>BIGDATA</category>
+        <category>Engineering</category>
+      </categories>
+      <tags>
+        <tag>Hive</tag>
+        <tag>Schema</tag>
+        <tag>RDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ETL과 ELT</title>
+    <url>/2022/04/04/Engineering/engineering-0/</url>
+    <content><![CDATA[<p>ETL과 ELT에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
+<h2 id="시작하기-전에"><a href="#시작하기-전에" class="headerlink" title="시작하기 전에"></a>시작하기 전에</h2><p>데이터 엔지니어링을 경험해봤다면 누구나 들어봤을 용어가 바로 ETL, ELT이다. 해당 용어들은 Extract(추출), Transform(변환), Load(적재)의 약자로 데이터 처리를 어떤 순서로 진행하는지를 나타낸다. 본격적으로 공부하기에 앞서 각 과정들이 어떤 작업인지 살펴보자.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>단어</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Extract(추출)</td>
+<td>원본 데이터베이스 또는 데이터 소스에서 소스 데이터를 가져오는 과정</td>
+</tr>
+<tr>
+<td>Transform(변환)</td>
+<td>대상 데이터가 나머지 데이터와 통합할 수 있도록 구조를 변경하는 과정</td>
+</tr>
+<tr>
+<td>Load(적재)</td>
+<td>데이터를 스토리지 시스템에 저장하는 과정</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>그럼 우리는 왜 위와 같은 작업들을 진행하는 걸까? 바로 데이터 분석을 하기 위해서는 의미있고 정제된 데이터들이 필요하기 때문이다. 우리가 일상적으로 수집할 수 있는 데이터들은 대부분 정형화되어 있지 않다. 따라서 원천 데이터베이스에서 필요한 데이터만 추출하여 분석에 사용될 형태로 변환하고 이를 적재하여 분석가에게 전달하는 것이다.</p>
+<h2 id="ETL"><a href="#ETL" class="headerlink" title="ETL"></a>ETL</h2><p>ETL은 추출 &gt; 변환 &gt; 적재 순으로 데이터를 처리한다. 추출 단계에서는 원천 데이터베이스에서 필요한 데이터를 추출하고 이를 스테이징 영역에 임시 보관한다. 그다음 왜 바로 적재하지 않고 변환을 먼저해야 할까? 그 이유는 OLAP 데이터 웨어하우스는 관계형 SQL 기반 데이터 구조를 사용하기 때문이다.</p>
+<p><strong>NOTE</strong><br>OLAP 데이터 웨어하우스란?<br>OLAP란 Online Analytical Processing의 약자로 데이터 웨어하우스와 같은 대규모 데이터에 최종 사용자가 직접 접근하여 대화식으로 정보를 분석하고 의사결정을 지원하는 처리 방식이다. 즉, 분석가가 필요한 정보들을 데이터 웨어하우스에 직접 요청하고 받는 구조이다.<br>데이터 웨어하우스(DW)란 데이터 분석, 데이터 마이닝 등을 지원하기 위해 서로 다른 위치의 데이터를 카테고리 별로 통합하여 적재한 데이터 저장소이다.  </p>
+<p>따라서 데이터 웨어하우스에 적재(Load)되기 이전에 변환(Transform)을 거쳐 필요없는 데이터를 삭제하거나 데이터 타입을 변환하거나 민감정보에 필터링, 마스킹 등을 진행한 후에 적재로 넘어간다. 이렇게 구축된 데이터 웨어하우스는 분석가 등의 사용자들에게 지원된다.</p>
+<h2 id="ELT"><a href="#ELT" class="headerlink" title="ELT"></a>ELT</h2><p>ELT는 추출 &gt; 적재 &gt; 변환 순으로 데이터를 처리한다. 원천 데이터베이스에서 필요한 데이터를 추출한 후 이를 어떠한 정제과정 없이 바로 데이터 레이크(DataLake)에 적재를 진행하며 이후 필요하다고 요청된 데이터만 변환 저리를 하여 제공한다.</p>
+<p><strong>NOTE</strong><br>데이터 레이크란?<br>데이터 레이크는 데이터 웨어하우스와 달리 정형, 비정형, 반정형 데이터를 모두 저장할 수 있는 특별한 저장소이다. 그렇기에 데이터 웨어하우스처럼 데이터를 적재하기 위해서 특정 포맷에 맞춰 변환할 필요가 없으며 원천의 Raw 데이터를 한번에 저장한다. 또한 데이터 레이크에 있는 데이터는 분석을 위해 필요할 때 변환되며 이러한 경우 스키마가 적용되어 데이터 분석이 가능해진다.</p>
+<p>따라서 ELT에서는 스테이징 단계를 거치지 않으며, 변환 또한 필요한 일부 데이터만 이루어지기에 상대적으로 유연하게 데이터를 처리할 수 있다.</p>
+<h2 id="비교"><a href="#비교" class="headerlink" title="비교"></a>비교</h2><p>ETL과 ELT를 비교하면 다음과 같다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ETL</th>
+<th>ELT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>순서</td>
+<td>추출 &gt; 변환 &gt; 적재</td>
+<td>추출 &gt; 적재 &gt; 변환</td>
+</tr>
+<tr>
+<td>데이터 저장소</td>
+<td>데이터 웨어하우스</td>
+<td>데이터 레이크</td>
+</tr>
+<tr>
+<td>데이터 형태</td>
+<td>관계형 SQL 기반 구조</td>
+<td>모든 데이터 타입(정형, 반정형, 비정형)</td>
+</tr>
+<tr>
+<td>장점</td>
+<td>- 효율적이고 안정적인 데이터 분석 가능 <br> - 개인 정보 보호 및 보호 규정을 준수 가능 <br> - 정교한 데이터 변환 수행 가능</td>
+<td>- 모든 데이터 타입 활용 가능 <br> - 대규모의 데이터 수집 가능 <br> - 데이터 적재 시간이 상대적으로 짧음</td>
+</tr>
+<tr>
+<td>단점</td>
+<td>- 데이터 변환 과정의 시간이 다소 소요 <br> - 구축 초기 비용이 높고 유지보수가 필요</td>
+<td>- 개인 정보 보호 및 보호 규정을 준수 어려움 <br> - 데이터 접근 관련 보안 이슈 존재</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>BIGDATA</category>
+        <category>Engineering</category>
+      </categories>
+      <tags>
+        <tag>data</tag>
+        <tag>ETL</tag>
+        <tag>ELT</tag>
+        <tag>dataflow</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>하드웨어의 기초</title>
+    <url>/2022/04/02/Infra/infra-1/</url>
+    <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 야마자키 야스시, 미나와 케이코, 아제카츠 요헤이, 사토 타카히코의 저서인  『그림으로 공부하는 IT 인프라 구조』 를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>CPU는 Central Processing Unit의 약자이며 흔히 코어(Core)라고도 불린다. CPU는 명령을 받아 연산을 실행하고 결과를 반환하는 연산 처리를 담담하며, 이때 사용되는 명령과 데이터는 기억 장치인 메모리나 입출력 장치인 저장소를 통해 전달된다. 그렇다면 CPU에 명령을 내리는 건 무엇일까? 바로 운영체제(OS)이다. 운영체제는 프로세스와 키보드, 마우스와 같은 입력 등을 통해 명령을 받아 이를 CPU에 전달한다. CPU는 연산 과정에서 대량의 전기신호를 처리하기 때문에 발열이 심하며 이를 제어하기 위해 냉각기도 같이 구성된다.</p>
+<h2 id="메모리"><a href="#메모리" class="headerlink" title="메모리"></a>메모리</h2><p>메모리(RAM)는 컴퓨터의 기억 영역을 담당하여 CPU에 전달할 데이터를 저장하거나 처리 결과를 보관한다. 메모리는 CPU 내부에 있는 메모리 컨트롤러의 채널을 통해 명령 및 데이터를 주고받으며 이를 위해 보통 CPU 옆에 위치한다. 또한 메모리에 저장되는 정보는 오로지 전기적인 작업으로만 처리되기에 전원이 꺼지면 모두 휘발된다. 이런 결점에도 메모리를 사용하는 이유는 엑세스 속도가 매우 빠르기 때문이다. (여기서 엑세스란 데이터를 쓰거나 읽는 동작을 말한다.)<br>CPU 내부에도 작은 메모리를 가지고 있는데, 보통 1차(L1)/2차(L2) 캐시라고 불리며 CPU 내부에 존재한다. 그렇기에 메모리(RAM)보다는 엑세스 속도가 더 빠르지만 용량이 작아 보통 자주 사용되는 명령이나 데이터를 보관한다. 일반적으로 메모리 용량이 커질수록 액세스 속도가 느려지기에 캐시 메모리는 작게 여러 단계를 두어 명령 및 데이터를 저장한다.</p>
+<p>또한 메모리는 처리지연(latency)을 최소화하기 위해 메모리를 복수개의 모듈(뱅크,bank)로 나누고 각 모듈에 연속적인 주소를 부여하여 동시에 접근이 가능하게 하는 방법인 ‘메모리 인터리빙’이라는 기능이 있다. 이는 대부분의 데이터가 연속해서 액세스 된다는 규칙을 기반으로 만들어진 것이다. 이 기능을 활용하기 위해서는 모든 채널의 동일 뱅크에 메모리를 배치해야 하며, 채널 영역도 많이 사용된다.</p>
+<h2 id="I-O-장치"><a href="#I-O-장치" class="headerlink" title="I/O 장치"></a>I/O 장치</h2><p>I/O는 Input/Output의 줄임말로 데이터의 입출력을 나타내며 이를 담당하는 장치들은 크게 디스크, 네트워크 인터페이스, I/O 제어 등이 있다.</p>
+<h3 id="디스크"><a href="#디스크" class="headerlink" title="디스크"></a>디스크</h3><p>디스크는 주로 오래 보관해야 하는 데이터를 저장하는 장치이며, 종류는 크게 하드 디스크(HDD)와 반도체 디스크(SSD)로 나뉜다.<br>하드 디스크(HDD)는 자기 원반이 여러 개 들어있으며, 이것이 고속으로 회적해서 읽기/쓰기를 처리한다. 이 회전구조 때문에 속도가 물리법칙에 좌우되며 메모리처럼 순식간에 액세스할 수 없다. 일반적으로 수십 밀리초 정도의 시간이 걸린다.<br>반면 반도체 디스크(SSD)는 메모리같이 반도체로 만들어졌지만 전기가 없어도 데이터가 사라지지 않는 방식으로 설계되어 있다. SSD의 등장으로 메모리와 디스크 간의 속도 차이가 거의 없어지고 있는 추세이다.</p>
+<p>이런 디스크들을 많이 탑재하고 있는 하드웨어를 저장소(storage)라고 한다. 저장소에는 보통 데이터 I/O처리를 위한 CPU와 캐시 메모리 같이 포함되어 있으며, 실제 서버에서 데이터 읽기나 쓰기를 요청하면 CPU가 데이터를 캐시에 올려두고 관리한다. 저장소가 캐시에만 데이터를 기록하고 I/O처리를 완료했다고 서버에 알리는 방식을 라이트 백(Write Back)이라고 하며, 캐시와 디스크에 모두 기록하고 I/O처리를 완료했다고 서버에 알리는 방식을 라이트 스루(Write Through)라고 한다.</p>
+<h3 id="네트워크-인터페이스"><a href="#네트워크-인터페이스" class="headerlink" title="네트워크 인터페이스"></a>네트워크 인터페이스</h3><p>네트워크 인터페이스(NIC)는 서버와 외부 장비를 연결하기 위한 것으로 외부 접속용 인터페이스이다. 즉, 우리가 데스크탑에서 인터넷에 접속하기 위해 유선 랜(LAN, Local Area Network)을 연결할 때 사용하는 장치이다. 네트워크 인터페이스는 다른 서버나 저장소와 같은 외부 장비들과 네트워크 통신이 가능하게 함으로써 데이터를 주고 받을 수 있도록 한다.</p>
+<h3 id="I-O-제어"><a href="#I-O-제어" class="headerlink" title="I/O 제어"></a>I/O 제어</h3><p>I/O 제어는 I/O 장치들의 중요도에 따라 CPU의 처리속도를 제어하는 컨트롤러 장치들을 말한다. 즉, I/O처리 줄세우기를 시켜주는 장치인 것이다. 이런 컨트롤러들이 존재하는 이유는 CPU가 해야할 일들을 분산하여 연산에 더 집중하게 만들기 위함이다. 예를 들어 서버 내부의 디스크는 CPU와 직접 연결하고 USB같은 외부 저장장치들은 컨트롤러와 연결함으로써 I/O처리의 병목현상을 방지할 수 있다.</p>
+<h2 id="버스-Bus"><a href="#버스-Bus" class="headerlink" title="버스(Bus)"></a>버스(Bus)</h2><p>버스(Bus)는 서버 내부에 있는 컴포넌트들을 서로 연결시키는 회선을 가리키며, 각 컴포넌트가 데이터를 주고받을 수 있도록 도와주는 역할을 담당한다. 그렇다면 버스의 성능을 어떻게 측정할까? 바로 데이터를 얼마나 주고받을 수 있는지를 나타내는 대역을 통해서 확인할 수 있다. 대역은 Throughput이라고도 부르며, ‘한번에 데이터를 보낼 수 있는 전송 폭 x 1초에 전송할 수 있는 횟수’로 계산한다.</p>
+]]></content>
+      <categories>
+        <category>DEVOPS</category>
+        <category>Infra</category>
+      </categories>
+      <tags>
+        <tag>하드웨어</tag>
+        <tag>Hardware</tag>
+        <tag>CPU</tag>
+        <tag>Memory</tag>
+        <tag>Disk</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>인프라 아키텍처</title>
     <url>/2022/03/28/Infra/infra-0/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 야마자키 야스시, 미나와 케이코, 아제카츠 요헤이, 사토 타카히코의 저서인  『그림으로 공부하는 IT 인프라 구조』 를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
@@ -152,7 +385,7 @@
 </div>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Infra</category>
       </categories>
       <tags>
@@ -199,7 +432,7 @@
 <p>위 정보를 기반으로 데이터베이스 아키텍처에 대해 알아보자.</p>
 <h2 id="데이터베이스-아키텍처란"><a href="#데이터베이스-아키텍처란" class="headerlink" title="데이터베이스 아키텍처란"></a>데이터베이스 아키텍처란</h2><p>아키텍처는 어떤 시스템을 구성한 설계도이다. 그렇기에 어떤 아키텍처를 채택했는가에 따라서 해당 시스템의 견고함과 안정성이 결정된다. 만약 달성하려는 목적에 적합하지 않은 아키텍처를 사용한다면 당연히 시스템은 여러 문제들에 부딪힐 것이다. 예로 건물을 건축하는 과정을 생각해보자. 만약 어떤 사람이 10층 규모의 빌딩을 건설하려고 하는데 3층 규모의 설계도를 사용한다면 당연히 그 건물은 안정성을 보장받을 수 없다. 또한 내부균열이나 자연재해 등에 의해 문제가 발생할 가능성이 높아지며 이를 해결하기가 훨씬 어려워진다. 그래서 보통 설계를 진행할 때는 건물이 완공되고 유지되면서 부딪힐 수 있는 외부변수들을 모두 고려하여 건물의 견고함과 안정성을 향상시키고자 한다. 시스템도 마찬가지다.</p>
 <p>위 내용을 바탕으로 고민해보자. 데이터베이스 아키텍처란 무엇일까? 데이터베이스 서버들이 견고하고 안정적으로 운영될 수 있도록 구성된 설계도라고 설명할 수 있을 것이다.</p>
-<h2 id="데이터베이스-아키텍처-종류"><a href="#데이터베이스-아키텍처-종류" class="headerlink" title="데이터베이스 아키텍처 종류"></a>데이터베이스 아키텍처 종류</h2><p>어떤 서비스가 예상치 못한 중단 없이 안정적으로 지속되는 비율을 가용성이라고 하며, 가용성은 시스템의 안정성을 검증하는 하나의 요소이다. 가용성을 높이기 위한 전략으로는 크게 소수의 고품질을 지향하는 심장전략과 다수의 저품질을 지향하는 신장전략 2가지가 언급되며, 현재는 이 중에서 신장전략을 대부분 채택한다. 서비스 컴포넌트 하나에 문제가 생겨도 서비스가 중단되지 않도록 여러 개의 동일한 컴포너트를 마련해두는 것이다.</p>
+<h2 id="데이터베이스-아키텍처-종류"><a href="#데이터베이스-아키텍처-종류" class="headerlink" title="데이터베이스 아키텍처 종류"></a>데이터베이스 아키텍처 종류</h2><p>어떤 서비스가 예상치 못한 중단 없이 안정적으로 지속되는 비율을 가용성이라고 하며, 가용성은 시스템의 안정성을 검증하는 하나의 요소이다. 가용성을 높이기 위한 전략으로는 크게 소수의 고품질을 지향하는 심장전략과 다수의 저품질을 지향하는 신장전략 2가지가 언급되며, 현재는 이 중에서 신장전략을 대부분 채택한다. 서비스 컴포넌트 하나에 문제가 생겨도 서비스가 중단되지 않도록 여러 개의 동일한 컴포넌트를 마련해두는 것이다.</p>
 <h3 id="클러스터링"><a href="#클러스터링" class="headerlink" title="클러스터링"></a>클러스터링</h3><p>클러스터링은 DB서버와 저장소를 수평적인 구조로 설계된 아키텍처이다. 여러 대의 컴퓨터가 데이터 트랜젝션을 처리하다보니 데이터 정합성 유지하는 것이 중요하기 때문에 동기 방식으로 노드들 간의 데이터를 동기화한다.</p>
 <h4 id="Shared-Disk"><a href="#Shared-Disk" class="headerlink" title="Shared Disk"></a>Shared Disk</h4><p>Shared Disk란 이름 그대로 여러 대의 DB서버가 저장소(Disk)를 공유하는 구조이다. 여러 대의 DB서버가 사용되므로 단일 DB서버 구조에 비해 장애가능성이 현져히 낮아지지만, 단일 저장소로 운영하다보니 저장소에 장애가 발생한 경우 서비스가 중단될 수 있다.<br>Shared Disk 구조는 아래와 같다.</p>
 <p><img src="/images/159.png" alt="SD"></p>
@@ -221,7 +454,7 @@
 <h3 id="레플리케이션"><a href="#레플리케이션" class="headerlink" title="레플리케이션"></a>레플리케이션</h3><p>레플리케이션은 DB서버와 저장소를 그대로 복제해두는 아키텍처이다. 레플리케이션의 DB서버는 마스터(master)-슬레이브(slave)구조로 구성되며, 마스터는 실제 서비스의 데이터를 관리하고 슬레이브 서버는 마스터와 비동기 방식으로 동기화한다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -401,7 +634,7 @@
 </div>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -476,7 +709,7 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hanoi_num_func</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span>**n - <span class="number">1</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Algorithms</category>
       </categories>
       <tags>
@@ -487,11 +720,10 @@
       </tags>
   </entry>
   <entry>
-    <title>2. Flask 웹 서버 구축하기</title>
-    <url>/2022/03/01/KBO/kbo-2/</url>
-    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 스크래핑한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.</p>
+    <title>Flask 웹 서버 구축하기</title>
+    <url>/2022/03/01/Dashboard/kbo-2/</url>
+    <content><![CDATA[<p>Flask로 웹 서버를 구축하는 과정에 대해서 정리합니다.</p>
 <a id="more"></a>
-<h2 id="웹-서버-환경-셋팅하기"><a href="#웹-서버-환경-셋팅하기" class="headerlink" title="웹 서버 환경 셋팅하기"></a>웹 서버 환경 셋팅하기</h2><p>원래는 스터디 팀원과 같이 사용할 목적으로 DB 서버와 웹 서버를 구분했었다. 하지만 팀원분이 취업하시면서 해당 프로젝트는 혼자서 마무리하게 되었고, 결국 DB 서버와 웹 서버를 구분할 필요가 없어졌다. 그래서 하나의 서버에 모두 셋팅을 하려고 한다.</p>
 <h3 id="Static-IP-setting"><a href="#Static-IP-setting" class="headerlink" title="Static IP setting"></a>Static IP setting</h3><p>관리의 편리함을 위해 서버가 재가동 되어도 동일한 IP를 유지하도록 설정하고자 한다. 현재 사용하고 있는 것은 AWS의 가상 서버이기에 콘솔에서 변경해보자.</p>
 <p><img src="/images/154.png" alt="server"></p>
 <p>lightsail 콘솔에 들어가면 네트워킹이라는 섹션이 있다. 이를 클릭하면 위 사진과 같이 “고정 IP 생성”이라는 버튼을 찾을 수 있다.</p>
@@ -515,8 +747,8 @@
 <p>nohup을 사용하여 구동하면 웹 서버에 로그가 nohup.out에 작성된다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>KBO Dashboard</category>
+        <category>PROGRAMMING</category>
+        <category>Web/Dashboard</category>
       </categories>
       <tags>
         <tag>aws</tag>
@@ -564,9 +796,9 @@
       </tags>
   </entry>
   <entry>
-    <title>2. robots.txt 확인</title>
-    <url>/2022/02/02/KBO/kbodata-2/</url>
-    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
+    <title>robots.txt 확인</title>
+    <url>/2022/02/02/Package/kbodata-2/</url>
+    <content><![CDATA[<p>웹사이트에서 데이터를 스크래핑할 때 robots.txt를 확인해야 하는 이유에 대해서 정리합니다.</p>
 <a id="more"></a>
 <h2 id="Web-Scraping"><a href="#Web-Scraping" class="headerlink" title="Web Scraping"></a>Web Scraping</h2><p>스크래핑(scraping)은 말 그대로 다양한 매체에 있는 데이터를 모으는 행위를 의미한다. 흔히 신문이나 잡지 등을 “스크랩한다”라는 표현을 사용하는데 웹 스크래핑 또한 동일한 범주이다. 즉, 웹 스크래핑이란 웹 기반 프로그램에서 데이터들을 가져와 모으는 방법들을 통칭한다.</p>
 <p>스크래핑을 통해 다른 웹사이트에 제공된 데이터를 가져가서 사용하는 것은 어떨까? 대부분은 스크래핑 자체가 사용자들의 브라우저에 보여지는 데이터를 가져와 사용하는 것이기에 당연히 불법이 아니라고 생각한다. 우리가 신문을 스크랩하는 행위가 불법은 아니니 말이다. 맞다. 웹 스크랩핑 행위 자체는 문제가 되지 않는다. 하지만 그 행위가 초래하는 결과가 상업적인 피해를 주는 경우에는 당연히 법적인 문제가 될 수 있다.</p>
@@ -603,8 +835,8 @@
 </blockquote>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>KBO-data</category>
+        <category>PROGRAMMING</category>
+        <category>Package</category>
       </categories>
       <tags>
         <tag>data</tag>
@@ -616,9 +848,9 @@
       </tags>
   </entry>
   <entry>
-    <title>1. Poetry로 패키지 관리</title>
-    <url>/2022/02/02/KBO/kbodata-1/</url>
-    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
+    <title>Poetry로 패키지 관리</title>
+    <url>/2022/02/02/Package/kbodata-1/</url>
+    <content><![CDATA[<p>Python에서 Poetry로 패키지를 관리하는 방법을 정리합니다.</p>
 <a id="more"></a>
 <h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 파이썬 패키지 및 의존성을 관리해주는 도구이다.</p>
 <h2 id="Poetry-설치"><a href="#Poetry-설치" class="headerlink" title="Poetry 설치"></a>Poetry 설치</h2><p>Poetry 설치는 <a href="https://python-poetry.org/docs/#installation" target="_blank" rel="noopener">공식 홈페이지</a>에 설명되어 있다.</p>
@@ -662,8 +894,8 @@
 <p><img src="/images/153.png" alt="kbodata"></p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>KBO-data</category>
+        <category>PROGRAMMING</category>
+        <category>Package</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -674,9 +906,9 @@
       </tags>
   </entry>
   <entry>
-    <title>0. KBO-data 패키지</title>
-    <url>/2022/01/23/KBO/kbodata-0/</url>
-    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
+    <title>KBO-data 패키지</title>
+    <url>/2022/01/23/Package/kbodata-0/</url>
+    <content><![CDATA[<p>이 글은 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
 <a id="more"></a>
 <h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>이 프로젝트의 목표는 크게 2가지아다.</p>
 <ul>
@@ -708,8 +940,8 @@
 <h2 id="패키지-작업"><a href="#패키지-작업" class="headerlink" title="패키지 작업"></a>패키지 작업</h2><p>이 프로젝트에서는 KBO 데이터를 스크래핑하는 패키지를 만들어 파이썬 패키지 사이트인 <a href="https://pypi.org" target="_blank" rel="noopener">PyPI</a>에 업로드할 예정이다. PyPI에 업로드된 패키지는 python 패키지 관리 시스템인 Pip로 바로 다운받을 수 있다. 좀 더 편리한 패키지 작업을 위해서 Poetry를 사용하여 진행할 예정이다. Poetry에 대한 자세한 내용은 <a href="https://python-poetry.org" target="_blank" rel="noopener">이 사이트</a>에서 확인할 수 있다. 가능하다면 Poetry에 대한 글도 작성할 예정이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>KBO-data</category>
+        <category>PROGRAMMING</category>
+        <category>Package</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -723,8 +955,8 @@
       </tags>
   </entry>
   <entry>
-    <title>[Hive] Hive 아키텍쳐</title>
-    <url>/2021/12/30/Bigdata/bigdata-3/</url>
+    <title>Hive 아키텍쳐</title>
+    <url>/2021/12/30/Platform/platform-3/</url>
     <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
 <p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Bigdata/bigdata-0/#more">인트로 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
 <h2 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h2><p>하이브(hive)는 Hadoop용 RDB 서비스이다. HDFS를 사용함에 있어 데이터베이스나 테이블 개념으로 디렉토리를 구성하고 관리하며, 이를 바탕으로 SQL과 유사한 HiveQL이라는 문법을 지원한다. 즉, 자바로 맵리듀스 프로그램을 작성하는 것이 아니라 간단한 sql 문법만으로도 Hadoop에 데이터를 저장하거나 가져올 수 있다. 이렇게만 보면 사용방법은 mysql과 같은 RDB와 매우 유사해보인다.<br>하지만 스키마를 정의하고 데이터를 입력하는 구조는 기존 RDB와는 다르다. 스키마를 먼저 작성하고 그 다음 데이터를 입력해야 하는 기존 RDB와 달리 하이브는 데이터를 HDFS에 파일단위로 저장한 후에 스키마를 정의하여 데이터를 가져올 수 있다. 하이브는 RDB에 요구되는 스키마 정보들을 metastore에 저장하며, metastore는 다른 DBMS를 사용한다.</p>
@@ -772,8 +1004,8 @@
 <p>엔진에 대한 자세한 비교는 다음 글에서 이야기 해보자.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Bigdata</category>
+        <category>BIGDATA</category>
+        <category>Platform</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -786,8 +1018,8 @@
       </tags>
   </entry>
   <entry>
-    <title>[YARN] YARN 아키텍쳐</title>
-    <url>/2021/12/23/Bigdata/bigdata-2/</url>
+    <title>YARN 아키텍쳐</title>
+    <url>/2021/12/23/Platform/platform-2/</url>
     <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Bigdata/bigdata-1/#more">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
@@ -819,8 +1051,8 @@
 <p>HDFS와 동일한 구조이기에 보통 네임노드와 같은 서버에 셋팅하는 경우가 많으며, 효율적인 리소스 사용을 위해 위 그림과 달리 한 서버에 액티브 네임노드와 스탠바이 RM을 두는 크로스 셋팅을 하기도 한다. 또한 Active-StandBy구조의 경우 필수적으로 Jookeeper의 failover Controller가 셋팅되어 각각의 생존여부를 Jookeeper가 관리하도록 한다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Bigdata</category>
+        <category>BIGDATA</category>
+        <category>Platform</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -832,8 +1064,8 @@
       </tags>
   </entry>
   <entry>
-    <title>[Python] 파이썬스러운 코드</title>
-    <url>/2021/12/10/CleanCode/Clean-code-1/</url>
+    <title>[클린코드] 파이썬스러운 코드</title>
+    <url>/2021/12/10/Python/Clean-code-1/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="파이썬스럽다-pythonic-의-의미"><a href="#파이썬스럽다-pythonic-의-의미" class="headerlink" title="파이썬스럽다(pythonic)의 의미"></a>파이썬스럽다(pythonic)의 의미</h2><p>모든 프로그래밍 언어는 각자의 고유한 관용구(idiom)를 가지고 있다. 여기서 관용구란 특정 작업을 수행하기 위한 특별한 방법이며, 패턴이라고도 불린다. 이런 관용구를 따른 코드를 관용적이라고 부르며, 파이썬에서는 파이썬스럽다고 한다. 이런 관용구를 따른 코드는 더 나은 성능을 낸다.</p>
@@ -916,8 +1148,8 @@
 <h3 id="변경가능한-파라미터-값"><a href="#변경가능한-파라미터-값" class="headerlink" title="변경가능한 파라미터 값"></a>변경가능한 파라미터 값</h3><p>쉽게 말해 변경 가능한 객체를 함수의 기본 인자로 사용하면 안된다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Clean Code</category>
+        <category>LANGUAGE</category>
+        <category>Python</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -929,8 +1161,8 @@
       </tags>
   </entry>
   <entry>
-    <title>[Python] 소개, 코드 포매팅과 도구</title>
-    <url>/2021/12/06/CleanCode/Clean-code-0/</url>
+    <title>[클린코드] 소개, 코드 포매팅과 도구</title>
+    <url>/2021/12/06/Python/Clean-code-0/</url>
     <content><![CDATA[<p>글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="클린-코드의-의미"><a href="#클린-코드의-의미" class="headerlink" title="클린 코드의 의미"></a>클린 코드의 의미</h2><p>클린 코드에 대한 정확하고 엄격한 정의는 없다. 그렇다면 어떤 코드를 클린 코드라고 할 수 있을까? 이 질문을 살펴보기 전에 먼저 코드가 무엇인지 고민해보자.</p>
@@ -980,8 +1212,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">make checklist</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Clean Code</category>
+        <category>LANGUAGE</category>
+        <category>Python</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -1035,8 +1267,8 @@
       </tags>
   </entry>
   <entry>
-    <title>[HDFS] HDFS 아키텍쳐</title>
-    <url>/2021/12/01/Bigdata/bigdata-1/</url>
+    <title>HDFS 아키텍쳐</title>
+    <url>/2021/12/01/Platform/Platform-1/</url>
     <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p>하둡은 크게 클러스터의 데이터를 저장하는 HDFS와 리소스를 관리하는 YARN, 이 2가지의 형태로 이루어져 있다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
@@ -1064,8 +1296,8 @@
 <p><img src="/images/129.png" alt="compare"></p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Bigdata</category>
+        <category>BIGDATA</category>
+        <category>Platform</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -1077,8 +1309,8 @@
       </tags>
   </entry>
   <entry>
-    <title>[Intro] 빅데이터 플랫폼</title>
-    <url>/2021/11/21/Bigdata/bigdata-0/</url>
+    <title>빅데이터 플랫폼</title>
+    <url>/2021/11/21/Platform/platform-0/</url>
     <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="빅데이터"><a href="#빅데이터" class="headerlink" title="빅데이터"></a>빅데이터</h2><p>요즘 4차 산업혁명이라는 말과 함께 여기저기에서 <code>빅데이터</code>라는 단어를 들을 수 있다. 또한 빅데이터에 대한 정의는 아직까지 사람마다, 업계마다 조금씩 다른 것 같다. 그런 의미에서 빅데이터에 관심있는 사람들은 한 번쯤 “빅데이터란 어느정도 크기의 데이터를 말하는걸까?” 하는 고민이 있었을 것이다. 개인적으로 생각했던 빅데이터의 기준은 “하나의 컴퓨터(서버)로 핸들링할 수 없는 크기의 데이터”이다. 이렇게 생각한 근거는 개인적인 경험에 있다.</p>
 <p>옛날에 주식데이터 분석 프로젝트에서 예상치 못한 난관을 만났던 적이 있다. 주식데이터를 열심히 크롤링해서 많은 데이터 소스를 가지게 되었고 이를 바탕으로 데이터 분석을 진행하려고 하였으나, 하나의 컴퓨터에서 모아둔 모든 데이터를 매니징 할 수 없었다. 파일을 전부 열 수도 없었고, 그렇기에 분석도 진행할 수 없었다. 물론 아마도 실제 운영에 사용하는 서버였다면 가능했겠지만 우리는 현재 사용중인 노트북이 전부였기에 이런 부분은 예상하지 못한 문제였던 것이다. 그 때 “아, 이게 빅데이터구나” 라는 것을 느꼈다. 빅데이터는 절대적인 크기가 있는 것이 아니라 제공된 자원에서 일반적인 방식으로 관리할 수 없는 크기의 데이터라는 생각이 문뜩 스쳐갔다.</p>
@@ -1087,8 +1319,8 @@
 <p>그렇다면 자바 개발자만 하둡을 사용할 수 있는가? 과거에는 그랬다. 하지만 지금은 많은 에코 시스템이 생겼기 때문에 sql문으로도 하둡 클러스터에 저장된 데이터를 가져올 수 있다. sql엔진으로는 하이브(hive)와 임팔라(impala), 스파크(spark) 등이 있다. 이처럼 하둡을 기반으로 한 여러 에코 시스템들이 존재한다. 현재 빅데이터 엔지니어로 일하면서 하둡 및 에코 시스템들을 실제 업무에서 사용하고 있으며, 또 공부한 내용들을 블로그에 하나씩 저장해두려고 한다. 다음 글부터는 하둡의 코어 서비스인 HDFS와 YARN를 시작으로 삼아 각각의 에코 시스템들을 기본 아키텍쳐에 대해서 정리할 계획이다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Bigdata</category>
+        <category>BIGDATA</category>
+        <category>Platform</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -1136,7 +1368,7 @@
 <h3 id="cargo-build-—release"><a href="#cargo-build-—release" class="headerlink" title="cargo build —release"></a>cargo build —release</h3><p>이제 프로젝트가 어느정도 완성이 되면 최적화된 컴파일을 실행해야할 순간이 된다. 그때는 <code>cargo build</code>에 옵션 <code>--release</code>를 추가로 붙여서 컴파일을 실행한다. 해당 실행파일은 <code>target/debug/</code>에 생기는 것이 아니라 <code>target/release/</code>에 생성되며, 시간도 일반 빌드보다 오래걸린다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -1911,7 +2143,7 @@
 <p>위에서 정의한 <code>verification&lt;T,E&gt;</code>는 성공했을 때와 실패했을 때의 값들을 모두 나타낼 수 있다.</p>
 <h2 id="메서드-정의"><a href="#메서드-정의" class="headerlink" title="메서드 정의"></a>메서드 정의</h2>]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -2249,7 +2481,7 @@
 <p>위 코드는 연관 함수와 메서드를 <code>impl</code> 블록으로 나누어 작성하였다. 물론 예시처럼 간단한 코드들은 하나의 <code>impl</code> 블록에 써도 상관없지만 가능하다는 것을 보기 위해 나눈 것일 뿐 어떤 규칙은 없다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -2320,7 +2552,7 @@
 <p>위 코드는 <code>Rectangle</code>이라는 구조체를 생성 및 사용하여 변수를 정의하고, <code>area()</code>에서는 밑변인 <code>width</code>와 높이인 <code>height</code>를 필드로 선택하여 구현하였다. 위와 같이 작성된 프로그램은 이후 다른 프로그래머가 소스 코드를 이해함에 있어 훨씬 명확한 의미를 전달해 줄 것이다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -2363,7 +2595,7 @@
 <h2 id="구조체-데이터의-소유권"><a href="#구조체-데이터의-소유권" class="headerlink" title="구조체 데이터의 소유권"></a>구조체 데이터의 소유권</h2><p>이번 글 모든 예시에서 우리는 <code>String</code> 타입을 사용하였다. 구조체에서도 물론 <code>&amp;str</code>과 같은 참조를 사용할 수 있지만 이를 위해서는 러스트 기능인 <code>lifetime</code>을 사용해야 한다. <code>lifetime</code>는 특정 범위 내에서 참조된 데이터의 유효성을 보장해준다. 이에 대한 부분도 뒤에서 더 자세히 다룰 것이다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -2403,7 +2635,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Ansible</category>
       </categories>
       <tags>
@@ -2439,7 +2671,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Hello</span><br><span class="line">changed</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -2942,7 +3174,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -3033,7 +3265,7 @@
 <p>먼저 <code>s1</code>의 값은 힙 메모리에, <code>s2</code>는 스택 메모리에 할당된다. 그 다음 <code>s1</code>은 <code>test_heap()</code> 범위로 이동하면서 자연스럽게 값이 해제된다. 즉, 힙 메모리에 저장된 변수는 다른 함수로 이동하면서 drop 되는 것이다. 그 후 이동된 <code>s1</code> 값도 <code>test_heap()</code>가 종료되면서 <code>t1</code>으로 할당된다. 반면 <code>s2</code>의 경우는 스택 메모리에 저장되기에 <code>test_stack()</code>으로 이동해도 그대로 값이 남아있는다. 따라서 현재까지 할당된 변수들은 <code>s2</code>, <code>t1</code>, <code>t2</code>이다. 그리고 <code>main()</code>가 종료되면서 모든 변수들이 할당 해제된다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>LANGUAGE</category>
         <category>Rust</category>
       </categories>
       <tags>
@@ -3045,20 +3277,10 @@
       </tags>
   </entry>
   <entry>
-    <title>1. AWS Lightsail로 DB 서버 생성하기</title>
-    <url>/2021/07/25/KBO/kbo-1/</url>
-    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 스크래핑한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.</p>
+    <title>AWS Lightsail로 DB 서버 생성하기</title>
+    <url>/2021/07/25/Dashboard/kbo-1/</url>
+    <content><![CDATA[<p>이 글은 AWS Lightsail 인스턴스를 생성하여 DB서버를 구축하는 방법을 정리합니다.</p>
 <a id="more"></a>
-<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>이전 글에서 언급했지만 사실 해당 프로젝트는 개인적으로 진행했었다. 스터디 팀원들과 함께 KBO 홈페이지 데이터 스크래핑을 성공한 후, 웹개발을 배워보고 싶은 마음에 해당 데이터로 “내맘대로 만드는 간단 대시보드”를 만들기 시작하였다. 하지만 스터디에서 스크래핑한 데이터를 그냥 두는 것은 아깝다는 의견이 많아졌고, 이는 결국 팀원마다 대시보드를 만드는 것으로 결론이 났다. 즉, 다같이 DB 서버 하나를 생성해서 각각의 웹 서버들이 공유하는 방식으로 진행하자는 것이다.</p>
-<p>처음 혼자서 웹서버를 올렸던 구조는 AWS의 ec2 프리티어 버전 인스턴스를 하나 생성해서 도커를 설치한 후, 각 컨테이너에 DB, flask를 올리는 방식이다. 물론 DB와 웹서버는 분리해서 사용하는 것이 맞다고 알고 있었지만, 가벼운 사이드 프로젝트라서 금전을 아끼고 싶었다. 그러다가 ec2 무료 사용시간을 모두 소진했고, 마침 스터디 다른 팀원들도 웹 서버를 만든다고 해서 이런 결말을 맞았다.</p>
-<h2 id="아키텍처-요약"><a href="#아키텍처-요약" class="headerlink" title="아키텍처 요약"></a>아키텍처 요약</h2><p>해당 프로젝트의 구조는 다음과 같다.</p>
-<ol>
-<li>깃허브 액션: KBO 홈페이지 스크래핑 및 실시간 데이터 전처리</li>
-<li>DB 서버: 데이터 저장 및 대시보드 데이터 전송</li>
-<li>웹 서버: 데이터 분석 및 시각화</li>
-</ol>
-<p>참 간단하다. 매일 KBO 공식 홈페이지에 업데이트 되는 자료들을 스크래핑한 후 DB에 저장할 수 있는 형태로 전처리하여 DB 서버로 보낸다. 그러면 DB 서버에는 새로운 시합들에 대한 정보가 저장되고, 해당 DB 서버와 연결된 대시보드는 실시간 정보가 반영된 분석 및 시각화를 제공할 수 있다.</p>
-<p>하지만 위 구조는 앞으로 만들어질 실시간 데이터만을 처리한다. 즉, 2000년부터 2021년 현재까지 과거 데이터의 경우는 수동적으로 스크래핑하여 전처리한 후 DB에 저장해주어야 한다. 이를 위해서 먼저 해야할 일은 사용할 DB 서버 생성, DB 스키마 설계 등 이었다.</p>
 <h2 id="DB-서버-생성"><a href="#DB-서버-생성" class="headerlink" title="DB 서버 생성"></a>DB 서버 생성</h2><p>DB 서버는 AWS의 lightsail을 사용하기로 결정했다. 그 이유로는 매달 결정되어 있는 가격대와 편리함 등이 꼽혔다. 여러 명이 같이 돈을 지불해야 하는 탓에 금액이 정해져있지 않으면 매달 귀찮은 일이 발생할 것 같았다.</p>
 <h3 id="AWS-lightsail-인스턴스-생성"><a href="#AWS-lightsail-인스턴스-생성" class="headerlink" title="AWS lightsail 인스턴스 생성"></a>AWS lightsail 인스턴스 생성</h3><p>AWS의 계정이 있다면, 간단하다. 서비스에서  lightsail을 찾아서 들어간 후 <code>인스턴스 생성</code>을 클릭하면 된다. 그러면 아래와 같은 화면은 만날 수 있다.</p>
 <p><img src="/images/115.png" alt="lightsail"></p>
@@ -3108,8 +3330,8 @@
 <p>이러면 DB 서버가 완성된다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>KBO Dashboard</category>
+        <category>PROGRAMMING</category>
+        <category>Web/Dashboard</category>
       </categories>
       <tags>
         <tag>mariadb</tag>
@@ -3166,7 +3388,7 @@
 <p>엔서블 설치가 완료되었다. 다음 글에서는 앤서블로 관리할 노드들을 셋팅하는 방법에 대해서 살펴보자</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Ansible</category>
       </categories>
       <tags>
@@ -3219,7 +3441,7 @@
 <p>앤서블에 대한 개괄적인 설명은 끝났다. 다음 글부터는 앤서블을 설치 및 사용법에 대해서 자세히 살펴보자.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Ansible</category>
       </categories>
       <tags>
@@ -3309,7 +3531,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 재부팅 없이 변경</span></span><br><span class="line">systemctl isolate graphical.target</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -3393,7 +3615,7 @@
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> lis: [<span class="built_in">i32</span>; <span class="number">10</span>] = [<span class="number">10</span>,<span class="number">9</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">3</span>];</span><br><span class="line">    insertion_sort(lis);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">insertion_sort</span></span>(<span class="keyword">mut</span> lis: [<span class="built_in">i32</span>; <span class="number">10</span>]) &#123;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>..lis.len()&#123;</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> (<span class="number">1</span>..i+<span class="number">1</span>).rev()&#123;</span><br><span class="line">            <span class="keyword">if</span> lis[j] &lt; lis[j-<span class="number">1</span>]&#123;</span><br><span class="line">                <span class="keyword">let</span> temp = lis[j];</span><br><span class="line">                lis[j] = lis[j-<span class="number">1</span>];</span><br><span class="line">                lis[j-<span class="number">1</span>]=temp</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;:?&#125;"</span>,lis)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Algorithms</category>
       </categories>
       <tags>
@@ -4027,7 +4249,7 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">SECOND</span>(DATETIME) <span class="keyword">FROM</span> <span class="string">'테이블 이름'</span>;</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -4094,7 +4316,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ free -h</span><br><span class="line">            total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:          15G        4.3G        3.7G         29M        7.5G         10G</span><br><span class="line">Swap:        7.9G          0B        7.9G</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -4142,7 +4364,7 @@
 <p>위의 결과는 명령어 <code>which</code>를 통해서 java 실행파일의 절대 경로를 보여준 예시이다. <code>which</code>는 경로가 있는 실행파일들의 위치를 보여준다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -4201,7 +4423,7 @@
 <h3 id="apropos-키워드"><a href="#apropos-키워드" class="headerlink" title="apropos (키워드)"></a>apropos (키워드)</h3><p>키워드가 들어간 명령어를 찾아서 리스트업 해준다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>DEVOPS</category>
         <category>Linux</category>
       </categories>
       <tags>
@@ -4215,9 +4437,9 @@
       </tags>
   </entry>
   <entry>
-    <title>0. Intro</title>
-    <url>/2021/02/08/KBO/kbo-0/</url>
-    <content><![CDATA[<p>해당 시리즈는 한국프로야구(Korea Baseball Organization) 웹사이트에서 스크래핑한 데이터를 분석하여 대시보드를 만드는 과정을 정리합니다.</p>
+    <title>KBO Dashboard</title>
+    <url>/2021/02/08/Dashboard/kbo-0/</url>
+    <content><![CDATA[<p>이 글은 한국프로야구(Korea Baseball Organization) 대시보드를 구축할 때 사용했던 도구들을 정리합니다.</p>
 <a id="more"></a>
 <h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>해당 시리즈는 데이터 스크래핑을 진행한 이후부터 설명한다. 아마도 데이터 스크래핑은 현재 패키지 작업을 하고 있기에 따로 시리즈를 만들어 글을 쓰게 될 것 같다. 또한 해당 시리즈는 웹 개발을 배워보고 싶다는 마음으로 간단하게 만든 사이드 프로젝트이다. 따라서 상업적인 목적으로 웹을 만드는 사람들은 재미로만 봐주면 될 것 같다. 완성된 대시보드는 <a href="http://kbo.lopes.co.kr" target="_blank" rel="noopener">여기</a>로 접속하면 볼 수 있다.</p>
 <p>KBO 대시보드를 만들 때 사용하는 것들을 다음과 같다.</p>
@@ -4236,11 +4458,10 @@
 <h2 id="Bootstrap5"><a href="#Bootstrap5" class="headerlink" title="Bootstrap5"></a>Bootstrap5</h2><p>부스스트랩은 웹페이지를 쉽게 생성할 수 있도록 도와주는 HTML, CSS, JS 프레임워크이다. 직접 디자인들을 설정하지 않고도 괜찮은 테마를 사용할 수 있으며, 스크린 사이즈(PC, 태블릿, 스마트폰)에 맞춰서 반응하는 UI를 제공한다. 플라스크와 마찬가지로 사이드 프로젝트로 간단한 웹을 만들 때 사용하기 좋다. 현재 플라스크에서 사용할 수 있는 버전은 Bootstrap3이지만 새로 나온 Bootstrap5를 써보고 싶어서 라이브러리 코드를 수정해서 사용하였다. Bootstrap5를 적용하는 방법은 이후에 설명할 것이다.</p>
 <h2 id="Plotly"><a href="#Plotly" class="headerlink" title="Plotly"></a>Plotly</h2><p>Plotly는 파이썬으로 시각화를 할 수 있는 무료 오픈소스 그래프 라이브러리이다. 실시간으로 그래프를 확대 및 축소할 수도 있으며, 제공하는 그래프 종류도 다양하다. 그래프 종류가 궁금하다면 <a href="https://plotly.com/python/basic-charts/" target="_blank" rel="noopener">해당 링크</a>를 통해서 확인할 수 있다.</p>
 <h2 id="AWS-ec2-or-lightsail"><a href="#AWS-ec2-or-lightsail" class="headerlink" title="AWS ec2 or lightsail"></a>AWS ec2 or lightsail</h2><p>아마존 클라우드 서비스에서 제공하는 가상서버(ec2)를 웹 서버로 사용한다. 현재 프리 티어라서 무료로 사용하지만, 무료 기간이 끝나면 lightsail로 웹 서버를 구축할 예정이다. lightsail은 AWS에서 제공하는 가상서버이지만, ec2와 달리 월마다 가격이 정해져 있어서 비교적 저렴하다.</p>
-<h2 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h2><p>위에서 사용하는 프레임워크나 라이브러리가 무엇인지 설명했기에 앞으로는 설명 없이 바로 진행할 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>KBO Dashboard</category>
+        <category>PROGRAMMING</category>
+        <category>Web/Dashboard</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -4257,49 +4478,7 @@
       </tags>
   </entry>
   <entry>
-    <title>python에서 정규표현식 사용하기</title>
-    <url>/2021/02/08/Regex/Regex-0/</url>
-    <content><![CDATA[<p>해당 시리즈는 정규표현식 문법 및 python에서 정규표현식을 사용하는 방법들을 정리합니다.<br><a id="more"></a></p>
-<hr>
-<h2 id="정규표현식이란"><a href="#정규표현식이란" class="headerlink" title="정규표현식이란"></a>정규표현식이란</h2><p>정규표현식(regular expression or regex)는 특정 패턴을 적용하여 문자열을 보다 쉽게 처리할 수 있도록 하는 문법이다. 이는 언어도 아니고 어떤 프로그램도 아니다. 오히려 대부분의 언어들이 공통적으로 지원하는 하나의 문법체계라고 보는 것이 맞다. 정규표현식을 다룰 수 있다면 문자열을 처리하는 코드 길이는 반 이상이 줄 수 있고, 또 복잡한 처리들도 간편해진다.</p>
-<h2 id="NOTE"><a href="#NOTE" class="headerlink" title="NOTE"></a>NOTE</h2><p>이 시리즈의 목적은 정규표현식의 기본적인 원리들을 정리해두는 데 있다. 사용하는 언어마다 정규표현식이 약간 다를 수 있는데, 해당 시리즈에서 사용하는 언어는 Python이다. 따라서 우리는 <code>re</code>라는 라이브러리를 import하여 사용할 것이며 <code>re</code>가 제공하는 함수들을 사용할 것이다.</p>
-<h2 id="re"><a href="#re" class="headerlink" title="re"></a>re</h2><p><code>re</code>는 정규표현식이란 의미인 regex에서 앞글자를 따온 이름이다. 즉, 파이썬에서는 re모듈을 이용해야만 정규표현식 패턴을 사용할 수 있다. 모듈 <code>re</code>에는 많은 매서드가 있지만 그 중에 대표적으로 사용되는 메서드들을 살펴보자.</p>
-<h3 id="re-match-‘pattern’-string"><a href="#re-match-‘pattern’-string" class="headerlink" title="re.match(‘pattern’, string)"></a>re.match(‘pattern’, string)</h3><p><code>match</code>는 입력한 문자열이 처음부터 패턴과 일치하는지 여부를 확인한다. 예를 확인해보자.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; print(re.match(<span class="string">'[a-z]+'</span>, <span class="string">'12345 number'</span>))</span><br><span class="line"><span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<p>위 예시를 보면 문자열이 처음에 숫자로 시작했기 때문에 알파벳만을 포함하는 패턴과 일치하지 않아 결과값 None을 확인할 수 있다.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; print(re.match(<span class="string">'[a-z]+'</span>, <span class="string">'number'</span>))</span><br><span class="line">&lt;re.Match object; span=(<span class="number">0</span>, <span class="number">6</span>), match=<span class="string">'number'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt; string = re.match(<span class="string">'[a-z]+'</span>, <span class="string">'number123'</span>)</span><br><span class="line">print(string)</span><br><span class="line">&lt;re.Match object; span=(<span class="number">0</span>, <span class="number">6</span>), match=<span class="string">'number'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt; string.group()</span><br><span class="line"><span class="string">'number'</span></span><br></pre></td></tr></table></figure>
-<p>만약 문자열의 첫 글자가 해당 패턴에 속했다면 위와 같이 range와 매치된 값을 제공한다.<br>이를 객체로 저장하여 사용할 수도 있다. 여기서 <code>group</code>은 <code>match</code>의 매서드로 매치된 값만을 가져온다.</p>
-<h3 id="re-fullmatch-‘pattern’-string"><a href="#re-fullmatch-‘pattern’-string" class="headerlink" title="re.fullmatch(‘pattern’, string)"></a>re.fullmatch(‘pattern’, string)</h3><p><code>fullmatch</code>는 문자열의 시작만 패턴과 동일하면 되는 <code>match</code>와는 달리 문자열의 시작과 끝 모두가 패턴과 동일해야 한다.<br>위 <code>match</code>의 예시 ‘number123’은 알파벳으로 시작하기 떄문에 일치한다고 판단하여 결과값을 반환했지만 <code>fullmatch</code>에서는 아무런 결과값을 주지 않는다.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; print(re.fullmatch(<span class="string">'[a-z]+'</span>, <span class="string">'number123'</span>))</span><br><span class="line"><span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<p>따라서 <code>fullmatch</code>에서 결과값이 반환되려면 시작과 끝이 모두 패턴과 동일해야 한다.</p>
-<h3 id="re-search-‘pattern’-string"><a href="#re-search-‘pattern’-string" class="headerlink" title="re.search(‘pattern’, string)"></a>re.search(‘pattern’, string)</h3><p><code>search</code>는 문자열 내부의 순서와 상관없이 패턴과 동일한 결과값을 찾아 반환한다. 예시를 확인해보자.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; print(re.match(<span class="string">'[a-z]+'</span>, <span class="string">'123 number'</span>))</span><br><span class="line"><span class="literal">None</span></span><br><span class="line">&gt; print(re.search(<span class="string">'[a-z]+'</span>, <span class="string">'123 number'</span>))</span><br><span class="line">&lt;re.Match object; span=(<span class="number">4</span>, <span class="number">10</span>), match=<span class="string">'number'</span>&gt;</span><br></pre></td></tr></table></figure>
-<p>예시로 사용된 ‘123 number’는 <code>match</code>로 찾은 경우 처음 문자가 알파벳이 아니기에 아무것도 반환하지 않지만, <code>search</code>는 알파벳인 위치를 찾아 반환한다.</p>
-<h3 id="re-findall-‘pattern’-string"><a href="#re-findall-‘pattern’-string" class="headerlink" title="re.findall(‘pattern’, string)"></a>re.findall(‘pattern’, string)</h3><p><code>findall</code>은 문자열에서 패턴에 해당하는 모든 값들을 찾아 리스트로 반환한다. 지금까지 봤던 메서드들은 하나의 값을 제공했지만 <code>findall</code>은 <strong>리스트</strong>를 반환한다.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; re.findall(<span class="string">'[a-z]+'</span>, <span class="string">'123 number one two three'</span>)</span><br><span class="line">[<span class="string">'number'</span>, <span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>]</span><br></pre></td></tr></table></figure>
-<p>예시에서 사용한 패턴 <code>[a-z]+</code>으로 인해 연속되는 알파벳은 하나의 결과값으로 반환되기 때문에 띄어쓰기를 기준으로 단어들만 리스트 요소로 들어간 것을 볼 수 있다.<br>다음 글에서 본격적으로 패턴, 즉 정규표현식에 대해서 다룰 예정이다.</p>
-<h3 id="re-finditer-‘pattern’-string"><a href="#re-finditer-‘pattern’-string" class="headerlink" title="re.finditer(‘pattern’, string)"></a>re.finditer(‘pattern’, string)</h3><p><code>finditer</code>은 패턴에 해당하는 문자열 모두를 iterator의 형태로 반환한다. 따라서 내부의 값을 확인하려면 while문이나 for문을 사용하여 가져오면 된다. 각 객체의 값들은 <code>match</code>와 동일하기 떄문에 온전한 문자열만 보고 싶다면 <code>group()</code>으로 저장하면 된다.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; <span class="keyword">for</span> i <span class="keyword">in</span> re.finditer(<span class="string">'[a-z]+'</span>, <span class="string">'123 number one two three'</span>):</span><br><span class="line">    print(i)</span><br><span class="line">&lt;re.Match object; span=(<span class="number">4</span>, <span class="number">10</span>), match=<span class="string">'number'</span>&gt;</span><br><span class="line">&lt;re.Match object; span=(<span class="number">11</span>, <span class="number">14</span>), match=<span class="string">'one'</span>&gt;</span><br><span class="line">&lt;re.Match object; span=(<span class="number">15</span>, <span class="number">18</span>), match=<span class="string">'two'</span>&gt;</span><br><span class="line">&lt;re.Match object; span=(<span class="number">19</span>, <span class="number">24</span>), match=<span class="string">'three'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt; <span class="keyword">for</span> i <span class="keyword">in</span> re.finditer(<span class="string">'[a-z]+'</span>, <span class="string">'123 number one two three'</span>):</span><br><span class="line">    print(i.group())</span><br><span class="line">number</span><br><span class="line">one</span><br><span class="line">two</span><br><span class="line">three</span><br></pre></td></tr></table></figure>
-<p>위 예시에서 <code>finditer</code>의 객체는 <code>match</code>와 동일함을 알 수 있다.</p>
-<h3 id="re-split-‘pattern’-‘string’-‘split-number’"><a href="#re-split-‘pattern’-‘string’-‘split-number’" class="headerlink" title="re.split(‘pattern’, ‘string’, ‘split number’)"></a>re.split(‘pattern’, ‘string’, ‘split number’)</h3><p><code>split</code>은 문자열을 패턴에 맞게 분리하는 메서드이며, 사실상 가장 많이 쓰인다. 물론 파이썬에서 기본적으로 제공하는 split도 있지만 이는 쉼표, 마침표, 공백 등 단순한 조건들만 가능한 반면, <code>re</code>에서 제공하는 해당 메서드는 훨씬 복잡한 패턴들도 문자열을 분리할 수 있다. 예시로 확인해보자. 아래 예시에서는 문자 중간에 있는 숫자들을 기준으로 문자열을 분리하였다. <code>split</code>은 분리된 문자열들을 리스트로 반환한다. 또한 나누는 기준이 되는 문자는 결과에 포함되는 것이 아니라 사라진다.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; re.split(<span class="string">'[0-9]+'</span>, <span class="string">'number0 one1 two2 three3'</span>)</span><br><span class="line">[<span class="string">'number'</span>, <span class="string">' one'</span>, <span class="string">' two'</span>, <span class="string">' three'</span>, <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<p>숫자를 기준으로 문자에 맞게 잘렸지만 결과가 좀 이상하다. 어떤 객체는 앞에 띄어쓰기를 가지고 있고 또 빈 객체도 속해 있다. 정규표현식에서는 이런 부분도 패턴으로 지정하여 처리해주어야 한다.</p>
-<p>다음 글에서는 정규표현식 기본 문법에 대해서 알아보자.</p>
-]]></content>
-      <categories>
-        <category>STUDY</category>
-        <category>Regular Expression</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>regex</tag>
-        <tag>regular_expression</tag>
-        <tag>정규표현식</tag>
-        <tag>re</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>5. Hadoop과 spark 테스트하기</title>
+    <title>Hadoop과 spark 테스트하기</title>
     <url>/2020/11/12/Cluster/Cluster-5/</url>
     <content><![CDATA[<p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
@@ -4320,7 +4499,7 @@
 <p>위 코드는 하둡의 yarn에서 리소스를 받아 실행하는 것이기 때문에 결과값 또한 하둡 웹 UI에서 찾아볼 수 있다. 따라서 <code>pi-master.local:8088</code>로 접속하여 실행된 잡(어플리케이션)의 로그를 클릭하면 결과값을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
+        <category>BIGDATA</category>
         <category>Cluster</category>
       </categories>
       <tags>
@@ -4334,7 +4513,7 @@
       </tags>
   </entry>
   <entry>
-    <title>4. Hadoop 분산시스템 설정하기</title>
+    <title>Hadoop 분산시스템 설정하기</title>
     <url>/2020/11/11/Cluster/Cluster-4/</url>
     <content><![CDATA[<p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
@@ -4380,7 +4559,7 @@
 <p>다음 글에서는 하둡과 스파크에서 기본적으로 제공하는 테스트들을 실행해보자.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
+        <category>BIGDATA</category>
         <category>Cluster</category>
       </categories>
       <tags>
@@ -4394,7 +4573,7 @@
       </tags>
   </entry>
   <entry>
-    <title>3. Hadoop &amp; Spark 설치하기</title>
+    <title>Hadoop &amp; Spark 설치하기</title>
     <url>/2020/11/10/Cluster/Cluster-3/</url>
     <content><![CDATA[<p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
@@ -4424,7 +4603,7 @@
 <p>이렇게 하둡과 스파크 설치는 끝났다. 다음 글에서는 분산처리 설정하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
+        <category>BIGDATA</category>
         <category>Cluster</category>
       </categories>
       <tags>
@@ -4438,7 +4617,7 @@
       </tags>
   </entry>
   <entry>
-    <title>2. Raspberry Pi SSH 셋팅하기</title>
+    <title>Raspberry Pi SSH 셋팅하기</title>
     <url>/2020/11/09/Cluster/Cluster-2/</url>
     <content><![CDATA[<p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
@@ -4508,7 +4687,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc &amp;&amp; clusterscp ~/.bashrc</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
+        <category>BIGDATA</category>
         <category>Cluster</category>
       </categories>
       <tags>
@@ -4592,7 +4771,7 @@
 <p>위 코드는 3번째부터 아래로 3개의 데이터를 보여달라는 의미이다. SQL에서는 0부터 순서로 시작하기 때문에 2가 세 번째 레코드를 의미한다. 결과는 다음과 같다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -4642,7 +4821,7 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--예시--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'테이블 이름'</span></span><br><span class="line"><span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> <span class="string">'해당 열 이름'</span> <span class="built_in">INT</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'테이블 이름'</span></span><br><span class="line"><span class="keyword">CHANGE</span> <span class="keyword">COLUMN</span> <span class="string">'해당 열 이름'</span>  <span class="string">'해당 열 이름'</span> <span class="built_in">INT</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -4655,7 +4834,7 @@
       </tags>
   </entry>
   <entry>
-    <title>1. Raspberry Pi 환경설정하기</title>
+    <title>Raspberry Pi 환경설정하기</title>
     <url>/2020/11/02/Cluster/Cluster-1/</url>
     <content><![CDATA[<p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
@@ -4725,7 +4904,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo shutdown -h now</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
+        <category>BIGDATA</category>
         <category>Cluster</category>
       </categories>
       <tags>
@@ -4739,7 +4918,7 @@
       </tags>
   </entry>
   <entry>
-    <title>0. Raspberry Pi 4 unboxing</title>
+    <title>Raspberry Pi 4 unboxing</title>
     <url>/2020/11/02/Cluster/Cluster-0/</url>
     <content><![CDATA[<p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><a id="more"></a></p>
 <hr>
@@ -4762,7 +4941,7 @@
 <p>지금까지 라즈베리 파이4를 살펴보았다. 다음 글에서는 라즈베리 파이의 초기 환경설정에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
+        <category>BIGDATA</category>
         <category>Cluster</category>
       </categories>
       <tags>
@@ -4860,7 +5039,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -4938,7 +5117,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -4988,7 +5167,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -5045,7 +5224,7 @@
 <p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -5060,11 +5239,10 @@
       </tags>
   </entry>
   <entry>
-    <title>7. 모델 서빙서버 생성하기</title>
-    <url>/2020/10/06/AWS/AWS-project-7/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>모델 서빙서버 생성하기</title>
+    <url>/2020/10/06/MLOps/MLOps-2/</url>
+    <content><![CDATA[<p>훈련된 모델을 서빙하는 방법에 대해서 정리합니다.<br><a id="more"></a></p>
 <hr>
-<p>지금까지 AWS를 사용하여 딥러닝 모델을 훈련하고 그 결과를 S3버킷에 저장하였다. 이번 글에서는 훈련된 모델을 서빙하는 방법에 대해서 살펴볼 것이다.</p>
 <h2 id="모델-서빙서버-생성하기"><a href="#모델-서빙서버-생성하기" class="headerlink" title="모델 서빙서버 생성하기"></a>모델 서빙서버 생성하기</h2><p><strong>1. S3 버킷에서 모델 파일 다운 받기</strong><br>AWS에 접속한 상태에서 아래의 코드를 입력하면 로컬에 다운받을 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws s3 cp s3://<span class="string">'버킷 이름'</span>/<span class="string">'파일 이름'</span> <span class="string">'다운받을 로컬 디렉토리 경로'</span></span><br></pre></td></tr></table></figure>
 <p><strong>2. tar 묶음 해제하기</strong><br>모델을 다운받은 디렉토리로 이동하여 아래의 코드를 입력하면 간단하게 해제할 수 있다.</p>
@@ -5089,11 +5267,10 @@
 <p>모델은 첫 번째 이미지를 7이라고 예측했고, 두 번째 이미지를 2라고 예측하였다. 아까 미리 저장해두었던 정답을 확인해보자.</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">answer</span><br><span class="line"> array([<span class="number">7</span>, <span class="number">2</span>], dtype=uint8)</span><br></pre></td></tr></table></figure>
 <p>모델의 예측이 정확히 맞았다.</p>
-<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>지금까지 AWS를 가상서버를 사용하여 모델을 훈련한 후, 해당 모델을 서빙하는 방법에 대해서 알아보았다. 다음 글에서는 GPU를 사용하여 훈련하는 과정을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>ML/DL</category>
+        <category>MLOps</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5105,11 +5282,10 @@
       </tags>
   </entry>
   <entry>
-    <title>6. EC2 인스턴스에서 모델 훈련하기</title>
-    <url>/2020/09/30/AWS/AWS-project-6/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>EC2 인스턴스에서 모델 훈련하기</title>
+    <url>/2020/09/30/MLOps/MLOps-1/</url>
+    <content><![CDATA[<p>AWS EC2 인스턴스에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.<br><a id="more"></a></p>
 <hr>
-<p>지금까지 모델을 훈련할 준비를 완료하였다. 이번 글에서는 본격적으로 EC2 인스턴스에서 딥러닝 모델을 훈련하는 과정에 대해서 살펴볼 것이다.</p>
 <h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://hyeonji-ryu.github.io/2020/09/21/AWS/AWS-project-4/">4. EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># IAM계정 로그인</span></span><br><span class="line">aws configure</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># EC2 인스턴스 생성</span></span><br><span class="line">aws ec2 run-instances --image-id <span class="string">'인스턴스 이미지'</span> --count <span class="string">'인스턴스 수'</span> --instance-type <span class="string">'인스턴스 타입'</span> --key-name <span class="string">'키 페어 이름'</span> --security-groups <span class="string">'보안 그룹 이름'</span></span><br></pre></td></tr></table></figure>
@@ -5154,8 +5330,8 @@
 <p>이제 AWS를 사용하여 모델 훈련까지 완료하였다. 다음 글에서는 훈련된 모델에 사용하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>ML/DL</category>
+        <category>MLOps</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5167,10 +5343,11 @@
       </tags>
   </entry>
   <entry>
-    <title>5. Docker image 생성하기</title>
-    <url>/2020/09/23/AWS/AWS-project-5/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>모델 훈련 Docker image 생성하기</title>
+    <url>/2020/09/23/MLOps/MLOps-0/</url>
+    <content><![CDATA[<p>모델 훈련을 위한 Docker image 생성하는 과정을 정리합니다.<br><a id="more"></a></p>
 <hr>
+<p>이 글의 목표는 AWS 가상 서버에 도커를 설치하고 도커 이미지를 다운로드 하여 모델 훈련을 진행해보고자 한다.</p>
 <h2 id="Docker란"><a href="#Docker란" class="headerlink" title="Docker란"></a>Docker란</h2><p>“개발자 A는 MAS OS 유저이다. 현재 MAS OS에서 개발을 완료하여 서버로 배포하려고 한다. 하지만 Linux기반의 서버에서는 해당 애플리케이션이 작동하지 않는다.”</p>
 <p>위의 상황은 실행 환경이 맞지 않아 발생하는 문제이다. 이런 문제를 방지하기 위해서는 어떤 해결 방법이 있을까?</p>
 <ul>
@@ -5182,7 +5359,7 @@
 <p>먼저 가상머신(Virtual Machine, VM)은 해당 컴퓨터의 운영체제 위에 가상 운영체제를 구축하여 가상 환경을 만드는 방법이다. 보통 가상머신은 하이퍼바이저를 통해 실제 컴퓨터의 하드웨어 일부를 할당받고 그 위에 원하는 운영체제 쌓아 애플리케이션들을 생성한다. 해당 방법은 완전한 독립된 환경을 구축할 수 있지만, 운영체제도 포함되어 있다보니 배포하는 애플리케이션이 무겁고 다운받는 시간도 오래걸린다.</p>
 <p>하지만 도커는 컨테이너 덕분에 비교적 간단하게 애플리케이션을 만들어 배포할 수 있다. 컨테이너란 컴퓨터 내의 독립적인 실행 환경이다. 그렇다면 실행 환경과 가상 환경의 차이점은 무엇일까? 가상 환경은 위에서 설명한 바와 같이 실제 하드웨어의 일부를 할당하여 완전하게 분리된 운영체제를 가진다. 반면 컨테이너는 기존 운영체제를 기반으로 운영체제에 없는 부분만 다운받아 사용한다. 정리하여 가상머신과 도커를 구분한다면 가상머신은 가상 운영체제를 쌓는 반면, 도커는 기존 운영체제를 사용한다는 점이다. 아래의 그림은 일반적인 환경과 가상 머신, 도커의 환경을 보여준다.</p>
 <p><img src="/images/93.png" alt="AWS5_1"></p>
-<h2 id="Docker-Image란"><a href="#Docker-Image란" class="headerlink" title="Docker Image란"></a>Docker Image란</h2><p>이 정도면 도커가 어떤 플랫폼인지 파악했을 것이다. 현재 우리 프로젝트는 AWS 가상 서버에 도커를 깔고 도커 이미지를 다운받아서 리눅스 기반의 어떤 환경에도 잘 작동되는 웹페이지를 구축하는 것이다. 그렇다면 이제 도커 이미지에 대해서 자세히 살펴보자.</p>
+<h2 id="Docker-Image란"><a href="#Docker-Image란" class="headerlink" title="Docker Image란"></a>Docker Image란</h2><p>이제 도커 이미지에 대해서 자세히 살펴보자.</p>
 <p>이미지(image)는 사용중인 컨테이너의 상태를 그대로 저장하는 방법이다. 예를 들어, 개발자 A가 도커에서 리눅스 기반으로 어떤 애플리케이션을 개발했다고 생각해보자. 그럼 개발자 A는 어떻게 애플리케이션을 배포하는가? 그때 사용되는 방법이 개발자 A의 해당 컨테이너를 이미지로 저장하여 도커 허브(Docker Hub)에 올리는 것이다. 그러면 해당 애플리케이션을 사용하려는 사람들은 이미지를 다운받아 그대로 사용하면 된다. 이미지는 배포를 매우 간단하게 만들어주는 방법으로 실제로 도커 허브에는 수많은 이미지들이 올라와 있다. 우리는 이렇게 이미지를 만드는 과정을 ‘도커라이징(Dockering)’이라고 부른다.</p>
 <p>이제 우리가 사용할 도커 이미지를 만들어보자. 도커 이미지를 만들기 위해서는 <code>dockerfile</code> 을 작성해야 한다. <code>dockerfile</code>은 도커 이미지를 만들기 위한 스크립트이다. 아래의 순서대로 <code>dockerfile</code>을 빌드하여 도커 이미지를 생성해보자.</p>
 <h3 id="1-먼저-커맨드라인에서-도커파일을-생성한다"><a href="#1-먼저-커맨드라인에서-도커파일을-생성한다" class="headerlink" title="1. 먼저 커맨드라인에서 도커파일을 생성한다"></a>1. 먼저 커맨드라인에서 도커파일을 생성한다</h3><p>이래의 코드를 커맨드라인에 입력해보자.</p>
@@ -5224,11 +5401,10 @@
 <p>파일을 S3에 업로드 하는 방법을 자세히 알고 싶다면 <a href="https://hyeonji-ryu.github.io/2020/09/17/AWS/AWS-project-3/">3편</a>을 살펴보자.</p>
 <p>업로드가 완료된 후 AWS S3 콘솔에 들어가보면 해당 버킷은 아래와 같이 나타날 것이다.</p>
 <p><img src="/images/94.png" alt="AWS5_2"></p>
-<p>이제 EC2 인스턴스에서 모델을 훈련할 준비가 완료되었다. 다음 글에서는 지금까지 만든 것들을 바탕으로 EC2 인스턴스에서 모델을 훈련한 후 결과를 저장할 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>ML/DL</category>
+        <category>MLOps</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5240,11 +5416,10 @@
       </tags>
   </entry>
   <entry>
-    <title>4. EC2 인스턴스 생성하기</title>
-    <url>/2020/09/21/AWS/AWS-project-4/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>EC2 인스턴스 생성하기</title>
+    <url>/2020/09/21/AWS/AWS-4/</url>
+    <content><![CDATA[<p>터미널에서 코드만을 사용하여 AWS EC2 인스턴스를 생성하고 접속하는 과정을 정리합니다.<br><a id="more"></a></p>
 <hr>
-<p>이전 글에서는 AWS에 대해서 간단하게 알아보고 계정을 생성하였다. 이번 글에서는 커맨드라인에서 코드만을 사용하여 AWS에 접속하는 과정을 살펴볼 것이다. 참고로 AWS를 다룰 때에는 기본 커맨드라인을 사용한다. 만약 이전 글에서 따라왔다면 <code>exit()</code>을 입력하여 파이썬을 종료해야 한다.</p>
 <h2 id="AWS-EC2"><a href="#AWS-EC2" class="headerlink" title="AWS EC2"></a>AWS EC2</h2><p>EC2(Elastic Compute Cloud)는 가상 컴퓨터를 임대해주는 서비스이다. 만약 좋은 성능의 컴퓨터가 없는데 일정 기간동안 빅데이터를 다뤄야 하거나 무거운 딥러닝 모델을 학습시켜야 하는 상황에 부딪힌다면 막막하게 느껴질 것이다. 그런 상황에서 EC2를 사용하여 성능 좋은 컴퓨터를 빌릴 수 있다. 사실 ‘가상 컴퓨터’라는 말 때문에 물리적인 컴퓨터가 존재하지 않는건가 할 수 있겠지만, amazon 회사 건물에 있는 서버 일부를 우리에게 빌려주는 것이라 생각하면 된다.</p>
 <h2 id="인스턴스-생성하기"><a href="#인스턴스-생성하기" class="headerlink" title="인스턴스 생성하기"></a>인스턴스 생성하기</h2><p>인스턴스는 EC2에서 대여받는 가상 켬퓨터이다. EC2는 서비스 이름이라면 인스턴스는 그 서비스에서 제공해주는 제품인 셈이다. 인스턴스 유형은 <a href="https://aws.amazon.com/ko/ec2/instance-types/" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있다. 보통 딥러닝 모델을 학습할 때는 GPU 인스턴스인 P나 G를 사용한다.</p>
 <p><strong>NOTE</strong><br>만약 사용하려는 인스턴스의 시간 당 비용이 궁금하다면 <a href="https://calculator.aws/#/" target="_blank" rel="noopener">비용 계산기</a>에 들어가서 먼저 확인해볼 수 있다. 해당 프로젝트에서 사용하려는 인스턴스는 시간 당 0.7달러 정도가 청구된다고 보여준다.</p>
@@ -5283,25 +5458,28 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws ec2 describe-instances --filters <span class="string">"Name=instance-type,Values=t2.micro"</span> --query <span class="string">"Reservations[].Instances[].InstanceId"</span></span><br></pre></td></tr></table></figure>
 <h3 id="3-인스턴스-종료"><a href="#3-인스턴스-종료" class="headerlink" title="3. 인스턴스 종료"></a>3. 인스턴스 종료</h3><p>현재 우리가 만든 EC2 인스턴스가 있다. 주의할 점은 EC2 인스턴스가 작동되는 순간부터 요금책정이 시작된다. (다행히 우리가 사용하는 인스턴스는 프리 티어 전용이라서 요금이 청구되지는 않는다) 즉, 인스턴스를 사용하지 않을 때에는 꼭 종료해주어야 한다. 아래의 코드를 입력하여 생성했던 인스턴스를 종료해보자. 인스턴스 ID는 위 코드를 입력하여 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws ec2 terminate-instances --instance-ids <span class="string">'인스턴스 ID'</span></span><br></pre></td></tr></table></figure>
-<p>지금까지 AWS EC2 인스턴스를 생성하는 방법에 대해 알아보았다. 다음 글에서는 도커 이미지를 생성할 것이다.</p>
+<p>지금까지 AWS EC2 인스턴스를 생성하는 방법에 대해 알아보았다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>DEVOPS</category>
+        <category>AWS</category>
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
+        <tag>cloud</tag>
+        <tag>클라우드</tag>
+        <tag>아마존</tag>
+        <tag>터미널</tag>
+        <tag>boto3</tag>
+        <tag>S3</tag>
       </tags>
   </entry>
   <entry>
-    <title>3. S3에 훈련 데이터 업로드하기</title>
-    <url>/2020/09/17/AWS/AWS-project-3/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>S3에 데이터 업로드하기</title>
+    <url>/2020/09/17/AWS/AWS-3/</url>
+    <content><![CDATA[<p>터미널에서 코드만을 사용하여 AWS S3 버킷에 접속하는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
-<p>이전 글에서는 AWS에 대해서 간단하게 알아보고 계정을 생성하였다. 이번 글에서는 커맨드라인에서 코드만을 사용하여 AWS에 접속하는 과정을 살펴볼 것이다.</p>
 <h2 id="AWS-S3"><a href="#AWS-S3" class="headerlink" title="AWS S3"></a>AWS S3</h2><p>S3(Simple Storage Service)는 AWS에서 제공하는 데이터 저장소이다. S3는 웹 기반으로 이루어져 있기 떄문에 정적 휍 호스팅을 직접 관리할 수 있으며, 가상 서버인 EC2와도 데이터를 주고 받을 수 있다. 또한 데이터 저장량을 미리 결정해야 하는 EBS와 달리 S3는 무제한으로 데이터를 저장할 수 있다. 경제적인 이점을 제외하고서도 이런 장점들로 인해서 S3는 많이 사용된다.</p>
 <h3 id="객체-object"><a href="#객체-object" class="headerlink" title="객체 (object)"></a>객체 (object)</h3><p>객체는 S3에 데이터가 저장되는 기본 단위이다. 객체 종류로는 파일과 메타데이터가 있다. 일반적인 파일은 1개당 1Byte부터 5TB 까지 저장 가능하며, 메타데이터는 MIME 형식으로 파일 확장자를 자동으로 변경하여 저장된다. 메타데이터의 확장자는 사용자가 임의로 설정할 수도 있다.</p>
 <h3 id="버킷-bucket"><a href="#버킷-bucket" class="headerlink" title="버킷 (bucket)"></a>버킷 (bucket)</h3><p>버킷 (bucket)은 S3에서 데이터를 저장하는 최상위 저장소이다. 모든 데이터들은 버킷 안에 저장할 수 있으며, 버킷 없이 데이터를 업로드하는 것은 불가능하다. 각 AWS 계정별로 100개까지 생성할 수 있으며, 각 버킷에는 무제한으로 객체들을 저장할 수 있다.</p>
@@ -5347,25 +5525,28 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s3.upload_file(<span class="string">'업로드할 파일 이름'</span>, <span class="string">'버킷 이름'</span>, <span class="string">'버킷에 저장할 이름'</span>)</span><br></pre></td></tr></table></figure>
 <p>그후 사이트에 들어가 확인해보면 아래 그림과 같은 변화를 확인할 수 있다.</p>
 <p><img src="/images/92.png" alt="AWS3_2"></p>
-<p>지금까지 커맨드라인에서 S3의 버킷을 생성하고 훈련 데이터를 업로드하는 방법을 살펴보았다. 다음 글에서는 EC2 인스턴스를 설정하는 방법에 대해서 살펴볼 것이다.</p>
+<p>지금까지 커맨드라인에서 S3의 버킷을 생성하고 데이터를 업로드하는 방법을 살펴보았다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>DEVOPS</category>
+        <category>AWS</category>
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
+        <tag>cloud</tag>
+        <tag>클라우드</tag>
+        <tag>아마존</tag>
+        <tag>터미널</tag>
+        <tag>boto3</tag>
+        <tag>S3</tag>
       </tags>
   </entry>
   <entry>
-    <title>2. 커맨드라인으로 AWS 접속하기</title>
-    <url>/2020/09/15/AWS/AWS-project-2/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>커맨드라인으로 AWS 접속하기</title>
+    <url>/2020/09/15/AWS/AWS-2/</url>
+    <content><![CDATA[<p>터미널에서 코드만을 사용하여 AWS에 접속하는 과정을 정리합니다.<br><a id="more"></a></p>
 <hr>
-<p>이전 글에서는 AWS에 대해서 간단하게 알아보고 계정을 생성하였다. 이번 글에서는 커맨드라인에서 코드만을 사용하여 AWS에 접속하는 과정을 살펴볼 것이다.</p>
 <h2 id="download-awscli"><a href="#download-awscli" class="headerlink" title="download awscli"></a>download awscli</h2><p>awscli(AWS command line interface)는 커맨드라인에서 AWS의 API를 직접 호출할 수 있도록 도와주는 도구이다. 커맨드라인에 아래의 코드를 입력하여 해당 툴을 다운받아보자.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip3 install awscli</span><br></pre></td></tr></table></figure>
 <p>다운이 완료되었다면 로컬에 엑세스 키를 등록해야 한다. 그렇다면 엑세스 키는 무엇이고 어디서 받을 수 있을까? 이에 대해 잠깐 살펴보고 넘어가자.</p>
@@ -5379,23 +5560,26 @@
 <p>$\bullet$ Default region name<br>API를 가져오는 지역을 설정하는 것이다. 서울은 <code>ap-northeast-2</code>를 입력하면 된다. 다른 지역은 <a href="https://aws.amazon.com/ko/about-aws/global-infrastructure/regional-product-services/" target="_blank" rel="noopener">지역 표</a>에서 확인할 수 있다.</p>
 <p>$\bullet$ Default output format<br>AWS에서 도출한 결과를 어떤 형태로 저장할지 설정한다. text, json, table 중에 하나를 선택할 수 있다.</p>
 <p>설명한 기본적인 지식 외에도 AWS 명령어에 대해 자세히 알고 싶다면 <a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-options.html" target="_blank" rel="noopener">AWS 명령줄 옵션</a>에서 확인하면 된다.</p>
-<p>이제 커맨드라인에서 AWS를 실행할 준비가 모두 완료되었다. 다음 글에서는 커맨드라인에서 S3 버킷을 만들고 데이터를 추가하는 방법에 대해 살펴볼 것이다.</p>
+<p>이제 커맨드라인에서 AWS를 실행할 준비가 모두 완료되었다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>DEVOPS</category>
+        <category>AWS</category>
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
+        <tag>cloud</tag>
+        <tag>클라우드</tag>
+        <tag>아마존</tag>
+        <tag>터미널</tag>
+        <tag>boto3</tag>
       </tags>
   </entry>
   <entry>
-    <title>1. AWS 계정 생성하기</title>
-    <url>/2020/09/13/AWS/AWS-project-1/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>AWS 계정 생성하기</title>
+    <url>/2020/09/13/AWS/AWS-1/</url>
+    <content><![CDATA[<p>AWS에서 계정을 만드는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="AWS-계정의-종류"><a href="#AWS-계정의-종류" class="headerlink" title="AWS 계정의 종류"></a>AWS 계정의 종류</h2><p>AWS 사이트에 들어가 로그인을 눌러보면 아래의 그림과 같이 루트 사용자와 IAM 사용자라는 2가지의 로그인 방식이 나온다.</p>
 <p><img src="/images/83.png" alt="AWS1"></p>
@@ -5428,33 +5612,23 @@
 <p>지금까지 AWS 계정의 종류와 생성 방법에 대해서 알아보았다. 다음 글에서는 생성한 IAM 계정을 통해 커맨드라인에서 AWS을 연결하는 방법에 대해서 알아볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>DEVOPS</category>
+        <category>AWS</category>
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
+        <tag>cloud</tag>
+        <tag>클라우드</tag>
+        <tag>아마존</tag>
+        <tag>계정</tag>
       </tags>
   </entry>
   <entry>
-    <title>0. AWS project 시작하기</title>
-    <url>/2020/09/12/AWS/AWS-project-0/</url>
-    <content><![CDATA[<p>해당 시리즈는 커맨드라인에서 AWS(Amazon Web Services)를 사용하여 딥러닝 모델을 훈련하고, 그 결과를 웹 페이지에 구현하는 것을 목표로 합니다.<br><a id="more"></a></p>
+    <title>AWS 기초</title>
+    <url>/2020/09/12/AWS/AWS-0/</url>
+    <content><![CDATA[<p>클라우드 컴퓨팅 종류에 대해 알아보고 AWS의 기본 서비스들을 정리합니다.<br><a id="more"></a></p>
 <hr>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>실제 현장에서 흔히 사용되는 SOTA(State-Of-The-Art)라고 불리는 딥러닝 모델들은 매우 깊고 파라미터 수도 많다. 또한 제대로 학습되기 위해서는 많은 양의 훈련 데이터들을 필요로 한다. 따라서 실제 사용되는 딥러닝 모델들을 직접 구현해보고 학습하기 위해서는 좋은 컴퓨팅 파워가 필요하다. 하지만 대부분의 학생이나 스타트업에서는 그런 컴퓨팅 파워를 마련하기엔 경제적으로 부담스럽다. 그런 사람들이 사용하기 좋은 방법이 바로 클라우드 컴퓨팅이다. 해당 프로젝트는 클라우드 컴퓨팅을 사용하여 딥러닝을 훈련하고 그 결과를 바로 웹 페이지에 보여주는 과정을 진핼할 것이다. 따라서 해당 프로젝트를 이해하고 따라오기 위해서는 클라우드 컴퓨팅에 대한 기본적인 지식이 필요하다. 이번 글에서는 클라우드 컴퓨팅에 대한 기본적인 지식과 AWS에 대해서 살펴볼 것이다.</p>
-<h2 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h2><p>앞으로 진행할 프로젝트의 프로세스는 다음과 같다.</p>
-<ol>
-<li>AWS 계정 생성하기</li>
-<li>커맨드라인으로 AWS 접속하기</li>
-<li>S3에 훈련 데이터 업로드하기</li>
-<li>EC2 인스턴스 생성하기</li>
-<li>Docker image 생성하기</li>
-<li>EC2 인스턴스에서 모델 훈련하기</li>
-<li>모델 서빙서버 생성하기</li>
-<li>GPU vs. CPU 속도 비교</li>
-</ol>
 <h2 id="Cloud-Computing"><a href="#Cloud-Computing" class="headerlink" title="Cloud Computing"></a>Cloud Computing</h2><p>클라우드 컴퓨팅이란 클라우드에서 가상 서버, 데이터 스토리지, 소프트웨어 등 필요한 IT 자원을 임대하여 사용하는 기술이다. 클라우드 컴퓨팅 서비스는 크게 3가지 종류로 나뉜다.</p>
 <h3 id="IaaS-Infrastructure-as-a-Service"><a href="#IaaS-Infrastructure-as-a-Service" class="headerlink" title="IaaS (Infrastructure as a Service)"></a>IaaS (Infrastructure as a Service)</h3><p>IaaS (Infrastructure as a Service)는 실제 하드웨어로 마련해야 하는 서버나, 데이터 스토리지 등의 자원들을 가상으로 제공해주는 서비스이다. 이를 사용하면 물리적인 GPU나 SDD 없이도 무거운 딥러닝 모델을 훈련시킬 수 있다. 해당 프로젝트에서 우리는 이 서비스를 사용할 예정이다.</p>
 <h3 id="PaaS-Platform-as-a-Service"><a href="#PaaS-Platform-as-a-Service" class="headerlink" title="PaaS (Platform as a Service)"></a>PaaS (Platform as a Service)</h3><p>PaaS (Platform as a Service)는 IaaS에서 제공하는 하드웨어와 사용자가 원하는 서비스를 개발할 수 있는 환경을 모두 제공하는 서비스이다. 즉, “IaaS + Platform” 이라고도 할 수 있다. 보통 웹을 구축하기 위해서는 물리적인 하드웨어인 서버를 사고 해당 서버 위에 운영체제 등을 설치해야 서비스를 개발할 수 있지만, 이 서비스를 이용하면 바로 서비스 개발에 들어갈 수 있다.</p>
@@ -5464,17 +5638,17 @@
 <h3 id="Amazon-Machine-Image-AMI"><a href="#Amazon-Machine-Image-AMI" class="headerlink" title="Amazon Machine Image (AMI)"></a>Amazon Machine Image (AMI)</h3><p>AMI는 서버 바로 위에 구축해야 하는 환경들을 조합해둔 템플릿이다. 아마존에는 딥러닝을 위한 이미지(Deep Learning AMI)도 존재하며, 해당 이미지에는 텐서플로우, 파이토치 등 구현에 필요한 프레임워크까지 모두 포함되어 있다. 즉, 해당 이미지를 선택하여 EC2에 올리면 바로 딥러닝 모델 학습을 시작할 수 있는 것이다.</p>
 <h3 id="Elastic-Block-Storage-EBS"><a href="#Elastic-Block-Storage-EBS" class="headerlink" title="Elastic Block Storage (EBS)"></a>Elastic Block Storage (EBS)</h3><p>EBS는 EC2에서 사용될 데이터나 학습 이후의 결과물 등을 저장하고 사용할 수 있는 임시 저장장치이다. 흔히 하드웨어에서 HDD나 SSD와 같은 역할을 한다. 다만, 가상 서버인 EC2가 멈추면 EBS에 있던 자료도 제거되기 때문에 주의해야 한다. 물론 EBS도 영구적으로 만들어 사용할 수는 있지만 있지만, 가격이 비싸기 때문에 보통 가상 서버에서만 사용한다.</p>
 <h3 id="Simple-Storage-Service-S3"><a href="#Simple-Storage-Service-S3" class="headerlink" title="Simple Storage Service (S3)"></a>Simple Storage Service (S3)</h3><p>S3 또한 데이터를 저장할 수 있는 저장장치이며, EBS보다 저렴하고 데이터를 무한대로 저장할 수 있다는 장점이 있다. S3는 데이터를 저장한 용량에 대비하여 저렴한 비용이 청구되지만 EBS는 선택한 용량 전체에 대해서 비용이 청구되기 때문에 가상 서버를 돌리지 않을 때에는 데이터들을 S3에 저장해두는 것이 훨씬 저렴하다.</p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>이번 글에서는 클라우드 컴퓨팅의 개념과 우리가 사용하게 될 AWS에 대해서 간단하게 살펴보았다. 다음 글에서는 본격적으로 AWS 계정 만드는 방법과 커맨드라인에서 AWS로 바로 접속하는 방법에 대해서 알아볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>AWS Project</category>
+        <category>DEVOPS</category>
+        <category>AWS</category>
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
+        <tag>cloud</tag>
+        <tag>클라우드</tag>
+        <tag>아마존</tag>
       </tags>
   </entry>
   <entry>
@@ -5538,8 +5712,8 @@
 <p>하지만 5에폭을 진행하는데 걸린 시간은 고작 약 25분 정도이다. 기존의 <code>simpleNet</code>은 1에폭에 1시간이었다는 것을 떠올려보면 엄청난 발전이라고 볼 수 있다. 하지만 <code>simpleNet</code>은 테스트셋의 정확도 99%를 넘기지는 못한다. 따라서 다음 시간에는 tensorflow에서 MNIST의 예제로 제공하는 <code>convNet</code>을 살펴보고 이와 동일하게 모델을 설계하여 테스트셋의 정확도 99%를 달성해볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -5575,8 +5749,8 @@
 <p>지금까지 <code>col2im()</code>을 사용하여 합성곱과 최대값 풀링의 역전파 과정을 구현하였다. 데이터 4차원을 유지한 채 이를 진행하면 매우 느리지만, <code>col2im()</code>을 사용하면 매우 빠른 속도로 계산이 가능하다. 다음 글에서는 지금까지 만든 CNN layers을 바탕으로 모델을 구현하고 학습시켜볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -5621,8 +5795,8 @@
 <p>지금까지 <code>col2im()</code>의 원리에 대해서 알아보았다. 다음 글에서는 오늘 만든 <code>col2im()</code>을 가지고 합성곱과 풀링을 구현할 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -5667,8 +5841,8 @@
 <p>지금까지 <code>im2col()</code>을 사용하여 구성한 계층들을 살펴보았다. 다음 글에서는 CNN의 역전파와 그때 사용되는 <code>col2im</code>에 대해서 알아보자.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -5754,8 +5928,8 @@
 <p>다음 글에서는 <code>im2col()</code>과  <code>col2im()</code>의 원리를 설명하고, 줄리아로 구현해볼 것이다. 또한 이를 바탕으로 합성곱층과 풀링층의 함수를 구현할 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -5812,8 +5986,8 @@
 <p>훈련데이터의 정확도와 실제데이터의 정확도 간격이 드랍아웃을 적용하지 않은 모델보다 훨씬 줄어든 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -5899,8 +6073,8 @@
 <p>다음 글에서는 오버피팅을 막아주는 드랍아웃(Dropout)에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -5971,8 +6145,8 @@
 <p>집합 $V$에 속하는 요소인 $x$는 벡터이다. 따라서 $(V,+)$의 항등원 또한 영벡터($[0,\dots,0$^T)이다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Machine Learning</category>
+        <category>ML/DL</category>
+        <category>Mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -6036,8 +6210,8 @@
 <p>손실 함수 값 또한 RMSProp가 더 낮은 결과를 도출하는 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6130,8 +6304,8 @@ x & \text{(x>0) $$}\\
 </blockquote>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6222,8 +6396,8 @@ x & \text{(x>0) $$}\\
 <p>역전파 알고리즘은 순전파와 비슷한 학습 효과를 가지고 있지만 속도는 월등히 빠르다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6407,8 +6581,8 @@ x & \text{(x>0) $$}\\
 <p>순전파와 역전파 알고리즘으로 도출된 미분값들의 차이가 매우 작은 것을 확인할 수 있다. 즉, 역전파가 잘 구현되었다는 것이다. 그렇다면 역전파는 어떻게 줄리아로 구현하였을까? 다음 글에서 확인해보자.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6796,8 +6970,8 @@ x_1&+&x_3&-&x_4&=& 0\\
 <script type="math/tex; mode=display">x = (A^TA)^{-1}A^Tb, \quad A^TA \in R^{3 \times 3}</script><p>이 방법은 근사 해를 구할 수 있게 해주기에 매우 유용하지만, 많은 행렬 계산이 들어가고 근사값을 구하는 것이기에 일반적으로 사용하기를 추천하지는 않는다. 이의 대안으로 우리는 chapter2에서 벡터 사이의 유사성을 계산할 수 있는 방법을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Machine Learning</category>
+        <category>ML/DL</category>
+        <category>Mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -7002,8 +7176,8 @@ a_{12} & \mathbf{a_{22}}\\
 <p>$\lambda(B + C)=\lambda B + \lambda C,\quad B,C \in \mathbb R^{m \times n}$</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Machine Learning</category>
+        <category>ML/DL</category>
+        <category>Mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -7111,8 +7285,8 @@ a_{12} & \mathbf{a_{22}}\\
 <p>순전파는 반복되는 매 횟수마다 활성화 함수를 미분하기 때문에 시간이 오래 걸린다. 그렇기에 실상 사용되는 미분법은 아니지만, 신경망의 원리를 파악하기 위해서는 알아야 한다. 다음 글에서는 5시간을 3분으로 줄여주는 마법같은 역전파를 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7164,8 +7338,8 @@ a_{12} & \mathbf{a_{22}}\\
 <h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>지금까지 인공신경망이 어떻게 학습되는지 그 과정을 살펴보았다. 신경망 학습은 인공신경망 구현에 있어 매우 중요한 부분이다. 신경망이 어떤 방식으로 학습되는지에 따라서 성능이 제각각이기 떄문이다. 학습에 있어 다양한 기술적인 튜닝이 있지만 핵심 원리는 이 글을 벗어나지 않는다. 다음 글에서 순전파 알고리즘 기반의 경사하강법을 구현해보고, 이후 역전파에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7245,8 +7419,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>아번 글에서는 신경망을 구현하기에 앞서 신경망의 원리를 수학식으로 풀이하였다. 이 과정은 이해를 위함이며, 다음 글에서는 손글씨 인식하는 신경망을 구현하면서 코드로 작동하는 과정을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7318,8 +7492,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <p>오차값이 거의 0에 도달하였다. 최적화에 성공한 것이다. 신경망은 이런 경사하강법을 통해서 적절한 가중치와 편향을 찾는다. 이제는 신경망을 구현하기 위한 모든 재료들을 살펴보았다. 다음 포스트에서는 지금까지 만들었던 함수들을 바탕으로 신경망을 직접 구현해보자.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7364,8 +7538,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <p>위의 결과를 보면 잘 예측한 <code>y1</code>이 잘못 예측한 <code>y2</code>보다 더 작은 것을 확인할 수 있다. 이처럼 손실 함수는 오차를 계산하여 오차율을 나타내며, 값이 0에 가까울수록 오차가 없다고 판단한다. 즉, 손실 함수의 값이 0에 가까울수록 해당 신경망은 잘 학습되었다고 평가되는 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7440,8 +7614,8 @@ x & \text{(x>0) $$}\\
 <p>요소들의 합이 $1$임을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7723,8 +7897,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>사실 신경망을 구현하는 것은 위의 설명보다 더 복잡하다. 하지만 위의 원리를 이해하지 못한다면 신경망 자체를 파악할 수 없다.<br>다음 글에서는 신경망에 쓰이는 활성화 함수들을 살펴보고 줄리아로 구현할 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7810,8 +7984,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>지금까지 신경망을 배우기 위한 기본적인 배열 처리 방법에 대해서 알아보았다. 이제는 본격적으로 신경망에 대해 알아보자.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Deep Learning in Julia</category>
+        <category>ML/DL</category>
+        <category>DL in Julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7994,8 +8168,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>목표는 단지 프로그램을 작동시키는 것이 아니라는 점을 기억하라. 목표는 프로그램 작동 방법을 배우는 것이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8127,8 +8301,8 @@ cos(x)=\frac{e^{ix}+e^{-1x}}{2}
 <p>여기서는 모든 디버그 정보를 얻기 위해서 모두 사용햇지만 특정 파일 또는 모듈에 대한 출력만 생성하도록 선택할 수도 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8282,8 +8456,8 @@ cos(x)=\frac{e^{ix}+e^{-1x}}{2}
 <p>GDBM 라이브러리의 완전한 맵핑은 ThinkJulia 소스에서 예제로 찾을 수 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8337,7 +8511,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>위의 순서를 보면, 상수함수가 가장 작고 지수함수가 가장 크다. 즉 상수함수는 데이터 수가 많아도 빠르게 작동하는 알고리즘이며, 지수함수는 데이터 수가 많아질수록 급격하게 느려지는 알고리즘이라는 뜻이다. 시간 효율성 관점에서는 상수함수가 더욱 우월하다.</p>
 ]]></content>
       <categories>
-        <category>STUDY</category>
+        <category>PROGRAMMING</category>
         <category>Algorithms</category>
       </categories>
       <tags>
@@ -8479,8 +8653,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8527,8 +8701,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>STUDY</category>
-        <category>Machine Learning</category>
+        <category>ML/DL</category>
+        <category>Mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -8646,8 +8820,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>이 예시에서는 <code>printtime()</code>가 2개의 메서드를 가지고 있으며, 하나는 <code>MyTime</code> 인수이고 다른 하나는 <code>Any</code> 인수이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8714,8 +8888,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p><code>@assert</code> 매크로는 정상적인 조건을 처리하는 코드와 오류를 확인하는 코드를 구분하기 때문에 유용하다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8820,8 +8994,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>첫 번째 인수는 어떤 객체든 들어갈 수 있다. 두 번째 인수에는 <code>:</code>기호를 넣고 뒤에 필드의 이름을 작성하면 된다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8943,8 +9117,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>대부분의 시스템에는 한 형식에서 다른 형식으로 변환하는 응용 프로그램이 있다. 관련 정보는 <a href="https://en.wikipedia.org/wiki/Newline" target="_blank" rel="noopener">해당 링크</a>에서 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9099,8 +9273,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">wordlist=sentencetoword(<span class="string">"words.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> findweird(t1,t2)</span><br><span class="line">    word1=keys(t1)</span><br><span class="line">    word2=keys(t2)</span><br><span class="line">    final=[]</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word1</span><br><span class="line">        <span class="keyword">if</span> word ∉ word2</span><br><span class="line">        push!(final,word)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> final</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9217,8 +9391,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>줄리아는 시퀀스의 요소에 데이터 타입을 첨부할 수 있다. 이 작업을 수행하는 방법은 다중 디스패치 파트에서 자세하게 설명할 것이다. 데이터 타입을 지정하면 많은 형태 오류가 제거된다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9353,8 +9527,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9539,8 +9713,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9660,8 +9834,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>“프로그램 테스팅은 버그를 미리 보기 위해 사용되지만, 버그가 없다는 결론을 보여주지는 않는다.”</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9776,8 +9950,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
  <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> isreverse(word1, word2)</span><br><span class="line">    <span class="keyword">if</span> length(word1) != length(word2)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    i = firstindex(word1)</span><br><span class="line">    j = lastindex(word2)</span><br><span class="line">    <span class="keyword">while</span> j &gt;= <span class="number">0</span></span><br><span class="line">        <span class="meta">@show</span> i j</span><br><span class="line">        <span class="keyword">if</span> word1[i] != word2[j]</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        i = nextind(word1, i)</span><br><span class="line">        j = prevind(word2, j)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="literal">true</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9875,8 +10049,8 @@ y= \frac{1}{2}\left(x+\frac{a}{x}\right)
 <p>하지만 실제 상황에서는 프로그램 중간이 무엇인지 명확하지 않을 수 있다. 코드 줄 개수에 맞춰 반으로 나누는 것은 합리적이지 않다. 따라서 프로그램에 오류가 있을 수 있는 장소와 코드를 먼저 점검한 후, 개발자가 생각하는 합리적인 중간점을 찾는 것이 좋다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10016,8 +10190,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>만약에 실행 흐름이 헷갈리면, 위와 같은 출력들이 도움이 될 것이다. 효과적인 스캐폴딩을 개발하는 것은 조금 시간이 걸리겠지만, 작은 스캐폴딩으로도 많은 디버깅 요소들을 찾을 수 있다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10122,8 +10296,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>오류를 찾기 위해서, 변수인 <code>ratio</code>의 값을 확인해보는 것이 좋을 것이다. 확인해보니 <code>ratio</code>는 0으로 밝혀졌다. 문제는 3번째 줄에서 버림 나눗셈을 하여 나머지들을 제거해버리는 데서 온 것으로 확인되었다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10230,8 +10404,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>하지만 만약 전제 조건은 알맞게 작성했는데 사후 조건이 이상하다면, 이것은 함수에 버그가 있는 것이다. 따라서 해당 함수의 전제 조건과 사후 조건을 명확하게 아는 것은 디버깅에 많은 도움을 준다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10336,8 +10510,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>어떤 사람들에게는 프로그래밍과 디버깅은 동일하다. 즉, 프로그래밍은 원하는 작업이 수행될 때까지 코드들을 점검하고 디버깅하는 과정이기 때문이다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10408,8 +10582,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p><strong>의미 오류(semantic error)</strong><br>의미 오류는 개발자의 의도와는 다른 방향으로 프로그램이 작동되는 현상이다. 이는 문법오류와 같이 컴퓨터가 파악할 수 있는 오류가 아니기 때문에 오류 메시지가 나타나지 않는다.<br>그렇기에 해당 오류를 찾기 위해서는 프로그램의 출력을 보고 수행중인 작업에서 예측가능한 결과인지를 파악하여 역으로 찾는 수밖에 없다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10528,8 +10702,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>디버깅을 할 때 어려운 버그를 만난다면, 컴퓨터에 대한 분노로 인해 개발자를 그만두고 싶을 수 있다. 하지만 디버깅을 배우는 것은 어렵지만 프로그래밍 이외의 많은 활동에도 유용한 기술이기에 포기하지 않기를 바란다.</p>
 ]]></content>
       <categories>
-        <category>PROJECT</category>
-        <category>Think Julia</category>
+        <category>LANGUAGE</category>
+        <category>Julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
