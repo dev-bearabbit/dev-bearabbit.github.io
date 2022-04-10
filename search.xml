@@ -46,8 +46,98 @@
 </table>
 </div>
 <p>보호소에서는 몇 시에 입양이 가장 활발하게 일어나는지 알아보려 합니다. 0시부터 23시까지, 각 시간대별로 입양이 몇 건이나 발생했는지 조회하는 SQL문을 작성해주세요. 이때 결과는 시간대 순으로 정렬해야 합니다.</p>
-<h2 id="해설"><a href="#해설" class="headerlink" title="해설"></a>해설</h2><p>먼저 정답은 아래와 같다.</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    T.HOUR,</span><br><span class="line">    <span class="keyword">IFNULL</span>(D.COUNTS,</span><br><span class="line">    <span class="number">1</span>) <span class="keyword">AS</span> <span class="keyword">COUNT</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    (<span class="keyword">SELECT</span></span><br><span class="line">        @N:=@N <span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">HOUR</span> </span><br><span class="line">    <span class="keyword">FROM</span></span><br><span class="line">        ANIMAL_OUTS,</span><br><span class="line">        (<span class="keyword">SELECT</span></span><br><span class="line">            @N:=<span class="number">-1</span> </span><br><span class="line">        <span class="keyword">FROM</span></span><br><span class="line">            DUAL) NN <span class="keyword">LIMIT</span> <span class="number">24</span>) <span class="keyword">AS</span> T</span><br><span class="line">    <span class="keyword">LEFT</span> <span class="keyword">JOIN</span></span><br><span class="line">        (</span><br><span class="line">            <span class="keyword">SELECT</span></span><br><span class="line">                <span class="keyword">HOUR</span>(DATETIME) <span class="keyword">AS</span> <span class="keyword">HOUR</span>,</span><br><span class="line">                <span class="keyword">COUNT</span>(ANIMAL_ID) <span class="keyword">AS</span> COUNTS</span><br><span class="line">            <span class="keyword">FROM</span></span><br><span class="line">                ANIMAL_OUTS </span><br><span class="line">            <span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br><span class="line">                <span class="keyword">HOUR</span>(DATETIME) </span><br><span class="line">            <span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">                <span class="keyword">HOUR</span>(DATETIME)</span><br><span class="line">        ) <span class="keyword">AS</span> D     </span><br><span class="line">            <span class="keyword">ON</span> T.HOUR =  D.HOUR</span><br></pre></td></tr></table></figure>
+<h2 id="정답-코드"><a href="#정답-코드" class="headerlink" title="정답 코드"></a>정답 코드</h2><p>먼저 정답은 아래와 같다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    T.HOUR,</span><br><span class="line">    <span class="keyword">IFNULL</span>(D.COUNTS,</span><br><span class="line">    <span class="number">1</span>) <span class="keyword">AS</span> <span class="keyword">COUNT</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    (<span class="keyword">SELECT</span></span><br><span class="line">        @N:=@N <span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">HOUR</span> </span><br><span class="line">    <span class="keyword">FROM</span></span><br><span class="line">        ANIMAL_OUTS,</span><br><span class="line">        (<span class="keyword">SELECT</span></span><br><span class="line">            @N:=<span class="number">-1</span> </span><br><span class="line">        <span class="keyword">FROM</span></span><br><span class="line">            DUAL) NN <span class="keyword">LIMIT</span> <span class="number">24</span>) <span class="keyword">AS</span> T</span><br><span class="line">    <span class="keyword">LEFT</span> <span class="keyword">JOIN</span></span><br><span class="line">        (</span><br><span class="line">            <span class="keyword">SELECT</span></span><br><span class="line">                <span class="keyword">HOUR</span>(DATETIME) <span class="keyword">AS</span> <span class="keyword">HOUR</span>,</span><br><span class="line">                <span class="keyword">COUNT</span>(ANIMAL_ID) <span class="keyword">AS</span> COUNTS</span><br><span class="line">            <span class="keyword">FROM</span></span><br><span class="line">                ANIMAL_OUTS </span><br><span class="line">            <span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br><span class="line">                <span class="keyword">HOUR</span> </span><br><span class="line">            <span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">                <span class="keyword">HOUR</span></span><br><span class="line">        ) <span class="keyword">AS</span> D     </span><br><span class="line">            <span class="keyword">ON</span> T.HOUR =  D.HOUR</span><br></pre></td></tr></table></figure>
+<h2 id="문제-해설"><a href="#문제-해설" class="headerlink" title="문제 해설"></a>문제 해설</h2><p>일단 문제를 크게 3개로 나눠서 생각했다.</p>
+<ul>
+<li>시간대 필드 생성 쿼리</li>
+<li>입양 건수를 세는 쿼리</li>
+<li>최종 도출 쿼리</li>
+</ul>
+<p>각각의 쿼리를 분석해보자.</p>
+<h3 id="시간대-필드-생성-쿼리"><a href="#시간대-필드-생성-쿼리" class="headerlink" title="시간대 필드 생성 쿼리"></a>시간대 필드 생성 쿼리</h3><p>위 문제는 데이터의 없는 시간대도 쿼리 상에서 결과를 같이 도출해야 한다. 예를 들어 1시에 입양 건수가 없어도 이를 레코드로 작성해야 한다. 따라서 0 ~ 23 을 레코드로 가지는 필드를 생성한다. 해당 쿼리는 아래와 같다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    @N:=@N+<span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">HOUR</span> </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    ANIMAL_OUTS,</span><br><span class="line">    (<span class="keyword">SELECT</span></span><br><span class="line">        @N:=<span class="number">-1</span> </span><br><span class="line">    <span class="keyword">FROM</span></span><br><span class="line">        DUAL) NN <span class="keyword">LIMIT</span> <span class="number">24</span>)</span><br></pre></td></tr></table></figure>
+<p><code>DUAL</code>은 함수에 따른 결과값을 도출하고 싶을 때 사용하는 임시 더미 테이블이다. 변수 <code>N</code>에 <code>-1</code>을 할당하여 더미 테이블을 생성한다. 생성된 더미 테이블은 아래와 같다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>@N:=-1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>위 더미와 ANIMAL_OUTS을 조인한 결합 테이블에서 1씩 더해지는 변수 <code>N</code>을 조회하여 가져온다. <code>LIMIT</code> 으로 24로 제한을 두어 0부터 23까지 열이 도출되도록 한다.<br>위 쿼리의 결과는 아래와 같다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>HOUR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+</tr>
+<tr>
+<td>…</td>
+</tr>
+<tr>
+<td>22</td>
+</tr>
+<tr>
+<td>23</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="입양-건수를-세는-쿼리"><a href="#입양-건수를-세는-쿼리" class="headerlink" title="입양 건수를 세는 쿼리"></a>입양 건수를 세는 쿼리</h3><p>이 쿼리는 ANIMAL_ID의 개수를 확인하여 각 시간별로의 입양 건수를 가져온다. 해당 쿼리는 아래와 같다.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="keyword">HOUR</span>(DATETIME) <span class="keyword">AS</span> <span class="keyword">HOUR</span>,</span><br><span class="line">    <span class="keyword">COUNT</span>(ANIMAL_ID) <span class="keyword">AS</span> COUNTS</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    ANIMAL_OUTS </span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br><span class="line">    <span class="keyword">HOUR</span> </span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">    <span class="keyword">HOUR</span></span><br></pre></td></tr></table></figure>
+<p><code>ANIMAL_OUTS</code>라는 테이블에는 DATETIME 타입의 날짜 및 시간 필드가 있다. 해당 필드에서 <code>HOUR()</code>을 사용하여 시간만을 도출하고 이를 <code>GROUP BY</code> 대상으로 사용하여 각 시간대별로 입양 건수가 합쳐져서 반환될 수 있도록 한다. 다음으로 <code>ORDER BY</code>을 사용하여 시간대 별로 정렬한다. 위 쿼리의 결과는 아래와 같다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>HOUR</th>
+<th>COUNTS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>18</td>
+<td>16</td>
+</tr>
+<tr>
+<td>19</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>위 결과에서 입양 건수가 있는 시간대만 반환되는 것을 볼 수 있다.</p>
+<h3 id="최종-도출-쿼리"><a href="#최종-도출-쿼리" class="headerlink" title="최종 도출 쿼리"></a>최종 도출 쿼리</h3><p>이제 위 두개의 쿼리를 하나로 합쳐서 가져오면 된다. 먼저 쿼리의 구조를 살펴보자.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    T.HOUR,</span><br><span class="line">    <span class="keyword">IFNULL</span>(D.COUNTS,</span><br><span class="line">    <span class="number">1</span>) <span class="keyword">AS</span> <span class="keyword">COUNT</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    (시간대 쿼리) <span class="keyword">AS</span> T</span><br><span class="line">    <span class="keyword">LEFT</span> <span class="keyword">JOIN</span></span><br><span class="line">    (입양건수 쿼리) <span class="keyword">AS</span> D     </span><br><span class="line">            <span class="keyword">ON</span> T.HOUR =  D.HOUR</span><br></pre></td></tr></table></figure>
+<p>먼저 레코드는 시간대 쿼리</p>
 ]]></content>
       <categories>
         <category>PROGRAMMING</category>
@@ -642,9 +732,9 @@
       <tags>
         <tag>recursion</tag>
         <tag>recursive</tag>
-        <tag>python</tag>
         <tag>비교</tag>
         <tag>rust</tag>
+        <tag>python</tag>
         <tag>hanoi</tag>
         <tag>시간초과</tag>
         <tag>println</tag>
@@ -755,12 +845,12 @@
       <tags>
         <tag>aws</tag>
         <tag>lightsail</tag>
-        <tag>KBO</tag>
-        <tag>analysis</tag>
         <tag>flask</tag>
         <tag>플라스크</tag>
+        <tag>KBO</tag>
         <tag>Web-server</tag>
         <tag>대시보드</tag>
+        <tag>analysis</tag>
         <tag>dashbooard</tag>
       </tags>
   </entry>
@@ -1011,9 +1101,9 @@
       </categories>
       <tags>
         <tag>빅데이터</tag>
+        <tag>Hive</tag>
         <tag>hadoop</tag>
         <tag>ecosystem</tag>
-        <tag>Hive</tag>
         <tag>SQL</tag>
         <tag>Tez</tag>
         <tag>mapreduce</tag>
@@ -2519,10 +2609,10 @@
         <category>Certificate</category>
       </categories>
       <tags>
+        <tag>sql</tag>
         <tag>자격증</tag>
         <tag>SQLD</tag>
         <tag>sqld</tag>
-        <tag>sql</tag>
       </tags>
   </entry>
   <entry>
@@ -3336,13 +3426,13 @@
         <category>Web/Dashboard</category>
       </categories>
       <tags>
-        <tag>mariadb</tag>
         <tag>DB</tag>
+        <tag>mariadb</tag>
         <tag>aws</tag>
         <tag>lightsail</tag>
-        <tag>ssh</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
+        <tag>ssh</tag>
         <tag>dashborad</tag>
       </tags>
   </entry>
@@ -3623,12 +3713,12 @@
       <tags>
         <tag>Algorithms</tag>
         <tag>알고리즘</tag>
+        <tag>기초</tag>
         <tag>버블정렬</tag>
         <tag>삽입정렬</tag>
         <tag>선택정렬</tag>
         <tag>정렬알고리즘</tag>
         <tag>sort</tag>
-        <tag>기초</tag>
       </tags>
   </entry>
   <entry>
@@ -4470,10 +4560,10 @@
         <tag>docker</tag>
         <tag>mariaDB</tag>
         <tag>DB</tag>
+        <tag>flask</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
-        <tag>flask</tag>
         <tag>EC2</tag>
         <tag>plotly</tag>
         <tag>dash</tag>
@@ -4505,12 +4595,12 @@
         <category>Cluster</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>빅데이터</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
+        <tag>Docker</tag>
+        <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
   </entry>
@@ -4565,12 +4655,12 @@
         <category>Cluster</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>빅데이터</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
+        <tag>Docker</tag>
+        <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
   </entry>
@@ -4609,12 +4699,12 @@
         <category>Cluster</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>빅데이터</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
+        <tag>Docker</tag>
+        <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
   </entry>
@@ -4693,12 +4783,12 @@
         <category>Cluster</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>빅데이터</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
+        <tag>Docker</tag>
+        <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
   </entry>
@@ -4778,8 +4868,8 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>database</tag>
         <tag>mariaDB</tag>
+        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>DB</tag>
         <tag>GROUPBY</tag>
@@ -4828,8 +4918,8 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>database</tag>
         <tag>mariaDB</tag>
+        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>DB</tag>
         <tag>ALTER</tag>
@@ -4910,12 +5000,12 @@
         <category>Cluster</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>빅데이터</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
+        <tag>Docker</tag>
+        <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
   </entry>
@@ -4947,12 +5037,12 @@
         <category>Cluster</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
-        <tag>빅데이터</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
+        <tag>Docker</tag>
+        <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
   </entry>
@@ -5046,8 +5136,8 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>database</tag>
         <tag>mariaDB</tag>
+        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>정규화</tag>
         <tag>nomalization</tag>
@@ -5124,8 +5214,8 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>database</tag>
         <tag>mariaDB</tag>
+        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>명령어</tag>
         <tag>WHERE</tag>
@@ -5174,8 +5264,8 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>database</tag>
         <tag>mariaDB</tag>
+        <tag>database</tag>
         <tag>RDBMS</tag>
         <tag>table</tag>
       </tags>
@@ -5232,8 +5322,8 @@
       <tags>
         <tag>docker</tag>
         <tag>sql</tag>
-        <tag>mariadb</tag>
         <tag>database</tag>
+        <tag>mariadb</tag>
         <tag>vi</tag>
         <tag>vim</tag>
         <tag>도커</tag>
@@ -5276,10 +5366,10 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
         <tag>Docker</tag>
+        <tag>딥러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>image</tag>
       </tags>
   </entry>
@@ -5337,10 +5427,10 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
         <tag>Docker</tag>
+        <tag>딥러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>image</tag>
       </tags>
   </entry>
@@ -5410,10 +5500,10 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>Amazon</tag>
         <tag>Docker</tag>
+        <tag>딥러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>image</tag>
       </tags>
   </entry>
@@ -5468,9 +5558,9 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>Amazon</tag>
         <tag>cloud</tag>
         <tag>클라우드</tag>
+        <tag>Amazon</tag>
         <tag>아마존</tag>
         <tag>터미널</tag>
         <tag>boto3</tag>
@@ -5535,9 +5625,9 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>Amazon</tag>
         <tag>cloud</tag>
         <tag>클라우드</tag>
+        <tag>Amazon</tag>
         <tag>아마존</tag>
         <tag>터미널</tag>
         <tag>boto3</tag>
@@ -5570,9 +5660,9 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>Amazon</tag>
         <tag>cloud</tag>
         <tag>클라우드</tag>
+        <tag>Amazon</tag>
         <tag>아마존</tag>
         <tag>터미널</tag>
         <tag>boto3</tag>
@@ -5619,9 +5709,9 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>Amazon</tag>
         <tag>cloud</tag>
         <tag>클라우드</tag>
+        <tag>Amazon</tag>
         <tag>아마존</tag>
         <tag>계정</tag>
       </tags>
@@ -5647,9 +5737,9 @@
       </categories>
       <tags>
         <tag>AWS</tag>
-        <tag>Amazon</tag>
         <tag>cloud</tag>
         <tag>클라우드</tag>
+        <tag>Amazon</tag>
         <tag>아마존</tag>
       </tags>
   </entry>
@@ -5993,8 +6083,8 @@
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>Dropout</tag>
@@ -6080,8 +6170,8 @@
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>std</tag>
@@ -6217,8 +6307,8 @@
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>optimizer</tag>
@@ -6311,8 +6401,8 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>ReLU</tag>
@@ -6403,8 +6493,8 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>역전파</tag>
@@ -6588,8 +6678,8 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>역전파</tag>
@@ -7292,8 +7382,8 @@ a_{12} & \mathbf{a_{22}}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>순전파</tag>
@@ -7345,8 +7435,8 @@ a_{12} & \mathbf{a_{22}}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>가중치</tag>
         <tag>네트워크</tag>
@@ -7426,8 +7516,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>순전파</tag>
@@ -7499,8 +7589,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>경사하강법</tag>
         <tag>미분</tag>
         <tag>편미분</tag>
@@ -7545,8 +7635,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>loss</tag>
         <tag>손실함수</tag>
@@ -7621,8 +7711,8 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>ReLU</tag>
         <tag>렐루</tag>
@@ -7904,8 +7994,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>벡터</tag>
         <tag>내적</tag>
@@ -7991,8 +8081,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
       </tags>
   </entry>
@@ -8519,9 +8609,9 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
       <tags>
         <tag>Algorithms</tag>
         <tag>알고리즘</tag>
-        <tag>기초</tag>
         <tag>빅오 표기법</tag>
         <tag>피보나치</tag>
+        <tag>기초</tag>
       </tags>
   </entry>
   <entry>
