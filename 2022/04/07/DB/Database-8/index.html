@@ -54,7 +54,7 @@
 <meta property="og:description" content="프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2022-04-07T13:54:18.000Z">
-<meta property="article:modified_time" content="2022-04-10T15:38:02.677Z">
+<meta property="article:modified_time" content="2022-04-10T16:31:48.987Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="sql">
 <meta property="article:tag" content="programmers">
@@ -327,7 +327,7 @@
 <li>최종 도출 쿼리</li>
 </ul>
 <p>각각의 쿼리를 분석해보자.</p>
-<h3 id="시간대-필드-생성-쿼리"><a href="#시간대-필드-생성-쿼리" class="headerlink" title="시간대 필드 생성 쿼리"></a>시간대 필드 생성 쿼리</h3><p>위 문제는 데이터가 없는 시간대도 쿼리 상에서 결과를 같이 도출해야 한다. 예를 들어 1시에 입양 건수가 없어도 이를 레코드로 작성해야 한다. 따라서 0 ~ 23 을 레코드로 가지는 필드를 생성한다. 해당 쿼리는 아래와 같다.</p>
+<h3 id="시간대-필드-생성-쿼리"><a href="#시간대-필드-생성-쿼리" class="headerlink" title="시간대 필드 생성 쿼리"></a>시간대 필드 생성 쿼리</h3><p>위 문제는 데이터가 없는 시간대도 쿼리 상에서 결과를 같이 도출해야 한다. 예를 들어 1시에 입양 건수가 없어도 이를 레코드로 가져와야 한다. 따라서 0 ~ 23 을 레코드로 가지는 필드를 생성한다. 해당 쿼리는 아래와 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    @N:=@N+<span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">HOUR</span> </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    ANIMAL_OUTS,</span><br><span class="line">    (<span class="keyword">SELECT</span></span><br><span class="line">        @N:=<span class="number">-1</span> </span><br><span class="line">    <span class="keyword">FROM</span></span><br><span class="line">        DUAL) NN <span class="keyword">LIMIT</span> <span class="number">24</span>)</span><br></pre></td></tr></table></figure>
 <p><code>DUAL</code>은 함수에 따른 결과값을 도출하고 싶을 때 사용하는 임시 더미 테이블이다. 변수 <code>N</code>에 <code>-1</code>을 할당하여 더미 테이블을 생성한다. 생성된 더미 테이블은 아래와 같다.</p>
 <div class="table-container">
