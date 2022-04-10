@@ -137,7 +137,39 @@
 <p>위 결과에서 입양 건수가 있는 시간대만 반환되는 것을 볼 수 있다.</p>
 <h3 id="최종-도출-쿼리"><a href="#최종-도출-쿼리" class="headerlink" title="최종 도출 쿼리"></a>최종 도출 쿼리</h3><p>이제 위 두개의 쿼리를 하나로 합쳐서 가져오면 된다. 먼저 쿼리의 구조를 살펴보자.</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    T.HOUR,</span><br><span class="line">    <span class="keyword">IFNULL</span>(D.COUNTS,</span><br><span class="line">    <span class="number">1</span>) <span class="keyword">AS</span> <span class="keyword">COUNT</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    (시간대 쿼리) <span class="keyword">AS</span> T</span><br><span class="line">    <span class="keyword">LEFT</span> <span class="keyword">JOIN</span></span><br><span class="line">    (입양건수 쿼리) <span class="keyword">AS</span> D     </span><br><span class="line">            <span class="keyword">ON</span> T.HOUR =  D.HOUR</span><br></pre></td></tr></table></figure>
-<p>먼저 레코드는 시간대 쿼리</p>
+<p>위 쿼리는 두 테이블의 HOUR 필드를 기준으로 <code>LEFT JOIN</code>하여 시간 테이블인 <code>T</code>의 HOUR 필드와 입양건수 테이블인 <code>D</code>의 COUNT 필드의 값을 가져온다. 또한 <code>T</code>의 HOUR 필드 값이 <code>D</code>에 없는 경우 발생하는 NULL은 <code>IFNULL()</code>을 통해 0으로 변경한다.<br>위 쿼리의 결과는 아래와 같으며, 이는 정답 예시와 동일하다.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>HOUR</th>
+<th>COUNT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>22</td>
+<td>0</td>
+</tr>
+<tr>
+<td>23</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
 ]]></content>
       <categories>
         <category>PROGRAMMING</category>

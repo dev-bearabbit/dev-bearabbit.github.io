@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/test1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideDownIn"}}
+  };
+</script>
+
+  <meta name="description" content="글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[클린코드] 파이썬스러운 코드">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/2021/12/10/Python/Clean-code-1/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2021-12-09T17:06:21.000Z">
+<meta property="article:modified_time" content="2022-04-05T08:38:27.000Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="Cleancode">
+<meta property="article:tag" content="클린코드">
+<meta property="article:tag" content="책리뷰">
+<meta property="article:tag" content="review">
+<meta property="article:tag" content="code">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hyeonji-ryu.github.io/2021/12/10/Python/Clean-code-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>[클린코드] 파이썬스러운 코드 | DEV AnythinG</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163411677-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <style>
+    body {
+    margin:0;
+    padding:0;
+    backgroud-color: #000000;
+    }
+    canvas{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left:0;
+    z-index:-1;
+    }
+    div{
+    z-index:0;
+    }
+  </style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <canvas id="canvas" style="width: 100%; height: 100%; padding: 0; margin: 0;"></canvas>
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DEV AnythinG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">welcome :)</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/Resume/" rel="section"><i class="fa fa-fw fa-user"></i>about</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Hyeonji-Ryu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2021/12/10/Python/Clean-code-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/bearabbit.png">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [클린코드] 파이썬스러운 코드
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              <time title="Post created: 2021-12-10 02:06:21" itemprop="dateCreated datePublished" datetime="2021-12-10T02:06:21+09:00">2021-12-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LANGUAGE/" itemprop="url" rel="index">
+                    <span itemprop="name">LANGUAGE</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LANGUAGE/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="파이썬스럽다-pythonic-의-의미"><a href="#파이썬스럽다-pythonic-의-의미" class="headerlink" title="파이썬스럽다(pythonic)의 의미"></a>파이썬스럽다(pythonic)의 의미</h2><p>모든 프로그래밍 언어는 각자의 고유한 관용구(idiom)를 가지고 있다. 여기서 관용구란 특정 작업을 수행하기 위한 특별한 방법이며, 패턴이라고도 불린다. 이런 관용구를 따른 코드를 관용적이라고 부르며, 파이썬에서는 파이썬스럽다고 한다. 이런 관용구를 따른 코드는 더 나은 성능을 낸다.</p>
+<h2 id="인덱스와-슬라이스"><a href="#인덱스와-슬라이스" class="headerlink" title="인덱스와 슬라이스"></a>인덱스와 슬라이스</h2><p>파이썬은 인덱스에 음수를 사용하여 끝에서부터 접근이 가능하다. 또한 슬라이스를 사용하여 특정 구간의 인덱스 요소롤 반환할 수 있다. 마지막 예제를처럼 슬라이스에서 세번째 값을 추가로 입력하여 간격을 설정할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; num = (<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>)</span><br><span class="line">&gt; num[<span class="number">-1</span>]</span><br><span class="line"><span class="number">7</span></span><br><span class="line">&gt; num[<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">&gt;num[<span class="number">0</span>:<span class="number">4</span>:<span class="number">2</span>]</span><br><span class="line">(<span class="number">2</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="자체-시퀀스-생성"><a href="#자체-시퀀스-생성" class="headerlink" title="자체 시퀀스 생성"></a>자체 시퀀스 생성</h2><p>슬라이스를 가져오는 또 다른 방법이 있다. 아래의 예시를 보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;interval = slice(<span class="number">0</span>,<span class="number">4</span>,<span class="number">2</span>)</span><br><span class="line">&gt;num[interval]</span><br><span class="line">(<span class="number">2</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>결과는 위에서 직접 슬라이스를 한 결과와 같다. 위 방법은 클래스 내부에 내장되어 있는 <code>__getitem__</code>이라는 메서드를 이용한 것이다. 파이썬의 클래스는 기본적으로 내장된 몇 가지의 매서드가 존재한다. 이런 기능들을 <strong>매직 메서드</strong>라고 한다.</p>
+<p><strong>매직 메서드란</strong><br>매직 메서드란 사용자가 클래스안에 정의할 수 있는 스페셜 메서드로서 클래스를 int, str, list등의 파이썬의 빌트인 타입(built-in type)과 같은 작동을 하게 해준다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">items</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *values)</span>:</span></span><br><span class="line">        self._values = list(values)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self._values)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._values.__getitem__(item)</span><br></pre></td></tr></table></figure>
+<p>위의 예시에서는 클래스 <code>items</code>에 3개의 매직 메서드를 정의했다. 하나씩 간단하게 기능을 살펴보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; exam = items(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>)</span><br><span class="line">&gt; exam._values</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">&gt;len(exam)</span><br><span class="line"><span class="number">6</span></span><br><span class="line">&gt;exam[interval]</span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>__init__</code>: 클래스에 파라미터로 들어오는 값들을 객체로 저장한다. 위의 예시에서 클래스의 인스턴스인 <code>exam</code>은 <code>exam._values</code>에 리스트화된 <code>num</code>이 저장된다.</li>
+<li><code>__len__</code>: <code>__init__</code>에 정의된 데이터의 개수를 반환한다. 위의 예시에서는 <code>exam._values</code>의 개수를 반환한다.</li>
+<li><code>__getitem__</code>: key에 해당하는 대괄호 안의 값을 파라미터로 전달한다. 위의 예시에서는 <code>exam[interval]</code>을 입력하면 <code>interval</code>이 <code>__getitem__</code>의 파라미터로 전달되어 해당 함수의 반환값을 제공한다.</li>
+</ul>
+<p>이외에도 다양한 매직 메서드들이 많이 존재한다. 그렇다면 이런 기능을 왜 사용하는 것일까? 바로 데이터 타입을 맞춰주기 위함이다. 위와 같이 내장 함수나 사칙연산 함수 등을 데이터 타입에 맞게 함수로 지정해두면 편리하게 사용할 수 있다.</p>
+<h2 id="컨텍스트-관리자"><a href="#컨텍스트-관리자" class="headerlink" title="컨텍스트 관리자"></a>컨텍스트 관리자</h2><p>일반적으로 파일을 열면 파일 디스크럽터의 누수를 막기 위해 사용이 끝난 후 파일을 닫아야 한다. (파일 디스크럽터란 간단히 설명하면 데이터의 출입구이다.) 하지만 파일을 닫기 위해서는 할당된 모든 리소스를 해제하여야 하는데 코드가 복잡해지는 경우 모든 경로를 찾아서 해제하기는 어렵다. 이때 컨텍스트 관리자를 사용하면 이런 부분들을 자동으로 관리해준다. 아래 예시를 확인해보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(filename) <span class="keyword">as</span> fd:</span><br><span class="line">    process_file(fd)</span><br></pre></td></tr></table></figure>
+<p>위 코드는 <code>with</code>로 컨텍스트 관리자로 진입한 후 <code>open()</code>으로 관리자 내부에서 파일을 오픈한 다음 <code>process_file()</code>함수에 들어있는 과정을 모두 실행한다. 여기서 예외가 발생해도 해당 함수에 들어있는 코드가 모두 진행되면 자동으로 해당 파일을 닫는다.</p>
+<p>컨텍스트 관리자는 <code>__enter__</code>와 <code>__exit__</code>라는 두 개의 매직 메서드를 가지고 있다. 처음 <code>with</code>는 <code>__enter__</code>을 호출하여 해당 메서드에서 반환하는 객체를 <code>as</code> 다음에 오는 변수에 할당한다. 그후 코드가 끝나면 <code>__exit__</code>를 호출하여 해당 컨텍스트 관리자를 종료한다.</p>
+<p>앞서 매직 메서드를 구현했던 예제와 같이 컨텍스트 관리자 또한 직접 구현할 수 있다. 바로 <code>contextlib</code>모듈을 사용하는 것이다. 아래의 예제를 확인해보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> contextlib</span><br><span class="line"></span><br><span class="line"><span class="meta">@contextlib.contextmanager</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">db_handler</span><span class="params">()</span>:</span></span><br><span class="line">    stop_database()</span><br><span class="line">    <span class="keyword">yield</span></span><br><span class="line">    start_database()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> db_handler():</span><br><span class="line">    db_backup</span><br></pre></td></tr></table></figure>
+<p>위와 같이 컨텍스트 관리자로 설정할 함수 위에 <code>@contextlib.contextmanager</code>를 추가하면 된다. 컨텍스트 관리자로 사용될 함수는 <strong>제너레이터</strong>라는 함수의 형태여야 한다.</p>
+<p><strong>제너레이터란</strong><br>제너레이터는 이터레이터를 생성해주는 함수이다. 이터레이터는 클래스에 <strong>iter</strong>, <strong>next</strong> 또는 <strong>getitem</strong> 메서드를 구현해야 하지만 제너레이터는 함수 안에서 yield라는 키워드만 사용하면 된다. 그래서 제너레이터는 이터레이터보다 훨씬 간단하게 작성할 수 있다.</p>
+<p><code>db_handler()</code>에서 <code>yield</code>는 <code>__enter__</code>와 <code>__exit__</code>를 나눠주는 역할을 한다.</p>
+<h2 id="프로퍼티-속성과-객체-메서드의-다른-타입들"><a href="#프로퍼티-속성과-객체-메서드의-다른-타입들" class="headerlink" title="프로퍼티, 속성과 객체 메서드의 다른 타입들"></a>프로퍼티, 속성과 객체 메서드의 다른 타입들</h2><p>다른 언어들과 다르게 파이썬 객체의 모든 프로퍼티와 함수는 public이다. 즉 호출자가 객체의 속성을 호출하지 못하도록 할 방법이 없다는 것이다.</p>
+<p>엄격한 강제사항은 없지만 몇 가지 규칙이 있다. 밑줄로 시작하는 속성은 해당 객체에 대해 private을 의미하여, 외부에서 호출되지 않기를 기대하는 것이다.</p>
+<h3 id="파이썬에서의-밑줄"><a href="#파이썬에서의-밑줄" class="headerlink" title="파이썬에서의 밑줄"></a>파이썬에서의 밑줄</h3><p>파이썬에서 밑줄을 사용하는 몇 가지 규칙이 있다. 아래의 예시를 먼저 살펴보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Connector</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, source)</span>:</span></span><br><span class="line">        self.source = source</span><br><span class="line">        self._timeout = <span class="number">60</span></span><br><span class="line"></span><br><span class="line">&gt; con = Connector(<span class="string">'mysql://localhost'</span>)</span><br><span class="line">&gt; con.source</span><br><span class="line"><span class="string">'mysql://localhost'</span></span><br><span class="line">&gt;con._timeout</span><br><span class="line"><span class="number">60</span></span><br><span class="line">&gt;con.__dict__</span><br><span class="line">&#123;<span class="string">'source'</span>: <span class="string">'mysql://localhost'</span>, <span class="string">'_timeout'</span>: <span class="number">60</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>위 속성에서 볼 수 있듯이 <code>source</code>는 public이고 <code>_timeout</code>은 private이다. 이 코드를 해석해보면 <code>_timeout</code>은 해당 클라스 자체에서만 사용되고 바깥에서는 호출되지 않아야 한다. 이렇게 내부에서 사용할 것들을 밑줄로 정리해두면 훨씬 안전하게 리팩토링 할 수 있다.</p>
+<p>어떤 이들은 밑줄 2개를 이용하면 private 객체를 만들 수 있다고 한다. 하지만 그것은 사실이 아니다. 아래의 예시를 보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Connector</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, source)</span>:</span></span><br><span class="line">        self.source = source</span><br><span class="line">        self.__timeout = <span class="number">60</span></span><br><span class="line"></span><br><span class="line">&gt; con = Connector(<span class="string">'mysql://localhost'</span>)</span><br><span class="line">&gt; con.source</span><br><span class="line"><span class="string">'mysql://localhost'</span></span><br><span class="line">&gt;con.__timeout</span><br><span class="line">AttributeError: <span class="string">'Connector'</span> object has no attribute <span class="string">'__timeout'</span></span><br></pre></td></tr></table></figure>
+<p>위처럼 밑줄이 두 개인 경우는 메서드를 바로 인식하지 않는다. 하지만 이것은 파이썬이 다른 이름의 메서드를 만든 것이다. 이를 이름 맹글링이라고 한다. 이름 맹글링이란 파이썬이 본인의 규칙에 맞게 알아서 함수 또는 변수의 이름을 변형하는 것을 말한다. 밑줄 2개는 아래와 같은 이름의 메서드를 생성한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;con._Connector__timeout</span><br><span class="line"><span class="number">60</span></span><br></pre></td></tr></table></figure>
+<h3 id="프로퍼티"><a href="#프로퍼티" class="headerlink" title="프로퍼티"></a>프로퍼티</h3><p>객체에 저장되는 값이 일반적인 속성을 가져야 할 경우에 프로퍼티를 보편적으로 사용된다.<br>예를 들어서 사용자가 올바르지 않은 양식의 이메일을 입력하지 않도록 만드는 코드를 짠다고 가정해보자. 그럼 코드는 다음과 같다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">email_format= re.compile(<span class="string">r"[^@]+@[^@]+[^@]+"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_valid_email</span><span class="params">(user_email: str)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> re.match(email_format,user_email) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, username)</span>:</span></span><br><span class="line">        self.username = username</span><br><span class="line">        self._email = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">email</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._email</span><br><span class="line"></span><br><span class="line"><span class="meta">    @email.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">email</span><span class="params">(self, new_email)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> is_valid_email(new_email):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">f"<span class="subst">&#123;new_email&#125;</span>은 유효한 이메일이 아닙니다."</span>)</span><br><span class="line">        self._email = new_email</span><br></pre></td></tr></table></figure>
+<p>위 코드에서 <code>@property</code>는 클래스 User의 private 값인 <code>_email</code>을 반환한다. 두번째 메서드인 <code>@email.setter</code>는 프로퍼티에 값이 할당되면 해당 값이 올바른 이메일인지 검사한 후 클래스 User의 <code>_email</code> 속성을 업데이트 할지 결정한다.</p>
+<p>프로퍼티는 명령-쿼리 분리 원칙을 따르기 위한 좋은 방법이다. 명령-쿼리 분리 원칙이란 객체의 메서드가 무언가의 상태를 변경하는 명령이거나 무언가의 값을 반환하는 쿼리이거나 둘 중 하나만 수행해야 한다는 것이다,</p>
+<p>프로퍼티를 사용하면 <code>@property</code>는 무언가의 응답을 하기 위한 쿼리이고, <code>@&lt;property_name&gt;.setter</code>는 무언가를 하기 위한 커맨드(명령)이다.</p>
+<h2 id="이터러블-객체"><a href="#이터러블-객체" class="headerlink" title="이터러블 객체"></a>이터러블 객체</h2><p>파이썬에서는 기본적으로 반복 가능한 객체가 있다. for 루프를 사용하여 객체를 반복할 수도 있지만, 반복을 위한 자체 이터러블을 만들 수도 있다. 엄밀히 말하면 이터러블은 <code>__iter__</code> 매직 메서드를 구현한 객체, 이터레이터는 <code>__next__</code> 매직 메서드를 구현한 객체를 말한다.</p>
+<p>파이썬의 반복은 이터러블 프로토콜이라는 자체 프로토콜을 사용해 동작한다. 객체를 반복할 수 있는지 확인하기 위해서 다음 2가지를 검사한다.</p>
+<ul>
+<li>객체가 <code>__next__</code>나 <code>__iter__</code> 중 하나를 포함하는가</li>
+<li>객체가 시퀀스이고 <code>__len__</code>과 <code>__getitem__</code>를 모두 가져는가</li>
+</ul>
+<p>객체를 반복하려고 하면 파이썬은 해당 객체의 <code>iter()</code>를 호출한다. 이것은 해당 객체에 <code>__iter__</code> 메서드가 있는지 확인하는 것이다. <code>__iter__</code>가 있다면 해당 메서드를 실행한다. 예시를 보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> timedelta, date</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataRangeContainerIterable</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,start_date,end_date)</span>:</span></span><br><span class="line">        self.start_date = start_date</span><br><span class="line">        self.end_date = end_date</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        current_day = self.start_date</span><br><span class="line">        <span class="keyword">while</span> current_day &lt; self.end_date:</span><br><span class="line">            <span class="keyword">yield</span> current_day</span><br><span class="line">            current_day += timedelta(days=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>위 코드는 <code>__iter__</code>에서 제너레이터를 생성하고 제너레이터는 다시 그 안의 <code>__iter__</code>를 생성한다. 이런 형태의 객체를 ‘컨테이너 이터러블’이라고 한다. 예시를 통해 위 코드를 확인해보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;temp = DataRangeContainerIterable(date(<span class="number">2020</span>,<span class="number">1</span>,<span class="number">1</span>),date(<span class="number">2020</span>,<span class="number">1</span>,<span class="number">5</span>))</span><br><span class="line">&gt;<span class="string">","</span>.join(map(str,temp))</span><br><span class="line"><span class="string">'2020-01-01,2020-01-02,2020-01-03,2020-01-04'</span></span><br></pre></td></tr></table></figure>
+<p>한번에 날짜들이 나오는 것을 볼 수 있다.</p>
+<p>그렇다면 만약 객체에 <code>__iter__</code>가 없는 경우에는 어떻게 반복해야 할까? 객체는 <code>__iter__</code>가 없는 경우에 <code>__getitem__</code>을 찾으며, 이것도 없다면 <code>TypeError</code>를 일으킨다.</p>
+<p>따라서 시퀀스는 기본적으로 <code>__len__</code>과 <code>__getitem__</code>를 수현하고 첫 번째 인덱스 0부터 시작하여 포함된 요소를 한 번에 하나씩 차례로 가져올 수 있어야 한다. 그렇지 않으면 반복이 작동하지 않는다.</p>
+<p>이터러블 방식은 데이터를 하나씩 가져오기 때문에 메모리를 적게 사용하지만 시간복잡도는 O(n)이다. 이와 반대로 시퀀스의 경우 메모리가 많이 사용되지만 시간 복잡도는 O(1)로 상수에 가능하다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DateRangeSequence</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, start_date, end_date)</span>:</span></span><br><span class="line">        self.start_date = start_date</span><br><span class="line">        self.end_date = end_date</span><br><span class="line">        self._range = self._create_range()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_create_range</span><span class="params">(self)</span>:</span></span><br><span class="line">        days = []</span><br><span class="line">        current_day = self.start_date</span><br><span class="line">        <span class="keyword">while</span> current_day &lt; self.end_date:</span><br><span class="line">            days.append(current_day)</span><br><span class="line">            current_day += timedelta(days=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> days</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, day_no)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._range[day_no]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self._range)</span><br></pre></td></tr></table></figure>
+<p>위의 코드는 <code>_create_range()</code>을 사용하여 시퀀스를 차례대로 불러온다. 해당 코드가 어떻게 동작하는지 확인해보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; temp = DateRangeSequence(date(<span class="number">2020</span>,<span class="number">1</span>,<span class="number">1</span>),date(<span class="number">2020</span>,<span class="number">1</span>,<span class="number">5</span>))</span><br><span class="line">&gt; <span class="keyword">for</span> i <span class="keyword">in</span> temp:</span><br><span class="line">    print(i)</span><br><span class="line"><span class="number">2020</span><span class="number">-01</span><span class="number">-01</span></span><br><span class="line"><span class="number">2020</span><span class="number">-01</span><span class="number">-02</span></span><br><span class="line"><span class="number">2020</span><span class="number">-01</span><span class="number">-03</span></span><br><span class="line"><span class="number">2020</span><span class="number">-01</span><span class="number">-04</span></span><br><span class="line">&gt; temp[<span class="number">-1</span>]</span><br><span class="line">datetime.date(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>보시다시피 음수 인덱스도 작동하는 것을 확인할 수 있다. 이는 DateRangeSequence 객체가 모든 작업을 래핑된 객체인 <code>days</code>에 위임했기 때문이다.</p>
+<h2 id="컨테이너-객체"><a href="#컨테이너-객체" class="headerlink" title="컨테이너 객체"></a>컨테이너 객체</h2><p>컨테이너는 <code>__contains__</code> 메서드를 구현한 객체로 <code>__contains__</code> 메서드는 일반적으로 불리언 값을 반환한다. 해당 메서드는 파이썬에서 <code>in</code>키워드가 발견될 때 호출된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element <span class="keyword">in</span> container <span class="comment"># container.__contains__(element)</span></span><br></pre></td></tr></table></figure>
+<p>이 메서드를 잘 사용하면 코드의 가독성이 정말 높아진다. 아래의 예시는 2차원 게임 지도에서 특정 위치에 표시를 해야 하는 경우를 구현한 코드이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 난해한 코드</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mark_coordinate</span><span class="params">(grid, coord)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> &lt;= coord.x &lt; grid.width <span class="keyword">and</span> <span class="number">0</span> &lt;= coord.y &lt; grid.height:</span><br><span class="line">        grid[coord] = MARKED</span><br><span class="line"></span><br><span class="line"><span class="comment"># 정리된 코드</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Boundaries</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height)</span>:</span></span><br><span class="line">        self.width = width</span><br><span class="line">        self.height = height</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__contains__</span><span class="params">(self, coord)</span>:</span></span><br><span class="line">        x,y = coord</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span> &lt;= x &lt; self.width <span class="keyword">and</span> <span class="number">0</span> &lt;= y &lt; self.height</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Grid</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height)</span>:</span></span><br><span class="line">        self.width = width</span><br><span class="line">        self.height = height</span><br><span class="line">        self.limits = Boundaries(width, height)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__contains__</span><span class="params">(self, coord)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> coord <span class="keyword">in</span> self.limits</span><br></pre></td></tr></table></figure>
+<p>위의 난해한 코드는 복잡하고 이해하기도 직관적이지 않다. 아래의 코드처럼 클래스로 정리한다면 훨씬 가독성이 좋고 깔끔하다.</p>
+<h2 id="객체의-동적인-속성"><a href="#객체의-동적인-속성" class="headerlink" title="객체의 동적인 속성"></a>객체의 동적인 속성</h2><p><code>__getattr__</code> 매직 메서드를 사용하여 객체에서 속성을 얻는 방법을 제어할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DynamicAttributes</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, attribute)</span>:</span></span><br><span class="line">        self.attribute = attribute</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, attr)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> attr.startswith(<span class="string">"fallback_"</span>):</span><br><span class="line">            name = attr.replace(<span class="string">"fallback_"</span>,<span class="string">""</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">f"[fallback resolved] <span class="subst">&#123;name&#125;</span>"</span></span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">f"<span class="subst">&#123;self.__class__.__name__&#125;</span>에는 <span class="subst">&#123;attr&#125;</span> 속성이 없음"</span>)</span><br></pre></td></tr></table></figure>
+<p>위의 예시를 이용하여 <code>__getattr__</code>의 작동원리를 확인해보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; temp = DynamicAttributes(<span class="string">'value'</span>)</span><br><span class="line">&gt; temp.fallback_test <span class="comment"># __getattr__ 적용</span></span><br><span class="line"><span class="string">'[fallback resolved] test'</span></span><br></pre></td></tr></table></figure>
+<p>첫 번째 예시는 <code>fallback_test</code>라고 attribute 메서드로 보냄으로써 <code>f&quot;[fallback resolved] {name}&quot;</code> 해당 코드값이 반환된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;temp.__dict__[<span class="string">'fallback_new'</span>] = <span class="string">'new_value'</span></span><br><span class="line">&gt;temp.__dict__</span><br><span class="line">&#123;<span class="string">'attribute'</span>: <span class="string">'value'</span>, <span class="string">'fallback_new'</span>: <span class="string">'new_value'</span>&#125;</span><br><span class="line">&gt;getattr(temp, <span class="string">"fallback_new"</span>)</span><br><span class="line"><span class="string">'new_value'</span></span><br></pre></td></tr></table></figure>
+<p>두 번째 예시는 인스턴스 <code>temp</code>에 새로운 속성을 삽입한 후 <code>getattr()</code>을 통해 불러오면 속성값이 나오는 것을 확인할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;getattr(temp, <span class="string">"someting"</span>)</span><br><span class="line">AttributeError: DynamicAttributes에는 someting 속성이 없음</span><br><span class="line">&gt; getattr(temp, <span class="string">"someting"</span>,<span class="string">"yaah"</span>)</span><br><span class="line"><span class="string">'yaah'</span></span><br></pre></td></tr></table></figure>
+<p>마지막 예시는 값을 검색할 수 없는 경우에는 <code>AttributeError</code>가 일어나는 것을 확인할 수 있다. 신기한 것은 뒤에 하나를 추가하면 마지막 값을 리턴하는 것이다. 이것은 기존에 파라미터 2개로 설정된 <code>getattr()</code>가 작동하는 것 같다.</p>
+<h2 id="호출형-객체"><a href="#호출형-객체" class="headerlink" title="호출형 객체"></a>호출형 객체</h2><p>함수처럼 작동하는 객체는 매우 편리하다. 매직 메서드인 <code>__call__</code>을 사용하면 일반 객체를 함수처럼 호출할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CallCount</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._counts = defaultdict(int)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, argument)</span>:</span></span><br><span class="line">        self._counts[argument]+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> self._counts[argument]</span><br></pre></td></tr></table></figure>
+<p>위 코드는 해당 객체를 반복할수록 <code>__call__</code>를 호출하여 객체 값을 변경한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; cc = CallCount()</span><br><span class="line">&gt; cc(<span class="number">1</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line">&gt; cc(<span class="number">1</span>)</span><br><span class="line"><span class="number">2</span></span><br><span class="line">&gt; cc(<span class="number">1</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line">&gt; cc(<span class="number">2</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line">&gt; cc.__dict__</span><br><span class="line">&#123;<span class="string">'_counts'</span>: defaultdict(int, &#123;<span class="number">1</span>: <span class="number">3</span>, <span class="number">2</span>: <span class="number">1</span>&#125;)&#125;</span><br></pre></td></tr></table></figure>
+<p><code>__dict__</code>를 사용하여 객체들을 확인해보면 지금까지 변경된 부분이 저장되어 있는 것을 알 수 있다.</p>
+<h2 id="파이썬에서-유의할-점"><a href="#파이썬에서-유의할-점" class="headerlink" title="파이썬에서 유의할 점"></a>파이썬에서 유의할 점</h2><p>언어의 주요 기능을 이해하는 것 외에도 흔히 발생하는 잠재적인 문제를 피할 수 있는 관용적인 코드를 작성하는 것도 중요하다. 이번 섹션에서 논의되는 대부분은 완전히 해결할 수 있는 문제들이다. 따라서 지금부터 설명하는 방식대로 리팩토링하는 것이 좋다.</p>
+<h3 id="변경가능한-파라미터-값"><a href="#변경가능한-파라미터-값" class="headerlink" title="변경가능한 파라미터 값"></a>변경가능한 파라미터 값</h3><p>쉽게 말해 변경 가능한 객체를 함수의 기본 인자로 사용하면 안된다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/Cleancode/" rel="tag"># Cleancode</a>
+              <a href="/tags/%ED%81%B4%EB%A6%B0%EC%BD%94%EB%93%9C/" rel="tag"># 클린코드</a>
+              <a href="/tags/%EC%B1%85%EB%A6%AC%EB%B7%B0/" rel="tag"># 책리뷰</a>
+              <a href="/tags/review/" rel="tag"># review</a>
+              <a href="/tags/code/" rel="tag"># code</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/06/Python/Clean-code-0/" rel="prev" title="[클린코드] 소개, 코드 포매팅과 도구">
+      <i class="fa fa-chevron-left"></i> [클린코드] 소개, 코드 포매팅과 도구
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/23/Platform/platform-2/" rel="next" title="YARN 아키텍쳐">
+      YARN 아키텍쳐 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          목차
+        </li>
+        <li class="sidebar-nav-overview">
+          훑어보기
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#파이썬스럽다-pythonic-의-의미"><span class="nav-number">1.</span> <span class="nav-text">파이썬스럽다(pythonic)의 의미</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#인덱스와-슬라이스"><span class="nav-number">2.</span> <span class="nav-text">인덱스와 슬라이스</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#자체-시퀀스-생성"><span class="nav-number">3.</span> <span class="nav-text">자체 시퀀스 생성</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#컨텍스트-관리자"><span class="nav-number">4.</span> <span class="nav-text">컨텍스트 관리자</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#프로퍼티-속성과-객체-메서드의-다른-타입들"><span class="nav-number">5.</span> <span class="nav-text">프로퍼티, 속성과 객체 메서드의 다른 타입들</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#파이썬에서의-밑줄"><span class="nav-number">5.1.</span> <span class="nav-text">파이썬에서의 밑줄</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#프로퍼티"><span class="nav-number">5.2.</span> <span class="nav-text">프로퍼티</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#이터러블-객체"><span class="nav-number">6.</span> <span class="nav-text">이터러블 객체</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#컨테이너-객체"><span class="nav-number">7.</span> <span class="nav-text">컨테이너 객체</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#객체의-동적인-속성"><span class="nav-number">8.</span> <span class="nav-text">객체의 동적인 속성</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#호출형-객체"><span class="nav-number">9.</span> <span class="nav-text">호출형 객체</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#파이썬에서-유의할-점"><span class="nav-number">10.</span> <span class="nav-text">파이썬에서 유의할 점</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#변경가능한-파라미터-값"><span class="nav-number">10.1.</span> <span class="nav-text">변경가능한 파라미터 값</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jess"
+      src="/images/bearabbit.png">
+  <p class="site-author-name" itemprop="name">Jess</p>
+  <div class="site-description" itemprop="description">I love to learn, and try to be better than yesterday.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">카테고리</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">299</span>
+        <span class="site-state-item-name">태그</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jess</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const w = canvas.width = document.body.offsetWidth;
+    const h = canvas.height = document.body.offsetHeight;
+    const cols = Math.floor(w / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+
+    function matrix () {
+      ctx.fillStyle = '#0001';
+      ctx.fillRect(0, 0, w, h);
+  
+      ctx.fillStyle = '#009600';
+      ctx.font = '14pt monospace';
+  
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(Math.random() * 512);
+        const x = ind * 20;
+        ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+        else ypos[ind] = y + 20;
+      });
+    }
+    setInterval(matrix, 50);
+  </script>
+
+</body>
+</html>
