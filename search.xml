@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Spark 아키텍처</title>
+    <url>/2022/04/11/Platform/platform-4/</url>
+    <content><![CDATA[<p>하둡 에코시스템 중 하나인 Spark의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><p>스파크(Spark)는 </p>
+]]></content>
+      <categories>
+        <category>BIGDATA</category>
+        <category>Platform</category>
+      </categories>
+      <tags>
+        <tag>스파크</tag>
+        <tag>빅데이터</tag>
+        <tag>hadoop</tag>
+        <tag>ecosystem</tag>
+        <tag>spark</tag>
+        <tag>pyspark</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>입양 시각 구하기(2) 해설</title>
     <url>/2022/04/07/DB/Database-8/</url>
     <content><![CDATA[<p>프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.<br><a id="more"></a></p>
@@ -1081,8 +1100,8 @@
   <entry>
     <title>Hive 아키텍쳐</title>
     <url>/2021/12/30/Platform/platform-3/</url>
-    <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
-<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Bigdata/bigdata-0/#more">인트로 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
+    <content><![CDATA[<p>하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
+<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Platform/platform-0/">인트로 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
 <h2 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h2><p>하이브(hive)는 Hadoop용 RDB 서비스이다. HDFS를 사용함에 있어 데이터베이스나 테이블 개념으로 디렉토리를 구성하고 관리하며, 이를 바탕으로 SQL과 유사한 HiveQL이라는 문법을 지원한다. 즉, 자바로 맵리듀스 프로그램을 작성하는 것이 아니라 간단한 sql 문법만으로도 Hadoop에 데이터를 저장하거나 가져올 수 있다. 이렇게만 보면 사용방법은 mysql과 같은 RDB와 매우 유사해보인다.<br>하지만 스키마를 정의하고 데이터를 입력하는 구조는 기존 RDB와는 다르다. 스키마를 먼저 작성하고 그 다음 데이터를 입력해야 하는 기존 RDB와 달리 하이브는 데이터를 HDFS에 파일단위로 저장한 후에 스키마를 정의하여 데이터를 가져올 수 있다. 하이브는 RDB에 요구되는 스키마 정보들을 metastore에 저장하며, metastore는 다른 DBMS를 사용한다.</p>
 <h2 id="Hive-Roles"><a href="#Hive-Roles" class="headerlink" title="Hive Roles"></a>Hive Roles</h2><p>하이브를 구성하고 있는 컴포넌트는 아래 시진과 같다.</p>
 <p><img src="/images/146.png" alt="hive1"></p>
@@ -1144,8 +1163,8 @@
   <entry>
     <title>YARN 아키텍쳐</title>
     <url>/2021/12/23/Platform/platform-2/</url>
-    <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
-<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Bigdata/bigdata-1/#more">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
+    <content><![CDATA[<p>하둡의 코어 서비스 중 하나인 YARN의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
+<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Platform/Platform-1/">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
 <p>이번 글에서는 클러스터의 리소스를 관리 및 할당하는 YARN에 대해서 자세히 살펴볼 것이다.</p>
 <h2 id="YARN"><a href="#YARN" class="headerlink" title="YARN"></a>YARN</h2><p>YARN은 Yet Another Resource Negotiator의 줄임말로, 클러스터 내 서버들의 CPU와 메모리, 네트워크 등 시스템 리소스를 하나로 묶어 관리한다. YARN에서 자원을 할당하는 단위를 <code>컨테이너</code>라고 하며, YARN은 자원 할당 요청이 들어오면 자원을 제공하고 사용이 끝나면 회수한다.</p>
@@ -1393,7 +1412,7 @@
   <entry>
     <title>HDFS 아키텍쳐</title>
     <url>/2021/12/01/Platform/Platform-1/</url>
-    <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
+    <content><![CDATA[<p>하둡의 코어 서비스 중 하나인 HDFS의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
 <h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p>하둡은 크게 클러스터의 데이터를 저장하는 HDFS와 리소스를 관리하는 YARN, 이 2가지의 형태로 이루어져 있다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
 <p>이번 글에서는 이 중 클러스터의 스토리지를 관리하고 데이터를 분산 저장하는 HDFS에 대해서 살펴볼 것이다.</p>
@@ -1435,7 +1454,7 @@
   <entry>
     <title>빅데이터 플랫폼</title>
     <url>/2021/11/21/Platform/platform-0/</url>
-    <content><![CDATA[<p>해당 시리즈는 하둡과 에코시스템에 대해서 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
+    <content><![CDATA[<p>빅데이터와 빅데이터 플랫폼에 대한 개인적인 생각들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="빅데이터"><a href="#빅데이터" class="headerlink" title="빅데이터"></a>빅데이터</h2><p>요즘 4차 산업혁명이라는 말과 함께 여기저기에서 <code>빅데이터</code>라는 단어를 들을 수 있다. 또한 빅데이터에 대한 정의는 아직까지 사람마다, 업계마다 조금씩 다른 것 같다. 그런 의미에서 빅데이터에 관심있는 사람들은 한 번쯤 “빅데이터란 어느정도 크기의 데이터를 말하는걸까?” 하는 고민이 있었을 것이다. 개인적으로 생각했던 빅데이터의 기준은 “하나의 컴퓨터(서버)로 핸들링할 수 없는 크기의 데이터”이다. 이렇게 생각한 근거는 개인적인 경험에 있다.</p>
 <p>옛날에 주식데이터 분석 프로젝트에서 예상치 못한 난관을 만났던 적이 있다. 주식데이터를 열심히 크롤링해서 많은 데이터 소스를 가지게 되었고 이를 바탕으로 데이터 분석을 진행하려고 하였으나, 하나의 컴퓨터에서 모아둔 모든 데이터를 매니징 할 수 없었다. 파일을 전부 열 수도 없었고, 그렇기에 분석도 진행할 수 없었다. 물론 아마도 실제 운영에 사용하는 서버였다면 가능했겠지만 우리는 현재 사용중인 노트북이 전부였기에 이런 부분은 예상하지 못한 문제였던 것이다. 그 때 “아, 이게 빅데이터구나” 라는 것을 느꼈다. 빅데이터는 절대적인 크기가 있는 것이 아니라 제공된 자원에서 일반적인 방식으로 관리할 수 없는 크기의 데이터라는 생각이 문뜩 스쳐갔다.</p>
 <h2 id="빅데이터-플랫폼"><a href="#빅데이터-플랫폼" class="headerlink" title="빅데이터 플랫폼"></a>빅데이터 플랫폼</h2><p>그렇다면 위 상황에서 우리의 선택은 무엇이겠는가? 바로 빅데이터를 처리할 수 있는 여러 도구들을 찾아봤으며, 그 중 현실적으로 가능한 방안이 바로 저렴한 라즈베리 파이로  하둡 클러스터를 구축하는 것이었다. (클러스터 구축 관련된 글은 <a href="https://hyeonji-ryu.github.io/categories/PROJECT/Cluster/">이 링크</a>를 클릭하면 볼 수 있다) 이때 처음 서버 여러 대를 하나의 컴퓨터처럼 사용하는 빅데이터 플랫폼에 대해서 알게 되었다.</p>
