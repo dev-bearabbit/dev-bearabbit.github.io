@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Spark 아키텍처</title>
-    <url>/2022/04/11/Platform/platform-4/</url>
-    <content><![CDATA[<p>하둡 에코시스템 중 하나인 Spark의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
-<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><p>스파크(Spark)는 </p>
-]]></content>
-      <categories>
-        <category>BIGDATA</category>
-        <category>Platform</category>
-      </categories>
-      <tags>
-        <tag>스파크</tag>
-        <tag>빅데이터</tag>
-        <tag>hadoop</tag>
-        <tag>ecosystem</tag>
-        <tag>spark</tag>
-        <tag>pyspark</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>입양 시각 구하기(2) 해설</title>
     <url>/2022/04/07/DB/Database-8/</url>
     <content><![CDATA[<p>프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.<br><a id="more"></a></p>
