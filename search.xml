@@ -24,7 +24,7 @@
 <p>위 레이아웃을 기준으로 필요한 작업들을 하나씩 작성해보자.</p>
 <h3 id="schedule"><a href="#schedule" class="headerlink" title="schedule"></a>schedule</h3><p>먼저 매일 특정 시간에 작업이 실행되도록 설정하고자 한다. 액션에서는 리눅스 <code>cron</code>을 지원한다.</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">schedule:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">cron:</span> <span class="string">'40 4 * * *'</span></span><br></pre></td></tr></table></figure>
-<p>액션에서 작동하는 <code>cron</code>은 UTC 기준이기 떄문에 시간을 잘 맞춰주어야 한다. UTC는 9시간을 더해야 한국 시간이며, 따라서 위 시간은 한국시간으로 13시 40분이다.</p>
+<p>액션에서 작동하는 <code>cron</code>은 UTC 기준이기 때문에 시간을 잘 맞춰주어야 한다. UTC는 9시간을 더해야 한국 시간이며, 따라서 위 시간은 한국시간으로 13시 40분이다.</p>
 <h3 id="workflow-dispatch"><a href="#workflow-dispatch" class="headerlink" title="workflow_dispatch"></a>workflow_dispatch</h3><p>이제 수동으로 작업을 실행할 수 있는 코드도 작성해보자. 보통 테스트를 해야하거나 작업이 실패했을 시 수동으로 작업을 실행하기 위해서 해당 코드도 추가한다.</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">workflow_dispatch:</span></span><br></pre></td></tr></table></figure>
 <p>그러면 액션에서 아래처럼 수동으로 실행할 수 있는 트리거가 생성된다.</p>
