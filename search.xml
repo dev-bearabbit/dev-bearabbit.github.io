@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>str과 string 차이</title>
+    <url>/2022/05/17/Rust/rust-9/</url>
+    <content><![CDATA[<p>러스트의 str과 string의 차이점에 대해 정리합니다.<br><a id="more"></a></p>
+<h2 id="str"><a href="#str" class="headerlink" title="str"></a>str</h2><h2 id="string"><a href="#string" class="headerlink" title="string"></a>string</h2><p><code>string</code>은 u8타입 벡터(Vector)를 포함한 구조체이다. <a href="https://github.com/rust-lang/rust/blob/master/library/alloc/src/string.rs" target="_blank" rel="noopener">Rust 오픈소스 페이지</a>에서 확인할 아래의 코드를 확인할 수 있다.</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">String</span></span> &#123;</span><br><span class="line">    vec: <span class="built_in">Vec</span>&lt;<span class="built_in">u8</span>&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>string</code>은 <code>str</code>과 달리 할당된 데이터의 소유권을 가지고 있으며, </p>
+<h2 id="비교"><a href="#비교" class="headerlink" title="비교"></a>비교</h2><h2 id="참고문헌"><a href="#참고문헌" class="headerlink" title="참고문헌"></a>참고문헌</h2><p>이 글은 아래의 블로그들을 참고하여 작성되었다.</p>
+<p><a href="https://www.becomebetterprogrammer.com/rust-string-vs-str/" target="_blank" rel="noopener">https://www.becomebetterprogrammer.com/rust-string-vs-str/</a></p>
+]]></content>
+      <categories>
+        <category>LANGUAGE</category>
+        <category>Rust</category>
+      </categories>
+      <tags>
+        <tag>rust</tag>
+        <tag>str</tag>
+        <tag>string</tag>
+        <tag>type</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Github Action으로 스크래핑 자동화하기</title>
     <url>/2022/05/05/Git/git-0/</url>
     <content><![CDATA[<p>Github에서 제공하는 Action 기능을 통해 데이터 스크래핑 및 적재를 자동화합니다.<br><a id="more"></a></p>
@@ -758,8 +779,8 @@
         <tag>회고</tag>
         <tag>주니어</tag>
         <tag>소프트웨어</tag>
-        <tag>1년차</tag>
         <tag>신입</tag>
+        <tag>2년차</tag>
       </tags>
   </entry>
   <entry>

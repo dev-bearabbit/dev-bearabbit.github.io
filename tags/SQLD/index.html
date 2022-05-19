@@ -49,14 +49,14 @@
   <meta name="description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="DEV AnythinG">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/tags/sqld/index.html">
+<meta property="og:url" content="https://hyeonji-ryu.github.io/tags/SQLD/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:author" content="Jess">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/tags/sqld/">
+<link rel="canonical" href="https://hyeonji-ryu.github.io/tags/SQLD/">
 
 
 <script id="page-configurations">
@@ -68,7 +68,7 @@
   };
 </script>
 
-  <title>tag: sqld | DEV AnythinG</title>
+  <title>tag: SQLD | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -216,7 +216,7 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <h1 class="collection-header">sqld
+        <h1 class="collection-header">SQLD
           <small>tag</small>
         </h1>
       </div>
@@ -240,6 +240,26 @@
       <h2 class="post-title">
           <a class="post-title-link" href="/2021/10/10/Certificate/sqld-1/" itemprop="url">
             <span itemprop="name">[SQLD] 합격 후기</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-09-04T21:15:17+09:00"
+              content="2021-09-04">
+          09-04
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2021/09/04/Certificate/sqld-0/" itemprop="url">
+            <span itemprop="name">[SQLD] 데이터 모델링의 이해</span>
           </a>
       </h2>
 
@@ -319,7 +339,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -332,7 +352,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">303</span>
+        <span class="site-state-item-count">306</span>
         <span class="site-state-item-name">태그</span></a>
       </div>
   </nav>
@@ -428,31 +448,6 @@
     const h = canvas.height = document.body.offsetHeight;
     const cols = Math.floor(w / 20) + 1;
     const ypos = Array(cols).fill(0);
-
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, w, h);
-
-    function matrix () {
-      ctx.fillStyle = '#0001';
-      ctx.fillRect(0, 0, w, h);
-  
-      ctx.fillStyle = '#009600';
-      ctx.font = '14pt monospace';
-  
-      ypos.forEach((y, ind) => {
-        const text = String.fromCharCode(Math.random() * 512);
-        const x = ind * 20;
-        ctx.fillText(text, x, y);
-        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
-        else ypos[ind] = y + 20;
-      });
-    }
-    setInterval(matrix, 50);
-  </script>
-
-</body>
-</html>
-;
 
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, w, h);
