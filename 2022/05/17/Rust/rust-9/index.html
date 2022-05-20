@@ -54,7 +54,7 @@
 <meta property="og:description" content="러스트의 String과 str의 차이점에 대해 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2022-05-17T04:59:17.000Z">
-<meta property="article:modified_time" content="2022-05-20T09:29:48.671Z">
+<meta property="article:modified_time" content="2022-05-20T16:07:31.706Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="rust">
 <meta property="article:tag" content="str">
@@ -276,9 +276,9 @@
 
       
         <p>러스트의 String과 str의 차이점에 대해 정리합니다.<br><a id="more"></a></p>
-<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p><code>String</code>은 u8타입 벡터(Vector)를 포함한 구조체이다. <a href="https://github.com/rust-lang/rust/blob/master/library/alloc/src/string.rs" target="_blank" rel="noopener">Rust 오픈소스 페이지</a>에서 확인할 아래의 코드를 확인할 수 있다.</p>
+<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p><code>String</code>은 u8타입 벡터(Vector)를 포함한 구조체이다. <a href="https://github.com/rust-lang/rust/blob/master/library/alloc/src/string.rs" target="_blank" rel="noopener">Rust 오픈소스 페이지</a>에서 아래의 코드를 확인할 수 있다.</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">String</span></span> &#123;</span><br><span class="line">    vec: <span class="built_in">Vec</span>&lt;<span class="built_in">u8</span>&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>String</code>은 <code>str</code>과 달리 할당된 데이터의 소유권을 가지고 있으며, 변수에 대한 정보는 스택(stack) 메모리 데이터는 힙(heap) 메모리에 저장된다. 예시는 아래 그림과 같다.</p>
+<p><code>String</code>은 <code>str</code>과 달리 할당된 데이터의 소유권을 가지고 있으며 변수에 대한 정보는 스택(stack) 메모리에, 데이터는 힙(heap) 메모리에 저장된다. 예시는 아래 그림과 같다.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">                     buffer</span><br><span class="line">                   &#x2F;   capacity</span><br><span class="line">                 &#x2F;   &#x2F;  length</span><br><span class="line">               &#x2F;   &#x2F;   &#x2F;</span><br><span class="line">            +–––+–––+–––+</span><br><span class="line">stack frame │ • │ 8 │ 6 │ &lt;- my_name: String</span><br><span class="line">            +–│–+–––+–––+</span><br><span class="line">              │</span><br><span class="line">            [–│–––––––– capacity –––––––––––]</span><br><span class="line">              │</span><br><span class="line">            +–V–+–––+–––+–––+–––+–––+–––+–––+</span><br><span class="line">       heap │ P │ a │ s │ c │ a │ l │   │   │</span><br><span class="line">            +–––+–––+–––+–––+–––+–––+–––+–––+</span><br><span class="line"></span><br><span class="line">            [––––––– length ––––––––]</span><br><span class="line"></span><br><span class="line">[원본]https:&#x2F;&#x2F;blog.thoughtram.io&#x2F;string-vs-str-in-rust&#x2F;</span><br></pre></td></tr></table></figure>
 <p>만약 문자열에 데이터를 추가한다면 스택 프레임에서는 capacity와 length만 변동하며, 실제 데이터는 힙 메모리에 추가된다.</p>
 <h2 id="str"><a href="#str" class="headerlink" title="str"></a>str</h2><p><code>str</code>은 러스트에서 기본적으로 제공하는 데이터 타입 중 하나이며, ‘문자열 리터럴’라고도 불린다.</p>
