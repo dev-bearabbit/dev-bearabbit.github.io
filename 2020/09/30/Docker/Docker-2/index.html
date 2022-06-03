@@ -55,7 +55,7 @@
 <meta property="og:locale" content="ko_KR">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/95.png">
 <meta property="article:published_time" content="2020-09-30T08:40:09.000Z">
-<meta property="article:modified_time" content="2022-06-03T16:36:29.562Z">
+<meta property="article:modified_time" content="2022-06-03T17:06:22.514Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="AWS">
@@ -281,7 +281,7 @@
       
         <p>AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.<br><a id="more"></a></p>
 <hr>
-<h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://hyeonji-ryu.github.io/2020/09/21/AWS/AWS-project-4/">4. EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
+<h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://hyeonji-ryu.github.io/2020/09/21/AWS/AWS-4/">EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IAM계정 로그인</span></span><br><span class="line">aws configure</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># EC2 인스턴스 생성</span></span><br><span class="line">aws ec2 run-instances --image-id <span class="string">'인스턴스 이미지'</span> --count <span class="string">'인스턴스 수'</span> --instance-type <span class="string">'인스턴스 타입'</span> --key-name <span class="string">'키 페어 이름'</span> --security-groups <span class="string">'보안 그룹 이름'</span></span><br></pre></td></tr></table></figure>
 <h2 id="EC2-인스턴스에-접속하기"><a href="#EC2-인스턴스에-접속하기" class="headerlink" title="EC2 인스턴스에 접속하기"></a>EC2 인스턴스에 접속하기</h2><p>다음으로는 생성한 인스턴스에 접속한다. 해당 인스턴스의 인바운드 규칙이 SSH 접속이기 떄문에 아래의 코드를 입력한다.</p>

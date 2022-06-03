@@ -1238,7 +1238,7 @@
     <title>Hive 아키텍쳐</title>
     <url>/2021/12/30/Hadoop/hadoop-3/</url>
     <content><![CDATA[<p>하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
-<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Platform/platform-0/">인트로 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
+<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Hadoop/hadoop-0/">이전 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
 <h2 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h2><p>하이브(hive)는 Hadoop용 RDB 서비스이다. HDFS를 사용함에 있어 데이터베이스나 테이블 개념으로 디렉토리를 구성하고 관리하며, 이를 바탕으로 SQL과 유사한 HiveQL이라는 문법을 지원한다. 즉, 자바로 맵리듀스 프로그램을 작성하는 것이 아니라 간단한 sql 문법만으로도 Hadoop에 데이터를 저장하거나 가져올 수 있다. 이렇게만 보면 사용방법은 mysql과 같은 RDB와 매우 유사해보인다.<br>하지만 스키마를 정의하고 데이터를 입력하는 구조는 기존 RDB와는 다르다. 스키마를 먼저 작성하고 그 다음 데이터를 입력해야 하는 기존 RDB와 달리 하이브는 데이터를 HDFS에 파일단위로 저장한 후에 스키마를 정의하여 데이터를 가져올 수 있다. 하이브는 RDB에 요구되는 스키마 정보들을 metastore에 저장하며, metastore는 다른 DBMS를 사용한다.</p>
 <h2 id="Hive-Roles"><a href="#Hive-Roles" class="headerlink" title="Hive Roles"></a>Hive Roles</h2><p>하이브를 구성하고 있는 컴포넌트는 아래 시진과 같다.</p>
 <p><img src="/images/146.png" alt="hive1"></p>
@@ -1301,7 +1301,7 @@
     <title>YARN 아키텍쳐</title>
     <url>/2021/12/23/Hadoop/hadoop-2/</url>
     <content><![CDATA[<p>하둡의 코어 서비스 중 하나인 YARN의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
-<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Platform/Platform-1/">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
+<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Hadoop/hadoop-1/">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
 <p>이번 글에서는 클러스터의 리소스를 관리 및 할당하는 YARN에 대해서 자세히 살펴볼 것이다.</p>
 <h2 id="YARN"><a href="#YARN" class="headerlink" title="YARN"></a>YARN</h2><p>YARN은 Yet Another Resource Negotiator의 줄임말로, 클러스터 내 서버들의 CPU와 메모리, 네트워크 등 시스템 리소스를 하나로 묶어 관리한다. YARN에서 자원을 할당하는 단위를 <code>컨테이너</code>라고 하며, YARN은 자원 할당 요청이 들어오면 자원을 제공하고 사용이 끝나면 회수한다.</p>
@@ -1508,7 +1508,7 @@
     <title>Resume 세부 레이아웃 완성</title>
     <url>/2021/12/05/Resume/resume-2/</url>
     <content><![CDATA[<p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><a id="more"></a></p>
-<p>섹션을 어떻게 나눌지는 <a href="https://hyeonji-ryu.github.io/2021/11/12/Resume/resume-1/#more">이전 글</a>에서 다뤘다. 이제 각 섹션 별로 어떻게 내용을 작성할지 고민해보자.</p>
+<p>섹션을 어떻게 나눌지는 <a href="https://hyeonji-ryu.github.io/2021/11/12/Resume/resume-1/">이전 글</a>에서 다뤘다. 이제 각 섹션 별로 어떻게 내용을 작성할지 고민해보자.</p>
 <h2 id="상단-바"><a href="#상단-바" class="headerlink" title="상단 바"></a>상단 바</h2><p>상단 바에는 크게 페이지 타이틀, 섹션, 언어 선택을 포함시켰다. 타이틀의 경우 블로그 이름과 동일하게 사용하였으며, 섹션 버튼은 누르면 바로 해당 자료가 있는 곳으로 이동할 수 있게 설정하였다. 마지막으로 언어 선택은 Bootstrap의 선택 폼을 사용하여 추가하였다.</p>
 <p><img src="/images/139.png" alt="intro1"></p>
 <p>위 사진은 완성된 상단 바의 모습니다. 해당 폼에 대한 자세한 내용은 <a href="https://getbootstrap.com/docs/5.1/forms/select/" target="_blank" rel="noopener">문서</a>에서 찾아볼 수 있다. 스크롤을 클릭하면 아래의 사진처럼 선택할 수 있는 언어가 나열된다.</p>
@@ -1594,7 +1594,7 @@
     <content><![CDATA[<p>빅데이터와 빅데이터 플랫폼에 대한 개인적인 생각들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="빅데이터"><a href="#빅데이터" class="headerlink" title="빅데이터"></a>빅데이터</h2><p>요즘 4차 산업혁명이라는 말과 함께 여기저기에서 <code>빅데이터</code>라는 단어를 들을 수 있다. 또한 빅데이터에 대한 정의는 아직까지 사람마다, 업계마다 조금씩 다른 것 같다. 그런 의미에서 빅데이터에 관심있는 사람들은 한 번쯤 “빅데이터란 어느정도 크기의 데이터를 말하는걸까?” 하는 고민이 있었을 것이다. 개인적으로 생각했던 빅데이터의 기준은 “하나의 컴퓨터(서버)로 핸들링할 수 없는 크기의 데이터”이다. 이렇게 생각한 근거는 개인적인 경험에 있다.</p>
 <p>옛날에 주식데이터 분석 프로젝트에서 예상치 못한 난관을 만났던 적이 있다. 주식데이터를 열심히 크롤링해서 많은 데이터 소스를 가지게 되었고 이를 바탕으로 데이터 분석을 진행하려고 하였으나, 하나의 컴퓨터에서 모아둔 모든 데이터를 매니징 할 수 없었다. 파일을 전부 열 수도 없었고, 그렇기에 분석도 진행할 수 없었다. 물론 아마도 실제 운영에 사용하는 서버였다면 가능했겠지만 우리는 현재 사용중인 노트북이 전부였기에 이런 부분은 예상하지 못한 문제였던 것이다. 그 때 “아, 이게 빅데이터구나” 라는 것을 느꼈다. 빅데이터는 절대적인 크기가 있는 것이 아니라 제공된 자원에서 일반적인 방식으로 관리할 수 없는 크기의 데이터라는 생각이 문뜩 스쳐갔다.</p>
-<h2 id="빅데이터-플랫폼"><a href="#빅데이터-플랫폼" class="headerlink" title="빅데이터 플랫폼"></a>빅데이터 플랫폼</h2><p>그렇다면 위 상황에서 우리의 선택은 무엇이겠는가? 바로 빅데이터를 처리할 수 있는 여러 도구들을 찾아봤으며, 그 중 현실적으로 가능한 방안이 바로 저렴한 라즈베리 파이로  하둡 클러스터를 구축하는 것이었다. (클러스터 구축 관련된 글은 <a href="https://hyeonji-ryu.github.io/categories/PROJECT/Cluster/">이 링크</a>를 클릭하면 볼 수 있다) 이때 처음 서버 여러 대를 하나의 컴퓨터처럼 사용하는 빅데이터 플랫폼에 대해서 알게 되었다.</p>
+<h2 id="빅데이터-플랫폼"><a href="#빅데이터-플랫폼" class="headerlink" title="빅데이터 플랫폼"></a>빅데이터 플랫폼</h2><p>그렇다면 위 상황에서 우리의 선택은 무엇이겠는가? 바로 빅데이터를 처리할 수 있는 여러 도구들을 찾아봤으며, 그 중 현실적으로 가능한 방안이 바로 저렴한 라즈베리 파이로  하둡 클러스터를 구축하는 것이었다. (클러스터 구축 관련된 글은 <a href="https://hyeonji-ryu.github.io/categories/toyproject/clustering/">이 링크</a>를 클릭하면 볼 수 있다) 이때 처음 서버 여러 대를 하나의 컴퓨터처럼 사용하는 빅데이터 플랫폼에 대해서 알게 되었다.</p>
 <h3 id="하둡-Hadoop"><a href="#하둡-Hadoop" class="headerlink" title="하둡(Hadoop)"></a>하둡(Hadoop)</h3><p>하둡은 대표적인 빅데이터 플랫폼 중 하나로, 여러 대의 서버를 클러스터로 구축하여 데이터들을 분산처리를 할 수 있는 플랫폼이다. 하둡의 구성은 크게 파일 저장소인 HDFS와 리소스 매니징을 담당하는 YARN으로 구성되어 있으며, 하둡에 저장된 모든 데이터에 관련된 처리는 맵리듀스(MR, MapReduce)라는 엔진으로 이루어진다. 즉, 하둡을 사용하기 위해서는 맵리듀스 요청 프로그램을 직접 작성할 수 있어야 한다. 하둡은 자바(JAVA) 언어로 만들어졌기에 요청 프로그램도 자바로 작성한다. 그 후 “jar” 파일을 생성해서 MR엔진이 있는 YARN을 통해 실행시키면 된다.</p>
 <p>그렇다면 자바 개발자만 하둡을 사용할 수 있는가? 과거에는 그랬다. 하지만 지금은 많은 에코 시스템이 생겼기 때문에 sql문으로도 하둡 클러스터에 저장된 데이터를 가져올 수 있다. sql엔진으로는 하이브(hive)와 임팔라(impala), 스파크(spark) 등이 있다. 이처럼 하둡을 기반으로 한 여러 에코 시스템들이 존재한다. 현재 빅데이터 엔지니어로 일하면서 하둡 및 에코 시스템들을 실제 업무에서 사용하고 있으며, 또 공부한 내용들을 블로그에 하나씩 저장해두려고 한다. 다음 글부터는 하둡의 코어 서비스인 HDFS와 YARN를 시작으로 삼아 각각의 에코 시스템들을 기본 아키텍쳐에 대해서 정리할 계획이다.</p>
 ]]></content>
@@ -3659,7 +3659,7 @@
 <li>repo 파일 생성하기</li>
 <li>yum repolist로 확인하기</li>
 </ol>
-<p>만약 위 과정 중에 모르는 것이 있다면 <a href="https://hyeonji-ryu.github.io/2021/07/18/Linux/Linux-5/">이 글</a>을 참고하면 된다.</p>
+<p>위 과정을 코드로 나타내면 아래와 같다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># repo 폴더 생성</span></span><br><span class="line">mkdir -p /var/www/html/ans</span><br><span class="line"></span><br><span class="line"><span class="comment"># ansible.tar 파일을 전송 후 압축 해제</span></span><br><span class="line">tar xvf /var/www/html/ans/ansible.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># repo 작성하기</span></span><br><span class="line">cat &lt;&lt; EOT &gt;&gt; /etc/yum.repos.d/ans.repo</span><br><span class="line">[ans]</span><br><span class="line">name=ans</span><br><span class="line">baseurl=file://var/www/html/ans</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line">EOT</span><br><span class="line"></span><br><span class="line"><span class="comment"># repo 확인</span></span><br><span class="line">yum clean all</span><br><span class="line">yum repolist</span><br><span class="line"></span><br><span class="line"><span class="comment"># ansible 설치</span></span><br><span class="line">yum install ansible</span><br></pre></td></tr></table></figure>
 <h2 id="Ansible-설치-완료-확인"><a href="#Ansible-설치-완료-확인" class="headerlink" title="Ansible 설치 완료 확인"></a>Ansible 설치 완료 확인</h2><p>문제 없이 설치되었다면 아래와 같이 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ansible --version</span><br></pre></td></tr></table></figure>
@@ -5176,7 +5176,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo usermod -aG docker pi</span><br></pre></td></tr></table></figure>
 <p>재부팅한 후 버전을 확인해보면 도커가 잘 작동되는 것을 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
-<p>이제 설치한 도커에 간단하게 mariaDB 컨테이너를 생성해보자. 도커에 mariaDB 컨테이너를 생성하는 과정은 <a href="https://hyeonji-ryu.github.io/2020/10/09/DB/Database-0/">해당 글</a>에서 살펴볼 수 있다. 다만 한 가지 다른 점은 다른 이미지를 사용해야 한다는 것이다.</p>
+<p>이제 설치한 도커에 간단하게 mariaDB 컨테이너를 생성해보자. 도커에 mariaDB 컨테이너를 생성하는 과정은 <a href="https://hyeonji-ryu.github.io/2020/10/09/Docker/Docker-0/">해당 글</a>에서 살펴볼 수 있다. 다만 한 가지 다른 점은 다른 이미지를 사용해야 한다는 것이다.</p>
 <p>라즈베리 파이는 ARM의 CPU이기 때문에 해당 CPU에 맞는 이미지로 다운받아야 한다. ARM CPU에서도 사용가능한 여러 이미지가 있으며, 그 중 하나를 사용하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull linuxserver/mariadb</span><br></pre></td></tr></table></figure>
 <p>다음 과정은 위에서 소개한 글을 참고하기 바란다.</p>
@@ -5562,7 +5562,7 @@
     <url>/2020/09/30/Docker/Docker-2/</url>
     <content><![CDATA[<p>AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.<br><a id="more"></a></p>
 <hr>
-<h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://hyeonji-ryu.github.io/2020/09/21/AWS/AWS-project-4/">4. EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
+<h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://hyeonji-ryu.github.io/2020/09/21/AWS/AWS-4/">EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># IAM계정 로그인</span></span><br><span class="line">aws configure</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># EC2 인스턴스 생성</span></span><br><span class="line">aws ec2 run-instances --image-id <span class="string">'인스턴스 이미지'</span> --count <span class="string">'인스턴스 수'</span> --instance-type <span class="string">'인스턴스 타입'</span> --key-name <span class="string">'키 페어 이름'</span> --security-groups <span class="string">'보안 그룹 이름'</span></span><br></pre></td></tr></table></figure>
 <h2 id="EC2-인스턴스에-접속하기"><a href="#EC2-인스턴스에-접속하기" class="headerlink" title="EC2 인스턴스에 접속하기"></a>EC2 인스턴스에 접속하기</h2><p>다음으로는 생성한 인스턴스에 접속한다. 해당 인스턴스의 인바운드 규칙이 SSH 접속이기 떄문에 아래의 코드를 입력한다.</p>
@@ -8219,7 +8219,7 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <li><p>인공신경망 최적화 - 드랍아웃(Dropout)</p>
 </li>
 </ol>
-<h2 id="줄리아-사용법"><a href="#줄리아-사용법" class="headerlink" title="줄리아 사용법"></a>줄리아 사용법</h2><p>위 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)를 사용한다. 그렇다면 왜 파이썬이 아니라 줄리아로 구현하는가? 그 이유는 간단하다. 머신러닝을 구현하는 데 있어 줄리아는 오로지 내장 함수만을 사용하여 모든 구현이 가능하다. 만약 줄리아 언어 자체를 배우고 싶다면 블로그 내에 <a href="https://hyeonji-ryu.github.io/categories/Think-Julia/">“Think Julia”</a>을 정리한 시리즈가 있다.</p>
+<h2 id="줄리아-사용법"><a href="#줄리아-사용법" class="headerlink" title="줄리아 사용법"></a>줄리아 사용법</h2><p>위 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)를 사용한다. 그렇다면 왜 파이썬이 아니라 줄리아로 구현하는가? 그 이유는 간단하다. 머신러닝을 구현하는 데 있어 줄리아는 오로지 내장 함수만을 사용하여 모든 구현이 가능하다. 만약 줄리아 언어 자체를 배우고 싶다면 블로그 내에 <a href="https://hyeonji-ryu.github.io/categories/language/julia/">“Think Julia”</a>을 정리한 시리즈가 있다.</p>
 <h3 id="배열-생성하기"><a href="#배열-생성하기" class="headerlink" title="배열 생성하기"></a>배열 생성하기</h3><p>신경망의 데이터들은 모두 배열로 구성되어 있기 때문에 배열을 필수적으로 생성해야 한다. 따라서 본격적으로 딥러닝을 구현하기 전에 줄리아에서는 어떻게 배열을 생성하는지에 대해 다뤄볼 것이다.</p>
 <p>줄리아의 큰 장점 중 하나는 파이썬이나 R과는 다르게 1차원부터 n차원까지의 배열을 한 가지의 자료형으로 표현한다는 것이다. 그렇기에 우리는 차원의 구분없이 간단한 코드로 여러 차원의 배열을 생성할 수 있다. 줄리아에서 2차원 배열을 구현하는 방법은 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">Julia&gt; [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]</span><br><span class="line"><span class="number">1</span>×<span class="number">6</span> <span class="built_in">Array</span>&#123;<span class="built_in">Int64</span>,<span class="number">2</span>&#125;:</span><br><span class="line"> <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line"></span><br><span class="line">Julia&gt; [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]</span><br><span class="line"><span class="number">2</span>×<span class="number">3</span> <span class="built_in">Array</span>&#123;<span class="built_in">Int64</span>,<span class="number">2</span>&#125;:</span><br><span class="line"> <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span></span><br><span class="line"> <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span></span><br></pre></td></tr></table></figure>
