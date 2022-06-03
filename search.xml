@@ -735,7 +735,7 @@
 ]]></content>
       <categories>
         <category>ComputerScience</category>
-        <category>Database</category>
+        <category>database</category>
       </categories>
       <tags>
         <tag>database</tag>
@@ -5515,9 +5515,9 @@
       </tags>
   </entry>
   <entry>
-    <title>모델 서빙서버 생성하기</title>
-    <url>/2020/10/06/MLOps/MLOps-2/</url>
-    <content><![CDATA[<p>훈련된 모델을 서빙하는 방법에 대해서 정리합니다.<br><a id="more"></a></p>
+    <title>Docker로 모델 서빙서버 생성하기</title>
+    <url>/2020/10/06/Docker/Docker-3/</url>
+    <content><![CDATA[<p>Docker로 훈련된 모델을 서빙하는 방법에 대해서 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="모델-서빙서버-생성하기"><a href="#모델-서빙서버-생성하기" class="headerlink" title="모델 서빙서버 생성하기"></a>모델 서빙서버 생성하기</h2><p><strong>1. S3 버킷에서 모델 파일 다운 받기</strong><br>AWS에 접속한 상태에서 아래의 코드를 입력하면 로컬에 다운받을 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws s3 cp s3://<span class="string">'버킷 이름'</span>/<span class="string">'파일 이름'</span> <span class="string">'다운받을 로컬 디렉토리 경로'</span></span><br></pre></td></tr></table></figure>
@@ -5545,8 +5545,8 @@
 <p>모델의 예측이 정확히 맞았다.</p>
 ]]></content>
       <categories>
-        <category>MachineLearning</category>
-        <category>mlops</category>
+        <category>DevOps</category>
+        <category>docker</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5558,9 +5558,9 @@
       </tags>
   </entry>
   <entry>
-    <title>EC2 인스턴스에서 모델 훈련하기</title>
-    <url>/2020/09/30/MLOps/MLOps-1/</url>
-    <content><![CDATA[<p>AWS EC2 인스턴스에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.<br><a id="more"></a></p>
+    <title>Docker 컨테이너에서 모델 훈련하기</title>
+    <url>/2020/09/30/Docker/Docker-2/</url>
+    <content><![CDATA[<p>AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://hyeonji-ryu.github.io/2020/09/21/AWS/AWS-project-4/">4. EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># IAM계정 로그인</span></span><br><span class="line">aws configure</span><br></pre></td></tr></table></figure>
@@ -5606,8 +5606,8 @@
 <p>이제 AWS를 사용하여 모델 훈련까지 완료하였다. 다음 글에서는 훈련된 모델에 사용하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>MachineLearning</category>
-        <category>mlops</category>
+        <category>DevOps</category>
+        <category>docker</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5620,7 +5620,7 @@
   </entry>
   <entry>
     <title>모델 훈련 Docker image 생성하기</title>
-    <url>/2020/09/23/MLOps/MLOps-0/</url>
+    <url>/2020/09/23/Docker/Docker-1/</url>
     <content><![CDATA[<p>모델 훈련을 위한 Docker image 생성하는 과정을 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="Docker란"><a href="#Docker란" class="headerlink" title="Docker란"></a>Docker란</h2><p>“개발자 A는 MAS OS 유저이다. 현재 MAS OS에서 개발을 완료하여 서버로 배포하려고 한다. 하지만 Linux기반의 서버에서는 해당 애플리케이션이 작동하지 않는다.”</p>
@@ -5678,8 +5678,8 @@
 <p><img src="/images/94.png" alt="AWS5_2"></p>
 ]]></content>
       <categories>
-        <category>MachineLearning</category>
-        <category>mlops</category>
+        <category>DevOps</category>
+        <category>docker</category>
       </categories>
       <tags>
         <tag>AWS</tag>
