@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Spark 아키텍처</title>
+    <url>/2022/06/03/Spark/spark-0/</url>
+    <content><![CDATA[<p>Spark 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><p>스파크(spark)는 빅데이터 시장에서 대표적으로 사용되는 분산처리엔진 중 하나이다. 흔히 빅데이터 플랫폼을 수집, 저장, 처리, 분석, 관리의 항목으로 구분하는데 스파크는 “데이터 처리”에 속한다. 스파크만의 특징으로는 인메모리 방식, </p>
+<h2 id="Spark-Architecture"><a href="#Spark-Architecture" class="headerlink" title="Spark Architecture"></a>Spark Architecture</h2><h2 id="Spark-Process"><a href="#Spark-Process" class="headerlink" title="Spark Process"></a>Spark Process</h2>]]></content>
+      <categories>
+        <category>BigData</category>
+        <category>spark</category>
+      </categories>
+      <tags>
+        <tag>빅데이터</tag>
+        <tag>mapreduce</tag>
+        <tag>spark</tag>
+        <tag>pyspark</tag>
+        <tag>databricks</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>String과 str 차이</title>
     <url>/2022/05/17/Rust/rust-9/</url>
     <content><![CDATA[<p>러스트의 String과 str의 차이점에 대해 정리합니다.<br><a id="more"></a></p>
@@ -73,8 +91,8 @@
 <p><a href="https://blog.thoughtram.io/string-vs-str-in-rust/" target="_blank" rel="noopener">https://blog.thoughtram.io/string-vs-str-in-rust/</a><br><a href="https://www.becomebetterprogrammer.com/rust-string-vs-str/" target="_blank" rel="noopener">https://www.becomebetterprogrammer.com/rust-string-vs-str/</a></p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>rust</tag>
@@ -128,8 +146,8 @@
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">auto-scraping</span> <span class="string">KBOdata</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">schedule:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">cron:</span> <span class="string">'40 4 * * *'</span></span><br><span class="line">    <span class="comment"># UTC가 default. 한국 시간으로 오후 1시 40분 실행</span></span><br><span class="line">  <span class="attr">workflow_dispatch:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build-linux:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">strategy:</span></span><br><span class="line">      <span class="attr">max-parallel:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">matrix:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">[3.9]</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span> <span class="string">&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-python@v1</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">python</span> <span class="string">package</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">pip</span> <span class="string">install</span> <span class="string">kbodata</span></span><br><span class="line">        <span class="string">pip</span> <span class="string">install</span> <span class="string">-r</span> <span class="string">requirements.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Setup</span> <span class="string">Chromedriver</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">nanasess/setup-chromedriver@v1.0.1</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">cd</span> <span class="string">kbo_data</span></span><br><span class="line">        <span class="string">python</span> <span class="string">action.py</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DB_INFO</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Git</category>
+        <category>DevOps</category>
+        <category>git/github</category>
       </categories>
       <tags>
         <tag>Git</tag>
@@ -140,7 +158,7 @@
   </entry>
   <entry>
     <title>입양 시각 구하기(2) 해설</title>
-    <url>/2022/04/07/DB/Database-8/</url>
+    <url>/2022/04/07/Sql/sql-6/</url>
     <content><![CDATA[<p>프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.<br><a id="more"></a></p>
 <hr>
 <p>해당 문제는 프로그래머스에 가입이 되어 있다면 <a href="https://programmers.co.kr/learn/courses/30/lessons/59413" target="_blank" rel="noopener">이 페이지</a>에서 직접 풀어볼 수 있다.</p>
@@ -310,8 +328,8 @@
 </div>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>Language</category>
+        <category>sql</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -372,8 +390,8 @@
 </div>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Engineering</category>
+        <category>BigData</category>
+        <category>engineering</category>
       </categories>
       <tags>
         <tag>Hive</tag>
@@ -458,8 +476,8 @@
 </div>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Engineering</category>
+        <category>BigData</category>
+        <category>engineering</category>
       </categories>
       <tags>
         <tag>data</tag>
@@ -484,8 +502,8 @@
 <h2 id="버스-Bus"><a href="#버스-Bus" class="headerlink" title="버스(Bus)"></a>버스(Bus)</h2><p>버스(Bus)는 서버 내부에 있는 컴포넌트들을 서로 연결시키는 회선을 가리키며, 각 컴포넌트가 데이터를 주고받을 수 있도록 도와주는 역할을 담당한다. 그렇다면 버스의 성능을 어떻게 측정할까? 바로 데이터를 얼마나 주고받을 수 있는지를 나타내는 대역을 통해서 확인할 수 있다. 대역은 Throughput이라고도 부르며, ‘한번에 데이터를 보낼 수 있는 전송 폭 x 1초에 전송할 수 있는 횟수’로 계산한다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Infra</category>
+        <category>ComputerScience</category>
+        <category>infrastructure</category>
       </categories>
       <tags>
         <tag>하드웨어</tag>
@@ -647,8 +665,8 @@
 </div>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Infra</category>
+        <category>ComputerScience</category>
+        <category>infrastructure</category>
       </categories>
       <tags>
         <tag>인프라</tag>
@@ -659,7 +677,7 @@
   </entry>
   <entry>
     <title>데이터베이스 아키텍처</title>
-    <url>/2022/03/24/DB/Database-7/</url>
+    <url>/2022/03/24/Database/Database-0/</url>
     <content><![CDATA[<p>데이터베이스 아키텍처에 대해서 공부하고 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="시작하기-전에"><a href="#시작하기-전에" class="headerlink" title="시작하기 전에"></a>시작하기 전에</h2><p>가끔씩 데이터베이스(DB)에 대해서 설명할 때 DBMS, DB서버, 저장소를 혼용하여 사용하곤 한다. 하지만 이에 대한 차이점을 명확히 짚고 넘어가지 않는다면 아키텍처를 이해하는 데 어려울 수 있다. 따라서 데이터베이스 아키텍처를 공부하기 전에 아래 단어들의 차이점들을 살펴보자.</p>
@@ -716,7 +734,7 @@
 <h3 id="레플리케이션"><a href="#레플리케이션" class="headerlink" title="레플리케이션"></a>레플리케이션</h3><p>레플리케이션은 DB서버와 저장소를 그대로 복제해두는 아키텍처이다. 레플리케이션의 DB서버는 마스터(master)-슬레이브(slave)구조로 구성되며, 마스터는 실제 서비스의 데이터를 관리하고 슬레이브 서버는 마스터와 비동기 방식으로 동기화한다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
+        <category>ComputerScience</category>
         <category>Database</category>
       </categories>
       <tags>
@@ -833,7 +851,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Reviews</category>
+        <category>reviews</category>
       </categories>
       <tags>
         <tag>개발자</tag>
@@ -896,8 +914,8 @@
 </div>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>recursion</tag>
@@ -971,8 +989,8 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hanoi_num_func</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span>**n - <span class="number">1</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Algorithms</category>
+        <category>ComputerScience</category>
+        <category>algorithms</category>
       </categories>
       <tags>
         <tag>재귀</tag>
@@ -1009,8 +1027,8 @@
 <p>nohup을 사용하여 구동하면 웹 서버에 로그가 nohup.out에 작성된다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Web/Dashboard</category>
+        <category>ToyProject</category>
+        <category>kbo dashboard</category>
       </categories>
       <tags>
         <tag>aws</tag>
@@ -1043,7 +1061,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>About Hexo</category>
+        <category>about hexo</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
@@ -1097,8 +1115,8 @@
 </blockquote>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Package</category>
+        <category>ToyProject</category>
+        <category>kbo package</category>
       </categories>
       <tags>
         <tag>data</tag>
@@ -1156,8 +1174,8 @@
 <p><img src="/images/153.png" alt="kbodata"></p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Package</category>
+        <category>ToyProject</category>
+        <category>kbo package</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -1202,8 +1220,8 @@
 <h2 id="패키지-작업"><a href="#패키지-작업" class="headerlink" title="패키지 작업"></a>패키지 작업</h2><p>이 프로젝트에서는 KBO 데이터를 스크래핑하는 패키지를 만들어 파이썬 패키지 사이트인 <a href="https://pypi.org" target="_blank" rel="noopener">PyPI</a>에 업로드할 예정이다. PyPI에 업로드된 패키지는 python 패키지 관리 시스템인 Pip로 바로 다운받을 수 있다. 좀 더 편리한 패키지 작업을 위해서 Poetry를 사용하여 진행할 예정이다. Poetry에 대한 자세한 내용은 <a href="https://python-poetry.org" target="_blank" rel="noopener">이 사이트</a>에서 확인할 수 있다. 가능하다면 Poetry에 대한 글도 작성할 예정이다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Package</category>
+        <category>ToyProject</category>
+        <category>kbo package</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -1218,7 +1236,7 @@
   </entry>
   <entry>
     <title>Hive 아키텍쳐</title>
-    <url>/2021/12/30/Platform/platform-3/</url>
+    <url>/2021/12/30/Hadoop/hadoop-3/</url>
     <content><![CDATA[<p>하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
 <p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Platform/platform-0/">인트로 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
 <h2 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h2><p>하이브(hive)는 Hadoop용 RDB 서비스이다. HDFS를 사용함에 있어 데이터베이스나 테이블 개념으로 디렉토리를 구성하고 관리하며, 이를 바탕으로 SQL과 유사한 HiveQL이라는 문법을 지원한다. 즉, 자바로 맵리듀스 프로그램을 작성하는 것이 아니라 간단한 sql 문법만으로도 Hadoop에 데이터를 저장하거나 가져올 수 있다. 이렇게만 보면 사용방법은 mysql과 같은 RDB와 매우 유사해보인다.<br>하지만 스키마를 정의하고 데이터를 입력하는 구조는 기존 RDB와는 다르다. 스키마를 먼저 작성하고 그 다음 데이터를 입력해야 하는 기존 RDB와 달리 하이브는 데이터를 HDFS에 파일단위로 저장한 후에 스키마를 정의하여 데이터를 가져올 수 있다. 하이브는 RDB에 요구되는 스키마 정보들을 metastore에 저장하며, metastore는 다른 DBMS를 사용한다.</p>
@@ -1266,8 +1284,8 @@
 <p>엔진에 대한 자세한 비교는 다음 글에서 이야기 해보자.</p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Platform</category>
+        <category>BigData</category>
+        <category>hadoop</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -1281,7 +1299,7 @@
   </entry>
   <entry>
     <title>YARN 아키텍쳐</title>
-    <url>/2021/12/23/Platform/platform-2/</url>
+    <url>/2021/12/23/Hadoop/hadoop-2/</url>
     <content><![CDATA[<p>하둡의 코어 서비스 중 하나인 YARN의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
 <h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://hyeonji-ryu.github.io/2021/12/01/Platform/Platform-1/">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
@@ -1313,8 +1331,8 @@
 <p>HDFS와 동일한 구조이기에 보통 네임노드와 같은 서버에 셋팅하는 경우가 많으며, 효율적인 리소스 사용을 위해 위 그림과 달리 한 서버에 액티브 네임노드와 스탠바이 RM을 두는 크로스 셋팅을 하기도 한다. 또한 Active-StandBy구조의 경우 필수적으로 Jookeeper의 failover Controller가 셋팅되어 각각의 생존여부를 Jookeeper가 관리하도록 한다.</p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Platform</category>
+        <category>BigData</category>
+        <category>hadoop</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -1410,8 +1428,8 @@
 <h3 id="변경가능한-파라미터-값"><a href="#변경가능한-파라미터-값" class="headerlink" title="변경가능한 파라미터 값"></a>변경가능한 파라미터 값</h3><p>쉽게 말해 변경 가능한 객체를 함수의 기본 인자로 사용하면 안된다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Python</category>
+        <category>Language</category>
+        <category>python</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -1474,8 +1492,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">make checklist</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Python</category>
+        <category>Language</category>
+        <category>python</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -1516,8 +1534,8 @@
 <p><img src="/images/137.png" alt="resume8"></p>
 ]]></content>
       <categories>
-        <category>etc.</category>
-        <category>Resume</category>
+        <category>ToyProject</category>
+        <category>resume</category>
       </categories>
       <tags>
         <tag>resume</tag>
@@ -1530,7 +1548,7 @@
   </entry>
   <entry>
     <title>HDFS 아키텍쳐</title>
-    <url>/2021/12/01/Platform/Platform-1/</url>
+    <url>/2021/12/01/Hadoop/hadoop-1/</url>
     <content><![CDATA[<p>하둡의 코어 서비스 중 하나인 HDFS의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
 <h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p>하둡은 크게 클러스터의 데이터를 저장하는 HDFS와 리소스를 관리하는 YARN, 이 2가지의 형태로 이루어져 있다.</p>
 <p><img src="/images/123.png" alt="corehadoop"></p>
@@ -1558,8 +1576,8 @@
 <p><img src="/images/129.png" alt="compare"></p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Platform</category>
+        <category>BigData</category>
+        <category>hadoop</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -1572,7 +1590,7 @@
   </entry>
   <entry>
     <title>빅데이터 플랫폼</title>
-    <url>/2021/11/21/Platform/platform-0/</url>
+    <url>/2021/11/21/Hadoop/hadoop-0/</url>
     <content><![CDATA[<p>빅데이터와 빅데이터 플랫폼에 대한 개인적인 생각들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="빅데이터"><a href="#빅데이터" class="headerlink" title="빅데이터"></a>빅데이터</h2><p>요즘 4차 산업혁명이라는 말과 함께 여기저기에서 <code>빅데이터</code>라는 단어를 들을 수 있다. 또한 빅데이터에 대한 정의는 아직까지 사람마다, 업계마다 조금씩 다른 것 같다. 그런 의미에서 빅데이터에 관심있는 사람들은 한 번쯤 “빅데이터란 어느정도 크기의 데이터를 말하는걸까?” 하는 고민이 있었을 것이다. 개인적으로 생각했던 빅데이터의 기준은 “하나의 컴퓨터(서버)로 핸들링할 수 없는 크기의 데이터”이다. 이렇게 생각한 근거는 개인적인 경험에 있다.</p>
 <p>옛날에 주식데이터 분석 프로젝트에서 예상치 못한 난관을 만났던 적이 있다. 주식데이터를 열심히 크롤링해서 많은 데이터 소스를 가지게 되었고 이를 바탕으로 데이터 분석을 진행하려고 하였으나, 하나의 컴퓨터에서 모아둔 모든 데이터를 매니징 할 수 없었다. 파일을 전부 열 수도 없었고, 그렇기에 분석도 진행할 수 없었다. 물론 아마도 실제 운영에 사용하는 서버였다면 가능했겠지만 우리는 현재 사용중인 노트북이 전부였기에 이런 부분은 예상하지 못한 문제였던 것이다. 그 때 “아, 이게 빅데이터구나” 라는 것을 느꼈다. 빅데이터는 절대적인 크기가 있는 것이 아니라 제공된 자원에서 일반적인 방식으로 관리할 수 없는 크기의 데이터라는 생각이 문뜩 스쳐갔다.</p>
@@ -1581,8 +1599,8 @@
 <p>그렇다면 자바 개발자만 하둡을 사용할 수 있는가? 과거에는 그랬다. 하지만 지금은 많은 에코 시스템이 생겼기 때문에 sql문으로도 하둡 클러스터에 저장된 데이터를 가져올 수 있다. sql엔진으로는 하이브(hive)와 임팔라(impala), 스파크(spark) 등이 있다. 이처럼 하둡을 기반으로 한 여러 에코 시스템들이 존재한다. 현재 빅데이터 엔지니어로 일하면서 하둡 및 에코 시스템들을 실제 업무에서 사용하고 있으며, 또 공부한 내용들을 블로그에 하나씩 저장해두려고 한다. 다음 글부터는 하둡의 코어 서비스인 HDFS와 YARN를 시작으로 삼아 각각의 에코 시스템들을 기본 아키텍쳐에 대해서 정리할 계획이다.</p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Platform</category>
+        <category>BigData</category>
+        <category>hadoop</category>
       </categories>
       <tags>
         <tag>빅데이터</tag>
@@ -1630,8 +1648,8 @@
 <h3 id="cargo-build-—release"><a href="#cargo-build-—release" class="headerlink" title="cargo build —release"></a>cargo build —release</h3><p>이제 프로젝트가 어느정도 완성이 되면 최적화된 컴파일을 실행해야할 순간이 된다. 그때는 <code>cargo build</code>에 옵션 <code>--release</code>를 추가로 붙여서 컴파일을 실행한다. 해당 실행파일은 <code>target/debug/</code>에 생기는 것이 아니라 <code>target/release/</code>에 생성되며, 시간도 일반 빌드보다 오래걸린다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
@@ -1715,8 +1733,8 @@
 <p>일단 완성된 이력서는 <a href="https://hyeonji-ryu.github.io/Resume/">해당 링크</a>에서 확인할 수 있다. 완성된 페이지는 이미 각 섹션 별로 레이아웃이 잡혀있고 글도 채워져 있다. 다음 글에서는 섹션 별 레이아웃과 내용 정리 등에 대해서 이야기해보고자 한다.</p>
 ]]></content>
       <categories>
-        <category>etc.</category>
-        <category>Resume</category>
+        <category>ToyProject</category>
+        <category>resume</category>
       </categories>
       <tags>
         <tag>resume</tag>
@@ -1872,7 +1890,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>ADsP</tag>
@@ -2008,7 +2026,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>ADsP</tag>
@@ -2365,7 +2383,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>ADsP</tag>
@@ -2403,10 +2421,10 @@
 <p>구조체와 마찬가지로 열거자 또한 다중 제네릭 타입을 사용할 수 있다.</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">verification</span></span>&lt;T,E&gt; &#123;</span><br><span class="line">    success(T),</span><br><span class="line">    fail(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>위에서 정의한 <code>verification&lt;T,E&gt;</code>는 성공했을 때와 실패했을 때의 값들을 모두 나타낼 수 있다.</p>
-<h2 id="메서드-정의"><a href="#메서드-정의" class="headerlink" title="메서드 정의"></a>메서드 정의</h2>]]></content>
+]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Vec</tag>
@@ -2442,8 +2460,8 @@
 <p>이제 해당 내용들을 바탕으로 하나씩 개발을 시작해보자.</p>
 ]]></content>
       <categories>
-        <category>etc.</category>
-        <category>Resume</category>
+        <category>ToyProject</category>
+        <category>resume</category>
       </categories>
       <tags>
         <tag>resume</tag>
@@ -2710,7 +2728,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>ADsP</tag>
@@ -2743,8 +2761,8 @@
 <p>위 코드는 연관 함수와 메서드를 <code>impl</code> 블록으로 나누어 작성하였다. 물론 예시처럼 간단한 코드들은 하나의 <code>impl</code> 블록에 써도 상관없지만 가능하다는 것을 보기 위해 나눈 것일 뿐 어떤 규칙은 없다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
@@ -2776,7 +2794,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -2814,8 +2832,8 @@
 <p>위 코드는 <code>Rectangle</code>이라는 구조체를 생성 및 사용하여 변수를 정의하고, <code>area()</code>에서는 밑변인 <code>width</code>와 높이인 <code>height</code>를 필드로 선택하여 구현하였다. 위와 같이 작성된 프로그램은 이후 다른 프로그래머가 소스 코드를 이해함에 있어 훨씬 명확한 의미를 전달해 줄 것이다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
@@ -2857,8 +2875,8 @@
 <h2 id="구조체-데이터의-소유권"><a href="#구조체-데이터의-소유권" class="headerlink" title="구조체 데이터의 소유권"></a>구조체 데이터의 소유권</h2><p>이번 글 모든 예시에서 우리는 <code>String</code> 타입을 사용하였다. 구조체에서도 물론 <code>&amp;str</code>과 같은 참조를 사용할 수 있지만 이를 위해서는 러스트 기능인 <code>lifetime</code>을 사용해야 한다. <code>lifetime</code>는 특정 범위 내에서 참조된 데이터의 유효성을 보장해준다. 이에 대한 부분도 뒤에서 더 자세히 다룰 것이다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
@@ -2897,8 +2915,8 @@
 </ul>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Ansible</category>
+        <category>DevOps</category>
+        <category>ansible</category>
       </categories>
       <tags>
         <tag>sshpass</tag>
@@ -2933,8 +2951,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Hello</span><br><span class="line">changed</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
@@ -3373,7 +3391,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>데이터자격시험</tag>
@@ -3436,8 +3454,8 @@
 </ul>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
@@ -3473,7 +3491,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>About Hexo</category>
+        <category>about hexo</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
@@ -3527,8 +3545,8 @@
 <p>먼저 <code>s1</code>의 값은 힙 메모리에, <code>s2</code>는 스택 메모리에 할당된다. 그 다음 <code>s1</code>은 <code>test_heap()</code> 범위로 이동하면서 자연스럽게 값이 해제된다. 즉, 힙 메모리에 저장된 변수는 다른 함수로 이동하면서 drop 되는 것이다. 그 후 이동된 <code>s1</code> 값도 <code>test_heap()</code>가 종료되면서 <code>t1</code>으로 할당된다. 반면 <code>s2</code>의 경우는 스택 메모리에 저장되기에 <code>test_stack()</code>으로 이동해도 그대로 값이 남아있는다. 따라서 현재까지 할당된 변수들은 <code>s2</code>, <code>t1</code>, <code>t2</code>이다. 그리고 <code>main()</code>가 종료되면서 모든 변수들이 할당 해제된다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Rust</category>
+        <category>Language</category>
+        <category>rust</category>
       </categories>
       <tags>
         <tag>Rust</tag>
@@ -3592,8 +3610,8 @@
 <p>이러면 DB 서버가 완성된다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Web/Dashboard</category>
+        <category>ToyProject</category>
+        <category>kbo dashboard</category>
       </categories>
       <tags>
         <tag>DB</tag>
@@ -3650,8 +3668,8 @@
 <p>엔서블 설치가 완료되었다. 다음 글에서는 앤서블로 관리할 노드들을 셋팅하는 방법에 대해서 살펴보자</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Ansible</category>
+        <category>DevOps</category>
+        <category>ansible</category>
       </categories>
       <tags>
         <tag>sshpass</tag>
@@ -3703,8 +3721,8 @@
 <p>앤서블에 대한 개괄적인 설명은 끝났다. 다음 글부터는 앤서블을 설치 및 사용법에 대해서 자세히 살펴보자.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Ansible</category>
+        <category>DevOps</category>
+        <category>ansible</category>
       </categories>
       <tags>
         <tag>sshpass</tag>
@@ -3793,8 +3811,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 재부팅 없이 변경</span></span><br><span class="line">systemctl isolate graphical.target</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Linux</category>
+        <category>DevOps</category>
+        <category>linux</category>
       </categories>
       <tags>
         <tag>linux</tag>
@@ -3831,7 +3849,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>자격증</tag>
@@ -3877,8 +3895,8 @@
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> lis: [<span class="built_in">i32</span>; <span class="number">10</span>] = [<span class="number">10</span>,<span class="number">9</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">3</span>];</span><br><span class="line">    insertion_sort(lis);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">insertion_sort</span></span>(<span class="keyword">mut</span> lis: [<span class="built_in">i32</span>; <span class="number">10</span>]) &#123;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>..lis.len()&#123;</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> (<span class="number">1</span>..i+<span class="number">1</span>).rev()&#123;</span><br><span class="line">            <span class="keyword">if</span> lis[j] &lt; lis[j-<span class="number">1</span>]&#123;</span><br><span class="line">                <span class="keyword">let</span> temp = lis[j];</span><br><span class="line">                lis[j] = lis[j-<span class="number">1</span>];</span><br><span class="line">                lis[j-<span class="number">1</span>]=temp</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;:?&#125;"</span>,lis)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Algorithms</category>
+        <category>ComputerScience</category>
+        <category>algorithms</category>
       </categories>
       <tags>
         <tag>Algorithms</tag>
@@ -3964,7 +3982,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>자격증</tag>
@@ -4278,7 +4296,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>자격증</tag>
@@ -4450,7 +4468,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Certificate</category>
+        <category>certificate</category>
       </categories>
       <tags>
         <tag>자격증</tag>
@@ -4475,7 +4493,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Error List</category>
+        <category>errors</category>
       </categories>
       <tags>
         <tag>windows</tag>
@@ -4491,7 +4509,7 @@
   </entry>
   <entry>
     <title>날짜 데이터 일부만 추출하기</title>
-    <url>/2021/04/20/DB/Database-6/</url>
+    <url>/2021/04/20/Sql/sql-5/</url>
     <content><![CDATA[<p>DATETIME 형식의 날짜 데이터에서 일부만 추출하는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="DATETIME"><a href="#DATETIME" class="headerlink" title="DATETIME"></a>DATETIME</h2><p><code>DATETIME</code>은 SQL에서 지정한 날짜 형식이다. 해당 구조는 아래와 같다.</p>
@@ -4511,8 +4529,8 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">SECOND</span>(DATETIME) <span class="keyword">FROM</span> <span class="string">'테이블 이름'</span>;</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>Language</category>
+        <category>sql</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -4578,8 +4596,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ free -h</span><br><span class="line">            total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:          15G        4.3G        3.7G         29M        7.5G         10G</span><br><span class="line">Swap:        7.9G          0B        7.9G</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Linux</category>
+        <category>DevOps</category>
+        <category>linux</category>
       </categories>
       <tags>
         <tag>linux</tag>
@@ -4626,8 +4644,8 @@
 <p>위의 결과는 명령어 <code>which</code>를 통해서 java 실행파일의 절대 경로를 보여준 예시이다. <code>which</code>는 경로가 있는 실행파일들의 위치를 보여준다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Linux</category>
+        <category>DevOps</category>
+        <category>linux</category>
       </categories>
       <tags>
         <tag>bash</tag>
@@ -4685,8 +4703,8 @@
 <h3 id="apropos-키워드"><a href="#apropos-키워드" class="headerlink" title="apropos (키워드)"></a>apropos (키워드)</h3><p>키워드가 들어간 명령어를 찾아서 리스트업 해준다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>Linux</category>
+        <category>DevOps</category>
+        <category>linux</category>
       </categories>
       <tags>
         <tag>명령어</tag>
@@ -4722,8 +4740,8 @@
 <h2 id="AWS-ec2-or-lightsail"><a href="#AWS-ec2-or-lightsail" class="headerlink" title="AWS ec2 or lightsail"></a>AWS ec2 or lightsail</h2><p>아마존 클라우드 서비스에서 제공하는 가상서버(ec2)를 웹 서버로 사용한다. 현재 프리 티어라서 무료로 사용하지만, 무료 기간이 끝나면 lightsail로 웹 서버를 구축할 예정이다. lightsail은 AWS에서 제공하는 가상서버이지만, ec2와 달리 월마다 가격이 정해져 있어서 비교적 저렴하다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Web/Dashboard</category>
+        <category>ToyProject</category>
+        <category>kbo dashboard</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -4761,8 +4779,8 @@
 <p>위 코드는 하둡의 yarn에서 리소스를 받아 실행하는 것이기 때문에 결과값 또한 하둡 웹 UI에서 찾아볼 수 있다. 따라서 <code>pi-master.local:8088</code>로 접속하여 실행된 잡(어플리케이션)의 로그를 클릭하면 결과값을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Cluster</category>
+        <category>ToyProject</category>
+        <category>clustering</category>
       </categories>
       <tags>
         <tag>raspberrypi</tag>
@@ -4821,8 +4839,8 @@
 <p>다음 글에서는 하둡과 스파크에서 기본적으로 제공하는 테스트들을 실행해보자.</p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Cluster</category>
+        <category>ToyProject</category>
+        <category>clustering</category>
       </categories>
       <tags>
         <tag>raspberrypi</tag>
@@ -4865,8 +4883,8 @@
 <p>이렇게 하둡과 스파크 설치는 끝났다. 다음 글에서는 분산처리 설정하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Cluster</category>
+        <category>ToyProject</category>
+        <category>clustering</category>
       </categories>
       <tags>
         <tag>raspberrypi</tag>
@@ -4949,8 +4967,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc &amp;&amp; clusterscp ~/.bashrc</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Cluster</category>
+        <category>ToyProject</category>
+        <category>clustering</category>
       </categories>
       <tags>
         <tag>raspberrypi</tag>
@@ -4964,7 +4982,7 @@
   </entry>
   <entry>
     <title>mariaDB 그룹핑과 연산 명령어 모음</title>
-    <url>/2020/11/08/DB/Database-5/</url>
+    <url>/2020/11/08/Sql/sql-4/</url>
     <content><![CDATA[<p>mariaDB에서 그룹핑을 하는 명령어 GROUP BY과 수학 연산을 처리해주는 다양한 명령어들의 사용법을 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="부분-문자열-찾기"><a href="#부분-문자열-찾기" class="headerlink" title="부분 문자열 찾기"></a>부분 문자열 찾기</h2><p>만약 특정 열에서 값 일부만 얻고 싶을 때에는 어떻게 해야할까? 바로 <code>LEFT()</code>와 <code>RIGHT()</code>를 사용하면 된다. 두 함수는 특정 열에서 값 일부만을 반환해준다.</p>
@@ -5033,8 +5051,8 @@
 <p>위 코드는 3번째부터 아래로 3개의 데이터를 보여달라는 의미이다. SQL에서는 0부터 순서로 시작하기 때문에 2가 세 번째 레코드를 의미한다. 결과는 다음과 같다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>Language</category>
+        <category>sql</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -5050,7 +5068,7 @@
   </entry>
   <entry>
     <title>명령어 ALTER 사용법</title>
-    <url>/2020/11/07/DB/Database-4/</url>
+    <url>/2020/11/07/Sql/sql-3/</url>
     <content><![CDATA[<p>mariaDB에서 ALTER 명령어를 사용하는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="ALTER"><a href="#ALTER" class="headerlink" title="ALTER"></a>ALTER</h2><p>이전 글에서도 살짝 살펴봤지만 명령어 <code>ALTER</code>은 기존의 테이블을 유지하면서 원하는 부분만 수정할 수 있다. 이번 글에서는 명령어 <code>ALTER</code>로 할 수 있는 일들을 살펴볼 것이다.</p>
@@ -5083,8 +5101,8 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--예시--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'테이블 이름'</span></span><br><span class="line"><span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> <span class="string">'해당 열 이름'</span> <span class="built_in">INT</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'테이블 이름'</span></span><br><span class="line"><span class="keyword">CHANGE</span> <span class="keyword">COLUMN</span> <span class="string">'해당 열 이름'</span>  <span class="string">'해당 열 이름'</span> <span class="built_in">INT</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>Language</category>
+        <category>sql</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -5166,8 +5184,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo shutdown -h now</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Cluster</category>
+        <category>ToyProject</category>
+        <category>clustering</category>
       </categories>
       <tags>
         <tag>raspberrypi</tag>
@@ -5203,8 +5221,8 @@
 <p>지금까지 라즈베리 파이4를 살펴보았다. 다음 글에서는 라즈베리 파이의 초기 환경설정에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>BIGDATA</category>
-        <category>Cluster</category>
+        <category>ToyProject</category>
+        <category>clustering</category>
       </categories>
       <tags>
         <tag>raspberrypi</tag>
@@ -5242,7 +5260,7 @@
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>Error List</category>
+        <category>errors</category>
       </categories>
       <tags>
         <tag>mysql</tag>
@@ -5258,7 +5276,7 @@
   </entry>
   <entry>
     <title>DB 정규화와 기본키 설정하기</title>
-    <url>/2020/10/19/DB/Database-3/</url>
+    <url>/2020/10/19/Sql/sql-2/</url>
     <content><![CDATA[<p>데이터베이스의 정규화와 기본키에 대해서 살펴본 후 mariaDB에서 기본키 설정하는 방법을 설명합니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="정규화-Nomalization"><a href="#정규화-Nomalization" class="headerlink" title="정규화 (Nomalization)"></a>정규화 (Nomalization)</h2><p>같은 자료를 받아도 설계자의 목표에 따라서 다른 테이블이 만들어 질 수 있다. 예를 들어, 식물에 관한 정보를 식물 관리인과 식물 연구자가 받았다고 가정해보자. 식물 관리인은 식물에게 물을 주는 주기나 식물의 생장 속도와 같은 정보들이 구체적으로 필요할 것이다. 반면 식물 연구자는 해당 식물의 세부적인 종이나 생물학적 특징 등이 필요할 것이다. 두 사람에게는 동일한 정보를 주어도 다른 테이블이 도출될 수 있는 것이다.</p>
@@ -5298,11 +5316,10 @@
 <p>위 코드는 테이블을 생성할 때 지정하는 방법이다. 명령어 <code>AUTO_INCREMENT</code>는 기본키가 인수일 때 사용할 수 있기 때문에 해당 카테고리는 <code>INT</code>로 설정한다.</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'기존 테이블 이름'</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">COLUMN</span> <span class="string">'새로운 카테고리 이름'</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">FIRST</span>,</span><br><span class="line"><span class="keyword">ADD</span> PRIMARY <span class="keyword">KEY</span> (<span class="string">'새로운 카테고리 이름'</span>);</span><br></pre></td></tr></table></figure>
 <p>기존 테이블에 추가할 때도 카테고리 추가하는 명령어에 같이 입력하여 사용하면 된다.</p>
-<p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>Language</category>
+        <category>sql</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -5317,7 +5334,7 @@
   </entry>
   <entry>
     <title>mariaDB 기본적인 명령어 모음</title>
-    <url>/2020/10/10/DB/Database-2/</url>
+    <url>/2020/10/10/Sql/sql-1/</url>
     <content><![CDATA[<p>mariaDB에서 기본적으로 사용하는 명령어들을 정리한 글입니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="테이블에-복수-데이터-추가"><a href="#테이블에-복수-데이터-추가" class="headerlink" title="테이블에 복수 데이터 추가"></a>테이블에 복수 데이터 추가</h2><p>만약 테이블에 여러 개의 데이터를 한번에 입력해야 한다면 어떻게 해야할까? <code>VALUES</code> 아래에 여러 개의 데이터를 (,)를 사용하여 입력하면 된다.</p>
@@ -5376,11 +5393,10 @@
 <h2 id="UPDATE-데이터-변경하기"><a href="#UPDATE-데이터-변경하기" class="headerlink" title="UPDATE 데이터 변경하기"></a>UPDATE 데이터 변경하기</h2><p>만약 기존 레코드에서 특정 조건에 해당하는 값만 수정하고 싶다면, 명령어 <code>UPDATE</code>를 사용할 수 있다. <code>UPDATE</code>를 적용하는 코드는 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="string">'테이블 이름'</span> <span class="keyword">SET</span> <span class="string">'변경할 카테고리'</span> = <span class="string">'새로운 값'</span> <span class="keyword">WHERE</span> <span class="string">'조건에 사용될 카테고리'</span> = <span class="string">'조건'</span>;</span><br></pre></td></tr></table></figure>
 <p>위 코드는 <code>SET</code>과 <code>WHERE</code> 두 가지가 같이 사용되고 있다. 먼저 <code>SET</code>은 변경할 카테고리의 값들을 전부 새로운 값으로 변경한다. 따라서 <code>WHERE</code>로 특정 레코드를 지정해주지 않는다면 모든 레코드의 데이터가 변경된다. 그래서 보통 <code>UPDATE</code>와 <code>SET</code>에는 <code>WHERE</code>이 필수적으로 같이 사용된다.</p>
-<p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>Language</category>
+        <category>sql</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -5393,7 +5409,7 @@
   </entry>
   <entry>
     <title>데이터베이스와 테이블 생성하기</title>
-    <url>/2020/10/10/DB/Database-1/</url>
+    <url>/2020/10/10/Sql/sql-0/</url>
     <content><![CDATA[<p>mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다.<br><a id="more"></a></p>
 <hr>
 <h2 id="데이터베이스-생성"><a href="#데이터베이스-생성" class="headerlink" title="데이터베이스 생성"></a>데이터베이스 생성</h2><p>새로운 데이터베이스를 만드는 명령어는 다음과 같다.</p>
@@ -5426,11 +5442,10 @@
 <h2 id="디폴트값-설정"><a href="#디폴트값-설정" class="headerlink" title="디폴트값 설정"></a>디폴트값 설정</h2><p>만약 기본 값이 주어진 열인 경우에는 테이블을 생성 시 디퐅트 값을 지정할 수 있다. 디폴트 값은 해당 카테고리에 데이터가 입력되지 않았을 시에 자동으로 적용된다.</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">'테이블 이름'</span>( <span class="string">'카테고리 1'</span> <span class="built_in">VARCHAR</span>(<span class="number">10</span>) <span class="keyword">DEFAULT</span> <span class="number">1</span>, <span class="string">'카테고리 2'</span> <span class="built_in">VARCHAR</span>(<span class="number">6</span>));</span><br></pre></td></tr></table></figure>
 <p>위 코드에서는 카테고리 1에 디폴트 값 1을 지정하였다.</p>
-<p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>Language</category>
+        <category>sql</category>
       </categories>
       <tags>
         <tag>sql</tag>
@@ -5442,7 +5457,7 @@
   </entry>
   <entry>
     <title>Docker로 MariaDB 사용하기</title>
-    <url>/2020/10/09/DB/Database-0/</url>
+    <url>/2020/10/09/Docker/Docker-0/</url>
     <content><![CDATA[<p>도커 컨테이너에 MariaDB를 올려서 데이터베이스를 구축합니다.<br><a id="more"></a></p>
 <hr>
 <p>이번 글에서는 MariaDB에 대해 간단하게 알아보고 도커 컨테이너에 MariaDB를 올려 데이터베이스 구축하는 방법에 대해서 살펴볼 것이다. 해당 글은 도커가 이미 깔렸다는 전제 하에 설명하기 때문에 만약 도커가 없다면 다운받아야 한다.</p>
@@ -5483,11 +5498,10 @@
 <p>그다음 esc를 누르고 <code>:write</code>를 입력하고 엔터를 누르면 수정사항이 저장된다. 그 후 <code>:q</code>을 입력하여 에디터를 빠져나오면 된다.</p>
 <p>확인을 위하여 다시 DB에 접속해보자. 접속한 후, <code>status</code>를 다시 입력해보면 변경된 것을 확인할 수 있다.</p>
 <figure class="highlight docker"><table><tr><td class="code"><pre><span class="line">MariaDB [(none)]&gt; status</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">Server characterset:    utf8mb4</span><br><span class="line">Db     characterset:    utf8mb4</span><br><span class="line">Client characterset:    utf8mb4</span><br><span class="line">Conn.  characterset:    utf8mb4</span><br></pre></td></tr></table></figure>
-<p>P.S.<br>해당 시리즈는 현재 진행중인 SQL 스터디의 내용들을 정리한 글입니다. SQL 스터디의 진행상황은 <a href="https://github.com/LOPES-HUFS/SQL" target="_blank" rel="noopener">해당 페이지</a>에서 확인할 수 있습니다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Database</category>
+        <category>DevOps</category>
+        <category>docker</category>
       </categories>
       <tags>
         <tag>docker</tag>
@@ -5531,8 +5545,8 @@
 <p>모델의 예측이 정확히 맞았다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>MLOps</category>
+        <category>MachineLearning</category>
+        <category>mlops</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5592,8 +5606,8 @@
 <p>이제 AWS를 사용하여 모델 훈련까지 완료하였다. 다음 글에서는 훈련된 모델에 사용하는 방법에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>MLOps</category>
+        <category>MachineLearning</category>
+        <category>mlops</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5609,7 +5623,6 @@
     <url>/2020/09/23/MLOps/MLOps-0/</url>
     <content><![CDATA[<p>모델 훈련을 위한 Docker image 생성하는 과정을 정리합니다.<br><a id="more"></a></p>
 <hr>
-<p>이 글의 목표는 AWS 가상 서버에 도커를 설치하고 도커 이미지를 다운로드 하여 모델 훈련을 진행해보고자 한다.</p>
 <h2 id="Docker란"><a href="#Docker란" class="headerlink" title="Docker란"></a>Docker란</h2><p>“개발자 A는 MAS OS 유저이다. 현재 MAS OS에서 개발을 완료하여 서버로 배포하려고 한다. 하지만 Linux기반의 서버에서는 해당 애플리케이션이 작동하지 않는다.”</p>
 <p>위의 상황은 실행 환경이 맞지 않아 발생하는 문제이다. 이런 문제를 방지하기 위해서는 어떤 해결 방법이 있을까?</p>
 <ul>
@@ -5665,8 +5678,8 @@
 <p><img src="/images/94.png" alt="AWS5_2"></p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>MLOps</category>
+        <category>MachineLearning</category>
+        <category>mlops</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5723,8 +5736,8 @@
 <p>지금까지 AWS EC2 인스턴스를 생성하는 방법에 대해 알아보았다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>AWS</category>
+        <category>DevOps</category>
+        <category>aws</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5790,8 +5803,8 @@
 <p>지금까지 커맨드라인에서 S3의 버킷을 생성하고 데이터를 업로드하는 방법을 살펴보았다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>AWS</category>
+        <category>DevOps</category>
+        <category>aws</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5825,8 +5838,8 @@
 <p>이제 커맨드라인에서 AWS를 실행할 준비가 모두 완료되었다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>AWS</category>
+        <category>DevOps</category>
+        <category>aws</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5874,8 +5887,8 @@
 <p>지금까지 AWS 계정의 종류와 생성 방법에 대해서 알아보았다. 다음 글에서는 생성한 IAM 계정을 통해 커맨드라인에서 AWS을 연결하는 방법에 대해서 알아볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>AWS</category>
+        <category>DevOps</category>
+        <category>aws</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5902,8 +5915,8 @@
 <h3 id="Simple-Storage-Service-S3"><a href="#Simple-Storage-Service-S3" class="headerlink" title="Simple Storage Service (S3)"></a>Simple Storage Service (S3)</h3><p>S3 또한 데이터를 저장할 수 있는 저장장치이며, EBS보다 저렴하고 데이터를 무한대로 저장할 수 있다는 장점이 있다. S3는 데이터를 저장한 용량에 대비하여 저렴한 비용이 청구되지만 EBS는 선택한 용량 전체에 대해서 비용이 청구되기 때문에 가상 서버를 돌리지 않을 때에는 데이터들을 S3에 저장해두는 것이 훨씬 저렴하다.</p>
 ]]></content>
       <categories>
-        <category>DEVOPS</category>
-        <category>AWS</category>
+        <category>DevOps</category>
+        <category>aws</category>
       </categories>
       <tags>
         <tag>AWS</tag>
@@ -5974,8 +5987,8 @@
 <p>하지만 5에폭을 진행하는데 걸린 시간은 고작 약 25분 정도이다. 기존의 <code>simpleNet</code>은 1에폭에 1시간이었다는 것을 떠올려보면 엄청난 발전이라고 볼 수 있다. 하지만 <code>simpleNet</code>은 테스트셋의 정확도 99%를 넘기지는 못한다. 따라서 다음 시간에는 tensorflow에서 MNIST의 예제로 제공하는 <code>convNet</code>을 살펴보고 이와 동일하게 모델을 설계하여 테스트셋의 정확도 99%를 달성해볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6011,8 +6024,8 @@
 <p>지금까지 <code>col2im()</code>을 사용하여 합성곱과 최대값 풀링의 역전파 과정을 구현하였다. 데이터 4차원을 유지한 채 이를 진행하면 매우 느리지만, <code>col2im()</code>을 사용하면 매우 빠른 속도로 계산이 가능하다. 다음 글에서는 지금까지 만든 CNN layers을 바탕으로 모델을 구현하고 학습시켜볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6057,8 +6070,8 @@
 <p>지금까지 <code>col2im()</code>의 원리에 대해서 알아보았다. 다음 글에서는 오늘 만든 <code>col2im()</code>을 가지고 합성곱과 풀링을 구현할 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6103,8 +6116,8 @@
 <p>지금까지 <code>im2col()</code>을 사용하여 구성한 계층들을 살펴보았다. 다음 글에서는 CNN의 역전파와 그때 사용되는 <code>col2im</code>에 대해서 알아보자.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6190,8 +6203,8 @@
 <p>다음 글에서는 <code>im2col()</code>과  <code>col2im()</code>의 원리를 설명하고, 줄리아로 구현해볼 것이다. 또한 이를 바탕으로 합성곱층과 풀링층의 함수를 구현할 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6248,8 +6261,8 @@
 <p>훈련데이터의 정확도와 실제데이터의 정확도 간격이 드랍아웃을 적용하지 않은 모델보다 훨씬 줄어든 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6335,8 +6348,8 @@
 <p>다음 글에서는 오버피팅을 막아주는 드랍아웃(Dropout)에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6407,8 +6420,8 @@
 <p>집합 $V$에 속하는 요소인 $x$는 벡터이다. 따라서 $(V,+)$의 항등원 또한 영벡터($[0,\dots,0$^T)이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>Mathematics</category>
+        <category>MachineLearning</category>
+        <category>mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -6472,8 +6485,8 @@
 <p>손실 함수 값 또한 RMSProp가 더 낮은 결과를 도출하는 것을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6566,8 +6579,8 @@ x & \text{(x>0) $$}\\
 </blockquote>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6658,8 +6671,8 @@ x & \text{(x>0) $$}\\
 <p>역전파 알고리즘은 순전파와 비슷한 학습 효과를 가지고 있지만 속도는 월등히 빠르다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -6699,7 +6712,7 @@ x & \text{(x>0) $$}\\
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>About Hexo</category>
+        <category>about hexo</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
@@ -6843,8 +6856,8 @@ x & \text{(x>0) $$}\\
 <p>순전파와 역전파 알고리즘으로 도출된 미분값들의 차이가 매우 작은 것을 확인할 수 있다. 즉, 역전파가 잘 구현되었다는 것이다. 그렇다면 역전파는 어떻게 줄리아로 구현하였을까? 다음 글에서 확인해보자.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7232,8 +7245,8 @@ x_1&+&x_3&-&x_4&=& 0\\
 <script type="math/tex; mode=display">x = (A^TA)^{-1}A^Tb, \quad A^TA \in R^{3 \times 3}</script><p>이 방법은 근사 해를 구할 수 있게 해주기에 매우 유용하지만, 많은 행렬 계산이 들어가고 근사값을 구하는 것이기에 일반적으로 사용하기를 추천하지는 않는다. 이의 대안으로 우리는 chapter2에서 벡터 사이의 유사성을 계산할 수 있는 방법을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>Mathematics</category>
+        <category>MachineLearning</category>
+        <category>mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -7438,8 +7451,8 @@ a_{12} & \mathbf{a_{22}}\\
 <p>$\lambda(B + C)=\lambda B + \lambda C,\quad B,C \in \mathbb R^{m \times n}$</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>Mathematics</category>
+        <category>MachineLearning</category>
+        <category>mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -7547,8 +7560,8 @@ a_{12} & \mathbf{a_{22}}\\
 <p>순전파는 반복되는 매 횟수마다 활성화 함수를 미분하기 때문에 시간이 오래 걸린다. 그렇기에 실상 사용되는 미분법은 아니지만, 신경망의 원리를 파악하기 위해서는 알아야 한다. 다음 글에서는 5시간을 3분으로 줄여주는 마법같은 역전파를 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7600,8 +7613,8 @@ a_{12} & \mathbf{a_{22}}\\
 <h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>지금까지 인공신경망이 어떻게 학습되는지 그 과정을 살펴보았다. 신경망 학습은 인공신경망 구현에 있어 매우 중요한 부분이다. 신경망이 어떤 방식으로 학습되는지에 따라서 성능이 제각각이기 떄문이다. 학습에 있어 다양한 기술적인 튜닝이 있지만 핵심 원리는 이 글을 벗어나지 않는다. 다음 글에서 순전파 알고리즘 기반의 경사하강법을 구현해보고, 이후 역전파에 대해서 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7681,8 +7694,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>아번 글에서는 신경망을 구현하기에 앞서 신경망의 원리를 수학식으로 풀이하였다. 이 과정은 이해를 위함이며, 다음 글에서는 손글씨 인식하는 신경망을 구현하면서 코드로 작동하는 과정을 살펴볼 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7754,8 +7767,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <p>오차값이 거의 0에 도달하였다. 최적화에 성공한 것이다. 신경망은 이런 경사하강법을 통해서 적절한 가중치와 편향을 찾는다. 이제는 신경망을 구현하기 위한 모든 재료들을 살펴보았다. 다음 포스트에서는 지금까지 만들었던 함수들을 바탕으로 신경망을 직접 구현해보자.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7800,8 +7813,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
 <p>위의 결과를 보면 잘 예측한 <code>y1</code>이 잘못 예측한 <code>y2</code>보다 더 작은 것을 확인할 수 있다. 이처럼 손실 함수는 오차를 계산하여 오차율을 나타내며, 값이 0에 가까울수록 오차가 없다고 판단한다. 즉, 손실 함수의 값이 0에 가까울수록 해당 신경망은 잘 학습되었다고 평가되는 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -7876,8 +7889,8 @@ x & \text{(x>0) $$}\\
 <p>요소들의 합이 $1$임을 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -8159,8 +8172,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>사실 신경망을 구현하는 것은 위의 설명보다 더 복잡하다. 하지만 위의 원리를 이해하지 못한다면 신경망 자체를 파악할 수 없다.<br>다음 글에서는 신경망에 쓰이는 활성화 함수들을 살펴보고 줄리아로 구현할 것이다.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -8246,8 +8259,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>지금까지 신경망을 배우기 위한 기본적인 배열 처리 방법에 대해서 알아보았다. 이제는 본격적으로 신경망에 대해 알아보자.</p>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>DL in Julia</category>
+        <category>ToyProject</category>
+        <category>deeplearing-julia</category>
       </categories>
       <tags>
         <tag>딥러닝</tag>
@@ -8430,8 +8443,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
 <p>목표는 단지 프로그램을 작동시키는 것이 아니라는 점을 기억하라. 목표는 프로그램 작동 방법을 배우는 것이다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8563,8 +8576,8 @@ cos(x)=\frac{e^{ix}+e^{-1x}}{2}
 <p>여기서는 모든 디버그 정보를 얻기 위해서 모두 사용햇지만 특정 파일 또는 모듈에 대한 출력만 생성하도록 선택할 수도 있다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8718,8 +8731,8 @@ cos(x)=\frac{e^{ix}+e^{-1x}}{2}
 <p>GDBM 라이브러리의 완전한 맵핑은 ThinkJulia 소스에서 예제로 찾을 수 있다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8773,8 +8786,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>위의 순서를 보면, 상수함수가 가장 작고 지수함수가 가장 크다. 즉 상수함수는 데이터 수가 많아도 빠르게 작동하는 알고리즘이며, 지수함수는 데이터 수가 많아질수록 급격하게 느려지는 알고리즘이라는 뜻이다. 시간 효율성 관점에서는 상수함수가 더욱 우월하다.</p>
 ]]></content>
       <categories>
-        <category>PROGRAMMING</category>
-        <category>Algorithms</category>
+        <category>ComputerScience</category>
+        <category>algorithms</category>
       </categories>
       <tags>
         <tag>Algorithms</tag>
@@ -8915,8 +8928,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -8963,8 +8976,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>ML/DL</category>
-        <category>Mathematics</category>
+        <category>MachineLearning</category>
+        <category>mathematics</category>
       </categories>
       <tags>
         <tag>머신러닝</tag>
@@ -9082,8 +9095,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>이 예시에서는 <code>printtime()</code>가 2개의 메서드를 가지고 있으며, 하나는 <code>MyTime</code> 인수이고 다른 하나는 <code>Any</code> 인수이다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9150,8 +9163,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p><code>@assert</code> 매크로는 정상적인 조건을 처리하는 코드와 오류를 확인하는 코드를 구분하기 때문에 유용하다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9256,8 +9269,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>첫 번째 인수는 어떤 객체든 들어갈 수 있다. 두 번째 인수에는 <code>:</code>기호를 넣고 뒤에 필드의 이름을 작성하면 된다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9379,8 +9392,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>대부분의 시스템에는 한 형식에서 다른 형식으로 변환하는 응용 프로그램이 있다. 관련 정보는 <a href="https://en.wikipedia.org/wiki/Newline" target="_blank" rel="noopener">해당 링크</a>에서 확인할 수 있다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9535,8 +9548,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line">wordlist=sentencetoword(<span class="string">"words.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> findweird(t1,t2)</span><br><span class="line">    word1=keys(t1)</span><br><span class="line">    word2=keys(t2)</span><br><span class="line">    final=[]</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word1</span><br><span class="line">        <span class="keyword">if</span> word ∉ word2</span><br><span class="line">        push!(final,word)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> final</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9653,8 +9666,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>줄리아는 시퀀스의 요소에 데이터 타입을 첨부할 수 있다. 이 작업을 수행하는 방법은 다중 디스패치 파트에서 자세하게 설명할 것이다. 데이터 타입을 지정하면 많은 형태 오류가 제거된다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9789,8 +9802,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -9975,8 +9988,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 </ul>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10022,7 +10035,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>About Hexo</category>
+        <category>about hexo</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
@@ -10096,8 +10109,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>“프로그램 테스팅은 버그를 미리 보기 위해 사용되지만, 버그가 없다는 결론을 보여주지는 않는다.”</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10212,8 +10225,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
  <figure class="highlight julia"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> isreverse(word1, word2)</span><br><span class="line">    <span class="keyword">if</span> length(word1) != length(word2)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    i = firstindex(word1)</span><br><span class="line">    j = lastindex(word2)</span><br><span class="line">    <span class="keyword">while</span> j &gt;= <span class="number">0</span></span><br><span class="line">        <span class="meta">@show</span> i j</span><br><span class="line">        <span class="keyword">if</span> word1[i] != word2[j]</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        i = nextind(word1, i)</span><br><span class="line">        j = prevind(word2, j)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="literal">true</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10311,8 +10324,8 @@ y= \frac{1}{2}\left(x+\frac{a}{x}\right)
 <p>하지만 실제 상황에서는 프로그램 중간이 무엇인지 명확하지 않을 수 있다. 코드 줄 개수에 맞춰 반으로 나누는 것은 합리적이지 않다. 따라서 프로그램에 오류가 있을 수 있는 장소와 코드를 먼저 점검한 후, 개발자가 생각하는 합리적인 중간점을 찾는 것이 좋다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10452,8 +10465,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>만약에 실행 흐름이 헷갈리면, 위와 같은 출력들이 도움이 될 것이다. 효과적인 스캐폴딩을 개발하는 것은 조금 시간이 걸리겠지만, 작은 스캐폴딩으로도 많은 디버깅 요소들을 찾을 수 있다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10558,8 +10571,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>오류를 찾기 위해서, 변수인 <code>ratio</code>의 값을 확인해보는 것이 좋을 것이다. 확인해보니 <code>ratio</code>는 0으로 밝혀졌다. 문제는 3번째 줄에서 버림 나눗셈을 하여 나머지들을 제거해버리는 데서 온 것으로 확인되었다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10666,8 +10679,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>하지만 만약 전제 조건은 알맞게 작성했는데 사후 조건이 이상하다면, 이것은 함수에 버그가 있는 것이다. 따라서 해당 함수의 전제 조건과 사후 조건을 명확하게 아는 것은 디버깅에 많은 도움을 준다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10772,8 +10785,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>어떤 사람들에게는 프로그래밍과 디버깅은 동일하다. 즉, 프로그래밍은 원하는 작업이 수행될 때까지 코드들을 점검하고 디버깅하는 과정이기 때문이다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10844,8 +10857,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p><strong>의미 오류(semantic error)</strong><br>의미 오류는 개발자의 의도와는 다른 방향으로 프로그램이 작동되는 현상이다. 이는 문법오류와 같이 컴퓨터가 파악할 수 있는 오류가 아니기 때문에 오류 메시지가 나타나지 않는다.<br>그렇기에 해당 오류를 찾기 위해서는 프로그램의 출력을 보고 수행중인 작업에서 예측가능한 결과인지를 파악하여 역으로 찾는 수밖에 없다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
@@ -10889,7 +10902,7 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 ]]></content>
       <categories>
         <category>etc.</category>
-        <category>About Hexo</category>
+        <category>about hexo</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
@@ -10964,8 +10977,8 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <p>디버깅을 할 때 어려운 버그를 만난다면, 컴퓨터에 대한 분노로 인해 개발자를 그만두고 싶을 수 있다. 하지만 디버깅을 배우는 것은 어렵지만 프로그래밍 이외의 많은 활동에도 유용한 기술이기에 포기하지 않기를 바란다.</p>
 ]]></content>
       <categories>
-        <category>LANGUAGE</category>
-        <category>Julia</category>
+        <category>Language</category>
+        <category>julia</category>
       </categories>
       <tags>
         <tag>줄리아</tag>
