@@ -14,8 +14,8 @@
         <tag>빅데이터</tag>
         <tag>mapreduce</tag>
         <tag>spark</tag>
-        <tag>pyspark</tag>
         <tag>databricks</tag>
+        <tag>pyspark</tag>
       </tags>
   </entry>
   <entry>
@@ -738,11 +738,11 @@
         <category>database</category>
       </categories>
       <tags>
-        <tag>database</tag>
         <tag>DB</tag>
         <tag>architecture</tag>
         <tag>sharednothing</tag>
         <tag>shareddisk</tag>
+        <tag>database</tag>
         <tag>아키텍처</tag>
         <tag>clustering</tag>
         <tag>replication</tag>
@@ -859,8 +859,8 @@
         <tag>회고</tag>
         <tag>주니어</tag>
         <tag>소프트웨어</tag>
-        <tag>신입</tag>
         <tag>2년차</tag>
+        <tag>신입</tag>
       </tags>
   </entry>
   <entry>
@@ -920,9 +920,9 @@
       <tags>
         <tag>recursion</tag>
         <tag>recursive</tag>
+        <tag>python</tag>
         <tag>비교</tag>
         <tag>rust</tag>
-        <tag>python</tag>
         <tag>hanoi</tag>
         <tag>시간초과</tag>
         <tag>println</tag>
@@ -2797,10 +2797,10 @@
         <category>certificate</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>자격증</tag>
         <tag>SQLD</tag>
         <tag>sqld</tag>
+        <tag>sql</tag>
       </tags>
   </entry>
   <entry>
@@ -3614,13 +3614,13 @@
         <category>kbo dashboard</category>
       </categories>
       <tags>
-        <tag>DB</tag>
-        <tag>mariadb</tag>
         <tag>aws</tag>
         <tag>lightsail</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
+        <tag>mariadb</tag>
         <tag>ssh</tag>
+        <tag>DB</tag>
         <tag>dashborad</tag>
       </tags>
   </entry>
@@ -3816,10 +3816,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
-        <tag>boot</tag>
         <tag>centos</tag>
         <tag>ubuntu</tag>
         <tag>repository</tag>
+        <tag>boot</tag>
       </tags>
   </entry>
   <entry>
@@ -4601,10 +4601,10 @@
       </categories>
       <tags>
         <tag>linux</tag>
+        <tag>boot</tag>
         <tag>kernel</tag>
         <tag>systemd</tag>
         <tag>filesystem</tag>
-        <tag>boot</tag>
         <tag>hardware</tag>
       </tags>
   </entry>
@@ -4707,11 +4707,11 @@
         <category>linux</category>
       </categories>
       <tags>
-        <tag>명령어</tag>
         <tag>Linux</tag>
         <tag>리눅스</tag>
         <tag>OS</tag>
         <tag>커맨드라인</tag>
+        <tag>명령어</tag>
         <tag>commandline</tag>
         <tag>cmd</tag>
       </tags>
@@ -4746,12 +4746,12 @@
       <tags>
         <tag>AWS</tag>
         <tag>docker</tag>
-        <tag>mariaDB</tag>
-        <tag>DB</tag>
         <tag>flask</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
+        <tag>DB</tag>
         <tag>dashborad</tag>
+        <tag>mariaDB</tag>
         <tag>EC2</tag>
         <tag>plotly</tag>
         <tag>dash</tag>
@@ -5056,10 +5056,10 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>mariaDB</tag>
-        <tag>database</tag>
-        <tag>RDBMS</tag>
         <tag>DB</tag>
+        <tag>database</tag>
+        <tag>mariaDB</tag>
+        <tag>RDBMS</tag>
         <tag>GROUPBY</tag>
         <tag>AVG</tag>
         <tag>SUM</tag>
@@ -5106,10 +5106,10 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>mariaDB</tag>
-        <tag>database</tag>
-        <tag>RDBMS</tag>
         <tag>DB</tag>
+        <tag>database</tag>
+        <tag>mariaDB</tag>
+        <tag>RDBMS</tag>
         <tag>ALTER</tag>
       </tags>
   </entry>
@@ -5263,11 +5263,11 @@
         <category>errors</category>
       </categories>
       <tags>
-        <tag>mysql</tag>
         <tag>error</tag>
         <tag>sqlalchemy</tag>
         <tag>flask_sqlalchemy</tag>
         <tag>pylint</tag>
+        <tag>mysql</tag>
         <tag>db</tag>
         <tag>scoped_session</tag>
         <tag>Registrant</tag>
@@ -5323,13 +5323,13 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>mariaDB</tag>
+        <tag>DB</tag>
         <tag>database</tag>
+        <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>정규화</tag>
         <tag>nomalization</tag>
         <tag>기본키</tag>
-        <tag>DB</tag>
       </tags>
   </entry>
   <entry>
@@ -5400,10 +5400,10 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>mariaDB</tag>
         <tag>database</tag>
-        <tag>RDBMS</tag>
+        <tag>mariaDB</tag>
         <tag>명령어</tag>
+        <tag>RDBMS</tag>
         <tag>WHERE</tag>
       </tags>
   </entry>
@@ -5449,8 +5449,8 @@
       </categories>
       <tags>
         <tag>sql</tag>
-        <tag>mariaDB</tag>
         <tag>database</tag>
+        <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>table</tag>
       </tags>
@@ -5506,8 +5506,8 @@
       <tags>
         <tag>docker</tag>
         <tag>sql</tag>
-        <tag>database</tag>
         <tag>mariadb</tag>
+        <tag>database</tag>
         <tag>vi</tag>
         <tag>vim</tag>
         <tag>도커</tag>
@@ -5998,10 +5998,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>Julia</tag>
-        <tag>모델</tag>
         <tag>im2col</tag>
         <tag>col2im</tag>
+        <tag>Julia</tag>
+        <tag>모델</tag>
       </tags>
   </entry>
   <entry>
@@ -6035,10 +6035,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>Julia</tag>
-        <tag>모델</tag>
         <tag>im2col</tag>
         <tag>col2im</tag>
+        <tag>Julia</tag>
+        <tag>모델</tag>
       </tags>
   </entry>
   <entry>
@@ -6081,10 +6081,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>Julia</tag>
-        <tag>모델</tag>
         <tag>im2col</tag>
         <tag>col2im</tag>
+        <tag>Julia</tag>
+        <tag>모델</tag>
       </tags>
   </entry>
   <entry>
@@ -6127,10 +6127,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>Julia</tag>
-        <tag>모델</tag>
         <tag>im2col</tag>
         <tag>col2im</tag>
+        <tag>Julia</tag>
+        <tag>모델</tag>
       </tags>
   </entry>
   <entry>
@@ -6214,10 +6214,10 @@
         <tag>합성곱</tag>
         <tag>이미지신경망</tag>
         <tag>풀링</tag>
-        <tag>flatten</tag>
-        <tag>convolution</tag>
         <tag>Julia</tag>
         <tag>모델</tag>
+        <tag>flatten</tag>
+        <tag>convolution</tag>
       </tags>
   </entry>
   <entry>
