@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Spark 아키텍처</title>
-    <url>/2022/06/03/Spark/spark-0/</url>
-    <content><![CDATA[<p>Spark 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
-<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><p>스파크(spark)는 빅데이터 시장에서 대표적으로 사용되는 분산처리엔진 중 하나이다. 흔히 빅데이터 플랫폼을 수집, 저장, 처리, 분석, 관리의 항목으로 구분하는데 스파크는 “데이터 처리”에 속한다. 스파크만의 특징으로는 인메모리 방식, </p>
-<h2 id="Spark-Architecture"><a href="#Spark-Architecture" class="headerlink" title="Spark Architecture"></a>Spark Architecture</h2><h2 id="Spark-Process"><a href="#Spark-Process" class="headerlink" title="Spark Process"></a>Spark Process</h2>]]></content>
-      <categories>
-        <category>BigData</category>
-        <category>spark</category>
-      </categories>
-      <tags>
-        <tag>빅데이터</tag>
-        <tag>mapreduce</tag>
-        <tag>spark</tag>
-        <tag>databricks</tag>
-        <tag>pyspark</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>String과 str 차이</title>
     <url>/2022/05/17/Rust/rust-9/</url>
     <content><![CDATA[<p>러스트의 String과 str의 차이점에 대해 정리합니다.<br><a id="more"></a></p>
