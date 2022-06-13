@@ -68,7 +68,7 @@
   };
 </script>
 
-  <title>tag: hive | DEV AnythinG</title>
+  <title>tag: Hive | DEV AnythinG</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163411677-2"></script>
     <script>
@@ -216,12 +216,35 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <h1 class="collection-header">hive
+        <h1 class="collection-header">Hive
           <small>tag</small>
         </h1>
       </div>
 
       
+    <div class="collection-year">
+      <h1 class="collection-header">2022</h1>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-04-05T16:36:05+09:00"
+              content="2022-04-05">
+          04-05
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2022/04/05/Engineering/engineering-1/" itemprop="url">
+            <span itemprop="name">Schema on Read란</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
     <div class="collection-year">
       <h1 class="collection-header">2021</h1>
     </div>
@@ -231,15 +254,15 @@
 
       <div class="post-meta">
         <time itemprop="dateCreated"
-              datetime="2021-11-21T14:50:07+09:00"
-              content="2021-11-21">
-          11-21
+              datetime="2021-12-30T09:48:06+09:00"
+              content="2021-12-30">
+          12-30
         </time>
       </div>
 
       <h2 class="post-title">
-          <a class="post-title-link" href="/2021/11/21/Platform/platform-0/" itemprop="url">
-            <span itemprop="name">빅데이터 플랫폼</span>
+          <a class="post-title-link" href="/2021/12/30/Hadoop/hadoop-3/" itemprop="url">
+            <span itemprop="name">Hive 아키텍쳐</span>
           </a>
       </h2>
 
@@ -319,20 +342,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">카테고리</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">299</span>
+        <span class="site-state-item-count">309</span>
         <span class="site-state-item-name">태그</span></a>
       </div>
   </nav>
@@ -427,32 +450,6 @@
     const w = canvas.width = document.body.offsetWidth;
     const h = canvas.height = document.body.offsetHeight;
     const cols = Math.floor(w / 20) + 1;
-    const ypos = Array(cols).fill(0);
-
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, w, h);
-
-    function matrix () {
-      ctx.fillStyle = '#0001';
-      ctx.fillRect(0, 0, w, h);
-  
-      ctx.fillStyle = '#009600';
-      ctx.font = '14pt monospace';
-  
-      ypos.forEach((y, ind) => {
-        const text = String.fromCharCode(Math.random() * 512);
-        const x = ind * 20;
-        ctx.fillText(text, x, y);
-        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
-        else ypos[ind] = y + 20;
-      });
-    }
-    setInterval(matrix, 50);
-  </script>
-
-</body>
-</html>
- const cols = Math.floor(w / 20) + 1;
     const ypos = Array(cols).fill(0);
 
     ctx.fillStyle = '#000';
