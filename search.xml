@@ -5,7 +5,7 @@
     <url>/2022/06/22/Engineering/engineering-2/</url>
     <content><![CDATA[<p>데이터 웨어하우스와 데이터 레이크에 대해 공부한 내용들을 정리합니다.<br><a id="more"></a></p>
 <h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>데이터 분석에 가장 중요한 부분은 <strong>데이터</strong>이다. 하지만 일반적으로 운영 서비스에서 사용되는 데이터들은 분석에 적합한 형태가 아닌 경우가 많고 또 민감정보로 인해 분석으로 사용할 수 없는 경우도 있다. 따라서 데이터 분석을 위한 데이터 저장소가 필요하다. 그렇게 데이터 웨어하우스가 등장했고 하드웨어가 급속도로 발전하면서 데이터 레이크라는 개념도 등장했다. 이번 글에서는 두 저장소의 개념과 장단점에 대해서 정리해보고자 한다.</p>
-<h2 id="Data-Warehouse"><a href="#Data-Warehouse" class="headerlink" title="Data Warehouse"></a>Data Warehouse</h2><p>데이터 웨어하우스(Data Warehouse ,DW)는 분석에 필요한 데이터를 정제하여 적재하는 저장소이다. 운영 서비스 여기저기 흩뿌려져 있는 원천 데이터들을 분석에 필요한 카테고리 별로 정리하여 RDB 형태로 정리해둔 구조라고 보면 될 것 같다.</p>
+<h2 id="Data-Warehouse"><a href="#Data-Warehouse" class="headerlink" title="Data Warehouse"></a>Data Warehouse</h2><p>데이터 웨어하우스(Data Warehouse, DW)는 분석에 필요한 데이터를 정제하여 적재하는 저장소이다. 운영 서비스 여기저기 흩뿌려져 있는 원천 데이터들을 분석에 필요한 카테고리 별로 정리하여 RDB 형태로 정리해둔 구조라고 보면 될 것 같다.</p>
 <p><img src="/images/167.png" alt="DW"></p>
 <p>위 그림에서 알 수 있듯이 DW에 저장하기 전에 변환(Transform) 작업을 통해 데이터를 정제한다. 그 이유는 크게 데이터 품질 유지, 쿼리 속도 개선, 데이터 접근 제한 등이 있다.</p>
 <ul>
