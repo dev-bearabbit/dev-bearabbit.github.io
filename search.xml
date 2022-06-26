@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>단일 스레드 웹서버 구현 (2)</title>
-    <url>/2022/06/27/Rust/rust-12/</url>
+    <url>/2022/06/27/Rust/rust-11/</url>
     <content><![CDATA[<p>단일 스레드 웹서버를 러스트로 구현하는 과정을 정리합니다.<br><a id="more"></a></p>
 <h2 id="HTTP-요청-분석-및-검증하기"><a href="#HTTP-요청-분석-및-검증하기" class="headerlink" title="HTTP 요청 분석 및 검증하기"></a>HTTP 요청 분석 및 검증하기</h2><h2 id="요청-분석에-따른-응답-작성하기"><a href="#요청-분석에-따른-응답-작성하기" class="headerlink" title="요청 분석에 따른 응답 작성하기"></a>요청 분석에 따른 응답 작성하기</h2><h2 id="응답-보내기"><a href="#응답-보내기" class="headerlink" title="응답 보내기"></a>응답 보내기</h2>]]></content>
       <categories>
@@ -18,7 +18,7 @@
   </entry>
   <entry>
     <title>단일 스레드 웹서버 구현 (1)</title>
-    <url>/2022/06/26/Rust/rust-11/</url>
+    <url>/2022/06/26/Rust/rust-10/</url>
     <content><![CDATA[<p>단일 스레드 웹서버를 러스트로 구현하는 과정을 정리합니다.<br><a id="more"></a></p>
 <h2 id="시작하기-전에"><a href="#시작하기-전에" class="headerlink" title="시작하기 전에"></a>시작하기 전에</h2><p>본격적으로 시작하기 전에 알아야 할 개념들을 간략히 정리해보자.</p>
 <div class="table-container">
@@ -230,7 +230,7 @@
   </entry>
   <entry>
     <title>PyO3란</title>
-    <url>/2022/06/11/Rust/rust-10/</url>
+    <url>/2022/06/11/Package/pack-3/</url>
     <content><![CDATA[<p>rust를 python에서 바인딩하여 사용할 수 있도록 도와주는 PyO3에 대해서 정리합니다. 해당 글은 <a href="https://pyo3.rs/v0.16.4/index.html" target="_blank" rel="noopener">PyO3 공식문서</a>를 바탕으로 작성되었습니다.<br><a id="more"></a></p>
 <h2 id="사용목적"><a href="#사용목적" class="headerlink" title="사용목적"></a>사용목적</h2><p>현재 러스트로 작성하고 있는 프로젝트인 <a href="https://github.com/Hyeonji-Ryu/tossi_for_rust" target="_blank" rel="noopener">tossi_for_rust</a>를 파이썬에서도 사용할 수 있도록 패키지를 생성하고자 한다.</p>
 <h2 id="PyO3란"><a href="#PyO3란" class="headerlink" title="PyO3란"></a>PyO3란</h2><p>PyO3은 러스트 코드를 파이썬으로 바인딩하는 모듈이다. 해당 <a href="https://github.com/PyO3/pyo3" target="_blank" rel="noopener">깃허브</a>에 접속해보면 알겠지만 모듈 대부분이 rust로 개발되고 있으며, 자세한 내용은 <a href="https://docs.rs/pyo3/latest/pyo3/" target="_blank" rel="noopener">Rust crate 문서</a>나 <a href="https://pyo3.rs/v0.16.4/" target="_blank" rel="noopener">공식 가이드</a>에서 찾아볼 수 있다. 해당 모듈을 사용하여 Rust에서 기본 Python 모듈을 작성하거나 Python을 Rust 프로그램에서 실행할 수 있다.</p>
@@ -256,13 +256,13 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">maturin build</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Language</category>
-        <category>rust</category>
+        <category>Programming</category>
+        <category>package</category>
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>package</tag>
         <tag>rust</tag>
+        <tag>package</tag>
         <tag>library</tag>
         <tag>pyo3</tag>
         <tag>PyO3</tag>
@@ -1169,9 +1169,9 @@
         <category>rust</category>
       </categories>
       <tags>
+        <tag>python</tag>
         <tag>recursion</tag>
         <tag>recursive</tag>
-        <tag>python</tag>
         <tag>비교</tag>
         <tag>rust</tag>
         <tag>hanoi</tag>
@@ -1328,7 +1328,7 @@
   </entry>
   <entry>
     <title>robots.txt 확인</title>
-    <url>/2022/02/02/Data/kbodata-2/</url>
+    <url>/2022/02/02/Package/pack-2/</url>
     <content><![CDATA[<p>웹사이트에서 데이터를 스크래핑할 때 robots.txt를 확인해야 하는 이유에 대해서 정리합니다.</p>
 <a id="more"></a>
 <h2 id="Web-Scraping"><a href="#Web-Scraping" class="headerlink" title="Web Scraping"></a>Web Scraping</h2><p>스크래핑(scraping)은 말 그대로 다양한 매체에 있는 데이터를 모으는 행위를 의미한다. 흔히 신문이나 잡지 등을 “스크랩한다”라는 표현을 사용하는데 웹 스크래핑 또한 동일한 범주이다. 즉, 웹 스크래핑이란 웹 기반 프로그램에서 데이터들을 가져와 모으는 방법들을 통칭한다.</p>
@@ -1367,7 +1367,7 @@
 ]]></content>
       <categories>
         <category>Programming</category>
-        <category>data</category>
+        <category>package</category>
       </categories>
       <tags>
         <tag>data</tag>
@@ -1380,7 +1380,7 @@
   </entry>
   <entry>
     <title>Poetry로 패키지 관리</title>
-    <url>/2022/02/02/Data/kbodata-1/</url>
+    <url>/2022/02/02/Package/pack-1/</url>
     <content><![CDATA[<p>Python에서 Poetry로 패키지를 관리하는 방법을 정리합니다.</p>
 <a id="more"></a>
 <h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 파이썬 패키지 및 의존성을 관리해주는 도구이다.</p>
@@ -1426,19 +1426,19 @@
 ]]></content>
       <categories>
         <category>Programming</category>
-        <category>data</category>
+        <category>package</category>
       </categories>
       <tags>
         <tag>python</tag>
         <tag>package</tag>
-        <tag>pypi</tag>
-        <tag>패키지</tag>
         <tag>poetry</tag>
+        <tag>패키지</tag>
+        <tag>pypi</tag>
       </tags>
   </entry>
   <entry>
     <title>KBO-data 패키지</title>
-    <url>/2022/01/23/Data/kbodata-0/</url>
+    <url>/2022/01/23/Package/pack-0/</url>
     <content><![CDATA[<p>이 글은 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
 <a id="more"></a>
 <h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>이 프로젝트의 목표는 크게 2가지아다.</p>
@@ -1472,15 +1472,15 @@
 ]]></content>
       <categories>
         <category>Programming</category>
-        <category>data</category>
+        <category>package</category>
       </categories>
       <tags>
         <tag>KBO</tag>
         <tag>python</tag>
         <tag>data</tag>
         <tag>package</tag>
-        <tag>pypi</tag>
         <tag>패키지</tag>
+        <tag>pypi</tag>
         <tag>한국프로야구</tag>
         <tag>야구데이터</tag>
       </tags>
@@ -1539,10 +1539,10 @@
         <category>hadoop</category>
       </categories>
       <tags>
-        <tag>Hive</tag>
         <tag>빅데이터</tag>
         <tag>hadoop</tag>
         <tag>ecosystem</tag>
+        <tag>Hive</tag>
         <tag>SQL</tag>
         <tag>Tez</tag>
         <tag>mapreduce</tag>
@@ -4995,12 +4995,12 @@
         <category>web</category>
       </categories>
       <tags>
+        <tag>docker</tag>
         <tag>AWS</tag>
         <tag>DB</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
-        <tag>docker</tag>
         <tag>mariaDB</tag>
         <tag>flask</tag>
         <tag>EC2</tag>
@@ -5755,8 +5755,8 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>mariadb</tag>
         <tag>docker</tag>
+        <tag>mariadb</tag>
         <tag>sql</tag>
         <tag>database</tag>
         <tag>vi</tag>
