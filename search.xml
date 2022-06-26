@@ -261,8 +261,8 @@
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>rust</tag>
         <tag>package</tag>
+        <tag>rust</tag>
         <tag>library</tag>
         <tag>pyo3</tag>
         <tag>PyO3</tag>
@@ -989,12 +989,12 @@
         <category>database</category>
       </categories>
       <tags>
-        <tag>database</tag>
+        <tag>DB</tag>
         <tag>architecture</tag>
         <tag>sharednothing</tag>
         <tag>shareddisk</tag>
+        <tag>database</tag>
         <tag>아키텍처</tag>
-        <tag>DB</tag>
         <tag>clustering</tag>
         <tag>replication</tag>
       </tags>
@@ -1105,9 +1105,9 @@
         <category>reviews</category>
       </categories>
       <tags>
-        <tag>개발자</tag>
-        <tag>엔지니어</tag>
         <tag>회고</tag>
+        <tag>엔지니어</tag>
+        <tag>개발자</tag>
         <tag>주니어</tag>
         <tag>소프트웨어</tag>
         <tag>2년차</tag>
@@ -1282,11 +1282,11 @@
         <category>web</category>
       </categories>
       <tags>
-        <tag>flask</tag>
-        <tag>KBO</tag>
-        <tag>analysis</tag>
         <tag>aws</tag>
         <tag>lightsail</tag>
+        <tag>KBO</tag>
+        <tag>analysis</tag>
+        <tag>flask</tag>
         <tag>플라스크</tag>
         <tag>Web-server</tag>
         <tag>대시보드</tag>
@@ -1475,9 +1475,9 @@
         <category>data</category>
       </categories>
       <tags>
+        <tag>KBO</tag>
         <tag>python</tag>
         <tag>data</tag>
-        <tag>KBO</tag>
         <tag>package</tag>
         <tag>pypi</tag>
         <tag>패키지</tag>
@@ -1540,9 +1540,9 @@
       </categories>
       <tags>
         <tag>빅데이터</tag>
+        <tag>Hive</tag>
         <tag>hadoop</tag>
         <tag>ecosystem</tag>
-        <tag>Hive</tag>
         <tag>SQL</tag>
         <tag>Tez</tag>
         <tag>mapreduce</tag>
@@ -1789,12 +1789,12 @@
         <category>web</category>
       </categories>
       <tags>
+        <tag>엔지니어</tag>
+        <tag>개발자</tag>
         <tag>resume</tag>
         <tag>이력서</tag>
         <tag>커리어</tag>
         <tag>career</tag>
-        <tag>개발자</tag>
-        <tag>엔지니어</tag>
       </tags>
   </entry>
   <entry>
@@ -1988,12 +1988,12 @@
         <category>web</category>
       </categories>
       <tags>
+        <tag>엔지니어</tag>
+        <tag>개발자</tag>
         <tag>resume</tag>
         <tag>이력서</tag>
         <tag>커리어</tag>
         <tag>career</tag>
-        <tag>개발자</tag>
-        <tag>엔지니어</tag>
       </tags>
   </entry>
   <entry>
@@ -2715,12 +2715,12 @@
         <category>web</category>
       </categories>
       <tags>
+        <tag>엔지니어</tag>
+        <tag>개발자</tag>
         <tag>resume</tag>
         <tag>이력서</tag>
         <tag>커리어</tag>
         <tag>career</tag>
-        <tag>개발자</tag>
-        <tag>엔지니어</tag>
       </tags>
   </entry>
   <entry>
@@ -3048,10 +3048,10 @@
         <category>certificate</category>
       </categories>
       <tags>
-        <tag>sql</tag>
         <tag>자격증</tag>
         <tag>SQLD</tag>
         <tag>sqld</tag>
+        <tag>sql</tag>
       </tags>
   </entry>
   <entry>
@@ -3865,14 +3865,14 @@
         <category>aws</category>
       </categories>
       <tags>
+        <tag>aws</tag>
         <tag>mariadb</tag>
+        <tag>lightsail</tag>
+        <tag>ssh</tag>
         <tag>DB</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
-        <tag>aws</tag>
-        <tag>lightsail</tag>
-        <tag>ssh</tag>
       </tags>
   </entry>
   <entry>
@@ -4152,12 +4152,12 @@
       <tags>
         <tag>Algorithms</tag>
         <tag>알고리즘</tag>
-        <tag>기초</tag>
         <tag>버블정렬</tag>
         <tag>삽입정렬</tag>
         <tag>선택정렬</tag>
         <tag>정렬알고리즘</tag>
         <tag>sort</tag>
+        <tag>기초</tag>
       </tags>
   </entry>
   <entry>
@@ -4995,14 +4995,14 @@
         <category>web</category>
       </categories>
       <tags>
-        <tag>docker</tag>
         <tag>AWS</tag>
         <tag>DB</tag>
-        <tag>flask</tag>
-        <tag>mariaDB</tag>
         <tag>KBO</tag>
         <tag>analysis</tag>
         <tag>dashborad</tag>
+        <tag>docker</tag>
+        <tag>mariaDB</tag>
+        <tag>flask</tag>
         <tag>EC2</tag>
         <tag>plotly</tag>
         <tag>dash</tag>
@@ -5034,11 +5034,11 @@
         <category>hadoop</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
-        <tag>Docker</tag>
         <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
@@ -5094,11 +5094,11 @@
         <category>hadoop</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
-        <tag>Docker</tag>
         <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
@@ -5138,11 +5138,11 @@
         <category>hadoop</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
-        <tag>Docker</tag>
         <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
@@ -5222,11 +5222,11 @@
         <category>hadoop</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
-        <tag>Docker</tag>
         <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
@@ -5306,9 +5306,9 @@
         <category>sql</category>
       </categories>
       <tags>
-        <tag>database</tag>
-        <tag>sql</tag>
         <tag>DB</tag>
+        <tag>sql</tag>
+        <tag>database</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>GROUPBY</tag>
@@ -5356,9 +5356,9 @@
         <category>sql</category>
       </categories>
       <tags>
-        <tag>database</tag>
-        <tag>sql</tag>
         <tag>DB</tag>
+        <tag>sql</tag>
+        <tag>database</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>ALTER</tag>
@@ -5439,11 +5439,11 @@
         <category>hadoop</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
-        <tag>Docker</tag>
         <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
@@ -5476,11 +5476,11 @@
         <category>hadoop</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
         <tag>raspberrypi</tag>
         <tag>cluster</tag>
         <tag>하둡</tag>
         <tag>스파크</tag>
-        <tag>Docker</tag>
         <tag>빅데이터</tag>
         <tag>bigdata</tag>
       </tags>
@@ -5573,9 +5573,9 @@
         <category>sql</category>
       </categories>
       <tags>
-        <tag>database</tag>
-        <tag>sql</tag>
         <tag>DB</tag>
+        <tag>sql</tag>
+        <tag>database</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>정규화</tag>
@@ -5650,10 +5650,10 @@
         <category>sql</category>
       </categories>
       <tags>
-        <tag>database</tag>
         <tag>sql</tag>
-        <tag>mariaDB</tag>
+        <tag>database</tag>
         <tag>명령어</tag>
+        <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>WHERE</tag>
       </tags>
@@ -5699,8 +5699,8 @@
         <category>sql</category>
       </categories>
       <tags>
-        <tag>database</tag>
         <tag>sql</tag>
+        <tag>database</tag>
         <tag>mariaDB</tag>
         <tag>RDBMS</tag>
         <tag>table</tag>
@@ -5755,10 +5755,10 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>docker</tag>
         <tag>mariadb</tag>
-        <tag>database</tag>
+        <tag>docker</tag>
         <tag>sql</tag>
+        <tag>database</tag>
         <tag>vi</tag>
         <tag>vim</tag>
         <tag>도커</tag>
@@ -5800,11 +5800,11 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
         <tag>AWS</tag>
         <tag>Amazon</tag>
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
+        <tag>Docker</tag>
         <tag>image</tag>
       </tags>
   </entry>
@@ -5861,11 +5861,11 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
         <tag>AWS</tag>
         <tag>Amazon</tag>
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
+        <tag>Docker</tag>
         <tag>image</tag>
       </tags>
   </entry>
@@ -5933,11 +5933,11 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
         <tag>AWS</tag>
         <tag>Amazon</tag>
         <tag>딥러닝</tag>
         <tag>Deeplearning</tag>
+        <tag>Docker</tag>
         <tag>image</tag>
       </tags>
   </entry>
@@ -6517,10 +6517,10 @@
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>신경망</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
+        <tag>신경망</tag>
         <tag>Dropout</tag>
         <tag>드랍아웃</tag>
         <tag>MLP</tag>
@@ -6604,10 +6604,10 @@
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>신경망</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
+        <tag>신경망</tag>
         <tag>std</tag>
         <tag>Xavier</tag>
         <tag>He</tag>
@@ -6741,10 +6741,10 @@
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>신경망</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
+        <tag>신경망</tag>
         <tag>optimizer</tag>
         <tag>옵티마이저</tag>
         <tag>Adam</tag>
@@ -6835,15 +6835,15 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
+        <tag>줄리아</tag>
         <tag>신경망</tag>
         <tag>ReLU</tag>
         <tag>렐루</tag>
         <tag>시그모이드</tag>
         <tag>Sigmoid</tag>
         <tag>활성화 함수</tag>
-        <tag>줄리아</tag>
       </tags>
   </entry>
   <entry>
@@ -6927,10 +6927,10 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>신경망</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
+        <tag>신경망</tag>
         <tag>역전파</tag>
       </tags>
   </entry>
@@ -7112,10 +7112,10 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>신경망</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
+        <tag>신경망</tag>
         <tag>역전파</tag>
       </tags>
   </entry>
@@ -7816,10 +7816,10 @@ a_{12} & \mathbf{a_{22}}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>신경망</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
+        <tag>신경망</tag>
         <tag>순전파</tag>
       </tags>
   </entry>
@@ -7869,8 +7869,8 @@ a_{12} & \mathbf{a_{22}}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>가중치</tag>
         <tag>네트워크</tag>
@@ -7950,10 +7950,10 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
-        <tag>신경망</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
+        <tag>신경망</tag>
         <tag>순전파</tag>
       </tags>
   </entry>
@@ -8023,8 +8023,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>경사하강법</tag>
         <tag>미분</tag>
         <tag>편미분</tag>
@@ -8069,8 +8069,8 @@ x_1w1_{11}+x_2w1_{21}+b1_1 & x_1w1_{12}+x_2w1_{22}+b1_2
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>loss</tag>
         <tag>손실함수</tag>
@@ -8145,12 +8145,12 @@ x & \text{(x>0) $$}\\
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
+        <tag>줄리아</tag>
         <tag>ReLU</tag>
         <tag>렐루</tag>
         <tag>시그모이드</tag>
-        <tag>줄리아</tag>
         <tag>sigmoid</tag>
         <tag>softmax</tag>
         <tag>소프트맥스</tag>
@@ -8428,8 +8428,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
         <tag>벡터</tag>
         <tag>내적</tag>
@@ -8515,8 +8515,8 @@ y_3=w_{53}h_1+w_{63}h_2+b_5</script><p>이제 준비가 완료되었다. 위의 
       </categories>
       <tags>
         <tag>딥러닝</tag>
-        <tag>Deeplearning</tag>
         <tag>머신러닝</tag>
+        <tag>Deeplearning</tag>
         <tag>줄리아</tag>
       </tags>
   </entry>
@@ -9043,9 +9043,9 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
       <tags>
         <tag>Algorithms</tag>
         <tag>알고리즘</tag>
+        <tag>기초</tag>
         <tag>빅오 표기법</tag>
         <tag>피보나치</tag>
-        <tag>기초</tag>
       </tags>
   </entry>
   <entry>
