@@ -251,7 +251,7 @@
   </entry>
   <entry>
     <title>PyO3란</title>
-    <url>/2022/06/11/Package/pack-3/</url>
+    <url>/2022/06/11/Package/pack-2/</url>
     <content><![CDATA[<p>rust를 python에서 바인딩하여 사용할 수 있도록 도와주는 PyO3에 대해서 정리합니다. 해당 글은 <a href="https://pyo3.rs/v0.16.4/index.html" target="_blank" rel="noopener">PyO3 공식문서</a>를 바탕으로 작성되었습니다.<br><a id="more"></a></p>
 <h2 id="사용목적"><a href="#사용목적" class="headerlink" title="사용목적"></a>사용목적</h2><p>현재 러스트로 작성하고 있는 프로젝트인 <a href="https://github.com/Hyeonji-Ryu/tossi_for_rust" target="_blank" rel="noopener">tossi_for_rust</a>를 파이썬에서도 사용할 수 있도록 패키지를 생성하고자 한다.</p>
 <h2 id="PyO3란"><a href="#PyO3란" class="headerlink" title="PyO3란"></a>PyO3란</h2><p>PyO3은 러스트 코드를 파이썬으로 바인딩하는 모듈이다. 해당 <a href="https://github.com/PyO3/pyo3" target="_blank" rel="noopener">깃허브</a>에 접속해보면 알겠지만 모듈 대부분이 rust로 개발되고 있으며, 자세한 내용은 <a href="https://docs.rs/pyo3/latest/pyo3/" target="_blank" rel="noopener">Rust crate 문서</a>나 <a href="https://pyo3.rs/v0.16.4/" target="_blank" rel="noopener">공식 가이드</a>에서 찾아볼 수 있다. 해당 모듈을 사용하여 Rust에서 기본 Python 모듈을 작성하거나 Python을 Rust 프로그램에서 실행할 수 있다.</p>
@@ -1273,7 +1273,7 @@
   </entry>
   <entry>
     <title>Flask 웹 서버 구축하기</title>
-    <url>/2022/03/01/Web/web-4/</url>
+    <url>/2022/03/01/Web/web-5/</url>
     <content><![CDATA[<p>Flask로 웹 서버를 구축하는 과정에 대해서 정리합니다.</p>
 <a id="more"></a>
 <h3 id="Static-IP-setting"><a href="#Static-IP-setting" class="headerlink" title="Static IP setting"></a>Static IP setting</h3><p>관리의 편리함을 위해 서버가 재가동 되어도 동일한 IP를 유지하도록 설정하고자 한다. 현재 사용하고 있는 것은 AWS의 가상 서버이기에 콘솔에서 변경해보자.</p>
@@ -1349,7 +1349,7 @@
   </entry>
   <entry>
     <title>robots.txt 확인</title>
-    <url>/2022/02/02/Package/pack-2/</url>
+    <url>/2022/02/02/Web/web-4/</url>
     <content><![CDATA[<p>웹사이트에서 데이터를 스크래핑할 때 robots.txt를 확인해야 하는 이유에 대해서 정리합니다.</p>
 <a id="more"></a>
 <h2 id="Web-Scraping"><a href="#Web-Scraping" class="headerlink" title="Web Scraping"></a>Web Scraping</h2><p>스크래핑(scraping)은 말 그대로 다양한 매체에 있는 데이터를 모으는 행위를 의미한다. 흔히 신문이나 잡지 등을 “스크랩한다”라는 표현을 사용하는데 웹 스크래핑 또한 동일한 범주이다. 즉, 웹 스크래핑이란 웹 기반 프로그램에서 데이터들을 가져와 모으는 방법들을 통칭한다.</p>
@@ -1388,7 +1388,7 @@
 ]]></content>
       <categories>
         <category>Programming</category>
-        <category>package</category>
+        <category>web</category>
       </categories>
       <tags>
         <tag>data</tag>
