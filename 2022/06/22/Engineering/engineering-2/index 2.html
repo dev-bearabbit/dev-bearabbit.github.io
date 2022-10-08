@@ -57,11 +57,11 @@
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/168.png">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/169.png">
 <meta property="article:published_time" content="2022-06-22T13:47:54.000Z">
-<meta property="article:modified_time" content="2022-06-22T17:49:56.224Z">
+<meta property="article:modified_time" content="2022-06-28T15:55:59.000Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="data">
 <meta property="article:tag" content="데이터웨어하우스">
 <meta property="article:tag" content="데이터레이크">
+<meta property="article:tag" content="data">
 <meta property="article:tag" content="warehouse">
 <meta property="article:tag" content="lake">
 <meta name="twitter:card" content="summary">
@@ -293,8 +293,8 @@
 <p>데이터 웨어하우스는 데이터 관리가 편하고 사용자 또한 비교적 쉽게 이해한다는 장점이 있지만 이를 유지하기 위해서는 복잡한 ETL 파이프라인을 구축하고 유지보수 해야 한다. 또한 데이터 레이크에 비해 데이터 적재 작업에 하드웨어 리소스가 많이 사용되고 시간도 오래걸린다.</p>
 <h2 id="Data-Lake"><a href="#Data-Lake" class="headerlink" title="Data Lake"></a>Data Lake</h2><p>데이터 레이크(Data Lake, DL)는 운영 서비스에서 생성되는 원천 데이터를 정제 없이 저장하여 보관하는 방식의 저장소이다. 즉, 데이터 웨어하우스처럼 복잡한 변환(Transform)없이 바로 저장하는 구조이다.</p>
 <p><img src="/images/168.png" alt="DL"></p>
-<p>위 그림처럼 원천에서 그대로 가져와서 저장되기에 수집이 간단하고 리소스 매니징만 제대로 이루어지면 적재에는 문제가 없다는 장점이 있다. 또한 데이터 변환을 사용자가 진행하기에 테이블 스키마나 비즈니스 로직이 자주 변경되는 환경에서는 사용하기에 용이하다.</p>
-<p>하지만 DW에 비해 많은 양의 데이터가 저장되고 무슨 데이터인지 한번에 파악하기도 어렵다는 단점도 있다. 적재되는 데이터 타입이 다양하기에 데이터 관리도 어렵고 아무도 쓰지 않는 정크 데이터가 하드웨어 리소스만 차지하고 있는 경우도 존재하기 쉽다. 따라서 데이터 레이크를 보다 효율적으로 잘 운영하기 위해서는 데이터 거버넌스 툴을 통해 메타데이터를 잘 관리해야 한다.</p>
+<p>위 그림처럼 원천에서 그대로 가져와서 저장되기에 수집이 간단하고 리소스 매니징만 제대로 이루어지면 적재에는 문제가 없다는 장점이 있다. 또한 데이터 변환을 사용자가 진행하기에 테이블 스키마나 비즈니스 로직이 자주 변경되는 환경에서는 사용하기 용이하다.</p>
+<p>하지만 DW에 비해 많은 양의 데이터가 저장되고 무슨 데이터인지 한번에 파악하기도 어렵다는 단점이 있다. 적재되는 데이터 타입이 다양하기에 데이터 관리도 어렵고 아무도 쓰지 않는 정크 데이터가 하드웨어 리소스만 차지하고 있는 경우도 존재하기 쉽다. 따라서 데이터 레이크를 보다 효율적으로 잘 운영하기 위해서는 데이터 거버넌스 툴을 통해 메타데이터를 잘 관리해야 한다.</p>
 <p>데이터 레이크는 사용자에게 많은 자유도를 제공함으로써 다양한 분석 및 머신러닝 설계가 가능하지만 그만큼 데이터 처리가 사용자의 역할로 넘어가기에 DW보다는 더 많은 개발 실력이 요구된다.</p>
 <h2 id="비교"><a href="#비교" class="headerlink" title="비교"></a>비교</h2><p>뭐든 장점이 있다면 단점도 있다. 표로 정리해보자.</p>
 <div class="table-container">
@@ -347,9 +347,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/data/" rel="tag"># data</a>
               <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%9B%A8%EC%96%B4%ED%95%98%EC%9A%B0%EC%8A%A4/" rel="tag"># 데이터웨어하우스</a>
               <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A0%88%EC%9D%B4%ED%81%AC/" rel="tag"># 데이터레이크</a>
+              <a href="/tags/data/" rel="tag"># data</a>
               <a href="/tags/warehouse/" rel="tag"># warehouse</a>
               <a href="/tags/lake/" rel="tag"># lake</a>
           </div>
@@ -360,11 +360,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/06/11/Rust/rust-10/" rel="prev" title="PyO3란">
+    <a href="/2022/06/11/Package/pack-3/" rel="prev" title="PyO3란">
       <i class="fa fa-chevron-left"></i> PyO3란
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/06/24/Hadoop/hadoop-4/" rel="next" title="Hue 설치 in Docker">
+    <a href="/2022/06/24/Hadoop/hadoop-10/" rel="next" title="Hue 설치 in Docker">
       Hue 설치 in Docker <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -442,14 +442,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">카테고리</span></a>
       </div>
       <div class="site-state-item site-state-tags">
