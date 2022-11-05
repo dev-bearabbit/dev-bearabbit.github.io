@@ -54,7 +54,7 @@
 <meta property="og:description" content="프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2022-04-07T13:54:18.000Z">
-<meta property="article:modified_time" content="2022-06-03T15:53:53.000Z">
+<meta property="article:modified_time" content="2022-11-02T05:47:36.061Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="sql">
 <meta property="article:tag" content="programmers">
@@ -278,7 +278,7 @@
         <p>프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.<br><a id="more"></a></p>
 <hr>
 <p>해당 문제는 프로그래머스에 가입이 되어 있다면 <a href="https://programmers.co.kr/learn/courses/30/lessons/59413" target="_blank" rel="noopener">이 페이지</a>에서 직접 풀어볼 수 있다.</p>
-<h2 id="문제-정보"><a href="#문제-정보" class="headerlink" title="문제 정보"></a>문제 정보</h2><p>ANIMAL_OUTS 테이블은 동물 보호소에서 입양 보낸 동물의 정보를 담은 테이블입니다. ANIMAL_OUTS 테이블 구조는 다음과 같으며, ANIMAL_ID, ANIMAL_TYPE, DATETIME, NAME, SEX_UPON_OUTCOME는 각각 동물의 아이디, 생물 종, 입양일, 이름, 성별 및 중성화 여부를 나타냅니다.</p>
+<h2 id="문제-정보"><a href="#문제-정보" class="headerlink" title="문제 정보"></a>문제 정보</h2><p>ANIMAL_OUTS 테이블은 동물 보호소에서 입양 보낸 동물의 정보를 담은 테이블이다. ANIMAL_OUTS 테이블 구조는 다음과 같으며, ANIMAL_ID, ANIMAL_TYPE, DATETIME, NAME, SEX_UPON_OUTCOME는 각각 동물의 아이디, 생물 종, 입양일, 이름, 성별 및 중성화 여부를 나타낸다.</p>
 <div class="table-container">
 <table>
 <thead>
@@ -317,7 +317,7 @@
 </tbody>
 </table>
 </div>
-<p>보호소에서는 몇 시에 입양이 가장 활발하게 일어나는지 알아보려 합니다. 0시부터 23시까지, 각 시간대별로 입양이 몇 건이나 발생했는지 조회하는 SQL문을 작성해주세요. 이때 결과는 시간대 순으로 정렬해야 합니다.</p>
+<p>보호소에서는 몇 시에 입양이 가장 활발하게 일어나는지 알아보려 한다. 0시부터 23시까지, 각 시간대별로 입양이 몇 건이나 발생했는지 조회하는 SQL문을 작성해라. 이때 결과는 시간대 순으로 정렬해야 한다.</p>
 <h2 id="정답-코드"><a href="#정답-코드" class="headerlink" title="정답 코드"></a>정답 코드</h2><p>먼저 정답은 아래와 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    T.HOUR,</span><br><span class="line">    <span class="keyword">IFNULL</span>(D.COUNTS,</span><br><span class="line">    <span class="number">0</span>) <span class="keyword">AS</span> <span class="keyword">COUNT</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    (<span class="keyword">SELECT</span></span><br><span class="line">        @N:=@N <span class="number">1</span> <span class="keyword">AS</span> <span class="keyword">HOUR</span> </span><br><span class="line">    <span class="keyword">FROM</span></span><br><span class="line">        ANIMAL_OUTS,</span><br><span class="line">        (<span class="keyword">SELECT</span></span><br><span class="line">            @N:=<span class="number">-1</span> </span><br><span class="line">        <span class="keyword">FROM</span></span><br><span class="line">            DUAL) NN <span class="keyword">LIMIT</span> <span class="number">24</span>) <span class="keyword">AS</span> T</span><br><span class="line">    <span class="keyword">LEFT</span> <span class="keyword">JOIN</span></span><br><span class="line">        (</span><br><span class="line">            <span class="keyword">SELECT</span></span><br><span class="line">                <span class="keyword">HOUR</span>(DATETIME) <span class="keyword">AS</span> <span class="keyword">HOUR</span>,</span><br><span class="line">                <span class="keyword">COUNT</span>(ANIMAL_ID) <span class="keyword">AS</span> COUNTS</span><br><span class="line">            <span class="keyword">FROM</span></span><br><span class="line">                ANIMAL_OUTS </span><br><span class="line">            <span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br><span class="line">                <span class="keyword">HOUR</span> </span><br><span class="line">            <span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">                <span class="keyword">HOUR</span></span><br><span class="line">        ) <span class="keyword">AS</span> D     </span><br><span class="line">            <span class="keyword">ON</span> T.HOUR =  D.HOUR</span><br></pre></td></tr></table></figure>
 <h2 id="문제-해설"><a href="#문제-해설" class="headerlink" title="문제 해설"></a>문제 해설</h2><p>일단 문제를 크게 3개로 나눠서 생각했다.</p>
