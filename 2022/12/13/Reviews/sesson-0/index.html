@@ -54,7 +54,7 @@
 <meta property="og:description" content="해당 글은 2022년 카카오에서 진행한 기술세션을 보고 알게된 정보나 개인적으로 느꼈던 점들을 정리한 글입니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2022-12-13T04:47:36.000Z">
-<meta property="article:modified_time" content="2022-12-16T01:43:37.840Z">
+<meta property="article:modified_time" content="2022-12-16T02:21:38.368Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="개발자">
@@ -291,7 +291,7 @@
 <li>Feature Store: 오프라인 스토어(훈련할 Feature 데이터 보관)와 온라인 스토어(실제 예측모델에서 사용하는 Feature 보관)</li>
 <li>Feature Store 후보군: Feast, SageMaker Feature Store -&gt; PoC 후 Feast 선택</li>
 <li>메타 관리나 트러블 슈팅 등의 편의성을 비교한 결과 Feast를 선택하였으며, 물리 스토리지로는 오프라인 스토어로 S3 + Athena, 온라인 스토어로 redis를 선택하였다.</li>
-<li>모델 서빙 아키텍처: 모델 프록시(Spring MVC)) + 모델 인터페이스(ONNX, FastAPI)</li>
+<li>모델 서빙 아키텍처: 모델 프록시(Spring MVC) + 모델 인터페이스(ONNX, FastAPI)</li>
 </ul>
 <h2 id="Sequential-Recommendation-System-카카오-서비스-적용기"><a href="#Sequential-Recommendation-System-카카오-서비스-적용기" class="headerlink" title="Sequential Recommendation System 카카오 서비스 적용기"></a>Sequential Recommendation System 카카오 서비스 적용기</h2><ul>
 <li>시퀀스 추천 모델은 웹툰과 같이 아이템 업데이트와 소비가 시간/요일에 dependency를 가지는 경우 적합하다.</li>
