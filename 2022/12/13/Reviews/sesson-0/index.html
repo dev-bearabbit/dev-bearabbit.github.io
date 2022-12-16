@@ -54,7 +54,7 @@
 <meta property="og:description" content="해당 글은 2022년 카카오에서 진행한 기술세션을 보고 알게된 정보나 개인적으로 느꼈던 점들을 정리한 글입니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2022-12-13T04:47:36.000Z">
-<meta property="article:modified_time" content="2022-12-16T02:27:37.327Z">
+<meta property="article:modified_time" content="2022-12-16T02:55:38.079Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="개발자">
@@ -282,22 +282,10 @@
 <hr>
 <h2 id="카카오페이-MLOps-적용기-feat-AWS"><a href="#카카오페이-MLOps-적용기-feat-AWS" class="headerlink" title="카카오페이 MLOps 적용기 (feat. AWS)"></a>카카오페이 MLOps 적용기 (feat. AWS)</h2><p>나 또한 회사에서 MLOps 플랫폼 개발 프로젝트에 함여할 예정이라서 집중해서 들었다. 나중에 참고해야 할 수 있으니 여기에 <a href="https://if.kakao.com/2022/session/67" target="_blank" rel="noopener">세션 링크</a>를 남겨두자.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- 카카오페이에는 개인신용평가, 이상거래탐지, 유저프로파일 등을 위한 모델이 운영되고 있다.</span><br><span class="line">- &#96;Feature 데이터&#96; -&gt; &#96;ML 모델&#96; -&gt; &#96;모델 서빙&#96; 구조는 모델 업데이트가 필요할 때마다 파이프라인을 다시 구축해야 하며 생산성이 저하된다.</span><br><span class="line">- 표준화된 MLOps 컴포넌트 정의(모델 학습 파이프라인, Feature Store, 모델 서빙) 후 인프라 구축을 진행하였다.</span><br><span class="line">- AWS Step Function은 SageMaker와 연동하여 모델학습 파이프라인을 쉽게 구축할 수 있다.</span><br><span class="line">- 모델 관리 서비스는 MLflow와 SageMaker Model Registry 중 비교 후 운영난이도가 낮은 Model Registry 선택하였다.</span><br><span class="line">- 학습 파이프라인: 개발 -&gt; S3 -&gt; Lambda -&gt; Step Function -&gt; Model Registry -&gt; 승인 후 모델 배포</span><br><span class="line">- Feature Store: 오프라인 스토어(훈련할 Feature 데이터 보관)와 온라인 스토어(실제 예측모델에서 사용하는 Feature 보관)</span><br><span class="line">- Feature Store 후보군: Feast, SageMaker Feature Store -&gt; PoC 후 Feast 선택</span><br><span class="line">- 메타 관리나 트러블 슈팅 등의 편의성을 비교한 결과 Feast를 선택하였으며, 물리 스토리지로는 오프라인 스토어로 S3 + Athena, 온라인 스토어로 redis를 선택하였다.</span><br><span class="line">- 모델 서빙 아키텍처: 모델 프록시(Spring MVC) + 모델 인터페이스(ONNX, FastAPI)</span><br></pre></td></tr></table></figure>
-<h2 id="카카오뱅크-MLOps"><a href="#카카오뱅크-MLOps" class="headerlink" title="카카오뱅크 MLOps"></a>카카오뱅크 MLOps</h2><h2 id="Sequential-Recommendation-System-카카오-서비스-적용기"><a href="#Sequential-Recommendation-System-카카오-서비스-적용기" class="headerlink" title="Sequential Recommendation System 카카오 서비스 적용기"></a>Sequential Recommendation System 카카오 서비스 적용기</h2><ul>
-<li>시퀀스 추천 모델은 웹툰과 같이 아이템 업데이트와 소비가 시간/요일에 dependency를 가지는 경우 적합하다.</li>
-<li>세션에서 소개된 모델은 BERT4Rec과 SMLP(Sequence-Aware MLP)이며, BERT4Rec에 비해 SMLP가 가볍다.</li>
-<li>추천 모델은 AB 테스트를 통해 CTR(클릭률, Click-Through Rate)과 CVR(전환율, Conversion Rate) 지표를 확인하여 실험하였다.</li>
-<li>개인화 추천은 Diversity와 Cold start 이슈가 존재한다.</li>
-<li>Diversity는 이미 소비한 아이템을 다시 추천하게 되는 경우이며, Cold start는 새로 진입한 아이템의 경우 추천에서 제외되는 경우를 의미한다.</li>
-</ul>
+<h2 id="카카오뱅크-MLOps"><a href="#카카오뱅크-MLOps" class="headerlink" title="카카오뱅크 MLOps"></a>카카오뱅크 MLOps</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-</span><br></pre></td></tr></table></figure>
+<h2 id="Sequential-Recommendation-System-카카오-서비스-적용기"><a href="#Sequential-Recommendation-System-카카오-서비스-적용기" class="headerlink" title="Sequential Recommendation System 카카오 서비스 적용기"></a>Sequential Recommendation System 카카오 서비스 적용기</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- 시퀀스 추천 모델은 웹툰과 같이 아이템 업데이트와 소비가 시간&#x2F;요일에 dependency를 가지는 경우 적합하다.</span><br><span class="line">- 세션에서 소개된 모델은 BERT4Rec과 SMLP(Sequence-Aware MLP)이며, BERT4Rec에 비해 SMLP가 가볍다.</span><br><span class="line">- 추천 모델은 AB 테스트를 통해 CTR(클릭률, Click-Through Rate)과 CVR(전환율, Conversion Rate) 지표를 확인하여 실험하였다.</span><br><span class="line">- 개인화 추천은 Diversity와 Cold start 이슈가 존재한다.</span><br><span class="line">- Diversity는 이미 소비한 아이템을 다시 추천하게 되는 경우이며, Cold start는 새로 진입한 아이템의 경우 추천에서 제외되는 경우를 의미한다.</span><br></pre></td></tr></table></figure>
 <h2 id="AI로-난치병을-치료할-수-있을까요"><a href="#AI로-난치병을-치료할-수-있을까요" class="headerlink" title="AI로 난치병을 치료할 수 있을까요?"></a>AI로 난치병을 치료할 수 있을까요?</h2><p>흥미로운 주제라서 지나칠 수 없었다. 신약 개발할 때 전임상이나 임상 시 동물실험 대신 AI 시뮬레이터로 시험을 하는 시대가 왔으면 좋겠다고 생각했던 적이 있었기 때문이다. 세션에서 얻은 정보를 몇가지 적어두자. </p>
-<ul>
-<li>PubChem은 저분자화합물 데이터베이스이며 대략 1억개 데이터를 보관하고 있고, Protein Data Bank는 20만개의 단백질 구조 정보를 가지고 있다.</li>
-<li>인실리코는 계산화학 또는 계산생물학 방법론을 바탕으로 분석하는 도구이며 이를 통해 많은 신약 개발이 이루어지고 있다.</li>
-<li>알파폴드2 모델이 등장하여 정확도 평균 92%를 달성하였다. 이는 사람 정확도 90%보다 높다.</li>
-<li>구글과 딥마인드가 알파폴드2를 바탕으로 Isomorphic Labs라는 회사를 만들었다.</li>
-<li>딥마인드는 알파폴드2를 통해 얻은 2억개의 단백질 구조 데이터를 공개하였다.</li>
-<li>신약 개발 업계에서도 Large-scale AI가 많이 사용되고 있으며, 매우 강력한 도구 중 하나이다.</li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- PubChem은 저분자화합물 데이터베이스이며 대략 1억개 데이터를 보관하고 있고, Protein Data Bank는 20만개의 단백질 구조 정보를 가지고 있다.</span><br><span class="line">- 인실리코는 계산화학 또는 계산생물학 방법론을 바탕으로 분석하는 도구이며 이를 통해 많은 신약 개발이 이루어지고 있다.</span><br><span class="line">- 알파폴드2 모델이 등장하여 정확도 평균 92%를 달성하였다. 이는 사람 정확도 90%보다 높다.</span><br><span class="line">- 구글과 딥마인드가 알파폴드2를 바탕으로 Isomorphic Labs라는 회사를 만들었다.</span><br><span class="line">- 딥마인드는 알파폴드2를 통해 얻은 2억개의 단백질 구조 데이터를 공개하였다.</span><br><span class="line">- 신약 개발 업계에서도 Large-scale AI가 많이 사용되고 있으며, 매우 강력한 도구 중 하나이다.</span><br></pre></td></tr></table></figure>
 
     </div>
 
