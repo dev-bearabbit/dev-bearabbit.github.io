@@ -5,7 +5,7 @@
     <url>/2022/12/13/Reviews/sesson-0/</url>
     <content><![CDATA[<p>해당 글은 2022년 카카오에서 진행한 기술세션을 보고 알게된 정보나 개인적으로 느꼈던 점들을 정리한 글입니다.<br><a id="more"></a></p>
 <hr>
-<h2 id="Topic-카카오페이-MLOps-적용기-feat-AWS"><a href="#Topic-카카오페이-MLOps-적용기-feat-AWS" class="headerlink" title="Topic: 카카오페이 MLOps 적용기 (feat. AWS)"></a>Topic: 카카오페이 MLOps 적용기 (feat. AWS)</h2><p>나 또한 회사에서 MLOps 플랫폼 개발 프로젝트에 함여할 예정이라서 집중해서 들었다. 나중에 참고해야 할 수 있으니 여기에 <a href="https://if.kakao.com/2022/session/67" target="_blank" rel="noopener">세션 링크</a>를 남겨두자.</p>
+<h2 id="카카오페이-MLOps-적용기-feat-AWS"><a href="#카카오페이-MLOps-적용기-feat-AWS" class="headerlink" title="카카오페이 MLOps 적용기 (feat. AWS)"></a>카카오페이 MLOps 적용기 (feat. AWS)</h2><p>나 또한 회사에서 MLOps 플랫폼 개발 프로젝트에 함여할 예정이라서 집중해서 들었다. 나중에 참고해야 할 수 있으니 여기에 <a href="https://if.kakao.com/2022/session/67" target="_blank" rel="noopener">세션 링크</a>를 남겨두자.</p>
 <ul>
 <li>카카오페이에는 개인신용평가, 이상거래탐지, 유저프로파일 등을 위한 모델이 운영되고 있다.</li>
 <li><code>Feature 데이터</code> -&gt; <code>ML 모델</code> -&gt; <code>모델 서빙</code> 구조는 모델 업데이트가 필요할 때마다 파이프라인을 다시 구축해야 하며 생산성이 저하된다.</li>
@@ -18,14 +18,14 @@
 <li>메타 관리나 트러블 슈팅 등의 편의성을 비교한 결과 Feast를 선택하였으며, 물리 스토리지로는 오프라인 스토어로 S3 + Athena, 온라인 스토어로 redis를 선택하였다.</li>
 <li>모델 서빙 아키텍처: 모델 프록시(Spring MVC)) + 모델 인터페이스(ONNX, FastAPI)</li>
 </ul>
-<h2 id="Topic-Sequential-Recommendation-System-카카오-서비스-적용기"><a href="#Topic-Sequential-Recommendation-System-카카오-서비스-적용기" class="headerlink" title="Topic: Sequential Recommendation System 카카오 서비스 적용기"></a>Topic: Sequential Recommendation System 카카오 서비스 적용기</h2><ul>
+<h2 id="Sequential-Recommendation-System-카카오-서비스-적용기"><a href="#Sequential-Recommendation-System-카카오-서비스-적용기" class="headerlink" title="Sequential Recommendation System 카카오 서비스 적용기"></a>Sequential Recommendation System 카카오 서비스 적용기</h2><ul>
 <li>시퀀스 추천 모델은 웹툰과 같이 아이템 업데이트와 소비가 시간/요일에 dependency를 가지는 경우 적합하다.</li>
 <li>세션에서 소개된 모델은 BERT4Rec과 SMLP(Sequence-Aware MLP)이며, BERT4Rec에 비해 SMLP가 가볍다.</li>
 <li>추천 모델은 AB 테스트를 통해 CTR(클릭률, Click-Through Rate)과 CVR(전환율, Conversion Rate) 지표를 확인하여 실험하였다.</li>
 <li>개인화 추천은 Diversity와 Cold start 이슈가 존재한다.</li>
 <li>Diversity는 이미 소비한 아이템을 다시 추천하게 되는 경우이며, Cold start는 새로 진입한 아이템의 경우 추천에서 제외되는 경우를 의미한다.</li>
 </ul>
-<h2 id="Topic-AI로-난치병을-치료할-수-있을까요"><a href="#Topic-AI로-난치병을-치료할-수-있을까요" class="headerlink" title="Topic: AI로 난치병을 치료할 수 있을까요?"></a>Topic: AI로 난치병을 치료할 수 있을까요?</h2><p>흥미로운 주제라서 지나칠 수 없었다. 신약 개발할 때 전임상이나 임상 시 동물실험 대신 AI 시뮬레이터로 시험을 하는 시대가 왔으면 좋겠다고 생각했던 적이 있었기 때문이다. 세션에서 얻은 정보를 몇가지 적어두자. </p>
+<h2 id="AI로-난치병을-치료할-수-있을까요"><a href="#AI로-난치병을-치료할-수-있을까요" class="headerlink" title="AI로 난치병을 치료할 수 있을까요?"></a>AI로 난치병을 치료할 수 있을까요?</h2><p>흥미로운 주제라서 지나칠 수 없었다. 신약 개발할 때 전임상이나 임상 시 동물실험 대신 AI 시뮬레이터로 시험을 하는 시대가 왔으면 좋겠다고 생각했던 적이 있었기 때문이다. 세션에서 얻은 정보를 몇가지 적어두자. </p>
 <ul>
 <li>PubChem은 저분자화합물 데이터베이스이며 대략 1억개 데이터를 보관하고 있고, Protein Data Bank는 20만개의 단백질 구조 정보를 가지고 있다.</li>
 <li>인실리코는 계산화학 또는 계산생물학 방법론을 바탕으로 분석하는 도구이며 이를 통해 많은 신약 개발이 이루어지고 있다.</li>
