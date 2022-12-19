@@ -54,7 +54,7 @@
 <meta property="og:description" content="mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2020-10-09T22:20:09.000Z">
-<meta property="article:modified_time" content="2022-06-03T15:52:33.000Z">
+<meta property="article:modified_time" content="2022-12-19T18:25:12.411Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="mariaDB">
 <meta property="article:tag" content="sql">
@@ -297,7 +297,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">'테이블 이름'</span> <span class="keyword">VALUES</span> (<span class="string">'값1'</span>, <span class="string">'값2'</span>);</span><br></pre></td></tr></table></figure>
 <p>워 코드는 해당 테이블의 모든 열에 대한 데이터를 순서에 맞게 추가할 때 사용할 수 있다. 특정 데이터를 추가하거나 순서를 변경하기 위해서는 카테고리 이름을 같이 입력해주어야 한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 순서 변경</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">'테이블 이름'</span>  (<span class="string">'카테고리 2'</span>, <span class="string">'카테고리 1'</span>) <span class="keyword">VALUES</span> (<span class="string">'값2'</span>, <span class="string">'값1'</span>);</span><br><span class="line"><span class="comment"># 특정 카테고리만 데이터 추가</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">'테이블 이름'</span>  (<span class="string">'카테고리 1'</span>) <span class="keyword">VALUES</span> (<span class="string">'값1'</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>WARNING</strong><br>값에 작은따옴표(‘)가 있는 경우<br>작은 따옴표는 SQL에서 문법으로 사용되기 떄문에 값 안에 포함된 작은 따옴표와 구분해야 한다. 따라서 값 내부의 작은따옴표는 개행문자를 사용하여 표현한다. 예시는 다음과 같다.</p>
+<p><strong>WARNING</strong><br>값에 작은따옴표(‘)가 있는 경우<br>작은 따옴표는 SQL에서 문법으로 사용되기 때문에 값 안에 포함된 작은 따옴표와 구분해야 한다. 따라서 값 내부의 작은따옴표는 개행문자를 사용하여 표현한다. 예시는 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">'테이블 이름'</span></span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">(<span class="string">'Indian\'</span>s Summer<span class="string">' , '</span>cherry juice<span class="string">', 2, '</span>pineapple juice<span class="string">', 7, '</span>serve <span class="keyword">over</span> ice <span class="keyword">with</span> straw<span class="string">');</span></span><br></pre></td></tr></table></figure>
 <h2 id="테이블-데이터-확인"><a href="#테이블-데이터-확인" class="headerlink" title="테이블 데이터 확인"></a>테이블 데이터 확인</h2><p>테이블에 데이터가 추가되었는지 확인하고 싶다면 아래의 코드를 사용하면 된다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">'테이블 이름'</span>;</span><br></pre></td></tr></table></figure>

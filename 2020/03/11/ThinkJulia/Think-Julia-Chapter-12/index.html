@@ -54,7 +54,7 @@
 <meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Tuples를 한글로 요약 정리한 글입니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2020-03-10T16:31:08.000Z">
-<meta property="article:modified_time" content="2022-06-03T15:51:27.000Z">
+<meta property="article:modified_time" content="2022-12-19T18:23:58.806Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="줄리아">
 <meta property="article:tag" content="Julia">
@@ -303,7 +303,7 @@
 <p>튜플은 변하지 않기 때문에 요소들을 수정할 수 없다.</p>
 <p>관계 연산자들도 튜플이나 기타 시퀀스에서 작동한다. 줄리아는 각 시퀀스에서 첫 번째 요소를 비교하며 시작한다. 동일하면 다음 요소로 진행되며 다른 요소를 찾을 때까지 계속한다. 서브시퀀스는 고려되지 않는다. (실제로 큰 경우에도)</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">julia&gt; (<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>) &lt; (<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="literal">true</span></span><br><span class="line">julia&gt; (<span class="number">0</span>, <span class="number">1</span>, <span class="number">2000000</span>) &lt; (<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<p>첫 번째 예시에서는 뒤의 튜플의 모든 요소가 앞의 튜플의 요소보다 모두 크기 떄문에 <code>true</code>를 반환했다. 두 번째 예시는 세 번째 요소가 뒤의 튜플보다 앞의 튜플이 더 크지만 앞의 두 개의 요소가 모두 뒤의 튜플이 더 크기 때문에  <code>true</code>를 반환했다. 즉, 하나라도 큰 요소가 있다면 <code>true</code>이고 아니라면 <code>false</code>를 반환한다.</p>
+<p>첫 번째 예시에서는 뒤의 튜플의 모든 요소가 앞의 튜플의 요소보다 모두 크기 때문에 <code>true</code>를 반환했다. 두 번째 예시는 세 번째 요소가 뒤의 튜플보다 앞의 튜플이 더 크지만 앞의 두 개의 요소가 모두 뒤의 튜플이 더 크기 때문에  <code>true</code>를 반환했다. 즉, 하나라도 큰 요소가 있다면 <code>true</code>이고 아니라면 <code>false</code>를 반환한다.</p>
 <h3 id="튜플-할당"><a href="#튜플-할당" class="headerlink" title="튜플 할당"></a>튜플 할당</h3><p>이것은 두 변수의 값을 바꿀 때 유용하다. 기존 할당에서는 임시 변수를 사용해야 한다. 예를 들어 <code>a</code>와 <code>b</code>를 바꾸려고 한다면, 아래와 같이 중간에 임시 변수가 필요하다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">temp = a</span><br><span class="line">a = b</span><br><span class="line">b = temp</span><br></pre></td></tr></table></figure>
 <p>위의 방식은 번거롭다. 튜플은 훨씬 간단한 방법으로 변경한다.</p>

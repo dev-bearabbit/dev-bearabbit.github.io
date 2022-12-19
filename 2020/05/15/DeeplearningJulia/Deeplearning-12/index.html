@@ -59,7 +59,7 @@
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/59.png">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/60.png">
 <meta property="article:published_time" content="2020-05-14T20:11:51.000Z">
-<meta property="article:modified_time" content="2022-06-03T16:44:50.000Z">
+<meta property="article:modified_time" content="2022-12-19T18:23:30.456Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="머신러닝">
@@ -337,7 +337,7 @@
 <p>위 그래프는 sigmoid 기반 4층 신경망의 정확도를 각 가중치 초기값 별로 나타낸 것이다. 확실히 <code>std</code> 초기값을 사용한 것보다 <code>Xavier</code>, <code>He</code>초기값을 사용하여 학습한 것이 더 높은 정확도를 도출한다.</p>
 <p><img src="/images/62.png" alt="시그모이드 손실함수"></p>
 <p>손실함수를 비교해보면 차이가 더 명확히 보인다. 또한 <code>Xavier</code>, <code>He</code>초기값은 비슷한 결과를 도출한다. 시그모이드와 같은 S자 함수에서는 <code>Xavier</code>와 <code>He</code> 둘다 어느정도 효율을 높여주는 것 같다.</p>
-<p>그 다음으로 살펴볼 것은 활성화 함수로 ReLU를 사용한 학습 결과이다. ReLU는 특이한 형태의 비선형 함수이기 떄문에 치우침 현상을 막기 위해서는 <code>He</code> 초기값이 더 좋다.</p>
+<p>그 다음으로 살펴볼 것은 활성화 함수로 ReLU를 사용한 학습 결과이다. ReLU는 특이한 형태의 비선형 함수이기 때문에 치우침 현상을 막기 위해서는 <code>He</code> 초기값이 더 좋다.</p>
 <p><img src="/images/59.png" alt="ReLU 정확도"></p>
 <p>위 그래프는 ReLU 기반 4층 신경망의 정확도를 보여준다. 확실히 <code>std</code>초기값보다 다른 두 개의 초기값이 더 높은 정확도를 도출한다.</p>
 <p><img src="/images/60.png" alt="ReLU 손실함수"></p>

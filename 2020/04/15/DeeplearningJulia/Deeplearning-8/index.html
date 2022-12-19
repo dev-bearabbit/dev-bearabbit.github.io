@@ -57,7 +57,7 @@
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/44.png">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/51.png">
 <meta property="article:published_time" content="2020-04-15T13:56:01.000Z">
-<meta property="article:modified_time" content="2022-06-03T16:44:50.000Z">
+<meta property="article:modified_time" content="2022-12-19T18:23:23.835Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="머신러닝">
@@ -319,7 +319,7 @@ Z2=A1W2+B2\\
 \end{matrix}</script><p>위의 공식을 비교해보면 각각 매개 변수에 동일하게 적용되는 미분이 있을 것이다. 이를 알고리즘으로 구현하여 좀 더 빠르게 미분값을 구할 수 있도록 고안한 것이 역전파 알고리즘이다.</p>
 <h2 id="역전파-알고리즘-미분-과정"><a href="#역전파-알고리즘-미분-과정" class="headerlink" title="역전파 알고리즘 미분 과정"></a>역전파 알고리즘 미분 과정</h2><p><img src="\../images/51.png" alt="역전파 알고리즘"></p>
 <p>2층 신경망 역전파 알고리즘은 위와 같은 구조로 이루어져 있다. 우리는 위의 역전파 알고리즘에서 각 층을 함수로 구현할 것이다. 참고로 아래의 수식에서 사용되는 대문자는 행렬이며, 소문자는 스칼라이다. 특히 $Z_n$과 같은 기호는 행렬 $Z$의 $n$(인덱스)위치에 속해있는 요소를 가리킨다.</p>
-<h3 id="Softmax-with-Loss-Layer"><a href="#Softmax-with-Loss-Layer" class="headerlink" title="Softmax with Loss Layer"></a>Softmax with Loss Layer</h3><p>역전파 알고리즘에서는 출력층에서 사용되는 소프트맥스 함수와 손실 함수인 교차 엔트로피 오차 수식을 같이 미분한다. 그 이유는 두 함수를 동시에 미분한 결과가 훨씬 간단하기 떄문이다. 역전파의 미분은 손실 함수인 교차 엔트로피 오차 수식 미분을 먼저 진행하고 그다음 소프트맥스 함수를 미분하여 결과를 도출할 것이다.</p>
+<h3 id="Softmax-with-Loss-Layer"><a href="#Softmax-with-Loss-Layer" class="headerlink" title="Softmax with Loss Layer"></a>Softmax with Loss Layer</h3><p>역전파 알고리즘에서는 출력층에서 사용되는 소프트맥스 함수와 손실 함수인 교차 엔트로피 오차 수식을 같이 미분한다. 그 이유는 두 함수를 동시에 미분한 결과가 훨씬 간단하기 때문이다. 역전파의 미분은 손실 함수인 교차 엔트로피 오차 수식 미분을 먼저 진행하고 그다음 소프트맥스 함수를 미분하여 결과를 도출할 것이다.</p>
 <ul>
 <li><p>교차 엔트로피 오차 수식 미분</p>
 <script type="math/tex; mode=display">L = -\sum_{n} T_n \ln Y_n</script><p>위 식은 교차 엔트로피 오차이이며, $T$는 정답레이블, $Y$는 예측값, $n$은 신경망 노드의 개수를 의미한다. 즉, 소프트맥스 함수에서 예측값이 $[y_1, y_2, y_3]$로 왔다면 $n$은 3이다. 위 식을 미분하면 다음과 같은 결과를 얻을 수 있다.</p>

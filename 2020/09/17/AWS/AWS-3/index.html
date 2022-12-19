@@ -56,7 +56,7 @@
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/91.png">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/92.png">
 <meta property="article:published_time" content="2020-09-17T13:35:03.000Z">
-<meta property="article:modified_time" content="2022-06-03T16:12:35.000Z">
+<meta property="article:modified_time" content="2022-12-19T18:22:26.972Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="AWS">
 <meta property="article:tag" content="cloud">
@@ -284,7 +284,7 @@
       
         <p>터미널에서 코드만을 사용하여 AWS S3 버킷에 접속하는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
-<h2 id="AWS-S3"><a href="#AWS-S3" class="headerlink" title="AWS S3"></a>AWS S3</h2><p>S3(Simple Storage Service)는 AWS에서 제공하는 데이터 저장소이다. S3는 웹 기반으로 이루어져 있기 떄문에 정적 휍 호스팅을 직접 관리할 수 있으며, 가상 서버인 EC2와도 데이터를 주고 받을 수 있다. 또한 데이터 저장량을 미리 결정해야 하는 EBS와 달리 S3는 무제한으로 데이터를 저장할 수 있다. 경제적인 이점을 제외하고서도 이런 장점들로 인해서 S3는 많이 사용된다.</p>
+<h2 id="AWS-S3"><a href="#AWS-S3" class="headerlink" title="AWS S3"></a>AWS S3</h2><p>S3(Simple Storage Service)는 AWS에서 제공하는 데이터 저장소이다. S3는 웹 기반으로 이루어져 있기 때문에 정적 휍 호스팅을 직접 관리할 수 있으며, 가상 서버인 EC2와도 데이터를 주고 받을 수 있다. 또한 데이터 저장량을 미리 결정해야 하는 EBS와 달리 S3는 무제한으로 데이터를 저장할 수 있다. 경제적인 이점을 제외하고서도 이런 장점들로 인해서 S3는 많이 사용된다.</p>
 <h3 id="객체-object"><a href="#객체-object" class="headerlink" title="객체 (object)"></a>객체 (object)</h3><p>객체는 S3에 데이터가 저장되는 기본 단위이다. 객체 종류로는 파일과 메타데이터가 있다. 일반적인 파일은 1개당 1Byte부터 5TB 까지 저장 가능하며, 메타데이터는 MIME 형식으로 파일 확장자를 자동으로 변경하여 저장된다. 메타데이터의 확장자는 사용자가 임의로 설정할 수도 있다.</p>
 <h3 id="버킷-bucket"><a href="#버킷-bucket" class="headerlink" title="버킷 (bucket)"></a>버킷 (bucket)</h3><p>버킷 (bucket)은 S3에서 데이터를 저장하는 최상위 저장소이다. 모든 데이터들은 버킷 안에 저장할 수 있으며, 버킷 없이 데이터를 업로드하는 것은 불가능하다. 각 AWS 계정별로 100개까지 생성할 수 있으며, 각 버킷에는 무제한으로 객체들을 저장할 수 있다.</p>
 <h2 id="boto3-library"><a href="#boto3-library" class="headerlink" title="boto3 library"></a>boto3 library</h2><p><code>boto3</code>는 파이썬에서 S3를 사용할 수 있도록 해주는 라이브러리이다. 아직 다운받지 않았다면 아래의 코드를 입력하면 된다.</p>
