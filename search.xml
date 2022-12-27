@@ -212,7 +212,7 @@
 <p>이제 위 순서대로 하나씩 러스트로 구현해보자.</p>
 <h2 id="시작-전-준비"><a href="#시작-전-준비" class="headerlink" title="시작 전 준비"></a>시작 전 준비</h2><p>먼저 이번에 사용할 새로운 프로젝트를 생성하자. 원하는 경로에서 아래의 코드를 입력하여 새로운 프로젝트를 만든다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cargo new &lt;project name&gt;</span><br></pre></td></tr></table></figure>
-<p>그러면 아래와 같은 디렉토리 구조를 가진 프로젝트 폴더가 생성됝다.</p>
+<p>그러면 아래와 같은 디렉토리 구조를 가진 프로젝트 폴더가 생성된다.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Cargo.lock</span><br><span class="line">Cargo.toml</span><br><span class="line">src</span><br><span class="line"> ㄴmain.rs</span><br><span class="line">target</span><br><span class="line"> ㄴ.rustc_info.json</span><br><span class="line"> ㄴCACHEDIR.TAG</span><br><span class="line"> ㄴdebug</span><br></pre></td></tr></table></figure>
 <p>웹서버 개발을 위한 모든 준비가 완료되었다.</p>
 <h2 id="소켓으로-TCP-연결-대기하기"><a href="#소켓으로-TCP-연결-대기하기" class="headerlink" title="소켓으로 TCP 연결 대기하기"></a>소켓으로 TCP 연결 대기하기</h2><p>웹서버는 클라이언트에서 TCP 연결을 시도할때까지 대기해야 한다. 해당 코드는 모듈 <code>std::net</code>을 사용하면 쉽게 구현할 수 있다. 아래의 코드를 <code>src/main.rs</code>에 작성해보자.</p>
