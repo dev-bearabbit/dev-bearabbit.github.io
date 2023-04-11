@@ -4,7 +4,7 @@
     <title>Apache Ranger 설치 in Docker (1)</title>
     <url>/2023/04/05/Hadoop/hadoop-11/</url>
     <content><![CDATA[<p>하둡 에코시스템 중 하나인 Apache Ranger 설치 방법을 정리합니다.<br><a id="more"></a></p>
-<h2 id="Apache-Ranger"><a href="#Apache-Ranger" class="headerlink" title="Apache Ranger"></a>Apache Ranger</h2><p>레인저(ranger)는 하둡 에코시스템에서 종합적인 데이터 보안을 활성화하고 관리할 수 있는 도구이다. 특정 그룹과 사용자에 따라 데이터 접근 권한을 관리하고 감사 로그를 관리할 수 있다. Ldap 프로토콜로 Directory 서비스에서 그룹/사용자 정보를 가져올 수 있으며, 정책 또한 tag 기반 관리가 가능하다.</p>
+<h2 id="Apache-Ranger"><a href="#Apache-Ranger" class="headerlink" title="Apache Ranger"></a>Apache Ranger</h2><p>레인저(ranger)는 하둡 에코시스템에서 종합적인 데이터 보안을 활성화하고 관리할 수 있는 도구이다. 특정 그룹과 사용자에 따라 데이터 접근 권한을 관리하고 감사 로그를 관리할 수 있다. Ldap 프로토콜로 Directory 서비스에서 그룹/사용자 정보를 가져올 수 있으며, 정책 또한 Tag 기반 관리가 가능하다.</p>
 <p>아래 사진은 레인저 아키텍처이다.</p>
 <p><img src="/images/175.png" alt="ranger"></p>
 <h3 id="Ranger-admin"><a href="#Ranger-admin" class="headerlink" title="Ranger admin"></a>Ranger admin</h3><p>ranger-admin은 엑세스 정책을 생성 및 관리하는 UI 인터페이스이다. 아래 사진처럼 다양한 플랫폼에 플러그인을 설치하여 어드민 웹페이지에서 관리할 수 있다.</p>
