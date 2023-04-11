@@ -55,7 +55,7 @@
 <meta property="og:locale" content="ko_KR">
 <meta property="og:image" content="https://hyeonji-ryu.github.io/images/170.png">
 <meta property="article:published_time" content="2022-06-24T13:26:46.000Z">
-<meta property="article:modified_time" content="2022-06-25T16:41:00.000Z">
+<meta property="article:modified_time" content="2023-04-11T03:28:43.022Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="Hue">
 <meta property="article:tag" content="guide">
@@ -294,7 +294,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> hue/tools/docker/hue</span><br></pre></td></tr></table></figure>
 <p>그러면 아래와 같은 파일들이 보인다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">drwxrwxr-x 2 ec2-user ec2-user   64 Jun 23 11:04 conf</span><br><span class="line">drwxrwxr-x 2 ec2-user ec2-user   49 Jun 23 09:39 conf3</span><br><span class="line">-rw-rw-r-- 1 ec2-user ec2-user  720 Jun 23 10:54 docker-compose.yml</span><br><span class="line">-rw-rw-r-- 1 ec2-user ec2-user 2445 Jun 23 05:41 Dockerfile</span><br><span class="line">-rw-rw-r-- 1 ec2-user ec2-user 1777 Jun 23 05:41 Dockerfile.py2</span><br><span class="line">-rw-rw-r-- 1 ec2-user ec2-user   91 Jun 23 05:41 Dockerfile.py2.dockerignore</span><br><span class="line">drwxr-xr-x 2 root     root        6 Jun 23 10:08 hue.ini</span><br><span class="line">-rw-rw-r-- 1 ec2-user ec2-user  109 Jun 23 09:21 init.sql</span><br><span class="line">-rw-rw-r-- 1 ec2-user ec2-user 5909 Jun 23 05:41 README.md</span><br><span class="line">-rwxrwxr-x 1 ec2-user ec2-user   66 Jun 23 05:41 startup.sh</span><br></pre></td></tr></table></figure>
-<p>휴는 메타데이터를 저장하고 관리하는 RDB가 필요하다. 그래서 도커 환경에서는 <code>docker-compose</code>를 통해 휴가 사용할 RDB와 웹 서버 2개의 컨테이너를 생성한다. RDB의 경우 sqlite3, mysql, postgesql 이렇게 3가지가 가능한데 개인적으로는 mysql을 추천한다. 왜냐하면 이미 누군가 mysql을 같이 설치하는 파일을 개발헤두었기 때문이다. (변경도 어렵지는 않다. 그냥 <code>docker-compose.yml</code> 파일을 수정해주면 된다.)</p>
+<p>휴는 메타데이터를 저장하고 관리하는 RDB가 필요하다. 그래서 도커 환경에서는 <code>docker-compose</code>를 통해 휴가 사용할 RDB와 웹 서버 2개의 컨테이너를 생성한다. RDB의 경우 sqlite3, mysql, postgesql 이렇게 3가지가 가능한데 개인적으로는 mysql을 추천한다. 왜냐하면 이미 누군가 mysql을 같이 설치하는 파일을 개발해두었기 때문이다. (변경도 어렵지는 않다. 그냥 <code>docker-compose.yml</code> 파일을 수정해주면 된다.)</p>
 <h3 id="소스코드-수정하기"><a href="#소스코드-수정하기" class="headerlink" title="소스코드 수정하기"></a>소스코드 수정하기</h3><p>이 글에서도 mysql을 그대로 사용할 예정이다. 현재 오픈소스에 올라가 있는 mysql 셋업 환경을 확인해보자. 그리고 컨테이너를 올리기 전에 조금 수정해야 할 사항들이 있다. 먼저 <code>docker-compose.yml</code> 파일에 mysql 계정 비밀번호를 수정한다.</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">cloudera:</span></span><br><span class="line">      <span class="attr">image:</span> <span class="string">gethue/hue:latest</span></span><br><span class="line">      <span class="attr">hostname:</span> <span class="string">hue</span></span><br><span class="line">      <span class="attr">container_name:</span> <span class="string">hue</span></span><br><span class="line">      <span class="attr">dns:</span> <span class="number">8.8</span><span class="number">.8</span><span class="number">.8</span></span><br><span class="line">      <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"8888:8888"</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">./hue.ini:/usr/share/hue/desktop/conf/z-hue.ini</span></span><br><span class="line">      <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"database"</span></span><br><span class="line">  <span class="attr">database:</span></span><br><span class="line">      <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">      <span class="attr">ports:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">"33061:3306"</span></span><br><span class="line">      <span class="attr">command:</span> <span class="string">--init-file</span> <span class="string">/data/application/init.sql</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">data:/var/lib/mysql</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">./init.sql:/data/application/init.sql</span></span><br><span class="line">      <span class="attr">environment:</span></span><br><span class="line">          <span class="attr">MYSQL_ROOT_USER:</span> <span class="string">root</span></span><br><span class="line">          <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">&lt;사용할</span> <span class="string">비밀번호&gt;</span></span><br><span class="line">          <span class="attr">MYSQL_DATABASE:</span> <span class="string">hue</span></span><br><span class="line">          <span class="attr">MYSQL_USER:</span> <span class="string">hue</span></span><br><span class="line">          <span class="attr">MYSQL_PASSWORD:</span> <span class="string">&lt;사용할</span> <span class="string">비밀번호&gt;</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">data:</span></span><br></pre></td></tr></table></figure>
 <p>다음으로 <code>init.sql</code> 파일을 열어서 아래의 내용을 추가하자.</p>
@@ -427,7 +427,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">134</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -440,7 +440,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">332</span>
+        <span class="site-state-item-count">335</span>
         <span class="site-state-item-name">태그</span></a>
       </div>
   </nav>
@@ -465,7 +465,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
