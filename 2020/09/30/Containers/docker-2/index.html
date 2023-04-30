@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
     root: '/',
     scheme: 'Gemini',
     version: '7.7.1',
@@ -49,24 +49,24 @@
   <meta name="description" content="AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker 컨테이너에서 모델 훈련하기">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/09/30/Containers/docker-2/index.html">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2020/09/30/Containers/docker-2/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/95.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/95.png">
 <meta property="article:published_time" content="2020-09-30T08:40:09.000Z">
-<meta property="article:modified_time" content="2022-12-19T18:23:07.538Z">
+<meta property="article:modified_time" content="2023-04-30T16:52:49.466Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="Docker">
 <meta property="article:tag" content="AWS">
 <meta property="article:tag" content="Amazon">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="Docker">
 <meta property="article:tag" content="image">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/95.png">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/95.png">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/09/30/Containers/docker-2/">
+<link rel="canonical" href="https://dev-bearabbit.github.io/2020/09/30/Containers/docker-2/">
 
 
 <script id="page-configurations">
@@ -225,7 +225,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/09/30/Containers/docker-2/">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2020/09/30/Containers/docker-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/bearabbit.png">
@@ -281,7 +281,7 @@
       
         <p>AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.<br><a id="more"></a></p>
 <hr>
-<h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://hyeonji-ryu.github.io/2020/09/21/AWS/AWS-4/">EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
+<h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://dev-bearabbit.github.io/2020/09/21/AWS/AWS-4/">EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IAM계정 로그인</span></span><br><span class="line">aws configure</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># EC2 인스턴스 생성</span></span><br><span class="line">aws ec2 run-instances --image-id <span class="string">'인스턴스 이미지'</span> --count <span class="string">'인스턴스 수'</span> --instance-type <span class="string">'인스턴스 타입'</span> --key-name <span class="string">'키 페어 이름'</span> --security-groups <span class="string">'보안 그룹 이름'</span></span><br></pre></td></tr></table></figure>
 <h2 id="EC2-인스턴스에-접속하기"><a href="#EC2-인스턴스에-접속하기" class="headerlink" title="EC2 인스턴스에 접속하기"></a>EC2 인스턴스에 접속하기</h2><p>다음으로는 생성한 인스턴스에 접속한다. 해당 인스턴스의 인바운드 규칙이 SSH 접속이기 때문에 아래의 코드를 입력한다.</p>
@@ -332,11 +332,11 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/docker/" rel="tag"># Docker</a>
               <a href="/tags/aws/" rel="tag"># AWS</a>
               <a href="/tags/amazon/" rel="tag"># Amazon</a>
               <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="tag"># 딥러닝</a>
               <a href="/tags/deeplearning/" rel="tag"># Deeplearning</a>
+              <a href="/tags/docker/" rel="tag"># Docker</a>
               <a href="/tags/image/" rel="tag"># image</a>
           </div>
 

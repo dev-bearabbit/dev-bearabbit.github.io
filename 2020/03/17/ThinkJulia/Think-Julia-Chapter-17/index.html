@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
     root: '/',
     scheme: 'Gemini',
     version: '7.7.1',
@@ -49,12 +49,12 @@
   <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Multiple Dispatch를 한글로 요약 정리한 글입니다.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="16. 다중 디스패치">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/03/17/ThinkJulia/Think-Julia-Chapter-17/index.html">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2020/03/17/ThinkJulia/Think-Julia-Chapter-17/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Multiple Dispatch를 한글로 요약 정리한 글입니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2020-03-16T17:02:40.000Z">
-<meta property="article:modified_time" content="2022-06-03T15:51:27.000Z">
+<meta property="article:modified_time" content="2023-04-30T16:52:49.466Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="줄리아">
 <meta property="article:tag" content="Julia">
@@ -62,7 +62,7 @@
 <meta property="article:tag" content="기초 강의">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/03/17/ThinkJulia/Think-Julia-Chapter-17/">
+<link rel="canonical" href="https://dev-bearabbit.github.io/2020/03/17/ThinkJulia/Think-Julia-Chapter-17/">
 
 
 <script id="page-configurations">
@@ -221,7 +221,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/03/17/ThinkJulia/Think-Julia-Chapter-17/">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2020/03/17/ThinkJulia/Think-Julia-Chapter-17/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/bearabbit.png">
@@ -291,7 +291,7 @@
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> sinc(x)::<span class="built_in">Float64</span></span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">0</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    sin(x)/(x)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p><code>sinc()</code>의 반환 값은 항상 <code>Float64</code>로 변환된다.</p>
 <p>데이터 타입이 생략될 때, 줄리아에서는 항상 데이터 타입 <code>Any</code>을 값으로 사용할 수 있다.</p>
-<h3 id="메서드-Methods"><a href="#메서드-Methods" class="headerlink" title="메서드 (Methods)"></a>메서드 (Methods)</h3><p><a href="https://hyeonji-ryu.github.io/2020/03/16/ThinkJulia/Think-Julia-Chapter-16/">구조체와 함수</a>에서 <code>MyTime</code>이라는 구조체를 정의하였다. <code>printtime()</code>이라는 함수를 사용하여 작성해보자.</p>
+<h3 id="메서드-Methods"><a href="#메서드-Methods" class="headerlink" title="메서드 (Methods)"></a>메서드 (Methods)</h3><p><a href="https://dev-bearabbit.github.io/2020/03/16/ThinkJulia/Think-Julia-Chapter-16/">구조체와 함수</a>에서 <code>MyTime</code>이라는 구조체를 정의하였다. <code>printtime()</code>이라는 함수를 사용하여 작성해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Printf</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> MyTime</span><br><span class="line">    hour :: <span class="built_in">Int64</span></span><br><span class="line">    minute :: <span class="built_in">Int64</span></span><br><span class="line">    second :: <span class="built_in">Int64</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> printtime(time)</span><br><span class="line">    <span class="meta">@printf</span>(<span class="string">"%02d:%02d:%02d"</span>, time.hour, time.minute, time.second)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>보다시피, 데이터 타입 선언은 성능상의 이유로 구조체 정의의 필드에 추가될 수 있다.</p>
 <p>위 함수를 호출하려면, <code>MyTime</code> 객체를 인수로 전달해야 한다.</p>
@@ -305,7 +305,7 @@
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> printtime(time)</span><br><span class="line">    println(<span class="string">"I don't know how to print the argument time."</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>만약 <code>MyTime</code> 객체가 아닌 다른 데이터 타입을 인수로 하여 <code>printtime()</code>을 호출한다면 아래와 같은 결과를 얻는다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">julia&gt; printtime(<span class="number">150</span>)</span><br><span class="line"><span class="literal">I</span> don't know how to print the argument time.</span><br></pre></td></tr></table></figure>
-<h3 id="추가적-예시들-Additional-Examples"><a href="#추가적-예시들-Additional-Examples" class="headerlink" title="추가적 예시들 (Additional Examples)"></a>추가적 예시들 (Additional Examples)</h3><p>앞서 <a href="https://hyeonji-ryu.github.io/2020/03/16/ThinkJulia/Think-Julia-Chapter-16/">15장</a>에서 사용했던 <code>increment()</code>에 인수를 세부적으로 설정하여 재정의할 것이다.</p>
+<h3 id="추가적-예시들-Additional-Examples"><a href="#추가적-예시들-Additional-Examples" class="headerlink" title="추가적 예시들 (Additional Examples)"></a>추가적 예시들 (Additional Examples)</h3><p>앞서 <a href="https://dev-bearabbit.github.io/2020/03/16/ThinkJulia/Think-Julia-Chapter-16/">15장</a>에서 사용했던 <code>increment()</code>에 인수를 세부적으로 설정하여 재정의할 것이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> increment(time::MyTime, seconds::<span class="built_in">Int64</span>)</span><br><span class="line">    seconds += timetoint(time)</span><br><span class="line">    inttotime(seconds)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>한번 더 짚고 넘어가자면, 위의 함수는 ‘순수 함수(pure function)’이며 ‘변경자(modifier)’는 아니다.</p>
 <p>아래의 코드는 <code>increment()</code>를 불러오는 방법이다.</p>
@@ -358,7 +358,7 @@
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">julia&gt; <span class="number">1337</span> + start</span><br><span class="line"><span class="number">10</span>:<span class="number">07</span>:<span class="number">17</span></span><br></pre></td></tr></table></figure>
 <p>함수를 적용할 때 어떤 메서드가 적합한지 선택하는 것을 ‘디스패치(dispatch)’라고 한다. 줄리아는 디스패치 프로세스가 주어진 인수의 수와 데이터 타입에 따라 호출할 함수의 메서드를 선택할 수 있도록 한다. 함수의 인수를 모두 사용하여 호출할 메서드를 선택하는 것을 ‘다중 디스패치(multiple dispatch)’라고 한다.</p>
 <h3 id="제네릭-프로그래밍-Generic-Programming"><a href="#제네릭-프로그래밍-Generic-Programming" class="headerlink" title="제네릭 프로그래밍 (Generic Programming)"></a>제네릭 프로그래밍 (Generic Programming)</h3><p>다중 디스패치는 유용하지만 항상 필요한 것은 아니다. 다른 데이터 타입을 인수로 하여 함수를 작성하면 다중 디스패치를 사용하지 않아도 된다.</p>
-<p>지금까지 문자열에 대해 작성한 많은 함수들은 다른 데이터 타입의 시퀀스에도 작동한다. 예를 들어, <a href="https://hyeonji-ryu.github.io/2020/03/10/ThinkJulia/Think-Julia-Chapter-11/">딕셔너리로 카운팅하기</a>에서 사용한 단어의 개수를 세어주는 <code>histogram()</code> 을 보자.</p>
+<p>지금까지 문자열에 대해 작성한 많은 함수들은 다른 데이터 타입의 시퀀스에도 작동한다. 예를 들어, <a href="https://dev-bearabbit.github.io/2020/03/10/ThinkJulia/Think-Julia-Chapter-11/">딕셔너리로 카운팅하기</a>에서 사용한 단어의 개수를 세어주는 <code>histogram()</code> 을 보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> histogram(s)</span><br><span class="line">    d = <span class="built_in">Dict</span>()</span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> s</span><br><span class="line">        <span class="keyword">if</span> c ∉ keys(d)</span><br><span class="line">            d[c] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            d[c] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    d</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>이 함수에서 <code>s</code>의 요소는 해시(hashable)할 수 있기에 딕셔너리의 키(key)로 사용될 수 있고, 따라서 리스트, 튜플, 심지어 딕셔너리에서도 작동한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">julia&gt; t = (<span class="string">"spam"</span>, <span class="string">"egg"</span>, <span class="string">"spam"</span>, <span class="string">"spam"</span>, <span class="string">"bacon"</span>, <span class="string">"spam"</span>)</span><br><span class="line">(<span class="string">"spam"</span>, <span class="string">"egg"</span>, <span class="string">"spam"</span>, <span class="string">"spam"</span>, <span class="string">"bacon"</span>, <span class="string">"spam"</span>)</span><br><span class="line">julia&gt; histogram(t)</span><br><span class="line"><span class="built_in">Dict</span>&#123;<span class="built_in">Any</span>,<span class="built_in">Any</span>&#125; with <span class="number">3</span> entries:</span><br><span class="line">  <span class="string">"bacon"</span> =&gt; <span class="number">1</span></span><br><span class="line">  <span class="string">"spam"</span>  =&gt; <span class="number">4</span></span><br><span class="line">  <span class="string">"egg"</span>   =&gt; <span class="number">1</span></span><br></pre></td></tr></table></figure>

@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
     root: '/',
     scheme: 'Gemini',
     version: '7.7.1',
@@ -49,27 +49,27 @@
   <meta name="description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Raspberry Pi 환경설정하기">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/11/02/Hadoop/hadoop-1/index.html">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2020/11/02/Hadoop/hadoop-1/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/104.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/105.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/106.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/104.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/105.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/106.png">
 <meta property="article:published_time" content="2020-11-02T11:14:04.000Z">
-<meta property="article:modified_time" content="2022-06-26T19:53:59.000Z">
+<meta property="article:modified_time" content="2023-04-30T16:52:49.466Z">
 <meta property="article:author" content="Jess">
+<meta property="article:tag" content="Docker">
 <meta property="article:tag" content="raspberrypi">
 <meta property="article:tag" content="cluster">
 <meta property="article:tag" content="하둡">
 <meta property="article:tag" content="스파크">
-<meta property="article:tag" content="Docker">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="bigdata">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/104.png">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/104.png">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/11/02/Hadoop/hadoop-1/">
+<link rel="canonical" href="https://dev-bearabbit.github.io/2020/11/02/Hadoop/hadoop-1/">
 
 
 <script id="page-configurations">
@@ -228,7 +228,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/11/02/Hadoop/hadoop-1/">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2020/11/02/Hadoop/hadoop-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/bearabbit.png">
@@ -342,7 +342,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker pi</span><br></pre></td></tr></table></figure>
 <p>재부팅한 후 버전을 확인해보면 도커가 잘 작동되는 것을 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
-<p>이제 설치한 도커에 간단하게 mariaDB 컨테이너를 생성해보자. 도커에 mariaDB 컨테이너를 생성하는 과정은 <a href="https://hyeonji-ryu.github.io/2020/10/09/Docker/Docker-0/">해당 글</a>에서 살펴볼 수 있다. 다만 한 가지 다른 점은 다른 이미지를 사용해야 한다는 것이다.</p>
+<p>이제 설치한 도커에 간단하게 mariaDB 컨테이너를 생성해보자. 도커에 mariaDB 컨테이너를 생성하는 과정은 <a href="https://dev-bearabbit.github.io/2020/10/09/Docker/Docker-0/">해당 글</a>에서 살펴볼 수 있다. 다만 한 가지 다른 점은 다른 이미지를 사용해야 한다는 것이다.</p>
 <p>라즈베리 파이는 ARM의 CPU이기 때문에 해당 CPU에 맞는 이미지로 다운받아야 한다. ARM CPU에서도 사용가능한 여러 이미지가 있으며, 그 중 하나를 사용하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull linuxserver/mariadb</span><br></pre></td></tr></table></figure>
 <p>다음 과정은 위에서 소개한 글을 참고하기 바란다.</p>
@@ -357,11 +357,11 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># Docker</a>
               <a href="/tags/raspberrypi/" rel="tag"># raspberrypi</a>
               <a href="/tags/cluster/" rel="tag"># cluster</a>
               <a href="/tags/%ED%95%98%EB%91%A1/" rel="tag"># 하둡</a>
               <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/" rel="tag"># 스파크</a>
-              <a href="/tags/docker/" rel="tag"># Docker</a>
               <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 빅데이터</a>
               <a href="/tags/bigdata/" rel="tag"># bigdata</a>
           </div>

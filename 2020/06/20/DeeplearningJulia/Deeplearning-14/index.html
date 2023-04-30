@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
     root: '/',
     scheme: 'Gemini',
     version: '7.7.1',
@@ -49,16 +49,16 @@
   <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="14. CNN 시작하기">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2020/06/20/DeeplearningJulia/Deeplearning-14/index.html">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2020/06/20/DeeplearningJulia/Deeplearning-14/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/65.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/66.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/67.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/68.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/65.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/66.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/67.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/68.png">
 <meta property="article:published_time" content="2020-06-20T06:04:49.000Z">
-<meta property="article:modified_time" content="2022-06-03T16:44:50.000Z">
+<meta property="article:modified_time" content="2023-04-30T16:52:49.466Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
@@ -67,14 +67,14 @@
 <meta property="article:tag" content="합성곱">
 <meta property="article:tag" content="이미지신경망">
 <meta property="article:tag" content="풀링">
-<meta property="article:tag" content="flatten">
-<meta property="article:tag" content="convolution">
 <meta property="article:tag" content="Julia">
 <meta property="article:tag" content="모델">
+<meta property="article:tag" content="flatten">
+<meta property="article:tag" content="convolution">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/65.png">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/65.png">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2020/06/20/DeeplearningJulia/Deeplearning-14/">
+<link rel="canonical" href="https://dev-bearabbit.github.io/2020/06/20/DeeplearningJulia/Deeplearning-14/">
 
 
 <script id="page-configurations">
@@ -233,7 +233,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2020/06/20/DeeplearningJulia/Deeplearning-14/">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2020/06/20/DeeplearningJulia/Deeplearning-14/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/bearabbit.png">
@@ -333,7 +333,7 @@
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>  predict(input)</span><br><span class="line"></span><br><span class="line">    pconv_1 = conv2D_forward_batch(pre_dense, input, params[<span class="string">"W1"</span>], params[<span class="string">"b1"</span>],<span class="number">1</span>)</span><br><span class="line">    pconv_Re = relu.(pconv_1)</span><br><span class="line">    ppool_1 = maxpooling2D_forward_batch(pre_pool,pconv_Re, <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">    flatten_1 = flatten_forward_batch(pre_flatten,ppool_1)</span><br><span class="line">    dense_1 = (flatten_1 * params[<span class="string">"W2"</span>]) .+ params[<span class="string">"b2"</span>]</span><br><span class="line">    dense_relu = relu.(dense_1)</span><br><span class="line">    dense_2 = (dense_relu * params[<span class="string">"W3"</span>]) .+ params[<span class="string">"b3"</span>]</span><br><span class="line">    result = softmax(dense_2)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <h3 id="학습-구현"><a href="#학습-구현" class="headerlink" title="학습 구현"></a>학습 구현</h3><p><code>loss()</code>에 사용되는 예측 함수를 설정한 후에 파라미터인 가중치와 편향 초기값도 설정한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">W =[<span class="string">"W1"</span>,<span class="string">"W2"</span>,<span class="string">"W3"</span>]</span><br><span class="line">b = [<span class="string">"b1"</span>,<span class="string">"b2"</span>,<span class="string">"b3"</span>]</span><br><span class="line">weight_size = [(<span class="number">5</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">30</span>),(<span class="number">4320</span>,<span class="number">100</span>),(<span class="number">100</span>,<span class="number">10</span>)];</span><br><span class="line">input_size = (<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">params = making_network(W, b, weight_size,input_size,<span class="string">"std"</span>);</span><br></pre></td></tr></table></figure>
-<p>초기값은 기본값으로 사용하는 <code>std</code>로 설정하였다. 초기값에 대해서는 <a href="https://hyeonji-ryu.github.io/2020/05/15/DeeplearningJulia/Deeplearning-12/">인공신경망 최적화 - 가충치 초기값</a>에서 더 자세히 알 수 있다.</p>
+<p>초기값은 기본값으로 사용하는 <code>std</code>로 설정하였다. 초기값에 대해서는 <a href="https://dev-bearabbit.github.io/2020/05/15/DeeplearningJulia/Deeplearning-12/">인공신경망 최적화 - 가충치 초기값</a>에서 더 자세히 알 수 있다.</p>
 <p>파라미터를 만들었다면, 이제 모델에서 필요한 값들을 저장할 저장소를 생성한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># predict()용 저장소</span></span><br><span class="line">pre_dense = dense_layer(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">pre_pool= repository(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">pre_flatten = repository(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 실제 저장소</span></span><br><span class="line">result = SoftmaxwithLoss(<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">dense1 = dense_layer(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">dense2 = dense_layer(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">dense3 = dense_layer(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">Relu1 = repository(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">Relu2 = repository(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">optimizer = optimizers(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">pool1= repository(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">flatten1 = repository(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 <p><code>pre</code>라고 붙은 저장소는 모델에 사용되는 함수의 파라미터 개수를 맞춰주기 위해 만든 것이다. 사실상 모델에 필요한 값을 저장하는 저장소는 아니다. 다음으로는 로스값과 미분값을 저장할 리스트와 딕셔너리를 정의한다.</p>
@@ -368,10 +368,10 @@
               <a href="/tags/%ED%95%A9%EC%84%B1%EA%B3%B1/" rel="tag"># 합성곱</a>
               <a href="/tags/%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%8B%A0%EA%B2%BD%EB%A7%9D/" rel="tag"># 이미지신경망</a>
               <a href="/tags/%ED%92%80%EB%A7%81/" rel="tag"># 풀링</a>
-              <a href="/tags/flatten/" rel="tag"># flatten</a>
-              <a href="/tags/convolution/" rel="tag"># convolution</a>
               <a href="/tags/julia/" rel="tag"># Julia</a>
               <a href="/tags/%EB%AA%A8%EB%8D%B8/" rel="tag"># 모델</a>
+              <a href="/tags/flatten/" rel="tag"># flatten</a>
+              <a href="/tags/convolution/" rel="tag"># convolution</a>
           </div>
 
         

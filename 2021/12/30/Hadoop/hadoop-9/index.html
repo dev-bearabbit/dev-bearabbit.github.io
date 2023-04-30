@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('https://hyeonji-ryu.github.io').hostname,
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
     root: '/',
     scheme: 'Gemini',
     version: '7.7.1',
@@ -49,28 +49,28 @@
   <meta name="description" content="하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hive 아키텍쳐">
-<meta property="og:url" content="https://hyeonji-ryu.github.io/2021/12/30/Hadoop/hadoop-9/index.html">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2021/12/30/Hadoop/hadoop-9/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/146.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/147.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/148.png">
-<meta property="og:image" content="https://hyeonji-ryu.github.io/images/149.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/146.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/147.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/148.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/149.png">
 <meta property="article:published_time" content="2021-12-30T00:48:06.000Z">
-<meta property="article:modified_time" content="2022-06-24T13:27:20.000Z">
+<meta property="article:modified_time" content="2023-04-30T16:52:49.466Z">
 <meta property="article:author" content="Jess">
+<meta property="article:tag" content="Hive">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="hadoop">
 <meta property="article:tag" content="ecosystem">
-<meta property="article:tag" content="Hive">
 <meta property="article:tag" content="SQL">
 <meta property="article:tag" content="Tez">
 <meta property="article:tag" content="mapreduce">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hyeonji-ryu.github.io/images/146.png">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/146.png">
 
-<link rel="canonical" href="https://hyeonji-ryu.github.io/2021/12/30/Hadoop/hadoop-9/">
+<link rel="canonical" href="https://dev-bearabbit.github.io/2021/12/30/Hadoop/hadoop-9/">
 
 
 <script id="page-configurations">
@@ -229,7 +229,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
-    <link itemprop="mainEntityOfPage" href="https://hyeonji-ryu.github.io/2021/12/30/Hadoop/hadoop-9/">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2021/12/30/Hadoop/hadoop-9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/bearabbit.png">
@@ -284,7 +284,7 @@
 
       
         <p>하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
-<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://hyeonji-ryu.github.io/2021/11/21/Hadoop/hadoop-0/">이전 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
+<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://dev-bearabbit.github.io/2021/11/21/Hadoop/hadoop-0/">이전 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
 <h2 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h2><p>하이브(hive)는 Hadoop용 RDB 서비스이다. HDFS를 사용함에 있어 데이터베이스나 테이블 개념으로 디렉토리를 구성하고 관리하며, 이를 바탕으로 SQL과 유사한 HiveQL이라는 문법을 지원한다. 즉, 자바로 맵리듀스 프로그램을 작성하는 것이 아니라 간단한 sql 문법만으로도 Hadoop에 데이터를 저장하거나 가져올 수 있다. 이렇게만 보면 사용방법은 mysql과 같은 RDB와 매우 유사해보인다.<br>하지만 스키마를 정의하고 데이터를 입력하는 구조는 기존 RDB와는 다르다. 스키마를 먼저 작성하고 그 다음 데이터를 입력해야 하는 기존 RDB와 달리 하이브는 데이터를 HDFS에 파일단위로 저장한 후에 스키마를 정의하여 데이터를 가져올 수 있다. 하이브는 RDB에 요구되는 스키마 정보들을 metastore에 저장하며, metastore는 다른 DBMS를 사용한다.</p>
 <h2 id="Hive-Roles"><a href="#Hive-Roles" class="headerlink" title="Hive Roles"></a>Hive Roles</h2><p>하이브를 구성하고 있는 컴포넌트는 아래 시진과 같다.</p>
 <p><img src="/images/146.png" alt="hive1"></p>
@@ -337,10 +337,10 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/hive/" rel="tag"># Hive</a>
               <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 빅데이터</a>
               <a href="/tags/hadoop/" rel="tag"># hadoop</a>
               <a href="/tags/ecosystem/" rel="tag"># ecosystem</a>
-              <a href="/tags/hive/" rel="tag"># Hive</a>
               <a href="/tags/sql/" rel="tag"># SQL</a>
               <a href="/tags/tez/" rel="tag"># Tez</a>
               <a href="/tags/mapreduce/" rel="tag"># mapreduce</a>
