@@ -55,7 +55,7 @@
 <meta property="og:locale" content="ko_KR">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/180.png">
 <meta property="article:published_time" content="2024-04-02T16:58:19.000Z">
-<meta property="article:modified_time" content="2024-04-02T17:07:38.575Z">
+<meta property="article:modified_time" content="2024-04-02T17:12:36.781Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="ChatGPT">
@@ -282,7 +282,7 @@
       
         <p>LLM을 사용하여 사내가이드 슬랙봇 만드는 방법을 정리합니다.<br><a id="more"></a></p>
 <hr>
-<p>ChatGPT 등장 이후 AI 업계는 큰 변화를 맞이한 것 같다. 딥러닝이 주전공은 아니지만 데이터 업계에 몸담고 있는 이상 어느 정도는 알아야 할 것 같아 사내에서 스터디를 진행하였다. 스터디를 진행하면서 뭐라도 하나 만들어보고 싶던 찰나에 컨플루언스 검색엔진 성능이 너무 좋지 못하다는 의견이 나왔다 (우리 회사는 대부분의 문서를 컨플루언스에서 관리한다). 원하는 정보를 찾기 위해 키워드 기반으로 검색해도 전혀 다른 문서들이 더 많이 반환된다는 것이다.</p>
+<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>ChatGPT 등장 이후 AI 업계는 큰 변화를 맞이한 것 같다. 딥러닝이 주전공은 아니지만 데이터 업계에 몸담고 있는 이상 어느 정도는 알아야 할 것 같아 사내에서 스터디를 진행하였다. 스터디를 진행하면서 뭐라도 하나 만들어보고 싶던 찰나에 컨플루언스 검색엔진 성능이 너무 좋지 못하다는 의견이 나왔다 (우리 회사는 대부분의 문서를 컨플루언스에서 관리한다). 원하는 정보를 찾기 위해 키워드 기반으로 검색해도 전혀 다른 문서들이 더 많이 반환된다는 것이다.</p>
 <p>바로 이거다. 슬랙에서 물어보면 컨플루언스 문서를 보고 알아서 답해주는 비서가 있으면 편할 것 같다. 바로 만들어보자.</p>
 <h2 id="무엇을-하려고-하는가"><a href="#무엇을-하려고-하는가" class="headerlink" title="무엇을 하려고 하는가"></a>무엇을 하려고 하는가</h2><p>간단하게 사내에서 사용할 사내가이드 슬랙봇을 만들고자 한다.<br>구조는 다음과 같다.</p>
 <ol>
@@ -326,7 +326,7 @@
 <li>프롬프트를 제대로 작성하지 않으면 기밀을 유출하거나 잘못된 답변을 도출하기도 함</li>
 <li>역할을 명확하게 부여하는 방식이 깔끔한 결과를 도출할 수 있음</li>
 </ul>
-<p>이제 프로젝트를 진행할만큼의 기본 개념은 알게된 것 같다.<br>다음 글에서는 본격적으로 슬랙봇을 만들어보자.</p>
+<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>이제 프로젝트를 진행할만큼의 기본 개념은 알게된 것 같다.<br>다음 글에서는 본격적으로 슬랙봇을 만들어보자.</p>
 
     </div>
 
@@ -414,7 +414,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#무엇을-하려고-하는가"><span class="nav-number">1.</span> <span class="nav-text">무엇을 하려고 하는가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLM이란-무엇인가"><span class="nav-number">2.</span> <span class="nav-text">LLM이란 무엇인가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RAG란-무엇인가"><span class="nav-number">3.</span> <span class="nav-text">RAG란 무엇인가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector-Database란-무엇인가"><span class="nav-number">4.</span> <span class="nav-text">Vector Database란 무엇인가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#프롬프트란-무엇인가"><span class="nav-number">5.</span> <span class="nav-text">프롬프트란 무엇인가</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#시작하며"><span class="nav-number">1.</span> <span class="nav-text">시작하며</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#무엇을-하려고-하는가"><span class="nav-number">2.</span> <span class="nav-text">무엇을 하려고 하는가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLM이란-무엇인가"><span class="nav-number">3.</span> <span class="nav-text">LLM이란 무엇인가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RAG란-무엇인가"><span class="nav-number">4.</span> <span class="nav-text">RAG란 무엇인가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector-Database란-무엇인가"><span class="nav-number">5.</span> <span class="nav-text">Vector Database란 무엇인가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#프롬프트란-무엇인가"><span class="nav-number">6.</span> <span class="nav-text">프롬프트란 무엇인가</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#결론"><span class="nav-number">7.</span> <span class="nav-text">결론</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
