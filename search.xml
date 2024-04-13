@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>여러가지 유사도 분석 방법들</title>
+    <url>/2024/04/11/Mathematic/mathematic-4/</url>
+    <content><![CDATA[<p>유사도 분석에 사용되는 여러 방법들을 정리합니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="유사도-분석이란"><a href="#유사도-분석이란" class="headerlink" title="유사도 분석이란"></a>유사도 분석이란</h2><p>유사도(Similarity)</p>
+<h2 id="유사도-계산-방법"><a href="#유사도-계산-방법" class="headerlink" title="유사도 계산 방법"></a>유사도 계산 방법</h2><p>유사도를 구하는 방법은 다양하게 존재한다. 어떤 데이터를 사용하는지, 어떤 기준의 유사도를 얻고 싶은지에 따라 선택할 수 있는 적합한 방법은 모두 다르며, 이번 글에서는 대표적인 방법만 간단하게 정리하려고 한다.</p>
+<h3 id="자카드-계수"><a href="#자카드-계수" class="headerlink" title="자카드 계수"></a>자카드 계수</h3><p>자카드 계수는 비교 데이터의 합집합과 교집합을 사용하여 유사도를 계산하는 방식이다. 공식은 다음과 같다.</p>
+<script type="math/tex; mode=display">J(A,B) =  \frac{|A \cap B|}{|A \cup B|} = \frac{|A \cap B|}{|A| + |B| - |A \cap B|}</script><p>위 공식을 해석해보면 특정 기준으로 데이터를 비교했을 때 동일하게 가진 원소의 개수와 서로 다른 원소 개수를 나눠 비율을 구하는 방식이다. 즉, 유사도의 기준은 “서로 얼마나 같은 데이터를 포함하고 있는가”이다. 해당 방법으로 유사도를 구한다면 최대값은 1이며, 최소값은 0이다.</p>
+<p>자카드 계수가 적합한 조건은 다음과 같다.</p>
+<ul>
+<li>간단하게 유사도를 구하고 싶을 때</li>
+<li>특정 단어 기준으로 유사도를 구하고 싶을 때</li>
+<li>임베딩(벡터화)를 진행할 수 없을 때</li>
+<li>비교 데이터의 길이 또는 개수가 일정하지 않을 때</li>
+</ul>
+<p>반대로 자카드 계수가 지닌 단점은 다음과 같다.</p>
+<ul>
+<li>데이터의 빈도를 고려하지 않는다.</li>
+<li>어휘의 유사성을 고려하지 않는다.</li>
+<li>음의 상관관계를 담지 못한다.</li>
+</ul>
+<h3 id="유클리드-거리"><a href="#유클리드-거리" class="headerlink" title="유클리드 거리"></a>유클리드 거리</h3><p>유클리드 거리는 다차원 공간에서 두 점 사이의 최단 거리를 구한다. 공식은 다음과 같다.</p>
+<script type="math/tex; mode=display">L_{2} = \sqrt{\sum_{i=1}^n (p_{i} - q_{i})^2}</script><p>여기서 유사도의 기준은 n차원 공간에서의 최단 거리이며,</p>
+<p>L2 거리라고도 불린다.</p>
+<p>유클리드 거리가 사용되기 적합한 조건은 다음과 같다.</p>
+<p>반대로 유클리드 거리의 단점은 다음과 같다.</p>
+<h3 id="맨해튼-거리"><a href="#맨해튼-거리" class="headerlink" title="맨해튼 거리"></a>맨해튼 거리</h3><p>맨해튼 거리는</p>
+<script type="math/tex; mode=display">L_{1} = \sum_{i=1}^n |p_{i} - q_{i}|</script><p>L1 거리라고도 불린다.</p>
+<h3 id="코사인-유사도"><a href="#코사인-유사도" class="headerlink" title="코사인 유사도"></a>코사인 유사도</h3><p>코사인 유사도는 벡터 형태인 비교 데이터의 사잇각을 통해 유사도를 계산하는 방식이다. 공식은 다음과 같다.</p>
+<script type="math/tex; mode=display">cos(\theta) = \frac{A \cdot B}{\left\|A\right\| \left\|B\right\|} = \frac{A \cdot B}{\sqrt{\sum_{i=1}^n (A_{i})^2} \times \sqrt{\sum_{i=1}^n (B_{i})^2}}</script><p>공식을 해석해보면 두 벡터의 내적을 두 벡터의 크기의 곱으로 나눈 값이다. 벡터의 내적은 “ “를 의미하고, 두 벡터 크기의 곱은 “ “를 의미한다. 따라서 두 수를 나누면 “ “ 결과가 도출되는 것이다.</p>
+<p>위 수식의 결과값에 대한 자세한 설명은 다음 그림에서 확인할 수 있다.</p>
+<p><img src="/images/181.png" alt="consine"></p>
+<p>코사인 유사도는 방향으로도 표현되기 때문에 단순히 유사한 정도뿐만이 아니라 서로 반대된 데이터인지도 확인이 가능하다. 또한 각도를 기반으로 유사도를 평가하기 때문에 실제 벡터의 크기에는 큰 영향을 받지 않는다.</p>
+<p>결론적으로 코사인 유사도 방법으로 계산한 결과값을 해석한다면 1과 가까울수록 유사한 데이터, 0에 가깝다면 서로 독립된 데이터, -1에 가깝다면 서로 반대의 의미를 가진 데이터라는 것이다.</p>
+<p>코사인 유사도가 적합한 조건은 다음과 같다.</p>
+<ul>
+<li>벡터의 크기가 크지 않을 때</li>
+<li>벡터의 크기가 다양할 때</li>
+<li>임베딩 시 벡터 크기의 정규화가 안될 때</li>
+<li>다양한 차원의 데이터를 사용할 때</li>
+</ul>
+<h3 id="피어슨-유사도"><a href="#피어슨-유사도" class="headerlink" title="피어슨 유사도"></a>피어슨 유사도</h3>]]></content>
+      <categories>
+        <category>MachineLearning</category>
+        <category>mathematics</category>
+      </categories>
+      <tags>
+        <tag>머신러닝</tag>
+        <tag>유사도</tag>
+        <tag>유사도분석</tag>
+        <tag>자카드계수</tag>
+        <tag>유클리드거리</tag>
+        <tag>맨해튼거리</tag>
+        <tag>코사인유사도</tag>
+        <tag>피어슨유사도</tag>
+        <tag>추천알고리즘</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>요즘 유행하는 ChatGPT로 슬랙봇 만들기 1편</title>
     <url>/2024/04/03/LLM/llm-0/</url>
     <content><![CDATA[<p>LLM을 사용하여 사내가이드 슬랙봇 만드는 방법을 정리합니다.<br><a id="more"></a></p>
@@ -7211,7 +7270,7 @@
 <li>결합 법칙 (외부 연산자): $\forall\lambda \in \mathbb{R}, x \in V: \lambda\cdot(\psi\cdot x) = (\lambda\psi)\cdot x$</li>
 <li>외부연산자에 대해서는 항등원이 존재한다: $\forall x \in V: 1 \cdot x = x$</li>
 </ul>
-<p>집합 $V$에 속하는 요소인 $x$는 벡터이다. 따라서 $(V,+)$의 항등원 또한 영벡터($[0,\dots,0$^T)이다.</p>
+<p>집합 $V$에 속하는 요소인 $x$는 벡터이다. 따라서 $(V,+)$의 항등원 또한 영벡터 $[0,\dots,0^T ]$이다.</p>
 ]]></content>
       <categories>
         <category>MachineLearning</category>
