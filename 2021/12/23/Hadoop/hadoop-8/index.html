@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/test1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideDownIn"}}
+  };
+</script>
+
+  <meta name="description" content="하둡의 코어 서비스 중 하나인 YARN의 아키텍처에 대해서 공부한 내용을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YARN 아키텍쳐">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2021/12/23/Hadoop/hadoop-8/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="하둡의 코어 서비스 중 하나인 YARN의 아키텍처에 대해서 공부한 내용을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/123.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/141.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/142.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/143.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/144.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/145.png">
+<meta property="article:published_time" content="2021-12-23T09:56:47.000Z">
+<meta property="article:modified_time" content="2023-04-30T16:52:49.466Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="빅데이터">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="ecosystem">
+<meta property="article:tag" content="Yarn">
+<meta property="article:tag" content="resource">
+<meta property="article:tag" content="datastorage">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/123.png">
+
+<link rel="canonical" href="https://dev-bearabbit.github.io/2021/12/23/Hadoop/hadoop-8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>YARN 아키텍쳐 | DEV AnythinG</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QW3E4LZZNF"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-QW3E4LZZNF');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <style>
+    body {
+    margin:0;
+    padding:0;
+    backgroud-color: #000000;
+    }
+    canvas{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left:0;
+    z-index:-1;
+    }
+    div{
+    z-index:0;
+    }
+  </style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <canvas id="canvas" style="width: 100%; height: 100%; padding: 0; margin: 0;"></canvas>
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DEV AnythinG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">welcome :)</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user"></i>about</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/dev-bearabbit" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2021/12/23/Hadoop/hadoop-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/bearabbit.png">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          YARN 아키텍쳐
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              <time title="Post created: 2021-12-23 18:56:47" itemprop="dateCreated datePublished" datetime="2021-12-23T18:56:47+09:00">2021-12-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdata/" itemprop="url" rel="index">
+                    <span itemprop="name">BigData</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdata/hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">hadoop</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>하둡의 코어 서비스 중 하나인 YARN의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><a id="more"></a></p>
+<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p><a href="https://dev-bearabbit.github.io/2021/12/01/Hadoop/hadoop-1/">이전 글</a>에서 살펴봤듯이 YARN은 하둡의 두 기둥 중 하나이다.</p>
+<p><img src="/images/123.png" alt="corehadoop"></p>
+<p>이번 글에서는 클러스터의 리소스를 관리 및 할당하는 YARN에 대해서 자세히 살펴볼 것이다.</p>
+<h2 id="YARN"><a href="#YARN" class="headerlink" title="YARN"></a>YARN</h2><p>YARN은 Yet Another Resource Negotiator의 줄임말로, 클러스터 내 서버들의 CPU와 메모리, 네트워크 등 시스템 리소스를 하나로 묶어 관리한다. YARN에서 자원을 할당하는 단위를 <code>컨테이너</code>라고 하며, YARN은 자원 할당 요청이 들어오면 자원을 제공하고 사용이 끝나면 회수한다.</p>
+<p>그렇다면 컨테이너에서는 어떤 일이 진행될까? 아래의 사진을 살펴보자.</p>
+<p><img src="/images/141.png" alt="Yarn"></p>
+<p>위 사진은 Hadoop에서 기본적으로 사용하는 MapReduce 이며, YARN 컨테이너에서 작동할 수 있는 엔진 중 하나이다. 여기서 말하는 엔진이란 HDFS에 저장되어 있는 데이터들을 분산 컴퓨팅하여 결과를 도출하는 방법론이며, 결국 엔진 또한 하나의 실행 프로그램이다. 즉, YARN에서 프로그램을 돌릴 수 있는 환경을 제공받고 그 환경 내에서 MapReduce라는 프로그램을 작동하는 것이다. 현재는 MapReduce 엔진 외에도 Tez, Spark 도 사용되고 있다. 엔진에 대해서는 차후 다른 글에서 자세히 설명하고자 한다.</p>
+<h2 id="YARN-Roles"><a href="#YARN-Roles" class="headerlink" title="YARN Roles"></a>YARN Roles</h2><p>YARN은 크게 마스터-워커 구조로 이루어져 있다. 바로 Resource Manager와 Node Manager이다. 이름에서 유추할 수 있듯이 Resource Manager(RM)는 클러스터의 모든 리소스들을 관리하며, Node Manager(NM)는 각 노드에서 RM에게 지속적으로 노드 자원의 상태를 전달하고 실제 리소스들을 사용하여 컨테이너를 제공한다.</p>
+<p><img src="/images/142.png" alt="Yarn"></p>
+<p>위 사진에는 각 역할의 컴포넌트 설명이 자세하지는 않아서 덧붙여 이야기하고자 한다. 먼저 Resource Manager의 컴포넌트는 크게 Scheduler와 Application(App) Manager로 구성되어 있으며, 각각의 역할은 아래와 같다.</p>
+<ul>
+<li>Scheduler: Node Manager로부터 현재 리소스 사용률 등을 파악하여 자원 할당 요청이 들어오면 가능한 자원들의 리스트를 제공한다.</li>
+<li>App Manager: 클라이언트로부터 작업 요청을 받아 Node Manager에 App master를 실행시키고 모든 App master의 상태를 관리한다.</li>
+</ul>
+<p>다음으로는 Node Manager의 컴포넌트에 대한 설명이다.</p>
+<ul>
+<li>App master: 특정 작업(Job)을 진행하는 관리자. 작업을 위한 Task들을 NM에 요청하여 실행 및 관리한다.</li>
+<li>Task: 실제 작업이 진행되는 컨테이너. NM에 의해 생성되며 App master를 통해 관리된다.</li>
+</ul>
+<h2 id="YARN-Process"><a href="#YARN-Process" class="headerlink" title="YARN Process"></a>YARN Process</h2><p>이제 YARN에서 작업(Job)을 수행할 때 어떤 프로세스로 작동되는지 자세히 살펴보자. 아래의 그림에는 어떤 클라이언트가 작업을 요청했을 시에 진행되는 과정들을 도식화 되어 있다.</p>
+<p><img src="/images/143.png" alt="Yarn"></p>
+<p>위 도식을 더 자세히 설명하면, App Manager는 NM에 App master 생성을 요청하는 것이고, App master를 직접 생성하는 건 NM이다. 또한 Scheduler는 App master의 요청에 따라 현재 사용가능한 NM 컨테이너들의 리스트를 제공하며, App master는 해당 리스트에 속한 NM에게 Task 컨테이너 생성을 요청한다.</p>
+<h2 id="Fault-tolerance"><a href="#Fault-tolerance" class="headerlink" title="Fault tolerance"></a>Fault tolerance</h2><p>YARN은 비교적 내결함성이 잘 보장되어 있다. 아래 그림의 Case들을 살펴보자.</p>
+<p><img src="/images/144.png" alt="Yarn"></p>
+<p>Case 1,2,3처럼 NM이 죽은 경우에는 대부분 운영 상에 문제가 발생하지는 않는다. 물론 NM이 다 죽는 최악의 경우에는 작업할 컨테이너 생성 자체가 안되기에 문제가 발생하지만 그런 경우는 거의 없다. 하지만 기본적인 YARN 구조에서 RM은 독단적으로 존재하며 작업 운영 상의 중요한 역할들을 맡고 있어서 RM 노드가 죽을 시 바로 내결함성은 보장되지 않는다.</p>
+<h2 id="YARN-HA-Process"><a href="#YARN-HA-Process" class="headerlink" title="YARN HA Process"></a>YARN HA Process</h2><p>결국 마스터-워커 구조인 YARN 또한 HDFS처럼 마스터가 죽으면 바로 운영이 중단된다. 따라서 고가용성 보장을 위하여 RM을 Active-StandBy 구조로 이중화하여 액티브 RM에 문제가 있을 시 바로 스탠바이 RM이 작동할 수 있도록 한다. HA 구조로 설정한 YARN의 프로세스는 아래의 그림과 같다.</p>
+<p><img src="/images/145.png" alt="Yarn"></p>
+<p>HDFS와 동일한 구조이기에 보통 네임노드와 같은 서버에 셋팅하는 경우가 많으며, 효율적인 리소스 사용을 위해 위 그림과 달리 한 서버에 액티브 네임노드와 스탠바이 RM을 두는 크로스 셋팅을 하기도 한다. 또한 Active-StandBy구조의 경우 필수적으로 Jookeeper의 failover Controller가 셋팅되어 각각의 생존여부를 Jookeeper가 관리하도록 한다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" rel="tag"># 빅데이터</a>
+              <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+              <a href="/tags/ecosystem/" rel="tag"># ecosystem</a>
+              <a href="/tags/yarn/" rel="tag"># Yarn</a>
+              <a href="/tags/resource/" rel="tag"># resource</a>
+              <a href="/tags/datastorage/" rel="tag"># datastorage</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/10/Python/Clean-code-1/" rel="prev" title="파이썬스러운 코드">
+      <i class="fa fa-chevron-left"></i> 파이썬스러운 코드
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/30/Hadoop/hadoop-9/" rel="next" title="Hive 아키텍쳐">
+      Hive 아키텍쳐 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          목차
+        </li>
+        <li class="sidebar-nav-overview">
+          훑어보기
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Core-Hadoop"><span class="nav-number">1.</span> <span class="nav-text">Core Hadoop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN"><span class="nav-number">2.</span> <span class="nav-text">YARN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN-Roles"><span class="nav-number">3.</span> <span class="nav-text">YARN Roles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN-Process"><span class="nav-number">4.</span> <span class="nav-text">YARN Process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fault-tolerance"><span class="nav-number">5.</span> <span class="nav-text">Fault tolerance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN-HA-Process"><span class="nav-number">6.</span> <span class="nav-text">YARN HA Process</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jess"
+      src="/images/bearabbit.png">
+  <p class="site-author-name" itemprop="name">Jess</p>
+  <div class="site-description" itemprop="description">I love to learn, and try to be better than yesterday.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">카테고리</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">369</span>
+        <span class="site-state-item-name">태그</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jess</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const w = canvas.width = document.body.offsetWidth;
+    const h = canvas.height = document.body.offsetHeight;
+    const cols = Math.floor(w / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+
+    function matrix () {
+      ctx.fillStyle = '#0001';
+      ctx.fillRect(0, 0, w, h);
+  
+      ctx.fillStyle = '#009600';
+      ctx.font = '14pt monospace';
+  
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(Math.random() * 512);
+        const x = ind * 20;
+        ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+        else ypos[ind] = y + 20;
+      });
+    }
+    setInterval(matrix, 50);
+  </script>
+
+</body>
+</html>

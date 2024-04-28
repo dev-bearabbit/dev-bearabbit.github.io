@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/test1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideDownIn"}}
+  };
+</script>
+
+  <meta name="description" content="Github에서 제공하는 Action 기능을 통해 데이터 스크래핑 및 적재를 자동화합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github Action으로 스크래핑 자동화하기">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2022/05/05/Git/git-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="Github에서 제공하는 Action 기능을 통해 데이터 스크래핑 및 적재를 자동화합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/164.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/163.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/165.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/166.png">
+<meta property="article:published_time" content="2022-05-05T04:27:37.000Z">
+<meta property="article:modified_time" content="2022-06-03T15:42:32.000Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="Action">
+<meta property="article:tag" content="yml">
+<meta property="article:tag" content="자동화">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/164.png">
+
+<link rel="canonical" href="https://dev-bearabbit.github.io/2022/05/05/Git/git-0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Github Action으로 스크래핑 자동화하기 | DEV AnythinG</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QW3E4LZZNF"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-QW3E4LZZNF');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <style>
+    body {
+    margin:0;
+    padding:0;
+    backgroud-color: #000000;
+    }
+    canvas{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left:0;
+    z-index:-1;
+    }
+    div{
+    z-index:0;
+    }
+  </style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <canvas id="canvas" style="width: 100%; height: 100%; padding: 0; margin: 0;"></canvas>
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DEV AnythinG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">welcome :)</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user"></i>about</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/dev-bearabbit" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2022/05/05/Git/git-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/bearabbit.png">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Github Action으로 스크래핑 자동화하기
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              <time title="Post created: 2022-05-05 13:27:37" itemprop="dateCreated datePublished" datetime="2022-05-05T13:27:37+09:00">2022-05-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">DevOps</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/devops/git-github/" itemprop="url" rel="index">
+                    <span itemprop="name">git/github</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Github에서 제공하는 Action 기능을 통해 데이터 스크래핑 및 적재를 자동화합니다.<br><a id="more"></a></p>
+<hr>
+<p>이번 글은 깃허브에서 무료로 사용할 수 있는 액션이라는 기능을 사용하여 데이터 적재를 자동화하는 과정을 공유하고자 한다.</p>
+<h2 id="Github-Action"><a href="#Github-Action" class="headerlink" title="Github Action"></a>Github Action</h2><p>깃허브 액션은 모든 레파지토리에서 사용할 수 있다. 보통은 레파지토리의 상단 바에서 <code>Actions</code>이라는 카테고리를 찾을 수 있다. 만약 <code>Actions</code>이 없다면 Settings &gt; Action &gt; General &gt; ‘Disable Actions’ 선택되어 있는지 확인하고 ‘Allow all actions and reusable workflows’로 변경해주면 아래 사진처럼 보일 것이다.</p>
+<p><img src="/images/164.png" alt="action bar"></p>
+<p>액션 카테고리로 들어로면 워크플로우를 생성하는 첫 페이지가 보일 것이다. 깃허브에서는 장고, 패키지 생성, 파이린트 등 상황에 따라서 사용할 수 있는 여러 워크플로우 템플릿을 제공한다.</p>
+<p><img src="/images/163.png" alt="action"></p>
+<p>이번에는 템플릿 사용 없이 직접 워크플로우를 생성할 것이기에 ‘set up a workflow yourself’을 선택한다. 그럼 설명과 같이 yaml 파일을 작성하는 페이지가 나온다.</p>
+<p><img src="/images/165.png" alt="action page"></p>
+<p>이제 여기에 코드를 알맞게 입력하고 commit 입력하면 작업(Job)이 생성된다.</p>
+<h2 id="Workflow-작성"><a href="#Workflow-작성" class="headerlink" title="Workflow 작성"></a>Workflow 작성</h2><p>이번에 작성할 워크플로우의 조건은 아래와 같다.</p>
+<ul>
+<li>하루에 한번 작동하기</li>
+<li>데이터를 가져와서 DB서버에 Insert하기</li>
+<li>작업 실패 시 수동으로 재시도 가능하게 하기</li>
+</ul>
+<p>위 조건을 바탕으로 워크플로우를 작성하려고 한다. 먼저 액션에서 사용되는 yaml 파일의 레이아웃은 아래와 같다.</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 워크플로우 이름 설정</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">여기에</span> <span class="string">작성한</span> <span class="string">이름이</span> <span class="string">액션</span> <span class="string">작업의</span> <span class="string">이름이</span> <span class="string">된다.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 워크플로우가 작동되는 조건 설정</span></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="comment"># 자동으로 언제 작동하는지 설정</span></span><br><span class="line">  <span class="attr">schedule:</span></span><br><span class="line">  <span class="comment"># 수동으로 워크플로우를 작동할 수 있도록 설정</span></span><br><span class="line">  <span class="attr">workflow_dispatch:</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 워크플로우에서 작업할 내용들 설정</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="comment"># 작업이 진행될 환경 설정</span></span><br><span class="line">  <span class="attr">build-linux:</span></span><br><span class="line">  <span class="comment"># 작업 내용 설정</span></span><br><span class="line">  <span class="attr">steps:</span></span><br></pre></td></tr></table></figure>
+<p>위 레이아웃을 기준으로 필요한 작업들을 하나씩 작성해보자.</p>
+<h3 id="schedule"><a href="#schedule" class="headerlink" title="schedule"></a>schedule</h3><p>먼저 매일 특정 시간에 작업이 실행되도록 설정하고자 한다. 액션에서는 리눅스 <code>cron</code>을 지원한다.</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">schedule:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">cron:</span> <span class="string">'40 4 * * *'</span></span><br></pre></td></tr></table></figure>
+<p>액션에서 작동하는 <code>cron</code>은 UTC 기준이기 때문에 시간을 잘 맞춰주어야 한다. UTC는 9시간을 더해야 한국 시간이며, 따라서 위 시간은 한국시간으로 13시 40분이다.</p>
+<h3 id="workflow-dispatch"><a href="#workflow-dispatch" class="headerlink" title="workflow_dispatch"></a>workflow_dispatch</h3><p>이제 수동으로 작업을 실행할 수 있는 코드도 작성해보자. 보통 테스트를 해야하거나 작업이 실패했을 시 수동으로 작업을 실행하기 위해서 해당 코드도 추가한다.</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">workflow_dispatch:</span></span><br></pre></td></tr></table></figure>
+<p>그러면 액션에서 아래처럼 수동으로 실행할 수 있는 트리거가 생성된다.</p>
+<p><img src="/images/166.png" alt="action2"></p>
+<h3 id="build-linux"><a href="#build-linux" class="headerlink" title="build-linux"></a>build-linux</h3><p>이제 작업이 실행될 리눅스 환경을 설정한다. <code>max-parallel</code>은 병렬로 처리하려는 작업의 개수를 지정하며, <code>matrix</code>는 작업을 실행할 언어 버전을 지원한다. 아래 코드는 파이썬 3.9 버전에서 작동되도록 설정한 것이다.</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">build-linux:</span></span><br><span class="line">  <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">    <span class="attr">max-parallel:</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">matrix:</span></span><br><span class="line">      <span class="attr">python-version:</span> <span class="string">[3.9]</span></span><br></pre></td></tr></table></figure>
+<p>위 코드는 ubuntu 운영체제를 바탕으로 파이썬 3.9 버전을 병렬처리 없이 1개의 환경에서 진행된다는 의미이다.</p>
+<h3 id="steps"><a href="#steps" class="headerlink" title="steps"></a>steps</h3><p>이제 본격적으로 작업내용을 작성해보자. 일단 스크래핑을 자동화하는 방법은 다음과 같다.</p>
+<ol>
+<li>사용할 코드 가져오기 (actions/checkout@v2)</li>
+<li>파이썬 설치하기 (Set up Python)</li>
+<li>필요한 패키지 설치하기(Install python package)</li>
+<li>크롬드라이버 설치하기 (Setup Chromedriver)</li>
+<li>파이썬 스크립트 실행하기 (Build)</li>
+</ol>
+<p>위에서 사용되는 파이썬 스크립트는 데이터를 스크래핑해서 DB에 저장하는 코드를 작성한 것이다.</p>
+<h2 id="최종-스크립트"><a href="#최종-스크립트" class="headerlink" title="최종 스크립트"></a>최종 스크립트</h2><p>위 내용들을 바탕으로 작성한 최종 스크립트는 아래와 같다.</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">auto-scraping</span> <span class="string">KBOdata</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">schedule:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">cron:</span> <span class="string">'40 4 * * *'</span></span><br><span class="line">    <span class="comment"># UTC가 default. 한국 시간으로 오후 1시 40분 실행</span></span><br><span class="line">  <span class="attr">workflow_dispatch:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build-linux:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">strategy:</span></span><br><span class="line">      <span class="attr">max-parallel:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">matrix:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">[3.9]</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span> <span class="string">&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-python@v1</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">python-version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.python-version</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">python</span> <span class="string">package</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">pip</span> <span class="string">install</span> <span class="string">kbodata</span></span><br><span class="line">        <span class="string">pip</span> <span class="string">install</span> <span class="string">-r</span> <span class="string">requirements.txt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Setup</span> <span class="string">Chromedriver</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">nanasess/setup-chromedriver@v1.0.1</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">cd</span> <span class="string">kbo_data</span></span><br><span class="line">        <span class="string">python</span> <span class="string">action.py</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DB_INFO</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># Git</a>
+              <a href="/tags/action/" rel="tag"># Action</a>
+              <a href="/tags/yml/" rel="tag"># yml</a>
+              <a href="/tags/%EC%9E%90%EB%8F%99%ED%99%94/" rel="tag"># 자동화</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/07/Sql/sql-6/" rel="prev" title="입양 시각 구하기(2) 해설">
+      <i class="fa fa-chevron-left"></i> 입양 시각 구하기(2) 해설
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/17/Rust/rust-9/" rel="next" title="String과 str 차이">
+      String과 str 차이 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          목차
+        </li>
+        <li class="sidebar-nav-overview">
+          훑어보기
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Github-Action"><span class="nav-number">1.</span> <span class="nav-text">Github Action</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Workflow-작성"><span class="nav-number">2.</span> <span class="nav-text">Workflow 작성</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#schedule"><span class="nav-number">2.1.</span> <span class="nav-text">schedule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#workflow-dispatch"><span class="nav-number">2.2.</span> <span class="nav-text">workflow_dispatch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-linux"><span class="nav-number">2.3.</span> <span class="nav-text">build-linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#steps"><span class="nav-number">2.4.</span> <span class="nav-text">steps</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#최종-스크립트"><span class="nav-number">3.</span> <span class="nav-text">최종 스크립트</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jess"
+      src="/images/bearabbit.png">
+  <p class="site-author-name" itemprop="name">Jess</p>
+  <div class="site-description" itemprop="description">I love to learn, and try to be better than yesterday.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">카테고리</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">369</span>
+        <span class="site-state-item-name">태그</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jess</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const w = canvas.width = document.body.offsetWidth;
+    const h = canvas.height = document.body.offsetHeight;
+    const cols = Math.floor(w / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+
+    function matrix () {
+      ctx.fillStyle = '#0001';
+      ctx.fillRect(0, 0, w, h);
+  
+      ctx.fillStyle = '#009600';
+      ctx.font = '14pt monospace';
+  
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(Math.random() * 512);
+        const x = ind * 20;
+        ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+        else ypos[ind] = y + 20;
+      });
+    }
+    setInterval(matrix, 50);
+  </script>
+
+</body>
+</html>
