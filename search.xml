@@ -1,6 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>파이썬과 비교하며 배우는 러스트 프로그래밍 리뷰 1편</title>
+    <url>/2024/06/07/Rust/rust-12/</url>
+    <content><![CDATA[<p>『파이썬과 비교하며 배우는 러스트 프로그래밍』 을 읽으며 기억해두면 좋을 것 같은 러스트 지식들을 정리합니다.<br><a id="more"></a></p>
+<h2 id="파이썬-개발자-러스트를-배워야-하는-이유"><a href="#파이썬-개발자-러스트를-배워야-하는-이유" class="headerlink" title="파이썬 개발자 러스트를 배워야 하는 이유"></a>파이썬 개발자 러스트를 배워야 하는 이유</h2><ul>
+<li>파이썬의 연산 속도를 개선한다. pandas나 numpy는 이미 C++로 작성되어 있음.</li>
+<li>멀티스레딩 구현이 훨씬 쉽다. 파이썬은 GIL(Global Interpreter Lock)로 멀티스레딩 성능이 좋지 못함.</li>
+<li>개발도구가 매우 편리하다.</li>
+</ul>
+<p><strong>GIL(Global Interpreter Lock)란</strong><br> 여러 스레드가 파이썬 코드를 동시에 싱행하지 못하도록 파이썬 객체들에 접근을 못하게 하는 뮤텍스.</p>
+<h2 id="러스트가-많이-사용되는-분야"><a href="#러스트가-많이-사용되는-분야" class="headerlink" title="러스트가 많이 사용되는 분야"></a>러스트가 많이 사용되는 분야</h2><ul>
+<li>커맨드라인(CLI) 앱</li>
+<li>고성능 네트워크가 필요한 분야</li>
+<li>웹어셈블리</li>
+<li>임베디드</li>
+</ul>
+<p><strong>웹어셈블리란</strong><br> 자바스크립트가 아닌 다른 다양한 프로그래밍 언어로 작성한 코드를 웹 브라우저에서 직접 실행할 수 있게 하는 기술.</p>
+<h2 id="러스트-기초-지식"><a href="#러스트-기초-지식" class="headerlink" title="러스트 기초 지식"></a>러스트 기초 지식</h2><h3 id="Cargo-사용법"><a href="#Cargo-사용법" class="headerlink" title="Cargo 사용법"></a>Cargo 사용법</h3><p>rust에서 빌드는 기본적으로 디버그 모드이다. 만약 릴리즈 모드로 컴파일하고 싶다면 옵션 <code>--release</code>를 붙여야 한다.<br><code>cargo fmt</code> 명령어를 사용하면 공백이나 줄바꿈 등 포맷을 한번에 정리할 수 있고, <code>cargo clippy</code> 명령어를 사용하면 린트를 확인할 수 있다.</p>
+<h3 id="코드-컨벤션"><a href="#코드-컨벤션" class="headerlink" title="코드 컨벤션"></a>코드 컨벤션</h3><p>코드를 개발할 때 변수와 함수는 스네이크 표기법, 구조체는 파스칼 표기법, 상수는 스트리밍 스네이크 표기법 사용한다.</p>
+<ul>
+<li>스네이크 표기법: 소문자 + 언더바(_) (my_function)</li>
+<li>파스칼 표기법: 첫글자대문자 + 붙여쓰기 (MyStruct)</li>
+<li>스트리밍 스네이크 표기법: 대문자 + 언더바(_) (MY_CONST)</li>
+</ul>
+<h2 id="데이터-타입"><a href="#데이터-타입" class="headerlink" title="데이터 타입"></a>데이터 타입</h2><ul>
+<li>러스트 자체 원시타입</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>타입</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{n}비트 정수</td>
+<td>i8, i16, i32, i64, i128</td>
+</tr>
+<tr>
+<td>부호없는 {n}비트 정수</td>
+<td>u8, u16, u32, u64, u128</td>
+</tr>
+<tr>
+<td>아키텍처</td>
+<td>isize, usize</td>
+</tr>
+<tr>
+<td>{n}비트 부동소수점 실수</td>
+<td>f32, f64</td>
+</tr>
+<tr>
+<td>불리언</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>문자</td>
+<td>Char</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>isize, usize는 컴퓨터가 32비트인지 64비트인지에 따라 값이 결정되는 기본 포인터 크기이다.</p>
+<ul>
+<li>std 라이브러리에서 제공되는 타입</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>타입</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>문자열</td>
+<td>String</td>
+</tr>
+<tr>
+<td>문자열 슬라이스</td>
+<td>str</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>개인적인 의견</strong><br> 책에는 문자열 슬라이스인 str이 원시타입에 들어있고 char이 없었는데 이 부분은 의아하다.<br> 내가 알기로는 str은 std 라이브러리에서 제공하는 타입이고 char이 원시타입이었는데 말이다.<br> 해당 진위여부는 나중에 좀 더 찾아봐야겠다 (내가 잘못 알고 있는 걸수도 있다)</p>
+<h2 id="익명함수-클로저"><a href="#익명함수-클로저" class="headerlink" title="익명함수: 클로저"></a>익명함수: 클로저</h2><ul>
+<li>파이썬의 람다함수와 동일한 역할.</li>
+<li>람다 함수는 반드시 한 줄로 작성해야 하지만 클로저는 중괄호로 묶으면 여러 줄 작성 가능함.</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">//예시코드 1</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> my_func = |x| x + <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, my_func(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//예시코드 2</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> my_func = |x:<span class="built_in">i32</span>| -&gt; <span class="built_in">i32</span> &#123; x + <span class="number">1</span> &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, my_func(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//예시코드 3</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> my_func = |x:<span class="built_in">i32</span>| -&gt; <span class="built_in">i32</span> &#123;</span><br><span class="line">        x = x + <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,x);</span><br><span class="line">    &#125;;</span><br><span class="line">    my_func(<span class="number">3</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="매크로"><a href="#매크로" class="headerlink" title="매크로"></a>매크로</h2><ul>
+<li>파이썬의 매크로는 매개변수 개수가 가변적임.</li>
+<li>러스트에서는 token tree를 사용하여 받을 매개변수를 미리 정해두어야 함.</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Language</category>
+        <category>rust</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>rust</tag>
+        <tag>review</tag>
+        <tag>book</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>FAISS 사용법 및 예제 코드</title>
     <url>/2024/04/21/Package/pack-3/</url>
     <content><![CDATA[<p>다양한 인덱싱 방법을 제공하는 faiss 라이브러리에 대해서 알아보고 사용법을 정리합니다.<br><a id="more"></a></p>
