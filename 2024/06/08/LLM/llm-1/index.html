@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/test1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://dev-bearabbit.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideDownIn"}}
+  };
+</script>
+
+  <meta name="description" content="LLM을 사용하여 사내가이드 슬랙봇 만드는 방법을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="요즘 유행하는 ChatGPT로 슬랙봇 만들기 2편">
+<meta property="og:url" content="https://dev-bearabbit.github.io/2024/06/08/LLM/llm-1/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="LLM을 사용하여 사내가이드 슬랙봇 만드는 방법을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2024-06-08T09:34:19.000Z">
+<meta property="article:modified_time" content="2024-06-08T11:19:18.605Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="ChatGPT">
+<meta property="article:tag" content="RAG">
+<meta property="article:tag" content="Prompt">
+<meta property="article:tag" content="프롬프트">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="인공지능">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://dev-bearabbit.github.io/2024/06/08/LLM/llm-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>요즘 유행하는 ChatGPT로 슬랙봇 만들기 2편 | DEV AnythinG</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QW3E4LZZNF"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-QW3E4LZZNF');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <style>
+    body {
+    margin:0;
+    padding:0;
+    backgroud-color: #000000;
+    }
+    canvas{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left:0;
+    z-index:-1;
+    }
+    div{
+    z-index:0;
+    }
+  </style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <canvas id="canvas" style="width: 100%; height: 100%; padding: 0; margin: 0;"></canvas>
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DEV AnythinG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">welcome :)</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user"></i>about</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/dev-bearabbit" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ko">
+    <link itemprop="mainEntityOfPage" href="https://dev-bearabbit.github.io/2024/06/08/LLM/llm-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/bearabbit.png">
+      <meta itemprop="name" content="Jess">
+      <meta itemprop="description" content="I love to learn, and try to be better than yesterday.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DEV AnythinG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          요즘 유행하는 ChatGPT로 슬랙봇 만들기 2편
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              <time title="Post created: 2024-06-08 18:34:19" itemprop="dateCreated datePublished" datetime="2024-06-08T18:34:19+09:00">2024-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machinelearning/" itemprop="url" rel="index">
+                    <span itemprop="name">MachineLearning</span>
+                  </a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machinelearning/llm/" itemprop="url" rel="index">
+                    <span itemprop="name">LLM</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>LLM을 사용하여 사내가이드 슬랙봇 만드는 방법을 정리합니다.<br><a id="more"></a></p>
+<hr>
+<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>1편 뒤에 바로 2편을 쓴다고 다짐했었지만 게으름과 귀찮음에 사로잡혀 이제서야 글을 써본다. 마음속의 내 모습은 갓생 사는 직장인인데, 현생에서는 그냥 일에 치이고 스트레스가 통제되지 않는 망나니에 가깝다. 언제나 스스로에게 실망하지만 포기하지 않고 끝까지 글을 써본다. 경험들을 하나씩 저장해두면 나중에 큰 자산이 될 것이라고 일단 믿어본다.</p>
+<h2 id="설계도면"><a href="#설계도면" class="headerlink" title="설계도면"></a>설계도면</h2><p>이번에 만든 슬랙봇 설계도는 다음과 같다.</p>
+<ol>
+<li>일배치로 원천 데이터를 업데이트 한다.</li>
+<li>원천 데이터가 업데이트 된다면 Vector DB도 업데이트 한다.</li>
+<li>Vector DB에는 문서 요약본과 문장(청크)이 구성되어 있다.</li>
+<li>유사도 분석은 문장 단위로 진행된다.</li>
+<li>질문에 가장 유사한 문장이 속한 문서 요약본을 GPT에 전달한다.</li>
+<li>질문과 문서 요약본을 보내 정리된 답을 받은 후 슬랙봇을 통해 전달한다.</li>
+<li>슬랙봇은 <code>@</code> 태그를 하거나 특정 채널에 글이 올라오면 쓰레드로 답변을 달아준다.</li>
+</ol>
+<h2 id="준비물"><a href="#준비물" class="headerlink" title="준비물"></a>준비물</h2><p>슬랙봇을 만들기 위해서는 여러가지 준비물이 필요하다.</p>
+<ul>
+<li>VectorDB를 만들 원천 데이터</li>
+<li>Slack 앱</li>
+<li>OpenAi 토큰</li>
+<li>응답을 반환해줄 서버</li>
+<li>약간의 돈 (또는 회사의 지원)</li>
+</ul>
+<h2 id="개발-순서"><a href="#개발-순서" class="headerlink" title="개발 순서"></a>개발 순서</h2><h3 id="1-원천-데이터를-수집-및-가공하기"><a href="#1-원천-데이터를-수집-및-가공하기" class="headerlink" title="1. 원천 데이터를 수집 및 가공하기"></a>1. 원천 데이터를 수집 및 가공하기</h3><p>우리 회사에서는 주요한 가이드를 모두 컨플루언스에 저장하고 관리하고 있었다. 따라서 개인 계정에서 API token을 하나 발급받아서 크롤링을 하면 된다. 크롤링은 빠르게 python의 requests 라이브러리를 사용하여 개발할 수 있다.</p>
+<p>나의 경우 먼저 가져오려는 space 이름으로 <code>space id</code>를 가져온 후 해당 스페이스에 있는 모든 <code>page</code> 데이터를 가져왔다. <code>page</code> 데이터의 경우 사용자가 추가하거나 업데이트 할 수 있기에 일배치로 실행하였다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># space 이름으로 아이디 가져오기</span></span><br><span class="line">url = <span class="string">"https://&#123;your-domain&#125;/wiki/api/v2/spaces"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 space id에 있는 모든 페이지 데이터 가져오기</span></span><br><span class="line">url = <span class="string">"https://&#123;your-domain&#125;/wiki/api/v2/spaces/&#123;id&#125;/pages"</span></span><br></pre></td></tr></table></figure>
+<p>API 관련된 자세한 설명은 <a href="https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#about" target="_blank" rel="noopener">컨플루언스 공식 페이지</a>에서 확인할 수 있다. token의 경우 요청을 날릴 때 <code>HTTPBasicAuth</code>를 사용하여 랩핑한 후 같이 보냈다. 아래 코드는 공식 API 가이드에 있는 예제 코드이다. 공식 페이지에 언어별로 잘 정리되어 있으니 참고하기 바란다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests.auth <span class="keyword">import</span> HTTPBasicAuth</span><br><span class="line"></span><br><span class="line">auth = HTTPBasicAuth(<span class="string">"email@example.com"</span>, <span class="string">"&lt;api_token&gt;"</span>)</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">  <span class="string">"Accept"</span>: <span class="string">"application/json"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">response = requests.request(</span><br><span class="line">   <span class="string">"GET"</span>,</span><br><span class="line">   url,</span><br><span class="line">   headers=headers,</span><br><span class="line">   auth=auth</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="2-Vector-DB-생성하기"><a href="#2-Vector-DB-생성하기" class="headerlink" title="2. Vector DB 생성하기"></a>2. Vector DB 생성하기</h3><p>원천 데이터가 준비 완료되었다면 Vector DB를 생성한다. Vector DB를 생성하는 구조는 다음과 같다.</p>
+<ol>
+<li>원천 데이터 가져오기</li>
+<li>요약본 만들기</li>
+<li>임베딩하기</li>
+<li>S3에 저장하기</li>
+</ol>
+<p>요약본을 생성하는 것은 랭체인(langchain)의 <code>TokenTextSplitter</code>를 사용하여 <code>Document</code>에 맞게 청크를 생성한 후 각각의 청크를 요약하고 이를 합치는 구조로 만들었다. 특히 <code>load_summarize_chain</code>를 사용할 때 chain_type을 <code>map_reduce</code>로 쓰지 않았는데 이는 테스트해보니 너무 많은 부분이 요약되었기 때문이다. 이 요약본의 목적은 이후 GPT에게 답변을 생성할 때 보내지는 데이터이다.</p>
+<p>그 다음 <code>UnstructuredHTMLLoader</code>를 사용하여 HTML 구조의 데이터를 문장 별로 쪼개 train set을 만들었다. 이 문장들을 임베딩하여 이후 유사도 분석에서 사용한다. 임베딩의 경우 OpenAI의 임베더를 사용하였으며, 모델은 <code>text-embedding-3-large</code>를 사용하였다. OpenAI의 임베더의 경우 한번에 처리할 수 있는 문자의 길이가 8192이기 때문에 한 문장이 이를 넘는다면 쪼개서 작업해야 한다.</p>
+<p>이렇게 하여 생성된 Vector DB의 컬럼은 다음과 같다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">"id"</span>, <span class="string">"version"</span>, <span class="string">"url"</span>, <span class="string">"title"</span>, <span class="string">"train"</span>, <span class="string">"summary"</span>, <span class="string">"content"</span>]</span><br></pre></td></tr></table></figure>
+<p><code>id</code>나 <code>version</code>을 추가한 이유는 업데이트 로직을 위함이다. 사용자가 해당 컨플루언스 페이지를 업데이트하면 API로 데이터를 가져올 때 Version 매트릭이 +1 된다. 이를 이용하여 Vector DB도 변동값이 있는 페이지만 다시 생성하는 것이다. 이렇게 작업한 이유는 간단하다. 임베딩에는 돈이 들어간다. 이미 임베딩이 된 페이지를 다시 진행할 필요는 없기 때문이다.</p>
+<p><code>url</code>의 경우에는 슬랙봇이 참고한 컨플루언스 URL을 같이 첨부해서 주기 때문이다. 이렇게 기획한 이유는 할루시네이션 이슈도 있고 더 자세한 정보를 알고 싶은 사용자에게 더 많은 데이터를 주기 위함도 있다.</p>
+<p>참고로 요약 요청 시 보내는 프롬프트의 경우 매우 간단하게 설정하였다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">너는 긴 문서를 정리하는 요약 도우미야. </span><br><span class="line">내용 무엇도 제외하지 말고 최대한 요약해줘.</span><br><span class="line">그리고 다음 규칙을 무조건 지켜야해.</span><br><span class="line">규칙0. 글에 예외사항이나 Q&amp;A가 있는 경우에는 무조건 가져와줘</span><br><span class="line">규칙1. 글에 시간, 증명자료, 지원여부 관련 설명이 있다면 무조건 가져와줘.</span><br></pre></td></tr></table></figure>
+<p>이렇게 만들어진 Vector DB는 S3에 parquet 파일로 저장해둔다.</p>
+<h3 id="3-유사도-분석-로직-개발하기"><a href="#3-유사도-분석-로직-개발하기" class="headerlink" title="3. 유사도 분석 로직 개발하기"></a>3. 유사도 분석 로직 개발하기</h3><p>이제 요리를 위한 재료 준비는 모두 끝났다. 조리 방법만 잘 정하면 된다. Vector DB를 다룰 수 있는 다양한 라이브러리들이 존재하지만 나는 FAISS를 사용했다. 특히 ChromaDB와 FAISS 중 무엇을 쓸지 고민했었는데 FAISS를 사용한 이유로는 다음과 같다.</p>
+<ul>
+<li>인덱싱이 빠르다.</li>
+<li>코드를 유연하게 개발할 수 있다.</li>
+<li>CPU 모드를 지원한다.</li>
+<li>확장성이 좋다.</li>
+</ul>
+<p>나는 이 분야의 전문가가 아니라서 최대한 고수준 API나 기능들을 제공해주는 라이브러리를 쓰고 싶었는데 ChromaDB는 너무 무겁고 생각보다 사용성이 편리하지 않았다. 특히 지금처럼 간단한 인덱싱 작업을 할꺼라면 차라리 FAISS로 개발하는게 훨씬 편한 것 같았다. 이렇게 사용할 라이브러리는 대충 정해졌다. 빠르게 개발을 시작한다.</p>
+<p>유사도 측정 알고리즘은 간단하게 내적을 이용하였다. 문장이 길지 않거니와 질문에 대한 정확한 답을 가져오는게 가장 우선시되었기 때문이다. 자세한 내용은 <a href="https://dev-bearabbit.github.io/2024/04/21/Package/pack-3/#more">해당 문서</a>에서 확인할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index = faiss.IndexIDMap(faiss.IndexFlatIP(encoded_data.shape[<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+<h3 id="4-응답을-생성할-백엔드-서버-구축하기"><a href="#4-응답을-생성할-백엔드-서버-구축하기" class="headerlink" title="4. 응답을 생성할 백엔드 서버 구축하기"></a>4. 응답을 생성할 백엔드 서버 구축하기</h3><p>RAG 아키텍처에 맞춰서 질문과 함께 요청이 들어오면 다음과 같이 진행한다.</p>
+<ol>
+<li>질문을 임베딩하고 메모리에 올라가 있는 Vector DB에서 유사도 분석을 진행한다.</li>
+<li>유사도가 가장 높은 20개의 요약본을 GPT에게 보내 최대 3개까지 질문에 대한 답이 있는 문서 ID를 달라고 요청한다.</li>
+<li>GPT가 뽑아준 문서 ID의 원본을 다시 GPT에게 보내 사용자에게 반환될 응답을 생성한다.</li>
+<li>슬랙 API로 응답을 보낸다.</li>
+</ol>
+<p>이는 간단한 fastapi 앱으로 개발하였다. 백엔드 서버의 경우 데이터팀이 구축 및 관리하고 있는 인프라 클러스터가 있어서 그 위에 살짝 올려두었으며, 매일 Vector DB가 업데이트 되면 다시 parquet 파일을 읽도록 설정해두었다. 이렇게 하면 Vector DB 사이즈가 작은 경우에는 따로 복잡한 미들웨어를 추가할 필요 없이 사용이 가능하다.</p>
+<h3 id="5-슬랙-앱-생성하기"><a href="#5-슬랙-앱-생성하기" class="headerlink" title="5. 슬랙 앱 생성하기"></a>5. 슬랙 앱 생성하기</h3><p>마지막으로 직접적으로 사용자에게 제공할 인터페이스를 만든다. 슬랙 앱을 사용하는 방법은 <a href="https://slack.com/intl/ko-kr/help/articles/13345326945043-Slack-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EB%8F%84%EA%B5%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%B4-%EC%95%B1-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0" target="_blank" rel="noopener">slack 홈페이지</a>에도 잘 나와있다.</p>
+<p>슬랙의 앱 디렉토리로 가서 새로 앱을 생성한 후 설정에 들어가서 몇 가지 조작만 해주면 된다.<br>나의 경우 Event Subscription 기능을 사용하여 특정 이벤트가 발생한 경우 백엔드 서버로 요청이 올 수 있도록 설정하였다.<br>Event Subscription 기능에 대해서는 <a href="https://api.slack.com/apis/events-api#challenge" target="_blank" rel="noopener">공식 문서</a>에서 자세히 확인할 수 있다.</p>
+<h2 id="개발-후기"><a href="#개발-후기" class="headerlink" title="개발 후기"></a>개발 후기</h2><p>처음 시작했을 때는 큰 기대 없이 호기심을 해결할 겸 공부할 겸 그렇게 겸사겸사 시작했었다. 하지만 생각보다 좋은 성능을 보여줬고, 사내에서도 반응이 꽤나 좋았다. 가장 잊어버리기 쉬운 와이파이 비밀번호나 프린터 사용법, 근무 규칙 등등의 질문들을 잘 답변해주었고 때로는 특정 업무의 담당자가 누구인지도 잘 설명해주었다. 아직 부족한 부분들도 보이지만 프로토 타입치고는 성능이 좋았다. 다음에는 시간되면 해당 슬랙봇의 성능을 높이기 위한 시도들도 해봐야겠다.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/llm/" rel="tag"># LLM</a>
+              <a href="/tags/chatgpt/" rel="tag"># ChatGPT</a>
+              <a href="/tags/rag/" rel="tag"># RAG</a>
+              <a href="/tags/prompt/" rel="tag"># Prompt</a>
+              <a href="/tags/%ED%94%84%EB%A1%AC%ED%94%84%ED%8A%B8/" rel="tag"># 프롬프트</a>
+              <a href="/tags/ai/" rel="tag"># AI</a>
+              <a href="/tags/%EC%9D%B8%EA%B3%B5%EC%A7%80%EB%8A%A5/" rel="tag"># 인공지능</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/07/Rust/rust-12/" rel="prev" title="파이썬과 비교하며 배우는 러스트 프로그래밍 리뷰 1편">
+      <i class="fa fa-chevron-left"></i> 파이썬과 비교하며 배우는 러스트 프로그래밍 리뷰 1편
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          목차
+        </li>
+        <li class="sidebar-nav-overview">
+          훑어보기
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#시작하며"><span class="nav-number">1.</span> <span class="nav-text">시작하며</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#설계도면"><span class="nav-number">2.</span> <span class="nav-text">설계도면</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#준비물"><span class="nav-number">3.</span> <span class="nav-text">준비물</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#개발-순서"><span class="nav-number">4.</span> <span class="nav-text">개발 순서</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-원천-데이터를-수집-및-가공하기"><span class="nav-number">4.1.</span> <span class="nav-text">1. 원천 데이터를 수집 및 가공하기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Vector-DB-생성하기"><span class="nav-number">4.2.</span> <span class="nav-text">2. Vector DB 생성하기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-유사도-분석-로직-개발하기"><span class="nav-number">4.3.</span> <span class="nav-text">3. 유사도 분석 로직 개발하기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-응답을-생성할-백엔드-서버-구축하기"><span class="nav-number">4.4.</span> <span class="nav-text">4. 응답을 생성할 백엔드 서버 구축하기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-슬랙-앱-생성하기"><span class="nav-number">4.5.</span> <span class="nav-text">5. 슬랙 앱 생성하기</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#개발-후기"><span class="nav-number">5.</span> <span class="nav-text">개발 후기</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jess"
+      src="/images/bearabbit.png">
+  <p class="site-author-name" itemprop="name">Jess</p>
+  <div class="site-description" itemprop="description">I love to learn, and try to be better than yesterday.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">카테고리</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">370</span>
+        <span class="site-state-item-name">태그</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jess</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const w = canvas.width = document.body.offsetWidth;
+    const h = canvas.height = document.body.offsetHeight;
+    const cols = Math.floor(w / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+
+    function matrix () {
+      ctx.fillStyle = '#0001';
+      ctx.fillRect(0, 0, w, h);
+  
+      ctx.fillStyle = '#009600';
+      ctx.font = '14pt monospace';
+  
+      ypos.forEach((y, ind) => {
+        const text = String.fromCharCode(Math.random() * 512);
+        const x = ind * 20;
+        ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+        else ypos[ind] = y + 20;
+      });
+    }
+    setInterval(matrix, 50);
+  </script>
+
+</body>
+</html>
