@@ -1,0 +1,784 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Hexo 블로그를 만들기 위해서는 Github계정을 사용하는 것이 가장 편합니다. Github계정이 없는 분들은 Github에서 만들어 주세요! Github계정이 있는 분들이라면 바로 Hexo 블로그를 만들 수 있습니다">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github Page와 Hexo를 이용하여 블로그 만들기">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/AboutHexo/about-hexo-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="Hexo 블로그를 만들기 위해서는 Github계정을 사용하는 것이 가장 편합니다. Github계정이 없는 분들은 Github에서 만들어 주세요! Github계정이 있는 분들이라면 바로 Hexo 블로그를 만들 수 있습니다">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-02-27T09:18:23.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:32:21.996Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Github">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="헥소">
+<meta property="article:tag" content="깃허브">
+<meta property="article:tag" content="블로그">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Github Page와 Hexo를 이용하여 블로그 만들기 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="Github Page와 Hexo를 이용하여 블로그 만들기"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-02-27 18:18" pubdate>
+          2020년 2월 27일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          174 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Github Page와 Hexo를 이용하여 블로그 만들기</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Hexo 블로그를 만들기 위해서는 Github계정을 사용하는 것이 가장 편합니다. Github계정이 없는 분들은 <a target="_blank" rel="noopener" href="https://github.com">Github</a>에서 만들어 주세요! Github계정이 있는 분들이라면 바로 Hexo 블로그를 만들 수 있습니다</p>
+<span id="more"></span>
+<hr />
+<p>Hexo 블로그를 만들기 위해서는 크게 2가지의 과정이 필요하다.</p>
+<h2 id="github-repository-만들기">Github repository 만들기</h2>
+<p>Github repository 만드는 방법은 다음과 같다.</p>
+<ul>
+<li><p>Github계정에 들어가면 상단바에서 <code>Repositories</code>를 클릭한 후, <code>New</code>를 누른다.</p></li>
+<li><p>그 다음 <code>Repository name</code>에 <code>사용자이름.github.io</code>로 작성하고, <code>Public 모드</code>으로 설정한 다음 <code>create repository</code>를 누른다.</p></li>
+<li><p><code>repository</code>생성이 완료되면, 터미널을 켜서 원하는 디렉토리에 아래의 코드를 입력한다.</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/사용자이름/사용자이름.github.io<br></code></pre></td></tr></table></figure></p></li>
+<li><p>디렉토리를 설정하는 방법은 터미널에 <code>pwd</code>를 입력하여 현재 위치를 파악하고, <code>cd 이동하려는 위치 이름</code>을 입력하여 이동하면 된다. (Mac 기준)</p></li>
+<li><p>해당 디렉토리에 <code>사용자이름.github.io</code> 파일이 생성되었다면, 아래의 코드를 입력한다.</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> 사용자이름.github.io<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Hello World&quot;</span> &gt; index.html<br>git add --all<br>git commit -m <span class="hljs-string">&quot;Initial commit&quot;</span><br>git push -u origin master<br></code></pre></td></tr></table></figure></p></li>
+</ul>
+<p>완성되었다! 마지막으로 브라우저에서 <code>https://USERNAME.github.io</code>에 접속되는지 확인해보자.</p>
+<h2 id="hexo-만들기">Hexo 만들기</h2>
+<p>Hexo 셋팅을 하는 것은 몇 줄의 코드면 끝난다. 이제부터 아래의 코드를 순서대로 입력한다.</p>
+<h3 id="설치-전-준비해야-할-것">설치 전 준비해야 할 것</h3>
+<p>Hexo를 설치하기 전에 아래의 요소들을 다운로드 해야 한다. 이미 다운되어 있다면 다시 받을 필요는 없다. <a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a> <a target="_blank" rel="noopener" href="https://git-scm.com">Git</a></p>
+<h3 id="hexo-설치-코드">Hexo 설치 코드</h3>
+<p>설치를 시작하기에 앞서 터미널에서 Hexo파일을 저장할 디렉토리를 먼저 설정해야 한다. 디렉토리를 설정하는 방법은 <code>Github repository 만들기</code>에 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install hexo-cli -g<br>hexo init myBlog <span class="hljs-comment">#`myBlog`라는 파일을 만들기</span><br><span class="hljs-built_in">cd</span> myBlog <span class="hljs-comment">#myBlog로 디렉토리 설정</span><br>npm install<br></code></pre></td></tr></table></figure>
+<p>설치가 완료되었다.</p>
+<h3 id="블로그-기본-설정">블로그 기본 설정</h3>
+<p>Hexo를 설치하면서 생성한 폴더를 오픈한다. 그 다음 블로그의 기본적인 설정을 바꾸기 위해서 <code>_config.yml</code>를 열어준다. 텍스트 파일로 오픈해도 되지만 개인적으로는 <a target="_blank" rel="noopener" href="https://code.visualstudio.com">Visual studio code</a>을 사용하였다. 해당 파일에서 아래와 같은 부분을 수정하고 저장하면 된다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># site 정보 수정</span><br>title: DEV AnythinG <span class="hljs-comment"># 블로그 이름</span><br>subtitle:<br>description:<br>author: Hyeonji Ryu <span class="hljs-comment"># 사용자 이름</span><br><br><span class="hljs-comment"># URL 정보 수정</span><br>url: https://사용자이름.github.io <span class="hljs-comment"># 이 부분 수정</span><br>root: /<br>permalink: :year/:month/:day/:title/<br>permalink_defaults:<br><br><span class="hljs-comment"># Deployment</span><br>deploy:<br>  <span class="hljs-built_in">type</span>: git<br>  repo: https://github.com/사용자이름/사용자이름.github.io.git<br></code></pre></td></tr></table></figure>
+<h3 id="테스트-및-배포하기">테스트 및 배포하기</h3>
+<p>테스트를 위해서 터미널에 아래의 코드를 입력해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 테스트</span><br>hexo server<br></code></pre></td></tr></table></figure>
+<p>서버가 작동된 후에는 <code>http://localhost:4000</code>에서 변경사항이 적용된 블로그를 미리 볼 수 있다. 테스트 완료 후 Github repository에서 배포하면 블로그가 완성된다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 해당 리소스 생성</span><br>hexo generate<br><br><span class="hljs-comment"># 배포하기</span><br>hexo deploy<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/etc/" class="category-chain-item">etc.</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/etc/about-hexo/" class="category-chain-item">about hexo</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/hexo/" class="print-no-link">#Hexo</a>
+      
+        <a href="/tags/github/" class="print-no-link">#Github</a>
+      
+        <a href="/tags/blog/" class="print-no-link">#blog</a>
+      
+        <a href="/tags/%ED%97%A5%EC%86%8C/" class="print-no-link">#헥소</a>
+      
+        <a href="/tags/%EA%B9%83%ED%97%88%EB%B8%8C/" class="print-no-link">#깃허브</a>
+      
+        <a href="/tags/%EB%B8%94%EB%A1%9C%EA%B7%B8/" class="print-no-link">#블로그</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Github Page와 Hexo를 이용하여 블로그 만들기</div>
+      <div>https://dev-bearabbit.github.io/ko/AboutHexo/about-hexo-0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 2월 27일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-1/" title="1. 변수, 표현식과 명령문">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">1. 변수, 표현식과 명령문</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-0/" title="0. Why Julia?">
+                        <span class="hidden-mobile">0. Why Julia?</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

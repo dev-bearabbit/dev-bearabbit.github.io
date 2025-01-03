@@ -1,0 +1,823 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Resume 1차 레이아웃 완성">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Web/web-2/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2021-11-12T01:36:36.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:42.857Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="엔지니어">
+<meta property="article:tag" content="개발자">
+<meta property="article:tag" content="resume">
+<meta property="article:tag" content="이력서">
+<meta property="article:tag" content="커리어">
+<meta property="article:tag" content="career">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Resume 1차 레이아웃 완성 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="Resume 1차 레이아웃 완성"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-12 10:36" pubdate>
+          2021년 11월 12일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          112 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          1 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Resume 1차 레이아웃 완성</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다. <span id="more"></span></p>
+<h2 id="레이아웃-설계">레이아웃 설계</h2>
+<p>이전 글에서 결정한 요구조건은 다음과 같다.</p>
+<ul>
+<li>PDF로 내보내기 위해서는 한 페이지에 모든 내용을 볼 수 있어야 한다.</li>
+<li>Header에 애니메이션이 가미된 배경을 사용하여 생동감을 살리고 Navbar에 section을 연동시키자.</li>
+<li>반응형에서도 문제없도록 심플한 구조로 작성하자.</li>
+<li>구체적인 설명을 최대한 압축해서 작성하자.</li>
+<li>PDF에서도 해당 웹페이지로 들어올 수 있도록 링크를 걸어두자.</li>
+</ul>
+<p>이를 바탕으로 설계를 시작하였으며, 먼저 단락을 어떻게 나눌지 고민하였다.</p>
+<h2 id="섹션-나누기">섹션 나누기</h2>
+<p>어떤 내용이 들어가야 할까? 처음 떠오른 것들은 기본적인 개인정보, 간단한 소개글, 학력, 경력, 프로젝트, 블로그, 깃허브 등 이었다. 이를 몇 개의 섹션으로, 또 어떤 순서로 배열하는게 좋을까? 고민하다가 읽는 이가 자연스럽게 나에 대한 정보를 쌓아갈 수 있으면 좋을 것 같다는 생각이 들었다. 그 결과 순서는 다음과 같다.</p>
+<ul>
+<li>개인정보 &amp; 간단한 소개</li>
+<li>기술스택</li>
+<li>블로그 &amp; 깃허브</li>
+<li>경력</li>
+<li>프로젝트</li>
+<li>학력</li>
+</ul>
+<p>이렇게 나열한 이유는 아직 엔지니어로 일을 시작한지 1년도 안되었기 때문이다. 경력보다는 기술 스택이나 개인적으로 운영하는 블로그 &amp; 깃허브가 나를 표현하는 데 있어 좋은 방식이라고 생각했다. 그러면 경력은 왜 프로젝트보다 앞으로 배치했을까? 바로 차후에 진행되는 프로젝트들도 경력과 연관되어 있을 가능성이 99%기 때문이다. 즉, 내가 어떤 직무를 맡았을 때 했던 프로젝트인지를 연계하고자 경력을 먼저 언급하고 이후에 프로젝트의 세부적인 내용들을 제시한 것이다. 학력의 경우 사실 비전공자에 컴퓨터와는 전혀 상관이 없으므로 메리트 있는 요소는 아니라고 생각하여 맨 마지막에 배치하였다.</p>
+<p>이제 위 섹션들의 이름을 정할 차례이다. 섹션 제목의 경우 한글보다는 영어로 작성하는 것이 단어의 길이가 짧아서 인식되기 쉬울 것으로 예상하였다. 결정한 제목들은 다음과 같다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>섹션제목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>About</td>
+<td>개인정보 &amp; 간단한 소개</td>
+</tr>
+<tr class="even">
+<td>Skills</td>
+<td>기술스택</td>
+</tr>
+<tr class="odd">
+<td>Archiving</td>
+<td>블로그 &amp; 깃허브</td>
+</tr>
+<tr class="even">
+<td>Experience</td>
+<td>경력</td>
+</tr>
+<tr class="odd">
+<td>Project</td>
+<td>프로젝트</td>
+</tr>
+<tr class="even">
+<td>Education</td>
+<td>학력</td>
+</tr>
+</tbody>
+</table>
+<p>이제 디자인적인 요소들을 확인해보자.</p>
+<h2 id="테마-설정하기">테마 설정하기</h2>
+<p>자 어려운 문제에 도착하였다. 먼저 크게 3가지 정도를 결정해보기로 하였다.</p>
+<ul>
+<li>테마 컬러</li>
+<li>글씨체</li>
+<li>Header 배경</li>
+</ul>
+<p>먼저 테마 컬러이다. 사실 색상의 경우 "블로그와 컬러감이 유지 될 것"이라는 제한조건이 있었다. 그리하여 블로그 색상을 그래도 가져왔다. 색상은 크게 3가지이고 검정색, 회베이지색, 흰색이다. 검정색의 경우 부트스트랩에서 제공하는 <code>dark</code> 색상을 사용하였다.</p>
+<p>그다음 글씨체이다. 처음에는 예쁜 글씨체를 다운받아서 사용하려고 했으나 이력서 특성 상 너무 가벼워보이면 안될 것 같아 제공된 고딕체를 사용하였다.</p>
+<p>Header 배경은 정말 고민이 많았다. 웹페이지라는 부분을 살리고 싶어 애니메이션이 가미되었으면 좋겠다고 생각했는데, 화려한 애니메이션들은 생각보다 정신이 없었다. 그래서 배경화면은 "개발자스러운 표현, 컬러는 3개 이하, 흰색 또는 검은색 글씨가 오버레이 되어도 잘 보일 것"으로 제한을 걸고 찾아보았다. 그 결과 영화 매트릭스에 등장하는 검은색 배경에 숫자가 내려오는 애니메이션이 선택되었다.</p>
+<h2 id="언어-설정하기">언어 설정하기</h2>
+<p>이전 페이지는 한글과 영어를 같이 써두었다가 나중에는 영어만 남겨두었다. 하지만 국내에서 이직을 할 때 사용하려면 한국어 버전도 필요하였다. 처음에는 번역처럼 한글 아래에 영어를 작성하려고 하였으나 가독성도 좋지 못했고, 글이 너무 많아져서 해당 방법은 포기하였다. 어떻게 할까 하다가 상단 바에 언어를 선택할 수 있는 폼을 추가하였다. 이렇게 하면 나중에 이력서를 PDF로 만들어서 제출할 때도 언어에 따라서 제출할 수도 있고, 글도 추가되지 않는다.</p>
+<p>일단 완성된 이력서는 <a href="https://dev-bearabbit.github.io/Resume/">해당 링크</a>에서 확인할 수 있다. 완성된 페이지는 이미 각 섹션 별로 레이아웃이 잡혀있고 글도 채워져 있다. 다음 글에서는 섹션 별 레이아웃과 내용 정리 등에 대해서 이야기해보고자 한다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/programming/" class="category-chain-item">Programming</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/programming/web/" class="category-chain-item">web</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4/" class="print-no-link">#엔지니어</a>
+      
+        <a href="/tags/%EA%B0%9C%EB%B0%9C%EC%9E%90/" class="print-no-link">#개발자</a>
+      
+        <a href="/tags/resume/" class="print-no-link">#resume</a>
+      
+        <a href="/tags/%EC%9D%B4%EB%A0%A5%EC%84%9C/" class="print-no-link">#이력서</a>
+      
+        <a href="/tags/%EC%BB%A4%EB%A6%AC%EC%96%B4/" class="print-no-link">#커리어</a>
+      
+        <a href="/tags/career/" class="print-no-link">#career</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Resume 1차 레이아웃 완성</div>
+      <div>https://dev-bearabbit.github.io/ko/Web/web-2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2021년 11월 12일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Rust/rust-7/" title="Rust Cargo 사용하기">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Rust Cargo 사용하기</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Certificate/ADsP-3/" title="[ADsP] 회귀분석">
+                        <span class="hidden-mobile">[ADsP] 회귀분석</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,820 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="데이터 웨어하우스와 데이터 레이크에 대해 공부한 내용들을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="데이터 웨어하우스와 데이터 레이크">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Engineering/engineering-2/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="데이터 웨어하우스와 데이터 레이크에 대해 공부한 내용들을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/167.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/168.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/169.png">
+<meta property="article:published_time" content="2022-06-22T13:47:54.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:35:19.231Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="data">
+<meta property="article:tag" content="데이터웨어하우스">
+<meta property="article:tag" content="데이터레이크">
+<meta property="article:tag" content="warehouse">
+<meta property="article:tag" content="lake">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/167.png">
+  
+  
+  
+  <title>데이터 웨어하우스와 데이터 레이크 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="데이터 웨어하우스와 데이터 레이크"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-22 22:47" pubdate>
+          2022년 6월 22일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          77 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          1 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">데이터 웨어하우스와 데이터 레이크</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>데이터 웨어하우스와 데이터 레이크에 대해 공부한 내용들을 정리합니다. <span id="more"></span></p>
+<h2 id="시작하며">시작하며</h2>
+<p>데이터 분석에 가장 중요한 부분은 <strong>데이터</strong>이다. 하지만 일반적으로 운영 서비스에서 사용되는 데이터들은 분석에 적합한 형태가 아닌 경우가 많고 또 민감정보로 인해 분석으로 사용할 수 없는 경우도 있다. 따라서 데이터 분석을 위한 데이터 저장소가 필요하다. 그렇게 데이터 웨어하우스가 등장했고 하드웨어가 급속도로 발전하면서 데이터 레이크라는 개념도 등장했다. 이번 글에서는 두 저장소의 개념과 장단점에 대해서 정리해보고자 한다.</p>
+<h2 id="data-warehouse">Data Warehouse</h2>
+<p>데이터 웨어하우스(Data Warehouse, DW)는 분석에 필요한 데이터를 정제하여 적재하는 저장소이다. 운영 서비스 여기저기 흩뿌려져 있는 원천 데이터들을 분석에 필요한 카테고리 별로 정리하여 RDB 형태로 정리해둔 구조라고 보면 될 것 같다.</p>
+<figure>
+<img src="/images/167.png" srcset="/img/loading.gif" lazyload alt="DW" /><figcaption aria-hidden="true">DW</figcaption>
+</figure>
+<p>위 그림에서 알 수 있듯이 DW에 저장하기 전에 변환(Transform) 작업을 통해 데이터를 정제한다. 그 이유는 크게 데이터 품질 유지, 쿼리 속도 개선, 데이터 접근 제한 등이 있다.</p>
+<ul>
+<li>데이터 품질 유지: 원천 데이터 스키마나 데이터 타입 변경 시 ETL 파이프라인만 수정해주면 기존 DW 데이터 변환 없이 일관적으로 데이터를 적재할 수 있다.</li>
+<li>쿼리속도 개선: 카테고리 별로 정리하여 RDB 구조로 적재한 형태이기에 비교적 간단한 쿼리로 빠르게 원하는 결과를 얻을 수 있다.</li>
+<li>데이터 접근 제한: 원천 데이터 자체를 모두가 접근할 수 있다면 개인정보나 민감정보 이슈가 존재하게 되며 이는 법적 이슈가 될 수 있다. 또한 원천 데이터는 언제나 생각하는 것보다 기상천외하기에 일반 사용자들이 인사이트를 도출하기에는 어려움이 따를 수밖에 없다.</li>
+</ul>
+<p>데이터 웨어하우스는 데이터 관리가 편하고 사용자 또한 비교적 쉽게 이해한다는 장점이 있지만 이를 유지하기 위해서는 복잡한 ETL 파이프라인을 구축하고 유지보수 해야 한다. 또한 데이터 레이크에 비해 데이터 적재 작업에 하드웨어 리소스가 많이 사용되고 시간도 오래걸린다.</p>
+<h2 id="data-lake">Data Lake</h2>
+<p>데이터 레이크(Data Lake, DL)는 운영 서비스에서 생성되는 원천 데이터를 정제 없이 저장하여 보관하는 방식의 저장소이다. 즉, 데이터 웨어하우스처럼 복잡한 변환(Transform)없이 바로 저장하는 구조이다.</p>
+<figure>
+<img src="/images/168.png" srcset="/img/loading.gif" lazyload alt="DL" /><figcaption aria-hidden="true">DL</figcaption>
+</figure>
+<p>위 그림처럼 원천에서 그대로 가져와서 저장되기에 수집이 간단하고 리소스 매니징만 제대로 이루어지면 적재에는 문제가 없다는 장점이 있다. 또한 데이터 변환을 사용자가 진행하기에 테이블 스키마나 비즈니스 로직이 자주 변경되는 환경에서는 사용하기 용이하다.</p>
+<p>하지만 DW에 비해 많은 양의 데이터가 저장되고 무슨 데이터인지 한번에 파악하기도 어렵다는 단점이 있다. 적재되는 데이터 타입이 다양하기에 데이터 관리도 어렵고 아무도 쓰지 않는 정크 데이터가 하드웨어 리소스만 차지하고 있는 경우도 존재하기 쉽다. 따라서 데이터 레이크를 보다 효율적으로 잘 운영하기 위해서는 데이터 거버넌스 툴을 통해 메타데이터를 잘 관리해야 한다.</p>
+<p>데이터 레이크는 사용자에게 많은 자유도를 제공함으로써 다양한 분석 및 머신러닝 설계가 가능하지만 그만큼 데이터 처리가 사용자의 역할로 넘어가기에 DW보다는 더 많은 개발 실력이 요구된다.</p>
+<h2 id="비교">비교</h2>
+<p>뭐든 장점이 있다면 단점도 있다. 표로 정리해보자.</p>
+<table>
+<thead>
+<tr class="header">
+<th>비교</th>
+<th>데이터 웨어하우스</th>
+<th>데이터 레이크</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>데이터 타입</td>
+<td>정형</td>
+<td>정형/비정형/반정형</td>
+</tr>
+<tr class="even">
+<td>스키마</td>
+<td>schema on write/read</td>
+<td>schema on read</td>
+</tr>
+<tr class="odd">
+<td>데이터 처리</td>
+<td>필요</td>
+<td>불필요</td>
+</tr>
+<tr class="even">
+<td>데이터 양</td>
+<td>비교적 적음</td>
+<td>비교적 많음</td>
+</tr>
+<tr class="odd">
+<td>데이터 관리</td>
+<td>용이</td>
+<td>난해</td>
+</tr>
+</tbody>
+</table>
+<h2 id="사용방식">사용방식</h2>
+<p>보통 대부분의 기업들이 둘 다 사용하는 것 같다. 먼저 데이터 레이크를 구축하여 원천 데이터들을 일괄 적재한 후에 ETL 작업을 거쳐서 데이터 웨어하우스를 구축하는 방식이다. 이를 도식화하면 아래 그림과 같다.</p>
+<figure>
+<img src="/images/169.png" srcset="/img/loading.gif" lazyload alt="DWDL" /><figcaption aria-hidden="true">DWDL</figcaption>
+</figure>
+<p>위 구조로 사용하는 이유는 데이터를 사용하는 유저들의 폭이 넓어졌기 때문이다. 마케팅팀이나 기획팀에서도 데이터 기반 의사결정을 위해 필요한 데이터를 간단한 쿼리를 통해 가져가기도 하며, 운영 서비스에 연동되는 추천시스템 등을 구축하기 위해 사용하기도 한다. 두 가지의 케이스를 모두 매니징하기 위해서는 위 구조가 가장 적합한 것 같다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/bigdata/" class="category-chain-item">BigData</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/bigdata/engineering/" class="category-chain-item">engineering</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/data/" class="print-no-link">#data</a>
+      
+        <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%9B%A8%EC%96%B4%ED%95%98%EC%9A%B0%EC%8A%A4/" class="print-no-link">#데이터웨어하우스</a>
+      
+        <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A0%88%EC%9D%B4%ED%81%AC/" class="print-no-link">#데이터레이크</a>
+      
+        <a href="/tags/warehouse/" class="print-no-link">#warehouse</a>
+      
+        <a href="/tags/lake/" class="print-no-link">#lake</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>데이터 웨어하우스와 데이터 레이크</div>
+      <div>https://dev-bearabbit.github.io/ko/Engineering/engineering-2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2022년 6월 22일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Hadoop/hadoop-10/" title="Hue 설치 in Docker">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hue 설치 in Docker</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Package/pack-2/" title="PyO3란">
+                        <span class="hidden-mobile">PyO3란</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

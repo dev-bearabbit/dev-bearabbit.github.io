@@ -1,0 +1,834 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9. 인공신경망 구현 - 역전파 알고리즘">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-9/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/47.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/48.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/49.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/50.png">
+<meta property="article:published_time" content="2020-04-20T13:56:01.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:34:44.891Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="신경망">
+<meta property="article:tag" content="역전파">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/47.png">
+  
+  
+  
+  <title>9. 인공신경망 구현 - 역전파 알고리즘 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="9. 인공신경망 구현 - 역전파 알고리즘"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-04-20 22:56" pubdate>
+          2020년 4월 20일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          624 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">9. 인공신경망 구현 - 역전파 알고리즘</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<h2 id="역전파-알고리즘-구현">역전파 알고리즘 구현</h2>
+<p>이전 글에서 순전파 알고리즘을 사용하여 구현했던 'MNIST' 프로젝트를 역전파로 구현할 것이다. 'MNIST' 프로젝트에 대한 자세한 사항은 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">이전 글</a>에 있으니 먼저 읽어보고 오자. 특히 줄리아에서 MNIST 데이터셋을 불러오는 방법도 이전 글에 있으니 참고하기를 바란다.</p>
+<p>역전파 알고리즘은 다음과 같은 순서로 진행된다.</p>
+<ol type="1">
+<li>초기값과 매개 변수 설정</li>
+<li>역전파 알고리즘에 필요한 함수 정의</li>
+<li>역전파 알고리즘 - 신경망 계산 (순전파 방향)</li>
+<li>역전파 알고리즘 - 매개 변수 기울기 구하기 (역전파 방향)</li>
+<li>매개 변수 갱신</li>
+<li>3번 - 5번 과정을 횟수만큼 반복</li>
+</ol>
+<h3 id="초기값과-매개-변수-설정">초기값과 매개 변수 설정</h3>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">params = <span class="hljs-built_in">Dict</span>()<br>grads = <span class="hljs-built_in">Dict</span>()<br><br><span class="hljs-keyword">function</span> making_network(input_size, hidden_size, output_size, weight_init_std =<span class="hljs-number">0.01</span>)<br>    params[<span class="hljs-string">&quot;W1&quot;</span>] = weight_init_std * randn(<span class="hljs-built_in">Float64</span>, input_size, hidden_size)<br>    params[<span class="hljs-string">&quot;b1&quot;</span>] = zeros(<span class="hljs-built_in">Float32</span>, <span class="hljs-number">1</span>, hidden_size)<br>    params[<span class="hljs-string">&quot;W2&quot;</span>] = weight_init_std * randn(<span class="hljs-built_in">Float64</span>, hidden_size, output_size)<br>    params[<span class="hljs-string">&quot;b2&quot;</span>] = zeros(<span class="hljs-built_in">Float32</span>, <span class="hljs-number">1</span>, output_size)<br>    <span class="hljs-keyword">return</span>(params)<br><span class="hljs-keyword">end</span><br><br>making_network(<span class="hljs-number">784</span>, <span class="hljs-number">50</span>, <span class="hljs-number">10</span>)<br></code></pre></td></tr></table></figure>
+<p>매개 변수인 가중치와 편향을 설정하였다. 만약 초기값을 설정하는 방법을 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">이전 글</a>에서 확인할 수 있다.</p>
+<p>역전파는 신경망 계산이 진행될 때의 변수 값을 저장해서 매개 변수의 기울기를 구할 때 사용한다. 따라서 각각의 변수 값을 저장해두는 저장소가 필요하다. 우리는 이를 구조체로 설정할 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">mutable struct</span> dense_layer<br>    x<br>    w<br>    b<br>    dw<br>    db<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">mutable struct</span> Sigmoid<br>    z<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">mutable struct</span> ReLu<br>    mask<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">mutable struct</span> SoftmaxwithLoss<br>    y<br>    t<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment"># 계층마다 인스턴스를 만들어줘야 한다.</span><br><br>result = SoftmaxwithLoss(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>dense1 = dense_layer(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>dense2 = dense_layer(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>Sigmoid = Sigmoid(<span class="hljs-number">0</span>)<br>Relu = ReLu(<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+<p>각 층을 기준으로 구조체를 만들어준 후, 초기값을 셋팅하였다. 이제 학습 시 신경망 계산이 진행되면서 초기값들이 갱신될 것이다.</p>
+<h3 id="역전파-알고리즘에-필요한-함수-정의">역전파 알고리즘에 필요한 함수 정의</h3>
+<p>이제 역전파 알고리즘에 사용되는 함수를 정의할 것이다. 역전파 알고리즘에서는 신경망 계산 시 변수 값들을 저장해야 하기 때문에 순전파 함수와는 약간 다르다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> cross_entropy_error(y,t)<br>    delta = <span class="hljs-number">1e-7</span><br>    batch_size = length(y[:,<span class="hljs-number">1</span>])<br>    <span class="hljs-keyword">return</span> (-sum(log.(y.+delta).*t) / batch_size)<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> sigmoid(x)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>/(<span class="hljs-number">1</span>+exp(-x))<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> softmax_single(a)<br>    c = maximum(a)<br>    exp.(a .- c) / sum(exp.(a .- c))<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> softmax(a)<br>    temp = map(softmax_single, eachrow(a))<br>    <span class="hljs-keyword">return</span>(transpose(hcat(temp ...)))<br><br><span class="hljs-keyword">function</span> evaluate(test_x,test_y)<br>    temp = (sum((argmax.(eachrow(predict(test_x))).-<span class="hljs-number">1</span>) .== test_y)/size(test_x)[<span class="hljs-number">1</span>])<br>    <span class="hljs-keyword">return</span> (temp * <span class="hljs-number">100</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 함수들은 순전파 알고리즘에서 사용했던 함수와 똑같다. 이는 역전파 알고리즘 신경망 계산 파트에서 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> SoftmaxwithLoss_forward(x,t)<br>    y = softmax(x)<br>    loss = cross_entropy_error(y, t)<br>    result.y = y<br>    result.t = t<br>    <span class="hljs-keyword">return</span> loss<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> SoftmaxwithLoss_backward(result,dout=<span class="hljs-number">1</span>)<br>    batch_size = size(result.t)[<span class="hljs-number">1</span>]<br>    dx = (result.y-result.t) / batch_size<br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>역전파에서는 소프트맥스 함수와 손실 함수를 같이 사용한다. 그 이유는 간단하다. 미분했을 때의 수식이 훨씬 간편해진다. 위의 코드를 보면 알 수 있듯이 소프트맥스와 손실 함수를 같이 미분하면 <span class="math inline">\(\hat{y}_k - t_K\)</span>라는 간단한 식이 도출된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> dense_layer_forward(dense,x,w,b)<br>    cal = (x * w) .+ b<br>    dense.x = x<br>    dense.w = w<br>    dense.b = b<br>    <span class="hljs-keyword">return</span> cal<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> dense_layer_backward(dense, dout)<br>    dx = *(dout,<span class="hljs-built_in">Array</span>(dense.w&#x27;))<br>    dense.dw = *(<span class="hljs-built_in">Array</span>(dense.x&#x27;), dout)<br>    dense.db = <span class="hljs-built_in">Array</span>(sum(eachrow(dout))&#x27;)<br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>dense_layer</code>는 입력값과 가중치를 곱한 후, 편향을 더해주는 층(layer)이다. 역전파에서는 가중치와 편향, 입력값 각각의 편미분을 진행하였다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> sigmoid_forward(Sigmoid, x)<br>    dx = sigmoid.(x)<br>    Sigmoid.z = dx<br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> sigmoid_backward(Sigmoid, dout)<br>    dx = dout .* (<span class="hljs-number">1.0</span> .- Sigmoid.z) .* Sigmoid.z<br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>시그모이드 함수는 신경망 계산 시에 결과값을 저장해두어야 하기 때문에 구조체 <code>Sigmoid</code>에 저장한다. 그후 역전파 함수에서 가져와 미분을 진행한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> relu_forward(Relu, x)<br>    x = relu.(x)<br>    Relu.mask = x .&gt; <span class="hljs-number">0</span><br>    <span class="hljs-keyword">return</span> x<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> relu_backward(Relu,dout)<br>    dx = dout.* Relu.mask<br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>ReLU 함수의 경우 신경망 계산에서 음수인 입력값은 전부 0으로 변경되는데 이를 미분에서도 그대로 구현해주어야 한다. 따라서 0으로 변경되는 위치를 <code>mask</code>에 저장해두었다가 역전파 과정에서 사용한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> SGD(params,grads)<br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>        params[key] -= learning_rate * grads[key]<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> params<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>SGD()</code>는 확률적 경사하강법을 구현한 함수로 매개 변수 갱신을 진행한다.</p>
+<h2 id="역전파에-필요한-변수-정의">역전파에 필요한 변수 정의</h2>
+<p>그다음 역전파에 필요한 변수들을 정의한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">train_loss_list = <span class="hljs-built_in">Float64</span>[]<br>accuracy = <span class="hljs-built_in">Float64</span>[]<br>train_size = size(train_x)[<span class="hljs-number">1</span>]<br>batch_size = <span class="hljs-number">100</span><br>learning_rate = <span class="hljs-number">0.1</span><br>iters_num = <span class="hljs-number">600</span><br></code></pre></td></tr></table></figure>
+<h2 id="역전파-알고리즘">역전파 알고리즘</h2>
+<p>역전파를 구현하기 전 준비는 모두 끝났다. 이제 알고리즘을 작동시켜보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@time</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>: iters_num<br>        batch_mask = rand(<span class="hljs-number">1</span>:train_size, <span class="hljs-number">100</span>)<br>        x_batch = train_x[batch_mask, :]<br>        t_batch = t[batch_mask, :]<br><br>        <span class="hljs-comment"># 순전파</span><br>        z1 = dense_layer_forward(dense1,x_batch,params[<span class="hljs-string">&quot;W1&quot;</span>],params[<span class="hljs-string">&quot;b1&quot;</span>])<br>        a1 = sigmoid_forward(Sigmoid1,z1)<br>        z2 = dense_layer_forward(dense2,a1,params[<span class="hljs-string">&quot;W2&quot;</span>],params[<span class="hljs-string">&quot;b2&quot;</span>])<br>        num = SoftmaxwithLoss_forward(z2,t_batch)<br><br>        <span class="hljs-comment"># 역전파</span><br>        last_layer = SoftmaxwithLoss_backward(result)<br>        z2_back = dense_layer_backward(dense2, last_layer)<br>        grads[<span class="hljs-string">&quot;W2&quot;</span>] = dense2.dw<br>        grads[<span class="hljs-string">&quot;b2&quot;</span>] = dense2.db<br>        a1_back = sigmoid_backward(Sigmoid1, z2_back)<br>        z1_back = dense_layer_backward(dense1, a1_back)<br>        grads[<span class="hljs-string">&quot;W1&quot;</span>] = dense1.dw<br>        grads[<span class="hljs-string">&quot;b1&quot;</span>] = dense1.db<br><br>        <span class="hljs-comment">#가중치 갱신 (SGD)</span><br>        SGD(params, grads)<br><br>        temp_loss = loss(x_batch, t_batch)<br>        print(<span class="hljs-string">&quot;NO.<span class="hljs-variable">$i</span>: &quot;</span>)<br>        println(temp_loss)<br>        append!(train_loss_list, temp_loss)<br>        append!(accuracy, evaluate(test_x, test_y))<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br></code></pre></td></tr></table></figure>
+<p>이전에 구현했던 순전파와 똑같이 1에폭 학습을 진행한다. 위 알고리즘의 프로세스는 다음과 같다.</p>
+<ul>
+<li><p>먼저 입력 데이터 60000개 중에 100개를 무작위로 뽑아서 배치 데이터셋을 생성한다.</p></li>
+<li><p>신경망 계산을 통해 역전파에 필요한 값들을 구조체의 인스턴스에 저장한다.</p></li>
+<li><p>역전파 과정을 진행하여 미분값들을 도출하고 저장한다.</p></li>
+<li><p>역전파로 얻은 미분값들을 사용하여 매개 변수를 갱신한다.</p></li>
+<li><p>갱신한 가중치와 편향으로 손실 함수의 값을 구한 후 <code>train_loss_list</code>에 추가한다.</p></li>
+<li><p>해당 모델을 사용하여 실제 실험데이터를 얼마나 맞추는지 확률을 계산하고, <code>accuracy</code>에 추가한다.</p></li>
+<li><p><code>iters_num</code>만큼 위의 프로세스를 반복한다.</p></li>
+</ul>
+<p>위의 알고리즘을 구현한 결과는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs Julia">NO<span class="hljs-number">.1</span>: <span class="hljs-number">2.2850101570382737</span><br>NO<span class="hljs-number">.2</span>: <span class="hljs-number">2.2850446322621685</span><br>NO<span class="hljs-number">.3</span>: <span class="hljs-number">2.2877722109055973</span><br>NO<span class="hljs-number">.4</span>: <span class="hljs-number">2.295771461232412</span><br>NO<span class="hljs-number">.5</span>: <span class="hljs-number">2.291090515421742</span><br>NO<span class="hljs-number">.6</span>: <span class="hljs-number">2.292813792030001</span><br>NO<span class="hljs-number">.7</span>: <span class="hljs-number">2.2923265665429757</span><br>NO<span class="hljs-number">.8</span>: <span class="hljs-number">2.2667084942417035</span><br>NO<span class="hljs-number">.9</span>: <span class="hljs-number">2.277930664348887</span><br>NO<span class="hljs-number">.10</span>: <span class="hljs-number">2.2888958183165564</span><br>.<br>.<br>.<br>NO<span class="hljs-number">.590</span>: <span class="hljs-number">0.902825806105116</span><br>NO<span class="hljs-number">.591</span>: <span class="hljs-number">0.8906761172487827</span><br>NO<span class="hljs-number">.592</span>: <span class="hljs-number">0.7956979255136711</span><br>NO<span class="hljs-number">.593</span>: <span class="hljs-number">0.9324068193760575</span><br>NO<span class="hljs-number">.594</span>: <span class="hljs-number">0.8170173565209091</span><br>NO<span class="hljs-number">.595</span>: <span class="hljs-number">0.8525111451656349</span><br>NO<span class="hljs-number">.596</span>: <span class="hljs-number">0.8223313778429329</span><br>NO<span class="hljs-number">.597</span>: <span class="hljs-number">0.8781017363141977</span><br>NO<span class="hljs-number">.598</span>: <span class="hljs-number">0.8522437572097963</span><br>NO<span class="hljs-number">.599</span>: <span class="hljs-number">0.7652566853974547</span><br>NO<span class="hljs-number">.600</span>: <span class="hljs-number">0.8263608966251377</span><br> <span class="hljs-number">19.715322</span> seconds (<span class="hljs-number">39.55</span> M allocations: <span class="hljs-number">13.826</span> GiB, <span class="hljs-number">7.82</span>% gc time)<br></code></pre></td></tr></table></figure>
+<p>100 단위의 배치 데이터를 600번 반복한 결과, 처음 2.28였던 손실 함수 값이 0.82까지 떨어졌다. 이는 오답률이 많이 감소되었다는 것을 의미한다. 시간은 대략 20초 정도 소요되었다. 순전파와 비교해봤을 때 매우 빠른 것을 확인할 수 있다.</p>
+<p>역전파 알고리즘에서 저장했던 <code>train_loss_list</code>와 <code>accuracy</code>를 그래프로 나타내보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">using</span> Plots<br>x = range(<span class="hljs-number">1</span>,length(train_loss_list),step=<span class="hljs-number">1</span>)<br>y = train_loss_list<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="../images/47.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
+</figure>
+<p>저장된 손실 함수 값을 그래프로 그려본 결과, 지속적으로 감소하는 양상을 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x = range(<span class="hljs-number">1</span>,length(accuracy),step=<span class="hljs-number">1</span>)<br>y = accuracy<br><br>plot(x,y)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="../images/48.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
+</figure>
+<p>저장된 정확도 또한 계속 상승하는 것을 볼 수 있다. 가장 높은 정확도는 아래의 코드를 통해 확인하자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">argmax(accuracy)   <span class="hljs-comment"># 최대값 인덱스 반환</span><br><span class="hljs-number">599</span><br>accuracy[<span class="hljs-number">598</span>]<br><span class="hljs-number">80.14</span><br></code></pre></td></tr></table></figure>
+<p>정확도는 80%를 웃돈다. 역전파 알고리즘은 1에폭 당 20초 정도 소요되기 때문에 3에폭도 1분 내외로 소요된다. 3에폭 정도 학습하면 손실 함수는 더 떨어지고 정확도는 더 오른다.</p>
+<p>3에폭의 결과는 다음과 같다.</p>
+<figure>
+<img src="../images/49.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
+</figure>
+<p>손실 함수가 0.5 이하로 떨어진 것을 확인할 수 있다.</p>
+<figure>
+<img src="../images/50.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
+</figure>
+<p>정확도 또한 80%를 훨씬 넘었다. 정확도를 직접 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">argmax(accuracy)   <span class="hljs-comment"># 최대값 인덱스 반환</span><br><span class="hljs-number">1789</span><br>accuracy[<span class="hljs-number">598</span>]<br><span class="hljs-number">90.38000000000001</span><br></code></pre></td></tr></table></figure>
+<p>정확도가 90%가 넘은 것을 확인할 수 있다.</p>
+<p>역전파 알고리즘은 순전파와 비슷한 학습 효과를 가지고 있지만 속도는 월등히 빠르다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/%EC%8B%A0%EA%B2%BD%EB%A7%9D/" class="print-no-link">#신경망</a>
+      
+        <a href="/tags/%EC%97%AD%EC%A0%84%ED%8C%8C/" class="print-no-link">#역전파</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>9. 인공신경망 구현 - 역전파 알고리즘</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-9/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 4월 20일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-10/" title="10. ReLU vs. Sigmoid 성능 비교">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">10. ReLU vs. Sigmoid 성능 비교</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/AboutHexo/about-hexo-2/" title="카테고리 및 태그 설정">
+                        <span class="hidden-mobile">카테고리 및 태그 설정</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

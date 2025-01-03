@@ -1,0 +1,792 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="데이터베이스와 테이블 생성하기">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Sql/sql-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-10-09T22:20:09.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:38:04.738Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="sql">
+<meta property="article:tag" content="database">
+<meta property="article:tag" content="mariaDB">
+<meta property="article:tag" content="RDBMS">
+<meta property="article:tag" content="table">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>데이터베이스와 테이블 생성하기 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="데이터베이스와 테이블 생성하기"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-10 07:20" pubdate>
+          2020년 10월 10일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          220 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">데이터베이스와 테이블 생성하기</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다. <span id="more"></span></p>
+<hr />
+<h2 id="데이터베이스-생성">데이터베이스 생성</h2>
+<p>새로운 데이터베이스를 만드는 명령어는 다음과 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> DATABASE <span class="hljs-string">&#x27;데이터베이스 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>그러면 해당 요청(query)가 정상적으로 수행되었다고 아래와 같이 알려준다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">Query OK, <span class="hljs-number">1</span> <span class="hljs-type">row</span> affected (<span class="hljs-number">0.024</span> sec)<br></code></pre></td></tr></table></figure>
+<h2 id="데이터베이스-접속">데이터베이스 접속</h2>
+<p>원하는 데이터베이스에 접속해야 해당 DB를 사용할 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">USE DATABASE <span class="hljs-string">&#x27;데이터베이스 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="테이블-생성">테이블 생성</h2>
+<p>어떤 데이터베이스에 자료를 정리하여 넣으려고 한다. 그때 관계형 DB에서는 테이블을 사용하여 데이터를 저장한다. 테이블은 행과 열로 구성되어 있으며, 행(record)은 객체 하나의 모든 정보를 포함하고 열(field)은 데이터의 카테고리를 포함한다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>), <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">6</span>));<br></code></pre></td></tr></table></figure>
+<p>위 코드에서 <code>VARCHAR</code>은 'variable character'의 약자로 해당 카테고리의 데이터타입을 나타낸다. 뒤에 따라오는 (10), (6)과 같은 숫자는 해당 카테고리에서 저장할 수 있는 최대 길이를 설정한 것이다.</p>
+<h2 id="테이블-구조">테이블 구조</h2>
+<p>생성한 테이블의 구조는 명령어 <code>DESC</code>를 사용하여 볼 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DESC</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="테이블-목록">테이블 목록</h2>
+<p>데이터베이스에 있는 테이블들의 목록은 해당 데이터베이스에서 <code>SHOW TABLES</code>를 입력하면 볼 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> TABLES;<br></code></pre></td></tr></table></figure>
+<h2 id="테이블-삭제">테이블 삭제</h2>
+<p>테이블 전체를 삭제하는 명령어는 다음과 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="테이블에-데이터-추가">테이블에 데이터 추가</h2>
+<p>테이블에 데이터를 추가하는 것은 <code>INSERT</code> 명령어를 사용한다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;값1&#x27;</span>, <span class="hljs-string">&#x27;값2&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p>워 코드는 해당 테이블의 모든 열에 대한 데이터를 순서에 맞게 추가할 때 사용할 수 있다. 특정 데이터를 추가하거나 순서를 변경하기 위해서는 카테고리 이름을 같이 입력해주어야 한다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"># 순서 변경<br><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>  (<span class="hljs-string">&#x27;카테고리 2&#x27;</span>, <span class="hljs-string">&#x27;카테고리 1&#x27;</span>) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;값2&#x27;</span>, <span class="hljs-string">&#x27;값1&#x27;</span>);<br># 특정 카테고리만 데이터 추가<br><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>  (<span class="hljs-string">&#x27;카테고리 1&#x27;</span>) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;값1&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p><strong>WARNING</strong> 값에 작은따옴표(')가 있는 경우<br />
+작은 따옴표는 SQL에서 문법으로 사용되기 때문에 값 안에 포함된 작은 따옴표와 구분해야 한다. 따라서 값 내부의 작은따옴표는 개행문자를 사용하여 표현한다. 예시는 다음과 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br><span class="hljs-keyword">VALUES</span><br>(<span class="hljs-string">&#x27;Indian\&#x27;</span>s Summer<span class="hljs-string">&#x27; , &#x27;</span>cherry juice<span class="hljs-string">&#x27;, 2, &#x27;</span>pineapple juice<span class="hljs-string">&#x27;, 7, &#x27;</span>serve <span class="hljs-keyword">over</span> ice <span class="hljs-keyword">with</span> straw<span class="hljs-string">&#x27;);</span><br></code></pre></td></tr></table></figure>
+<h2 id="테이블-데이터-확인">테이블 데이터 확인</h2>
+<p>테이블에 데이터가 추가되었는지 확인하고 싶다면 아래의 코드를 사용하면 된다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>위 코드에서 사용되는 <code>*</code>는 모든 데이터를 불러오라는 뜻이다.</p>
+<h2 id="null-처리">NULL 처리</h2>
+<p>일부 카테고리에만 데이터를 입력하면 해당 행의 나머지 카테고리에는 자동적으로 <code>NULL</code>로 처리된다. 하지만 어떤 카테고리는 필수적으로 입력되어야 한다고 가정하자. 그렇게 하기 위해서는 테이블을 생성할 때 아래와 같이 입력하여 <code>NULL</code>을 받지 않도록 설정해야 한다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">6</span>));<br></code></pre></td></tr></table></figure>
+<p>위 코드로 만들어진 테이블은 데이터를 추가할 때 카테고리 1이 무조건 채워져야 한다. 어떤 테이블의 카테고리들의 NULL 허용여부를 확인하고 싶다면 <code>DESC</code>를 사용하여 테이블 구조를 확인하면 된다.</p>
+<h2 id="디폴트값-설정">디폴트값 설정</h2>
+<p>만약 기본 값이 주어진 열인 경우에는 테이블을 생성 시 디퐅트 값을 지정할 수 있다. 디폴트 값은 해당 카테고리에 데이터가 입력되지 않았을 시에 자동으로 적용된다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">6</span>));<br></code></pre></td></tr></table></figure>
+<p>위 코드에서는 카테고리 1에 디폴트 값 1을 지정하였다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/sql/" class="category-chain-item">sql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/sql/" class="print-no-link">#sql</a>
+      
+        <a href="/tags/database/" class="print-no-link">#database</a>
+      
+        <a href="/tags/mariadb/" class="print-no-link">#mariaDB</a>
+      
+        <a href="/tags/rdbms/" class="print-no-link">#RDBMS</a>
+      
+        <a href="/tags/table/" class="print-no-link">#table</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>데이터베이스와 테이블 생성하기</div>
+      <div>https://dev-bearabbit.github.io/ko/Sql/sql-0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 10월 10일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Sql/sql-1/" title="mariaDB 기본적인 명령어 모음">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">mariaDB 기본적인 명령어 모음</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Containers/docker-0/" title="Docker로 MariaDB 사용하기">
+                        <span class="hidden-mobile">Docker로 MariaDB 사용하기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

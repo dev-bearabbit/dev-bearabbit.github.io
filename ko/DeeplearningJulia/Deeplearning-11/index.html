@@ -1,0 +1,838 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="11. 인공신경망 최적화 - Optimizer">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-11/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/56.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/57.png">
+<meta property="article:published_time" content="2020-05-02T10:51:05.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:34:51.243Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="신경망">
+<meta property="article:tag" content="optimizer">
+<meta property="article:tag" content="옵티마이저">
+<meta property="article:tag" content="Adam">
+<meta property="article:tag" content="AdaGrad">
+<meta property="article:tag" content="SGD">
+<meta property="article:tag" content="Momentum">
+<meta property="article:tag" content="RMSProp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/56.png">
+  
+  
+  
+  <title>11. 인공신경망 최적화 - Optimizer - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="11. 인공신경망 최적화 - Optimizer"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-05-02 19:51" pubdate>
+          2020년 5월 2일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          626 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">11. 인공신경망 최적화 - Optimizer</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<h2 id="인공신경망-최적화란">인공신경망 최적화란</h2>
+<p>무작위값으로 가중치와 편향이 주어진 인공신경망은 바보와 같다. 따라서 신경망은 학습을 통해서 데이터에 적절한 가중치와 편향 값을 찾아야 한다. <strong>인공신경망 최적화란 데이터에 따라 더 적절한 학습 방법을 찾는 과정을 의미한다.</strong> 즉, 적절한 매개 변수 값을 찾기 위한 학습을 좀 더 효율적으로 하고 싶은 사람들이 만든 기술이라는 것이다. 이번 글부터는 최적화에 대해서 다룰 것이며, 어떤 부분들을 최적화할 수 있는지 알아보자.</p>
+<p>신경망 학습을 최적화하기 위해서는 몇 가지의 설정이 필요하다. 필요한 설정은 다음과 같다.</p>
+<ul>
+<li>미분을 어떻게 구할 것인가? (순전파 또는 역전파)</li>
+<li>매개 변수 갱신을 어떻게 할 것인가? (optimizers)</li>
+<li>가중치의 초기값을 어떻게 설정할 것인가? (std, Xavier, He)</li>
+<li>오버피팅을 어떻게 막을 것인가? (가중치 감소 또는 Dropout)</li>
+<li>배치 정규화를 사용할 것인가?</li>
+</ul>
+<p>위의 질문 중에서 첫 번째는 이전 글들에서 직접 확인하였다. 따라서 첫 번째 질문에 대한 답변은 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">순전파 알고리즘</a>과 <a href="https://dev-bearabbit.github.io/2020/04/20/DeeplearningJulia/Deeplearning-9/">역전파 알고리즘</a>으로 대신할 것이다.</p>
+<p>다음 질문은 매개 변수 갱신 방법에 대한 논의이며, 이번 글에서 우리가 다룰 주제이다.</p>
+<h2 id="optimizers">Optimizers</h2>
+<p>옵티마이저(Optimizer)는 도출된 미분 값을 어떻게 계산하여 적용하는지를 다루는 기법이다. 종류는 매우 다양하지만 이 글에서는 'SGD', 'Momentum', 'AdaGrad', 'RMSProp', 'Adam'만 다룰 것이다. 몇몇 옵티마이저는 갱신할 때 이전 값들을 필요로 한다. 따라서 옵티마이저 구조체를 설정하여 값을 보관해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">mutable struct</span> optimizers<br>    v<br>    h<br>    m<br>    iter<br><span class="hljs-keyword">end</span><br><br>optimizer = optimizers(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="sgd">SGD</h3>
+<p>SGD는 'Stochastic Gradient Descent'의 약자로서 한국어로 '확률적 경사 하강법'이라고도 불린다. SGD 수식은 다음과 같다.</p>
+<p><span class="math display">\[ W \leftarrow W - \eta \frac{\partial L}{\partial W}\]</span></p>
+<p>위 식을 분석해보면 SGD는 매개 변수의 편미분 값에 학습률 <span class="math inline">\(\eta\)</span>를 곱한 뒤, 기존 매개 변수에서 뺀다. 계산된 결과를 다시 매개 변수로 갱신한다.</p>
+<p>위의 식을 코드로 구현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> SGD(params,grads)<br><br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>        params[key] -= learning_rate * grads[key]<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> params<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>SGD()</code>는 기존 매개 변수가 있는 <code>params</code>와 편미분값이 저장된 <code>grads</code>를 인수로 받는다. 이후 위 수식처럼 계산을 하여 다시 <code>params</code>를 갱신한 후 결과로 내보낸다.</p>
+<h3 id="momentum">Momentum</h3>
+<p>Momentum(이하 모멘텀)은 운동량을 뜻하는 단어로 물리에서 사용하는 원리가 추가되었다. 보통 물리에서 모멘텀은 어떤 물체가 한 방향으로 지속적으로 변동하려는 경향을 뜻한다. 여기서도 같은 맥락으로 사용되었다. 모멘텀의 수식은 다음과 같다.</p>
+<p><span class="math display">\[v \leftarrow \alpha v - \eta \frac{\partial L}{\partial W}\]</span> <span class="math display">\[W \leftarrow W + v\]</span></p>
+<p>위 수식에서 확인할 수 있듯이 모멘텀은 SGD와는 다르게 새로운 변수 <span class="math inline">\(v\)</span>가 추가되었다. <span class="math inline">\(v\)</span>는 물리에서 속도와 같은 의미이다. 즉, 모멘텀이 한 방향으로 지속하려는 경향을 숫자로 나타낸 것이 <span class="math inline">\(v\)</span>인 것이다. 따라서 기울기의 각도가 수직적일수록 속도는 증가하며, 수평적일수록 속도는 감소한다.</p>
+<p>모멘텀은 <span class="math inline">\(v\)</span>로 인해 로컬 미니멈에 도착하여도 그 공간을 벗어날 수 있다. 이는 로컬 미니멈에 도착하면 기울기가 0이 되어 멈추는 SGD의 단점을 보완한 기법이기도 하다.</p>
+<p>모멘텀을 코드로 구현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> Momentum(params,grads)<br><br>    momentum = <span class="hljs-number">0.</span><br><br>    <span class="hljs-keyword">if</span> optimizer.v == <span class="hljs-number">0</span><br>        optimizer.v = <span class="hljs-built_in">Dict</span>()<br>        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>            optimizer.v[key] = zeros(size(params[key]))<br><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>        optimizer.v[key] = (optimizer.v[key].* momentum) - (learning_rate * grads[key])<br>        params[key] += optimizer.v[key]<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> params<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>Momentum()</code>도 SGD와 같이 <code>params</code>와 <code>grads</code>를 인수로 받은 후 계산하여 <code>params</code>를 갱신한 후 결과로 내보낸다.</p>
+<h3 id="adagrad">AdaGrad</h3>
+<p>매개 변수를 갱신함에 있어서 가장 중요한 부분 중 하나는 '학습률'이다. SGD나 모멘텀에서는 학습률 <span class="math inline">\(\eta\)</span>가 상수로 사용되었다. 하지만 AdaGrad에서는 학습률이 변수로서 사용되며, 최솟점에 다다를수록 학습률이 감소한다. AdaGrad를 수식으로 나타내면 다음과 같다.</p>
+<p><span class="math display">\[h \leftarrow h + \frac{\partial L}{\partial W} \odot \frac{\partial L}{\partial W}\]</span> <span class="math display">\[ W \leftarrow W - \eta \frac{1}{\sqrt{h}}\frac{\partial L}{\partial W}\]</span></p>
+<p>위 수식에서 <span class="math inline">\(\odot\)</span>는 '아다마르 곱(Hadamard product)'이다. 아다마르 곱은 동일한 크기의 행렬 두 개를 원소별로 곱한다. 따라서 첫 번째 수식은 해당 매개 변수의 미분값을 원소 별로 곱셈한 후, 기존의 <span class="math inline">\(h\)</span>와 더하여 <span class="math inline">\(h\)</span>를 갱신한다. 이렇게 계산된 <span class="math inline">\(h\)</span>는 매개 변수를 갱신하는 두 번째 수식으로 들어가며, <span class="math inline">\(\frac{1}{\sqrt{h}}\)</span>는 <span class="math inline">\(h\)</span>가 클수록 작아진다. 따라서 학습이 진행되면서 <span class="math inline">\(h\)</span>는 점점 커지고, 학습률은 점점 작아진다.</p>
+<p>AdaGrad를 코드로 구현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> AdaGrad(params,grads)<br><br>    <span class="hljs-keyword">if</span> optimizer.h == <span class="hljs-number">0</span><br>        optimizer.h = <span class="hljs-built_in">Dict</span>()<br>        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>            optimizer.h[key] = zeros(size(params[key]))<br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>        optimizer.h[key] +=  grads[key] .* grads[key]<br>        params[key] -= (learning_rate * grads[key]) ./ (optimizer.h[key].^(<span class="hljs-number">1</span>/<span class="hljs-number">2</span>).+ <span class="hljs-number">1e-7</span>)<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> params<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h3 id="rmsprop">RMSProp</h3>
+<p>RMSProp는 AdaGrad의 단점을 보완한 기법이다. AdaGrad는 변수 <span class="math inline">\(h\)</span>가 지속적으로 증가하면서 이동 속도를 줄이며, 단순한 볼록 형태를 가진 환경에서는 최소점을 잘 찾을 수 있다. 하지만 로컬 미니멈이 존재하는 비볼록 형태의 환경에서는 로컬 미니멈에서 벗어나기 어렵다. 이런 부분을 보완하고자 감소하는 속도를 나타내는 새로운 상수 <span class="math inline">\(\beta\)</span>를 대입하여 로컬 미니멈에서 벗어날 수 있도록 수정한 것이 RMSProp 기법이다. 이를 수식으로 보면 다음과 같다.</p>
+<p><span class="math display">\[h \leftarrow \beta * h + (1-\beta)(\frac{\partial L}{\partial W} \odot \frac{\partial L}{\partial W})\]</span> <span class="math display">\[ W \leftarrow W - \eta \frac{1}{\sqrt{h}}\frac{\partial L}{\partial W}\]</span></p>
+<p>위 수식에서 확인할 수 있듯이 감소 속도인 <span class="math inline">\(\beta\)</span>가 추가된 것 외에는 AdaGrad와 동일하다. 보통 <span class="math inline">\(\beta\)</span>는 0.9를 사용한다. 이를 코드로 구현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> RMSProp(params,grads)<br><br>    beta = <span class="hljs-number">0.9</span><br><br>    <span class="hljs-keyword">if</span> optimizer.h == <span class="hljs-number">0</span><br>        optimizer.h = <span class="hljs-built_in">Dict</span>()<br>        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>            optimizer.h[key] = zeros(size(params[key]))<br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>        optimizer.h[key] = (beta * optimizer.h[key]) + (<span class="hljs-number">1.0</span> - beta)*(grads[key] .* grads[key])<br>        params[key] -= (learning_rate * grads[key]) ./ (optimizer.h[key].^(<span class="hljs-number">1</span>/<span class="hljs-number">2</span>).+ <span class="hljs-number">1e-7</span>)<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> params<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h3 id="adam">Adam</h3>
+<p>Adam은 'Adaptive moments'의 약자로 모멘텀과 RMSProp를 섞은 형태의 기법이다. Adam에는 총 2개의 변수가 등장하는데, 모멘텀의 속도 원리가 적용된 변수 <span class="math inline">\(m\)</span>과 RMSProp에서 감소 속도 원리가 적용된 변수 <span class="math inline">\(v\)</span>이다. 또한 RMSProp에서 사용했던 감소 속도 상수인 <span class="math inline">\(\beta\)</span>도 사용된다. 보통 <span class="math inline">\(m\)</span>에서는 <span class="math inline">\(\beta_1\)</span>이 사용되며 <span class="math inline">\(v\)</span>에서는 <span class="math inline">\(\beta_2\)</span>가 사용된다. 수식은 다음과 같다.</p>
+<p><span class="math display">\[ m \leftarrow \beta_1 * m + (1-\beta_1)\frac{\partial L}{\partial W}\]</span> <span class="math display">\[v \leftarrow \beta_2 * v + (1-\beta_2)(\frac{\partial L}{\partial W} \odot \frac{\partial L}{\partial W})\]</span> <span class="math display">\[\hat{m} \leftarrow \frac{m}{1-\beta_1^t}\]</span> <span class="math display">\[\hat{v} \leftarrow \frac{v}{1-\beta_2^t}\]</span> <span class="math display">\[W \leftarrow W - \frac{\hat{m}*\eta}{\sqrt{\hat{v}}}\]</span></p>
+<p>보통 <span class="math inline">\(\beta_1\)</span>은 0.9를 사용하고 <span class="math inline">\(\beta_2\)</span>는 0.999를 사용한다. Adam은 학습률로 보통 0.01을 쓰는 다른 기법과 다르게 학습률을 0.001을 사용한다. 이를 코드로 구현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> Adam(params,grads,learning_rate = <span class="hljs-number">0.001</span>)<br><br>    beta1 = <span class="hljs-number">0.9</span><br>    beta2 = <span class="hljs-number">0.999</span><br><br>    <span class="hljs-keyword">if</span> optimizer.m == <span class="hljs-number">0</span><br>        optimizer.m = <span class="hljs-built_in">Dict</span>()<br>        optimizer.v = <span class="hljs-built_in">Dict</span>()<br>        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>            optimizer.m[key] = zeros(size(params[key]))<br>            optimizer.v[key] = zeros(size(params[key]))<br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><br>    optimizer.iter += <span class="hljs-number">1</span><br>    lr_t = learning_rate * (<span class="hljs-number">1.0</span> - beta2^(optimizer.iter))^(<span class="hljs-number">1</span>/<span class="hljs-number">2</span>) / (<span class="hljs-number">1.0</span> - beta1^(optimizer.iter))<br><br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>        optimizer.m[key] += (<span class="hljs-number">1</span> - beta1) * (grads[key] - optimizer.m[key])<br>        optimizer.v[key] += (<span class="hljs-number">1</span> - beta2) * (grads[key].^<span class="hljs-number">2</span> - optimizer.v[key])<br>        params[key] -= (lr_t * optimizer.m[key]) ./ ((optimizer.v[key]).^(<span class="hljs-number">1</span>/<span class="hljs-number">2</span>) .+ <span class="hljs-number">1e-7</span>)<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> params<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h2 id="옵티마이저-비교">옵티마이저 비교</h2>
+<p>지금까지 총 5가지의 옵티마이저 기법들을 살펴보았다. 이제 <code>MNIST</code>데이터를 사용하여 각 기법들을 비교해보자.</p>
+<p>비교하기 위해 사용할 신경망은 2층 구조이며, 활성화 함수로는 ReLU, 미분은 역전파 알고리즘을 사용할 것이다. 각 옵티마이저 별로 3에폭씩 학습하였다. 우리가 비교할 부분은 크게 3가지인 시간, 정확도, 손실 함수이다. 시간은 적게 걸릴 수록, 정확도는 높을 수록, 손실 함수는 낮을 수록 더 좋은 알고리즘이다.</p>
+<p><strong>WARNING</strong> 이 글에서 진행하는 성능 비교는 2층 신경망이며, MNIST데이터를 기반으로 한 분류 모델이다. 다른 모델에서 성능은 이 글의 결과와 차이가 있을 수 있다.</p>
+<p>먼저 5가지의 시간부터 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">SGD: <span class="hljs-number">46.004452</span> seconds<br>Momentum: <span class="hljs-number">47.702307</span> seconds<br>AdaGrad: <span class="hljs-number">49.991280</span> seconds<br>RMSProp: <span class="hljs-number">49.674666</span> seconds<br>Adam: <span class="hljs-number">50.698803</span> seconds<br></code></pre></td></tr></table></figure>
+<p>대부분 45초~50초 사이의 결과가 나왔다. 각 기법 별로 살펴보면 SGD가 가장 시간이 적게 걸리고 Adam이 가장 오래걸리는 것을 확인할 수 있다. 수식과 시간을 대조하여 확인해보면 수식이 복잡할수록 시간이 오래 걸리는 것을 확인할 수 있다.</p>
+<p>다음으로는 정확도를 나타낸 그래프이다.</p>
+<figure>
+<img src="../images/56.png" srcset="/img/loading.gif" lazyload alt="옵티마이저 정확도" /><figcaption aria-hidden="true">옵티마이저 정확도</figcaption>
+</figure>
+<p>정확도에서는 SGD만 유일하게 90%를 넘지 못하였다. 또한 RMSProp가 다른 기법보다 더 높은 정확도를 도출하는 것을 확인할 수 있다.</p>
+<p>다음으로는 손실 함수를 나타낸 그래프를 살펴보자.</p>
+<figure>
+<img src="../images/57.png" srcset="/img/loading.gif" lazyload alt="옵티마이저 손실 함수" /><figcaption aria-hidden="true">옵티마이저 손실 함수</figcaption>
+</figure>
+<p>손실 함수 값 또한 RMSProp가 더 낮은 결과를 도출하는 것을 확인할 수 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/%EC%8B%A0%EA%B2%BD%EB%A7%9D/" class="print-no-link">#신경망</a>
+      
+        <a href="/tags/optimizer/" class="print-no-link">#optimizer</a>
+      
+        <a href="/tags/%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80/" class="print-no-link">#옵티마이저</a>
+      
+        <a href="/tags/adam/" class="print-no-link">#Adam</a>
+      
+        <a href="/tags/adagrad/" class="print-no-link">#AdaGrad</a>
+      
+        <a href="/tags/sgd/" class="print-no-link">#SGD</a>
+      
+        <a href="/tags/momentum/" class="print-no-link">#Momentum</a>
+      
+        <a href="/tags/rmsprop/" class="print-no-link">#RMSProp</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>11. 인공신경망 최적화 - Optimizer</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-11/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 5월 2일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Mathematic/mathematic-3/" title="Linear Algebra (3)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linear Algebra (3)</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-10/" title="10. ReLU vs. Sigmoid 성능 비교">
+                        <span class="hidden-mobile">10. ReLU vs. Sigmoid 성능 비교</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

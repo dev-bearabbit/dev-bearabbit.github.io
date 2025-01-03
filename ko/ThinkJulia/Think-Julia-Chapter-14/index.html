@@ -1,0 +1,853 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Structs and Objects를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="14. 구조체와 객체">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-14/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Structs and Objects를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/20.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/21.png">
+<meta property="article:published_time" content="2020-03-14T17:04:23.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:39.686Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/20.png">
+  
+  
+  
+  <title>14. 구조체와 객체 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="14. 구조체와 객체"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-15 02:04" pubdate>
+          2020년 3월 15일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          666 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">14. 구조체와 객체</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap15">Structs and Objects</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="구조체와-객체-structs-and-objects">구조체와 객체 (Structs and Objects)</h2>
+<p>지금까지 우리는 내장된 데이터 타입들과 함수를 어떻게 사용하는지 배웠다. 다음 단계는 고유한 데이터 타입을 생성하는 방법을 배우는 것이다. 이 주제는 양이 방대하기 때문에 여러 장에 걸쳐 공부할 것이다.</p>
+<h3 id="복합-데이터-타입-composite-types">복합 데이터 타입 (Composite Types)</h3>
+<p>우리는 그동안 줄리아에 내장된 데이터 타입을 많이 사용했다. 이제부터는 2차원 공간에서 점을 나타내는 새로운 데이터 타입인 <code>Point</code>를 정의할 것이다.</p>
+<p>수학에서 점은 보통 좌표를 구분하는 쉼표와 함께 괄호 안에 표시된다. 예를 들어, (0,0)은 원점을 나타낸 것이고, (x,y)는 원점으로부터 x는 가로축, y는 세로축의 거리를 표시한 것이다.</p>
+<ul>
+<li>좌표를 x와 y라는 두 변수에 별도로 저장할 수 있다.</li>
+<li>좌표를 배열이나 튜플의 요소로 저장할 수 있다.</li>
+<li>점을 객체로 나타내는 새로운 데이터 타입을 만들 수 있다.</li>
+</ul>
+<p>새로운 타입을 만드는 것은 다른 방법에 비해서 더욱 복잡하지만, 확실한 장점이 있다. (장점은 나중에 볼 것이다)</p>
+<p>복합 데이터 타입을 정의하는 것을 구조체(struct)라고 한다. 점의 <code>struct</code> 정의는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">struct</span> Point<br>    x<br>    y<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>헤더는 새로운 구조체를 부를 이름으로 <code>Point</code>라고 정의하며, 본문은 구조체의 속성(attributes) 또는 필드(fields)를 정의한다. <code>Point</code>구조체는 <code>x</code>와 <code>y</code>라는 두 개의 필드를 가진다.</p>
+<p>구조체는 객체를 만드는 공장과 같다. 점을 만들기 위해서는 필드의 값을 인수로 갖는 <code>Point()</code>를 호출한다. <code>Point()</code>를 함수로 쓸 때, 이를 생성자(constructor)라고 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; p = Point(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>Point(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br></code></pre></td></tr></table></figure>
+<p>반환 값은 <code>p</code>에 할당한 <code>Point</code>객체로 표시된다.</p>
+<p>새 객체를 만드는 것을 인스턴스화(instantiation)라고 하며, 객체는 데이터 타입의 인스턴스이다.</p>
+<p>만약 인스턴스를 출력한다면, 줄리아는 해당 인스턴스가 어떤 데이터 타입 및 속성을 가지고 있는지 일려준다.</p>
+<p>모든 객체는 어떤 데이터 타입의 인스턴스이다. 그렇기 때문에 객체(object)와 인스턴스(instance)라는 단어는 바꿔서 사용할 수 있다. 하지만 이 장에서는 개발자가 정의한 고유 데이터 타입을 설명할 때만 인스턴스를 사용할 것이다.</p>
+<p>객체와 그 필드를 보여주는 상태 다이아그램을 '객체 다이어그램(object diagram)'이라고 한다.</p>
+<figure>
+<img src="/images/20.png" srcset="/img/loading.gif" lazyload alt="object diagram" /><figcaption aria-hidden="true">object diagram</figcaption>
+</figure>
+<h3 id="구조체는-불변이다-structs-are-immutable">구조체는 불변이다 (Structs are Immutable)</h3>
+<p><code>.</code>표기법을 사용하면 필드의 값을 가져올 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = p.x<br><span class="hljs-number">3.0</span><br>julia&gt; p.y<br><span class="hljs-number">4.0</span><br></code></pre></td></tr></table></figure>
+<p>표현식 <code>p.x</code>는 '객체 <code>p</code>를 참고(reference)하여 <code>x</code>의 값을 가져와라'라는 의미이다. 예를 들어, <code>x</code>라는 이름으로 변수에 값을 할당해보자. 그래도 변수<code>x</code>와 필드<code>x</code>는 충돌하지 않는다.</p>
+<p>또한 어떤 표현식에서는 점 표기법을 사용할 수 있다. 예시는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; distance = sqrt(p.x^<span class="hljs-number">2</span> + p.y^<span class="hljs-number">2</span>)<br><span class="hljs-number">5.0</span><br></code></pre></td></tr></table></figure>
+<p>그러나 구조체는 기본적으로 변경할 수 없으며, 생성(construction) 후에는 필드는 값이 변경될 수 없다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; p.y = <span class="hljs-number">1.0</span><br>ERROR: setfield! immutable <span class="hljs-keyword">struct</span> of type Point cannot be changed<br></code></pre></td></tr></table></figure>
+<p>이런 구조체의 불변성은 몇 가지의 장점을 가지고 있다.</p>
+<ul>
+<li>더 효율적일 수 있다.</li>
+<li>데이터 타입 생성자가 제공하는 불변값을 위반하는 것은 불가능하다.</li>
+<li>불변 객체를 사용하는 코드는 추론하기가 더 쉽다.</li>
+</ul>
+<h3 id="변경가능한-구조체-mutable-structs">변경가능한 구조체 (Mutable Structs)</h3>
+<p>필요한 경우, '변경가능한 복합 데이터 타입(mutable composite types)'은 키워드 <code>mutable struct</code>로 정의할 수 있다. 변경가능한 점(point) 정의는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">mutable struct</span> MPoint<br>    x<br>    y<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>또한 점 표기법을 사용하여 변경가능한 구조체의 인스턴스에 값을 할당할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; blank = MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br>MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br>julia&gt; blank.x = <span class="hljs-number">3.0</span><br><span class="hljs-number">3.0</span><br>julia&gt; blank.y = <span class="hljs-number">4.0</span><br><span class="hljs-number">4.0</span><br></code></pre></td></tr></table></figure>
+<h3 id="직사각형-rectangles">직사각형 (Rectangles)</h3>
+<p>대부분은 객체의 필드를 어떻게 설정해야 할지 명확하지만, 어떤 경우에는 개발자가 결정을 내려야 한다. 예를 들어 직사각형을 나타내는 데이터 타입을 디자인한다고 가정해보자. 직사각형의 사이즈와 위치를 구체화하기 위해서 어떤 필드를 사용해야 하는가? 간단하게 생각하기 위해서 각도는 무시하고 수직이나 수평 단위로 생각하자.</p>
+<p>그러면 적어도 두 가지의 가능성이 있다.</p>
+<ul>
+<li>직사각형의 한 모서리 또는 가운데 좌표, 너비와 높이를 지정할 수 있다.</li>
+<li>두 개의 반대쪽 모서리 좌표를 지정할 수 있다.</li>
+</ul>
+<p>위 두 개의 방안 중에 무엇이 더 나은지 판단하기는 어렵기 때문에 첫 번째 방법을 예로 하여 설명할 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">Represents a rectangle.</span><br><span class="hljs-string"></span><br><span class="hljs-string">fields: width, height, corner.</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">struct</span> Rectangle<br>    width<br>    height<br>    corner<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>독스트링(docstring)은 필드 목록을 알려준다. 높이와 넓이는 숫자로 작성하고, 모서리의 경우는 왼쪽 아래 모서리를 지정하는 <code>Point</code>객체이다.</p>
+<p>직사각형을 나타내기 위해서는 <code>Rectangle</code>객체를 인스턴스화해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; origin = MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br>MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br>julia&gt; box = Rectangle(<span class="hljs-number">100.0</span>, <span class="hljs-number">200.0</span>, origin)<br>Rectangle(<span class="hljs-number">100.0</span>, <span class="hljs-number">200.0</span>, MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>))<br></code></pre></td></tr></table></figure>
+<p>객체 다이어그램은 이 객체의 상태를 그림으로 보여준다. 그림을 보면 다른 객체의 필드인 객체가 포함되었다. 그 이유는 <code>corner</code>의 속성이 변경가능한 객체라서 <code>Rectangle</code> 외부에서 작성할 수 있기 때문이다.</p>
+<figure>
+<img src="/images/21.png" srcset="/img/loading.gif" lazyload alt="object diagram" /><figcaption aria-hidden="true">object diagram</figcaption>
+</figure>
+<h3 id="인수로서-인스턴스-instances-as-arguments">인수로서 인스턴스 (Instances as Arguments)</h3>
+<p>일반적인 방법으로 인스턴스를 인수로 전달할 수 있다. 예를 들면 아래의 코드와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> printpoint(p)<br>    println(<span class="hljs-string">&quot;(<span class="hljs-subst">$(p.x)</span>, <span class="hljs-subst">$(p.y)</span>)&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>printpoint()</code>는 <code>Point</code>를 인수로 사용하여 수학 표기법으로 반환한다. 이를 호출하기 위해 <code>p</code>를 인수로 전달하였다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; printpoint(blank)<br>(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br></code></pre></td></tr></table></figure>
+<p>만약 변경가능한 구조체 객체가 함수에 인수로 전달되면, 함수는 객체의 필드를 수정할 수 있다. 예를 들어 <code>movepoint!()</code>는 변경가능한 <code>Point</code>와 두 개의 숫자인 <code>dx</code>, <code>dy</code>을 인수로 가져가서 <code>Point</code>의 <code>x</code>와 <code>y</code>의 속성에 각각 숫자를 추가한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> movepoint!(p, dx, dy)<br>    p.x += dx<br>    p.y += dy<br>    <span class="hljs-literal">nothing</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>아래의 결과는 필드가 수정되는 것을 보여준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; origin = MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br>MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br>julia&gt; movepoint!(origin, <span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>)<br><br>julia&gt; origin<br>MPoint(<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>)<br></code></pre></td></tr></table></figure>
+<p>함수 내부에서는 <code>p</code>가 <code>origin</code>의 에일리언스이므로, 함수가 <code>p</code>를 수정하면 <code>origin</code>이 변경된다.</p>
+<p>만약 변경불가능한 <code>Point</code>객체를 <code>movepoint!()</code>에 입력하면 오류가 발생한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; movepoint!(p, <span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>)<br>ERROR: setfield! immutable <span class="hljs-keyword">struct</span> of type Point cannot be changed<br></code></pre></td></tr></table></figure>
+<p>그러나 변경불가능한 객체의 변경가능한 속성 값은 수정할 수 있다. 예를 들어 <code>moverectangle!()</code>은 인수로 <code>Rectangle</code> 객체와 두 개의 숫자인 <code>dx</code>와 <code>dy</code>를 가져간 후 <code>movepoint!()</code>를 사용하여 직사각형의 모서리를 움직인다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> moverectangle!(rect, dx, dy)<br>  movepoint!(rect.corner, dx, dy)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이제는 <code>movepoint!</code>안의 <code>p</code>가 <code>rect.corner</code>의 에일리언스이므로, <code>p</code>를 수정하면 <code>rect.corner</code>도 변경된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; box<br>Rectangle(<span class="hljs-number">100.0</span>, <span class="hljs-number">200.0</span>, MPoint(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>))<br>julia&gt; moverectangle!(box, <span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>)<br><br>julia&gt; box<br>Rectangle(<span class="hljs-number">100.0</span>, <span class="hljs-number">200.0</span>, MPoint(<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>))<br></code></pre></td></tr></table></figure>
+<p><strong>WARNING</strong> 변경불가능한 객체의 변경가능한 속성도 재할당할 수는 없다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; box.corner = MPoint(<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>)<br>ERROR: setfield! immutable <span class="hljs-keyword">struct</span> of type Rectangle cannot be changed<br></code></pre></td></tr></table></figure></p>
+<h3 id="반환-값으로서-인스턴스-instances-as-return-values">반환 값으로서 인스턴스 (Instances as Return Values)</h3>
+<p>함수는 인스턴스를 반환할 수 있다. 예를 들어, <code>findcenter()</code>은 <code>Rectangle</code>을 인수로 받아서 직사각형 중심의 좌표를 포함하는 <code>Point</code>를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> findcenter(rect)<br>    Point(rect.corner.x + rect.width / <span class="hljs-number">2</span>, rect.corner.y + rect.height / <span class="hljs-number">2</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>표현식 <code>rect.corner.x</code>은 "객체 <code>rect</code>을 참고하여 필드 <code>corner</code>를 선택한 후, 해당 객체의 <code>x</code> 필드를 가져오라"는 의미이다.</p>
+<p>다음은 <code>box</code>을 인수로 전달하고 <code>Point</code>를 <code>center</code>로 할당하는 예이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; center = findcenter(box)<br>Point(<span class="hljs-number">51.0</span>, <span class="hljs-number">102.0</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="복사-copying">복사 (Copying)</h3>
+<p>에일리어싱은 한 곳에서 변경하면 다른 곳에 예기치 못한 영향을 주기 때문에 프로그램을 읽기 어렵게 만든다. 주어진 객체를 참조하는 모든 변수를 추적하기는 어렵다.</p>
+<p>객체를 복사하는 것은 에일리어싱을 대신한다. 줄리아는 객체를 복제할 수 있는 <code>deepcopy()</code>를 제공한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; p1 = MPoint(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>MPoint(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>julia&gt; p2 = deepcopy(p1)<br>MPoint(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>julia&gt; p1 ≡ p2<br><span class="hljs-literal">false</span><br>julia&gt; p1 == p2<br><span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+<p><code>≡</code> 연산자는 우리가 예상했던 대로 <code>p1</code>과 <code>p2</code>가 같은 객체가 아니라는 것을 보여준다. 하지만 왜 <code>==</code> 연산자는 두 객체가 같은 값임에도 불구하고 <code>false</code>를 반환하는가? 그 이유는 변경가능한 객체에서 <code>==</code>연산자는 <code>===</code>연산자와 동일하게 작동하기 때문이다. 즉, 객체의 동등성(equivalence)이 아닌 동일성(identity)을 비교한다. 이것은 줄리아가 변경가능한 복합 데이터 타입에서 무엇을 동등성으로 고려해야 하는지 모른다는 것을 의미한다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>객체 작업을 시작하면 몇 가지 새로운 예외가 발생할 수 있다. 존재하지 않는 필드에 접근하려고 하면 다음과 같은 결과를 얻는다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; p = Point(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>Point(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>julia&gt; p.z = <span class="hljs-number">1.0</span><br>ERROR: type Point has no field z<br>Stacktrace:<br> [<span class="hljs-number">1</span>] setproperty!(::Point, ::<span class="hljs-built_in">Symbol</span>, ::<span class="hljs-built_in">Float64</span>) at ./sysimg.jl:<span class="hljs-number">19</span><br> [<span class="hljs-number">2</span>] top-level scope at none:<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+<p>만약 객체의 데이터 타입이 무엇인지 확실하지 않다면, 물어볼 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; typeof(p)<br>Point<br></code></pre></td></tr></table></figure>
+<p>또한 <code>isa</code>를 사용하여 객체가 데이터 타입의 인스턴스인지 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; p <span class="hljs-keyword">isa</span> Point<br><span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>만약 객체가 특정 속성을 가지고 있는지 확신할 수 없다면, 내장 함수인 <code>fieldnames()</code>를 사용할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fieldnames(Point)<br>(:x, :y)<br></code></pre></td></tr></table></figure>
+<p>또는 <code>isdefined()</code>도 사용가능하다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; isdefined(p, :x)<br><span class="hljs-literal">true</span><br>julia&gt; isdefined(p, :z)<br><span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+<p>첫 번째 인수는 어떤 객체든 들어갈 수 있다. 두 번째 인수에는 <code>:</code>기호를 넣고 뒤에 필드의 이름을 작성하면 된다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>14. 구조체와 객체</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-14/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 15일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-15/" title="15. 구조체와 함수">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">15. 구조체와 함수</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-13/" title="13. 파일">
+                        <span class="hidden-mobile">13. 파일</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

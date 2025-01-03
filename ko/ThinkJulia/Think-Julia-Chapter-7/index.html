@@ -1,0 +1,861 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Strings를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7. 문자열">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-7/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Strings를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-03-05T12:13:37.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:42:01.961Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>7. 문자열 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="7. 문자열"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-05 21:13" pubdate>
+          2020년 3월 5일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          946 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">7. 문자열</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap08">Strings</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="문자열-strings">문자열 (Strings)</h2>
+<p>문자열은 정수나 소수, 불 표현식과는 다르다. 이 장에서는 문자열을 구성하는 문자에 접근하는 방법을 배우고, 줄리아가 제공하는 문자열 도우미 함수 중 일부에 대해서 알아볼 것이다.</p>
+<h3 id="캐릭터-characters">캐릭터 (Characters)</h3>
+<p>영어를 사용하는 사람들은 알파벳, 숫자 및 일반적인 문장 부호와 같은 문자에 익숙하다. 이런 문자들은 표준화되어 ASCII 표준에 따라 0부터 127사이의 정수 값으로 일대일 배치한다. 영어가 아닌 한국어나 중국어, 아랍어와 같아느 언어들도 ASCII 표준에 포함되어 있다.</p>
+<p>유니 코드 표준은 복잡하게 구성된 문자들도 정확히 표현할 수 있도록 고안되었기 때문에 일반적으로 주요한 표준으로 사용되고 있으며, 전 세계적으로 모든 문자들에 고유 번호를 제공한다.</p>
+<p><code>Char</code> 값은 단일 문자를 나타내며, 작은 따옴표로 묶는다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-string">&#x27;x&#x27;</span><br><span class="hljs-string">&#x27;x&#x27;</span>: ASCII/Unicode U+<span class="hljs-number">0078</span> (category Ll: Letter, lowercase)<br>julia&gt; &#x27;🍌&#x27;<br>&#x27;🍌&#x27;: Unicode U+<span class="hljs-number">01f34</span>c (category So: <span class="hljs-built_in">Symbol</span>, other)<br>julia&gt; typeof(<span class="hljs-string">&#x27;x&#x27;</span>)<br><span class="hljs-built_in">Char</span><br></code></pre></td></tr></table></figure>
+<p>위의 바나나와 같은 이모티곤 또한 유니코드 표준에 포함되어 있다. (:banana: TAB)</p>
+<h3 id="문자열은-시퀀스이다.-a-string-is-a-sequence">문자열은 시퀀스이다. (A String Is a Sequence)</h3>
+<p>문자열은 일련의 문자이다. 대괄호 연산자를 사용하여 한 번에 하나씩 문자에 엑세스 할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fruit = <span class="hljs-string">&quot;banana&quot;</span><br><span class="hljs-string">&quot;banana&quot;</span><br>julia&gt; letter = fruit[<span class="hljs-number">1</span>]<br><span class="hljs-string">&#x27;b&#x27;</span>: ASCII/Unicode U+<span class="hljs-number">0062</span> (category Ll: Letter, lowercase)<br></code></pre></td></tr></table></figure>
+<p>두 번째 명령문은 <code>fruit</code>에서 첫 번째 문자를 선택하여 <code>letter</code>라는 변수에 할당한다.</p>
+<p>위와 같이 대괄호[]를 내부에 있는 표현식을 인덱스(index)라고 부른다. 인덱스는 문자열 중에서 원하는 문자가 어느 위치에 있는지를 나타낸다.</p>
+<p>줄리아는 모든 인덱싱을 1부터 시작한다. 즉, 첫 번째 문자는 인덱스 1로 찾을 수 있으며, 마지막 문자는 인덱스 <code>end</code>에서 찾을 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fruit[<span class="hljs-keyword">end</span>]<br><span class="hljs-string">&#x27;a&#x27;</span>: ASCII/Unicode U+<span class="hljs-number">0061</span> (category Ll: Letter, lowercase)<br></code></pre></td></tr></table></figure>
+<p>또한 인덱스는 변수나 연산자가 포함된 표현식들도 사용될 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; i = <span class="hljs-number">1</span><br><span class="hljs-number">1</span><br>julia&gt; fruit[i+<span class="hljs-number">1</span>]<br><span class="hljs-string">&#x27;a&#x27;</span>: ASCII/Unicode U+<span class="hljs-number">0061</span> (category Ll: Letter, lowercase)<br>julia&gt; fruit[<span class="hljs-keyword">end</span>-<span class="hljs-number">1</span>]<br><span class="hljs-string">&#x27;n&#x27;</span>: ASCII/Unicode U+<span class="hljs-number">006</span>e (category Ll: Letter, lowercase)<br></code></pre></td></tr></table></figure>
+<p>그러나 인덱스 값이 정수가 아니라면 오류 메시지가 뜬다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; letter = fruit[<span class="hljs-number">1.5</span>]<br>ERROR: <span class="hljs-built_in">MethodError</span>: no method matching getindex(::<span class="hljs-built_in">String</span>, ::<span class="hljs-built_in">Float64</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="length"><code>length</code></h3>
+<p><code>length</code>는 내장 함수로 문자열 안에 있는 문자들의 개수를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fruits = <span class="hljs-string">&quot;🍌 🍎 🍐&quot;</span><br><span class="hljs-string">&quot;🍌 🍎 🍐&quot;</span><br>julia&gt; len = length(fruits)<br><span class="hljs-number">5</span><br></code></pre></td></tr></table></figure>
+<p>위의 예시를 보면 <code>length</code>는 이모티콘 3개와 그 사이의 띄어쓰기를 포함하여 총 길이를 <code>5</code>라고 반환한다.</p>
+<p>문자열의 마지막 문자를 얻고 싶다면, 아래의 코드를 입력하면 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; last = fruits[len]<br><span class="hljs-string">&#x27; &#x27;</span>: ASCII/Unicode U+<span class="hljs-number">0020</span> (category Zs: Separator, space)<br></code></pre></td></tr></table></figure>
+<p>하지만 기대했던 것과는 다른 결과가 나온다. 문자열은 다양한 UTF-8 인코딩을 사용하여 인코딩되었다. UTF-8은 가변적으로 폭이 변하는 인코딩 (variable-width encoding)으로 모든 문자가 동일한 바이트 수로 인코딩되지 않는다.</p>
+<p><code>sizeof()</code>는 문자의 바이트 수를 보여준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; sizeof(<span class="hljs-string">&quot;🍌&quot;</span>)<br><span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
+<p>위 이모티콘은 4바이트로 인코딩되었고 문자열 인덱싱은 바이트 기반이기 때문에 <code>fruits</code>의 5번째 요소는 띄어쓰기인 <code>SPACE</code> 이다.</p>
+<p>이것은 UTF-8 문자열에서 모든 문자들은 정확히 몇 바이트로 인덱싱 되었는지 확인해야 한다는 것을 보여준다. 만약 눈으로 파악한 인덱스를 사용한다면, 잘못된 결과를 도출할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fruits[<span class="hljs-number">2</span>]<br>ERROR: <span class="hljs-built_in">StringIndexError</span>(<span class="hljs-string">&quot;🍌 🍎 🍐&quot;</span>, <span class="hljs-number">2</span>)<br></code></pre></td></tr></table></figure>
+<p><code>fruits</code>예시에서는 <code>🍌</code>가 4바이트이기 때문에 인덱스 2,3,4는 반환되지 않으며, 그 다음 유효한 인덱스는 5이다. 다음 유효한 인덱스를 찾고 싶다면 <code>nextind(fruits, 1)</code>을 입력하면 된다. 이후 5 다음으로 유효한 인덱스를 찾고 싶다면 <code>nextind(fruits, 5)</code>를 실행하면 된다.</p>
+<h3 id="순회-traversal">순회 (Traversal)</h3>
+<p>많은 계산들은 한 번에 한 문자씩 문자열을 처리한다. 이때 컴퓨터는 하나의 문자를 선택하여 해당 명령들을 수행한 이후, 다른 문자를 선택하여 이를 반복한다. 이것을 순회(Traversal)이라고 하며, 순회를 작성하는 방법은 <code>while</code> 루프를 사용하는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">index = firstindex(fruits)<br><span class="hljs-keyword">while</span> index &lt;= sizeof(fruits)<br>    letter = fruits[index]<br>    println(letter)<br>    <span class="hljs-keyword">global</span> index = nextind(fruits, index)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 변수 <code>index</code>에 <code>fruits</code>의 첫 번째 인덱스를 할당한다. 그 후 <code>while</code>루프 조건으로 넘어간다. 조건은 <code>index</code>가 <code>fruits</code>의 인덱스 총 길이보다 작으면 <code>true</code>을 도출하여 루프를 실행하거나, 크면 <code>false</code>를 도출하여 루프를 종료한다.</p>
+<p><code>firstindex()</code>는 인수의 첫 번째 인덱스를 반환한다. 키워드 <code>global</code>는 기존에 정의했던 변수에 새로운 값을 재할당한다.</p>
+<h3 id="문자열-슬라이스-string-slices">문자열 슬라이스 (String Slices)</h3>
+<p>문자열의 일부를 슬라이스(Slices)라고 부른다. 슬라이스는 문자를 축출하는 것과 비슷하다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; str = <span class="hljs-string">&quot;Julius Caesar&quot;</span>;<br><br>julia&gt; str[<span class="hljs-number">1</span>:<span class="hljs-number">6</span>]<br><span class="hljs-string">&quot;Julius&quot;</span><br></code></pre></td></tr></table></figure>
+<p>연산자 <code>[n:m]</code>은 인덱스 <code>n</code>번째 바이트부터 <code>m</code>번째 바이트까지의 문자들을 반환한다. 그렇기 때문에 인덱스 위치를 잘 파악하고 있어야 한다.</p>
+<p>키워드 <code>end</code>는 마지막 문자를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; str[<span class="hljs-number">8</span>:<span class="hljs-keyword">end</span>]<br><span class="hljs-string">&quot;Caesar&quot;</span><br></code></pre></td></tr></table></figure>
+<p>만약에 첫 번째 인덱스의 수가 두 번째 인덱스의 수보다 크다면 빈 문자(empty string)를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; str[<span class="hljs-number">8</span>:<span class="hljs-number">7</span>]<br><span class="hljs-string">&quot;&quot;</span><br></code></pre></td></tr></table></figure>
+<p>빈 문자(empty string)는 어떤 캐릭터도 포함하지 않고 길이도 0이지만, 다른 문자열과 동일하게 사용할 수 있다.</p>
+<h3 id="문자열은-변경-불가능-strings-are-immutable">문자열은 변경 불가능 (Strings Are Immutable)</h3>
+<p>문자열을 변경하기 위해서 변수 옆에 연산자<code>[]</code>를 사용해보면 다음과 같은 결과를 얻을 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; greeting = <span class="hljs-string">&quot;Hello, world!&quot;</span><br><span class="hljs-string">&quot;Hello, world!&quot;</span><br>julia&gt; greeting[<span class="hljs-number">1</span>] = <span class="hljs-string">&#x27;J&#x27;</span><br>ERROR: <span class="hljs-built_in">MethodError</span>: no method matching setindex!(::<span class="hljs-built_in">String</span>, ::<span class="hljs-built_in">Char</span>, ::<span class="hljs-built_in">Int64</span>)<br></code></pre></td></tr></table></figure>
+<p>위와 같은 오류가 발생하는 이유는 기존에 있던 문자열을 변경할 수 없기 때문이다. 가장 좋은 방법은 기존에 있던 문자열을 새로운 문자열로 재할당하는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; greeting = <span class="hljs-string">&quot;J&quot;</span> * greeting[<span class="hljs-number">2</span>:<span class="hljs-keyword">end</span>]<br><span class="hljs-string">&quot;Jello, world!&quot;</span><br></code></pre></td></tr></table></figure>
+<p>이 예시에서는 새로운 첫 글자를 <code>greeting</code>애 연결한 후 재할당한다. 원래 문자열 내부를 변경하는 것은 아니다.</p>
+<h3 id="문자-보간법-string-interpolation">문자 보간법 (String Interpolation)</h3>
+<p>위의 예시처럼 곱셈 연산자인 <code>*</code>을 사용하여 연결하면 복잡한 변경이 요구될 때 번거로울 수 있다. 줄리아는 <code>$</code>을 사용하여 문자열 보간을 허용한다. 보간(Interpolation)이란 쉽게 설명하면 사이에 채워넣는 것을 의미한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; greet = <span class="hljs-string">&quot;Hello&quot;</span><br><span class="hljs-string">&quot;Hello&quot;</span><br>julia&gt; whom = <span class="hljs-string">&quot;World&quot;</span><br><span class="hljs-string">&quot;World&quot;</span><br>julia&gt; <span class="hljs-string">&quot;<span class="hljs-variable">$greet</span>, <span class="hljs-subst">$(whom)</span>!&quot;</span><br><span class="hljs-string">&quot;Hello, World!&quot;</span><br></code></pre></td></tr></table></figure>
+<p>위의 방법은 <code>*</code>을 사용하는 것보다 더 편리하고 읽기도 쉽다.</p>
+<p><code>$</code>다음에 작성되는 모든 표현식들은 문자열로 간주된다. 따라서 괄호를 사용하여 모든 표현식을 문자열로 보간할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-string">&quot;1 + 2 = <span class="hljs-subst">$(<span class="hljs-number">1</span> + <span class="hljs-number">2</span>)</span>&quot;</span><br><span class="hljs-string">&quot;1 + 2 = 3&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="검색-searching">검색 (Searching)</h3>
+<p>아래의 함수는 어떤 기능을 할까?</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> find(word, letter)<br>    index = firstindex(word)<br>    <span class="hljs-keyword">while</span> index &lt;= sizeof(word)<br>        <span class="hljs-keyword">if</span> word[index] == letter<br>            <span class="hljs-keyword">return</span> index<br>        <span class="hljs-keyword">end</span><br>        index = nextind(word, index)<br>    <span class="hljs-keyword">end</span><br>    -<span class="hljs-number">1</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>find()</code>는 <code>[]</code> 연산자의 역수와 같다. 인덱스를 받아서 해당 문자를 축출하는 대신에 해당 문자를 받아서 인덱스를 축출한다. 문자를 찾지 못하면 함수는 -1을 반환한다.</p>
+<p>위의 <code>while</code> 루프는 <code>word[index] == letter</code>인 경우 루프를 벗어나 값을 바로 반환한다.</p>
+<p>만약 문자열에서 찾으려는 문자를 찾지 못하면, -1을 반환한다.</p>
+<p>위와 같이 일련의 문자열에서 특정 문자에 대한 인덱스를 반환해주는 계산 방식을 검색(Searching)이라고 한다.</p>
+<h3 id="루핑과-카운팅-looping-and-counting">루핑과 카운팅 (Looping and Counting)</h3>
+<p>아래의 코드는 해당 단어에서 <code>a</code>가 몇 번 있는지 세어서 반환해준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">word = <span class="hljs-string">&quot;banana&quot;</span><br>counter = <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> letter <span class="hljs-keyword">in</span> word<br>    <span class="hljs-keyword">if</span> letter == <span class="hljs-string">&#x27;a&#x27;</span><br>        <span class="hljs-keyword">global</span> counter = counter + <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br>println(counter)<br></code></pre></td></tr></table></figure>
+<p>이 프로그램은 카운터(counter)라 불리는 다른 계산 방식이다. 변수 <code>counter</code>는 0으로 초기화되고, <code>a</code>가 나타날 때마다 1씩 증가한다. 루프에서 빠져나가면, <code>counter</code>가 가진 결과를 반환한다.</p>
+<h3 id="문자열-라이브러리-string-library">문자열 라이브러리 (String Library)</h3>
+<p>줄리아는 물자열에서 사용할 수 있는 유용한 함수들을 제공한다. 예를 들어서 <code>uppercase()</code>는 문자열들을 인수로 받아서 대문자로 변경해준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; uppercase(<span class="hljs-string">&quot;Hello, World!&quot;</span>)<br><span class="hljs-string">&quot;HELLO, WORLD!&quot;</span><br></code></pre></td></tr></table></figure>
+<p>또한 우리가 작성했던 <code>find()</code>와 유사한 함수인 <code>findfirst()</code>도 제공한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; findfirst(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>)<br><span class="hljs-number">2</span>:<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<p>사실은 <code>findfirst()</code>가 우리가 만든 함수보다 더 일반적이다. 이 함수는 캐릭터뿐만 아니라 문자열의 일부도 찾아준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; findfirst(<span class="hljs-string">&quot;na&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>)<br><span class="hljs-number">3</span>:<span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
+<p><code>findfirst()</code>는 문자열의 첫 번째부터 특정 문자들을 찾는다. 만약 특정 지점부터 문자를 찾고 싶다면 <code>findnext()</code>를 사용하면 된다. <code>findnext()</code>는 세 번째 인수에 특정 지점 인덱스를 추가하면 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; findnext(<span class="hljs-string">&quot;na&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-number">4</span>)<br><span class="hljs-number">5</span>:<span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
+<h3 id="연산자"><code>∈</code> 연산자</h3>
+<p>연산자 <code>∈(\in TAB)</code>은 불 연산자로서, 특정 문자가 문자열에 속했는지 여부를 보여준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-string">&#x27;a&#x27;</span> ∈ <span class="hljs-string">&quot;banana&quot;</span>    <span class="hljs-comment"># &#x27;a&#x27; in &quot;banana&quot;</span><br><span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>예로, 아래의 함수는 단어1과 단어2에 모두 들어 있는 문자들만 출력한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> inboth(word1, word2)<br>    <span class="hljs-keyword">for</span> letter <span class="hljs-keyword">in</span> word1<br>        <span class="hljs-keyword">if</span> letter ∈ word2<br>            print(letter, <span class="hljs-string">&quot; &quot;</span>)<br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>변수 이름을 잘 선택하면, 코드를 자연어처럼 읽을 수 있다. "첫 번째 단어의 문자가 두 번째 단어에 속해있다면 문자를 인쇄하라"</p>
+<p>아래의 코드는 <code>oranges</code>와 <code>apples</code>를 비교한 예시이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; inboth(<span class="hljs-string">&quot;apples&quot;</span>, <span class="hljs-string">&quot;oranges&quot;</span>)<br>a e s<br></code></pre></td></tr></table></figure>
+<h3 id="문자열-컴포지션-string-comparison">문자열 컴포지션 (String Comparison)</h3>
+<p>관계 연산자들은 문자열에서 작동한다. 다음은 두 문자가 동일한지 <code>==</code> 연산자를 사용한 예시이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">word = <span class="hljs-string">&quot;Pineapple&quot;</span><br><span class="hljs-keyword">if</span> word == <span class="hljs-string">&quot;banana&quot;</span><br>    println(<span class="hljs-string">&quot;All right, bananas.&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>다른 관계 연산자들도 알파벳순으로 단어를 넣을 때 사용할 수 있다. 참고로 줄리아는 대문자와 소문자를 구별하며, 알파벳 순서는 대문자가 소문자보다 앞의 글자로 인식된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Your word, Pineapple, comes before banana.<br></code></pre></td></tr></table></figure>
+<p><strong>Tip</strong> 위의 문제를 해결하는 가장 보편적인 방법은 모든 문자열을 소문자와 같은 기준 형식으로 변경하는 것이다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>시퀀스에서 인덱스를 사용해 값을 순회하면 순회의 시작과 끝을 얻기가 어렵다. 다음은 두 단어를 비교하고 한 단어가 다른 단어와 반대인 경우 <code>true</code>를 반환하는 함수를 볼 것이다. 하지만 이 함수는 두 가지의 오류를 가지고 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isreverse(word1, word2)<br>    <span class="hljs-keyword">if</span> length(word1) != length(word2)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br>    i = firstindex(word1)<br>    j = lastindex(word2)<br>    <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span><br>        j = prevind(word2, j)<br>        <span class="hljs-keyword">if</span> word1[i] != word2[j]<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        <span class="hljs-keyword">end</span><br>        i = nextind(word1, i)<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">true</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 함수의 첫 번째 줄인 <code>if</code>문은 두 단어의 길이가 똑같지 않으면 즉시 <code>false</code>를 반환한다. 아무것도 반환되지 않는다면 두 단어의 길이가 같다고 가정할 수 있다.</p>
+<p><code>i</code>와 <code>j</code>는 인덱스이며, <code>i</code>는 <code>word1</code>에서 앞에서 뒤로 이동하며, <code>j</code>는 <code>word2</code> 뒤에서 앞으로 이동한다. <code>i</code>와 <code>j</code>가 일치하지 않는 순간 <code>while</code>문은 <code>false</code>를 반환한다. 모든 글자가 일치하여 전체 루프를 통과하면 함수는 <code>true</code>를 반환한다.</p>
+<p>여기서 사용된 <code>lastindex()</code>는 문자열의 마지막 인덱스를 반환하고 <code>prevind()</code>는 이후 사용될 문자의 인덱스를 미리 반환하는 것이다.</p>
+<p>지금부터는 "pots"와 "stop" 두 단어를 사용하여 함수를 테스트 할 것이다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; isreverse(<span class="hljs-string">&quot;pots&quot;</span>, <span class="hljs-string">&quot;stop&quot;</span>)<br><span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure></p>
+<p>분명히 반대로 쓰여진 단어인데도 함수는 <code>false</code>를 반환했다. 이런 오류들을 디버깅하기 위해서 첫 번째로 할당된 인덱스들을 인쇄해볼 것이다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isreverse(word1, word2)<br>    <span class="hljs-keyword">if</span> length(word1) != length(word2)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br>    i = firstindex(word1)<br>    j = lastindex(word2)<br>    <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span><br>        j = prevind(word2, j)<br>        <span class="hljs-meta">@show</span> i j<br>        <span class="hljs-keyword">if</span> word1[i] != word2[j]<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        <span class="hljs-keyword">end</span><br>        i = nextind(word1, i)<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">true</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure></p>
+<p>위의 코드로 프로그램을 다시 작동해보면, 아래와 같은 정보를 얻을 수 있다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; isreverse(<span class="hljs-string">&quot;pots&quot;</span>, <span class="hljs-string">&quot;stop&quot;</span>)<br>i = <span class="hljs-number">1</span><br>j = <span class="hljs-number">3</span><br><span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure></p>
+<p>첫 번째 루프에서 <code>j</code>의 값은 4이어야 하는데, 3이 나왔다. 이것은 <code>j = prevind(word2, j)</code>를 <code>while</code>루프 맨 끝으로 옮겨야 한다는 것을 의미한다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isreverse(word1, word2)<br>    <span class="hljs-keyword">if</span> length(word1) != length(word2)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br>    i = firstindex(word1)<br>    j = lastindex(word2)<br>    <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span><br>        <span class="hljs-meta">@show</span> i j<br>        <span class="hljs-keyword">if</span> word1[i] != word2[j]<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        <span class="hljs-keyword">end</span><br>        i = nextind(word1, i)<br>        j = prevind(word2, j)<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">true</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure></p>
+<p>위 코드를 작동시키면 결과는 아래와 같다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; isreverse(<span class="hljs-string">&quot;pots&quot;</span>, <span class="hljs-string">&quot;stop&quot;</span>)<br>i = <span class="hljs-number">1</span><br>j = <span class="hljs-number">4</span><br>i = <span class="hljs-number">2</span><br>j = <span class="hljs-number">3</span><br>i = <span class="hljs-number">3</span><br>j = <span class="hljs-number">2</span><br>i = <span class="hljs-number">4</span><br>j = <span class="hljs-number">1</span><br>i = <span class="hljs-number">5</span><br>j = <span class="hljs-number">0</span><br>ERROR: <span class="hljs-built_in">BoundsError</span>: attempt to access <span class="hljs-string">&quot;pots&quot;</span><br>  at index [<span class="hljs-number">5</span>]<br></code></pre></td></tr></table></figure></p>
+<p>이번에는 <code>BoundsError</code>가 발생하였다. <code>i</code>의 값이 5가 되고 문자열 "pots"의 범위를 벗어난다.</p>
+<p><strong>Tip</strong> 위의 오류를 해결한 코드</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isreverse(word1, word2)<br>    <span class="hljs-keyword">if</span> length(word1) != length(word2)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br>    i = firstindex(word1)<br>    j = lastindex(word2)<br>    <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span><br>        <span class="hljs-meta">@show</span> i j<br>        <span class="hljs-keyword">if</span> word1[i] != word2[j]<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        <span class="hljs-keyword">end</span><br>        i = nextind(word1, i)<br>        j = prevind(word2, j)<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">true</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>7. 문자열</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-7/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 5일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-8/" title="8. 사례 연구 - 워드 플레이">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">8. 사례 연구 - 워드 플레이</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-6/" title="6. 반복">
+                        <span class="hidden-mobile">6. 반복</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

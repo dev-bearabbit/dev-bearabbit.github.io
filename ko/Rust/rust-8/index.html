@@ -1,0 +1,824 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="러스트 print 매크로 사용하는 경우의 성능에 대해서 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust print 매크로 병목현상">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Rust/rust-8/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="러스트 print 매크로 사용하는 경우의 성능에 대해서 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/158.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/157.png">
+<meta property="article:published_time" content="2022-03-08T11:40:23.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:37:45.843Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="recursion">
+<meta property="article:tag" content="recursive">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="비교">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="hanoi">
+<meta property="article:tag" content="시간초과">
+<meta property="article:tag" content="println">
+<meta property="article:tag" content="print">
+<meta property="article:tag" content="퍼포먼스">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/158.png">
+  
+  
+  
+  <title>Rust print 매크로 병목현상 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="Rust print 매크로 병목현상"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-03-08 20:40" pubdate>
+          2022년 3월 8일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          401 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rust print 매크로 병목현상</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>러스트 print 매크로 사용하는 경우의 성능에 대해서 정리합니다. <span id="more"></span></p>
+<h2 id="문제-발생-시점">문제 발생 시점</h2>
+<p>러스트로 <a target="_blank" rel="noopener" href="https://www.acmicpc.net/problem/1914">백준의 하노이 탑 문제</a>를 풀고 있었다. 이미 해당 문제는 파이썬으로 풀었기에 로직 변화 없이 러스트 코드로 컨버팅했다. 하지만 계속 채점률 40%에서 시간 초과 오류가 발생했다. 시간 초과가 발생하는 코드는 아래와 같다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::io;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">num</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    io::<span class="hljs-title function_ invoke__">stdin</span>().<span class="hljs-title function_ invoke__">read_line</span>(&amp;<span class="hljs-keyword">mut</span> num).<span class="hljs-title function_ invoke__">unwrap</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">n</span>:<span class="hljs-type">u32</span> = num.<span class="hljs-title function_ invoke__">trim</span>().<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;숫자가 아닙니다.&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">start</span>:<span class="hljs-type">u32</span> = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">dest</span>:<span class="hljs-type">u32</span> = <span class="hljs-number">3</span>;<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt; n &amp;&amp; n &lt;= <span class="hljs-number">20</span> &#123;<br>        <span class="hljs-title function_ invoke__">count_move</span>(n);<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n, start, dest);<br>    &#125;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-title function_ invoke__">count_move</span>(n);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">count_move</span>(n: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">count</span> = <span class="hljs-type">i128</span>::<span class="hljs-title function_ invoke__">pow</span>(<span class="hljs-number">2</span>,n);<br>    <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125;\n&quot;</span>,count-<span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">hanoi</span>(n: <span class="hljs-type">u32</span>, start: <span class="hljs-type">u32</span>, dest: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, start, <span class="hljs-number">6</span>-start-dest);<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest);<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, <span class="hljs-number">6</span>-start-dest, dest);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드의 로직이 궁금한 사람은 <a href="https://dev-bearabbit.github.io/2022/03/08/Algorithms/Algorithms-2/">이 글</a>에서 확인할 수 있다.</p>
+<h2 id="원인-분석">원인 분석</h2>
+<p>처음에는 로직에 문제가 있었나 했지만 파이썬 코드로는 채점 통과하는 것을 확인하니 이 부분은 문제가 아닐 것 같아 배제하고 다른 원인을 찾아보았다. 그러다가 아래와 같은 글을 발견하였다.</p>
+<blockquote>
+<p>아 출력 병목이었습니다.<br />
+rust 쓰시는 분들 조심하세요.<br />
+println!이나 print! 호출이 100000단위가 넘어가면 무조건 병목 생깁니다.<br />
+병목 해결 소스도 같이 올려요~<br />
+https://www.acmicpc.net/board/view/43948</p>
+</blockquote>
+<p>위 코드는 원판이 20개 이하라면 이동 과정을 모두 출력하는데, 원판 20개일 때 출력해야 하는 개수는 <span class="math inline">\(2^{20}-1\)</span>의 결과인 1048575개이다. 그래서 채점 중간에 시간초과로 결과가 나오는 것 같았다. 그렇다면 러스트는 왜 <code>println!</code>, <code>print!</code>를 일정 이상 사용하면 병목현상이 발생하는 것인가? 이에 대해 reddit에서 관련 내용들을 찾아보았다.</p>
+<blockquote>
+<p>I would guess the explanation is output buffering. By default, Python will buffer multiple lines before writing them to stdout, which Rust does not. Try running the Python script with a -u flag and see what happens.<br />
+https://www.reddit.com/r/rust/comments/qiyqlo/fizzbuzz_in_rust_is_slower_than_python/</p>
+</blockquote>
+<p>사실인지는 확실하지 않지만 이를 통해 파이썬에서는 작동이 되고 러스트에서는 안되는 이유를 유추해볼 수 있을 것 같다. 파이썬은 여러 줄을 버퍼링해서 출력하지만 러스트는 매크로가 작동될 때마다 출력한다는 것이다. 당연히 출력이 여러 번 발생하면 rust가 모니터로 출력할 데이터를 전송해야 하기에 더 많은 시간이 소요될 수밖에 없다. 따라서 위와 같은 로직을 구현할 때는 버퍼를 사용하여 출력해야 할 자료들을 메모리에 올려놨다가 한번에 출력하는게 훨씬 빠를 수 있다는 것이다.</p>
+<h2 id="코드-분석">코드 분석</h2>
+<p>아래의 코드는 채점을 통과한 코드이다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::io;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">num</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    io::<span class="hljs-title function_ invoke__">stdin</span>().<span class="hljs-title function_ invoke__">read_line</span>(&amp;<span class="hljs-keyword">mut</span> num).<span class="hljs-title function_ invoke__">unwrap</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">n</span>:<span class="hljs-type">u32</span> = num.<span class="hljs-title function_ invoke__">trim</span>().<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;숫자가 아닙니다.&quot;</span>);<br>    <span class="hljs-title function_ invoke__">count_move</span>(n);<br><br>    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">21</span> &#123;<br>        <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">list</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, &amp;<span class="hljs-keyword">mut</span> list);<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, list);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">count_move</span>(n: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">count</span> = <span class="hljs-type">i128</span>::<span class="hljs-title function_ invoke__">pow</span>(<span class="hljs-number">2</span>,n);<br>    <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125;\n&quot;</span>,count-<span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">hanoi</span>(n: <span class="hljs-type">u32</span>, start: <span class="hljs-type">u32</span>, dest: <span class="hljs-type">u32</span>, list: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">String</span>) &#123;<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> &#123;<br>        list.<span class="hljs-title function_ invoke__">push_str</span>(&amp;<span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest));<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, start, <span class="hljs-number">6</span>-start-dest, list);<br>        list.<span class="hljs-title function_ invoke__">push_str</span>(&amp;<span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest));<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, <span class="hljs-number">6</span>-start-dest, dest, list);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>에러가 발생한 코드와의 차이점은 재귀함수에 <code>println!</code>, <code>print!</code> 명령어를 없앴다는 것이다. 코드를 자세히 뜯어보면 <code>main()</code>에서 list라는 빈 문자열을 만들고 출력해야 할 문자열을 list에 저장하였다. 그리고 재귀가 끝나면 한번에 출력하였다.</p>
+<h2 id="python과-성능-비교">Python과 성능 비교</h2>
+<p>이제 러스트의 성능을 확인해보기 위해서 동일한 로직으로 작성한 파이썬 코드와 비교해보자. 먼저 위 코드를 백준에서 채점하면 아래와 같다.</p>
+<figure>
+<img src="/images/158.png" srcset="/img/loading.gif" lazyload alt="rust" /><figcaption aria-hidden="true">rust</figcaption>
+</figure>
+<p>다음으로는 파이썬 코드를 채점해보자. 아래 코드는 비교를 위해 사용한 파이썬 코드이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_func</span>(<span class="hljs-params">n, _<span class="hljs-keyword">from</span>, _to</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:<br>        path.append([_<span class="hljs-keyword">from</span>,_to])<br>    <span class="hljs-keyword">else</span>:<br>        hanoi_func(n-<span class="hljs-number">1</span>,_<span class="hljs-keyword">from</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to))<br>        path.append([_<span class="hljs-keyword">from</span>,_to])<br>        hanoi_func(n-<span class="hljs-number">1</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to),_to)<br>        <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_num_func</span>(<span class="hljs-params">n</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>**n -<span class="hljs-number">1</span><br><br>n = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>())<br><br><span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">21</span>:<br>    <span class="hljs-built_in">print</span>(hanoi_num_func(n))<br>    path = []<br>    hanoi_func(n,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">for</span> a,b <span class="hljs-keyword">in</span> path:<br>        <span class="hljs-built_in">print</span>(a, end=<span class="hljs-string">&quot; &quot;</span>)<br>        <span class="hljs-built_in">print</span>(b)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(hanoi_num_func(n))<br></code></pre></td></tr></table></figure>
+<p>백준에서 파이썬 코드로 채점한 결과는 아래와 같다.</p>
+<figure>
+<img src="/images/157.png" srcset="/img/loading.gif" lazyload alt="python" /><figcaption aria-hidden="true">python</figcaption>
+</figure>
+<p>확실히 똑같은 로직이라도 러스트가 리소스를 덜 사용하는 것을 알 수 있다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>언어</th>
+<th>메모리</th>
+<th>소요시간</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>python</td>
+<td>122052 KB</td>
+<td>1812 ms</td>
+</tr>
+<tr class="even">
+<td>rust</td>
+<td>20340 KB</td>
+<td>120 ms</td>
+</tr>
+</tbody>
+</table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/rust/" class="category-chain-item">rust</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/recursion/" class="print-no-link">#recursion</a>
+      
+        <a href="/tags/recursive/" class="print-no-link">#recursive</a>
+      
+        <a href="/tags/python/" class="print-no-link">#python</a>
+      
+        <a href="/tags/%EB%B9%84%EA%B5%90/" class="print-no-link">#비교</a>
+      
+        <a href="/tags/rust/" class="print-no-link">#rust</a>
+      
+        <a href="/tags/hanoi/" class="print-no-link">#hanoi</a>
+      
+        <a href="/tags/%EC%8B%9C%EA%B0%84%EC%B4%88%EA%B3%BC/" class="print-no-link">#시간초과</a>
+      
+        <a href="/tags/println/" class="print-no-link">#println</a>
+      
+        <a href="/tags/print/" class="print-no-link">#print</a>
+      
+        <a href="/tags/%ED%8D%BC%ED%8F%AC%EB%A8%BC%EC%8A%A4/" class="print-no-link">#퍼포먼스</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rust print 매크로 병목현상</div>
+      <div>https://dev-bearabbit.github.io/ko/Rust/rust-8/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2022년 3월 8일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Reviews/2021/" title="Post 2021, Pre 2022">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Post 2021, Pre 2022</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Algorithms/Algorithms-2/" title="하노이 탑 문제">
+                        <span class="hidden-mobile">하노이 탑 문제</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

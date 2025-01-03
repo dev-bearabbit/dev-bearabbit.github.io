@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="데이터베이스의 정규화와 기본키에 대해서 살펴본 후 mariaDB에서 기본키 설정하는 방법을 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DB 정규화와 기본키 설정하기">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Sql/sql-2/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="데이터베이스의 정규화와 기본키에 대해서 살펴본 후 mariaDB에서 기본키 설정하는 방법을 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-10-18T17:44:03.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:38:10.088Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="DB">
+<meta property="article:tag" content="sql">
+<meta property="article:tag" content="database">
+<meta property="article:tag" content="mariaDB">
+<meta property="article:tag" content="RDBMS">
+<meta property="article:tag" content="정규화">
+<meta property="article:tag" content="nomalization">
+<meta property="article:tag" content="기본키">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>DB 정규화와 기본키 설정하기 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="DB 정규화와 기본키 설정하기"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-19 02:44" pubdate>
+          2020년 10월 19일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          181 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">DB 정규화와 기본키 설정하기</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>데이터베이스의 정규화와 기본키에 대해서 살펴본 후 mariaDB에서 기본키 설정하는 방법을 설명합니다. <span id="more"></span></p>
+<hr />
+<h2 id="정규화-nomalization">정규화 (Nomalization)</h2>
+<p>같은 자료를 받아도 설계자의 목표에 따라서 다른 테이블이 만들어 질 수 있다. 예를 들어, 식물에 관한 정보를 식물 관리인과 식물 연구자가 받았다고 가정해보자. 식물 관리인은 식물에게 물을 주는 주기나 식물의 생장 속도와 같은 정보들이 구체적으로 필요할 것이다. 반면 식물 연구자는 해당 식물의 세부적인 종이나 생물학적 특징 등이 필요할 것이다. 두 사람에게는 동일한 정보를 주어도 다른 테이블이 도출될 수 있는 것이다.</p>
+<p>'정규화'란 목표에 맞는 테이블을 올바르게 구성하는 것이다. 그렇다면 어떻게 정규화된 테이블을 만들 수 있을까? 정규화된 테이블은 아래의 두 가지의 원칙을 포함한다.</p>
+<ul>
+<li>테이블이 원자적 데이터로 구성되어 있다. (제 1정규형)</li>
+<li>기본키를 가지고 있다.</li>
+</ul>
+<p>위 조건에서 '원자적 데이터'와 '기본키'는 낯선 용어이지만 관계형 데이터베이스에서는 중요한 개념이다. 따라서 두 개념을 간단하게 살펴본 후 정규화에 대해서 정리할 것이다.</p>
+<h3 id="원자적-데이터">원자적 데이터</h3>
+<p>원자적 데이터란 테이블에 사용되는 데이터가 더이상 쪼개질 수 없는 형태를 말한다. 그렇다면 더이상 쪼개질 수 없는 형태란 무엇인가? 이에 대해서는 절대적인 기준은 없으며, 테이블 생성 목적에 따라서 달라진다. 예를 들어 주소를 저장하는 테이블을 만든다고 가정해보자. 배달부에게 전달하기 위한 주소는 어차피 전체 주소를 전달해야 하기에 한 열에 저장해도 상관없다. 하지만 물류창고에서 지역별로 물건을 정리하는 경우에는 시군구를 따로 열로 지정하는 것이 원자적 데이터인 것이다. 즉, 목적에 따라서 원자적 데이터의 기준은 달라질 수 있다.</p>
+<p>원자적 데이터 규칙은 다음과 같다.</p>
+<ul>
+<li>원자적 데이터로 구성된 열은 그 열에 같은 타입의 데이터 여러개를 가질 수 없다.</li>
+<li>원자적 데이터로 구성된 테이블은 같은 타입의 데이터를 여러 열에 가질 수 없다.</li>
+<li>단 테이블을 사용하는 목적에 따라 원자적 데이터 테이블의 형태가 달라질 수 있다.</li>
+</ul>
+<h3 id="primary-key-기본키">PRIMARY KEY 기본키</h3>
+<p>기본키는 레코드의 고유번호를 지정해주며, 이는 데이터 중복 저장을 막아준다. 기본키는 주민등록번호와 같은 기존에 있는 카테고리를 기본키로 지정할 수 있으며, 또한 기본키만을 위한 열을 새로 만들 수도 있다. 새로 만드는 기본키의 경우 synthetic key라 하고, 이미 존재하는 열을 기본키로 사용할 경우 natural key라 한다.</p>
+<p>기본키를 구성하는데 필요한 4가지 규칙이 있다.</p>
+<ul>
+<li>기본키는 NULL 값이 될 수 없다. NULL 값은 유일무이하지 않기 때문이다.</li>
+<li>기본키는 행이 삽입될 때 값이 있어야 한다.</li>
+<li>기본키는 간결해야한다. 유일무이한 정보를 가지고 있어야한다.</li>
+<li>기본키의 값은 변경 불가능한 값이여야 한다. 유일무이 하기에 변경 가능하면 중복이 생길 수도 있기에 변경 불가능 해야 한다.</li>
+</ul>
+<p>기본키를 지정하는 방법은 테이블을 생성할 때 추가하는 방법이 있고, 기존에 있던 테이블에서 지정하는 방법이 있다.</p>
+<p><strong>테이블을 새로 생성할 때</strong> 아래와 같이 원하는 테이블의 코드를 입력한 후 기본키로 지정할 카테고리의 이름을 명령어 <code>PRIMARY KEY</code>을 사용하여 지정하면 된다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-string">&#x27;특성&#x27;</span> <span class="hljs-keyword">NOT NULL</span> , <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-string">&#x27;특성&#x27;</span>, <span class="hljs-keyword">PRIMARY KEY</span> (<span class="hljs-string">&#x27;카테고리 1&#x27;</span>));<br></code></pre></td></tr></table></figure>
+<p>위 코드는 '카테고리 1'을 기본키로 지정한 코드이다. 기본키로 지정된 열의 경우 중복된 데이터를 입력할 수 없다.</p>
+<p><strong>기존의 테이블에서 지정할 때</strong> 기존 존재하는 테이블에서 지정할 때는 명령어 <code>ALTER</code>을 사용하여 기본키를 설정한다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> <span class="hljs-string">&#x27;기존 테이블 이름&#x27;</span> <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">PRIMARY KEY</span> (<span class="hljs-string">&#x27;지정할 카테고리 이름&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p>위 코드는 기존에 있던 테이블의 카테고리를 기본키로 지정하는 코드이다. 참고로, 명령어 <code>ALTER</code>은 다음 글에서 자세하게 알아볼 것이다.</p>
+<p>그렇다면 기존의 테이블에서 새로운 기본키 카테고리를 추가한 후 해당 카테고리를 기본키로 지정하려면 어떻게 해야할까?</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> <span class="hljs-string">&#x27;기존 테이블 이름&#x27;</span><br><span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> <span class="hljs-string">&#x27;새로운 카테고리 이름&#x27;</span> <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT <span class="hljs-keyword">FIRST</span>,<br><span class="hljs-keyword">ADD</span> <span class="hljs-keyword">PRIMARY KEY</span> (<span class="hljs-string">&#x27;새로운 카테고리 이름&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p>위 코드를 사용하면 된다. 그러면 기존 테이블에 새로운 카테고리를 추가하면서 기본키로 지정한다.</p>
+<h3 id="auto_increment">AUTO_INCREMENT</h3>
+<p>명령어 <code>AUTO_INCREMENT</code> 기본키가 정수일 때, 정수를 자동으로 지정해주는 방법이다. 이 명령어를 사용하면 기본키 입력에 있어서 매우매우 편하다. 기본키 위치에 <code>NULL</code>값을 입력하면 알아서 자동으로 고유값 정수를 제공하기 때문이다. 그렇다면 어떻게 사용하는가? 사용법은 간단하다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT, <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-string">&#x27;특성&#x27;</span>, <span class="hljs-keyword">PRIMARY KEY</span> (<span class="hljs-string">&#x27;카테고리 1&#x27;</span>));<br></code></pre></td></tr></table></figure>
+<p>위 코드는 테이블을 생성할 때 지정하는 방법이다. 명령어 <code>AUTO_INCREMENT</code>는 기본키가 인수일 때 사용할 수 있기 때문에 해당 카테고리는 <code>INT</code>로 설정한다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> <span class="hljs-string">&#x27;기존 테이블 이름&#x27;</span><br><span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> <span class="hljs-string">&#x27;새로운 카테고리 이름&#x27;</span> <span class="hljs-type">INT</span> <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT <span class="hljs-keyword">FIRST</span>,<br><span class="hljs-keyword">ADD</span> <span class="hljs-keyword">PRIMARY KEY</span> (<span class="hljs-string">&#x27;새로운 카테고리 이름&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p>기존 테이블에 추가할 때도 카테고리 추가하는 명령어에 같이 입력하여 사용하면 된다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/sql/" class="category-chain-item">sql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/db/" class="print-no-link">#DB</a>
+      
+        <a href="/tags/sql/" class="print-no-link">#sql</a>
+      
+        <a href="/tags/database/" class="print-no-link">#database</a>
+      
+        <a href="/tags/mariadb/" class="print-no-link">#mariaDB</a>
+      
+        <a href="/tags/rdbms/" class="print-no-link">#RDBMS</a>
+      
+        <a href="/tags/%EC%A0%95%EA%B7%9C%ED%99%94/" class="print-no-link">#정규화</a>
+      
+        <a href="/tags/nomalization/" class="print-no-link">#nomalization</a>
+      
+        <a href="/tags/%EA%B8%B0%EB%B3%B8%ED%82%A4/" class="print-no-link">#기본키</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DB 정규화와 기본키 설정하기</div>
+      <div>https://dev-bearabbit.github.io/ko/Sql/sql-2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 10월 19일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ERROR/error-0/" title="SQLAlchemy ORM 사용 중 pylint 에러">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SQLAlchemy ORM 사용 중 pylint 에러</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Sql/sql-1/" title="mariaDB 기본적인 명령어 모음">
+                        <span class="hidden-mobile">mariaDB 기본적인 명령어 모음</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

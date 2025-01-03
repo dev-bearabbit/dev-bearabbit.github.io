@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 The Goodies: Base and Standard Library를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="19. 베이스 및 표준 라이브러리">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-19/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 The Goodies: Base and Standard Library를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-03-23T20:47:27.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:42:15.603Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>19. 베이스 및 표준 라이브러리 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="19. 베이스 및 표준 라이브러리"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-24 05:47" pubdate>
+          2020년 3월 24일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          929 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">19. 베이스 및 표준 라이브러리</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap20">The Goodies: Base and Standard Library</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="베이스-및-표준-라이브러리-base-and-standard-library">베이스 및 표준 라이브러리 (Base and Standard Library)</h2>
+<p>줄리아는 기본 배터리가 포함되어 있다. 즉, 베이스(base) 모듈에는 가장 유용한 함수들, 데이터 타입 및 매크로가 포함된다. 이들은 모두 줄리아에서 바로 사용할 수 있다.</p>
+<p>또한 줄리아는 표준 라이브러리에 많은 특수 모듈을 제공한다. 이를 사용하기 위해서는 먼저 라이브러리를 가져와야 한다.</p>
+<ul>
+<li><p><code>import Module</code>은 모듈을 가져오며, <code>Module.fn(x)</code>은 함수 <code>fn</code>을 호출한다.</p></li>
+<li><p><code>using Module</code>은 모든 모듈 함수, 데이터 타입, 매크로를 가져온다.</p></li>
+</ul>
+<p>이 장은 공식적인 줄리아 문서를 대신하지는 않으며, 완벽한 것이 아니라 가능한 것에 대한 예시들을 제시할 것이다. 해당 예시에는 다른 곳에서 이미 소개된 함수들은 포함되지 않는다. 완벽한 전체 개요는 <a target="_blank" rel="noopener" href="https://docs.julialang.org">이 링크</a>에서 찾을 수 있다.</p>
+<h3 id="성능-측정-measuring-performance">성능 측정 (Measuring Performance)</h3>
+<p>우리는 몇몇 알고리즘이 다른 알고리즘보다 성능이 우수하다는 것을 알았다. 실제로 <a href="https://dev-bearabbit.github.io/2020/03/10/ThinkJulia/Think-Julia-Chapter-11/">메모 파트</a>에 나온 <code>fibonnaci</code>는 <a href="https://dev-bearabbit.github.io/2020/03/03/ThinkJulia/Think-Julia-Chapter-6/">연습해보기</a>의 <code>fib</code>보다 훨씬 빠르다. <code>@time</code>을 사용하면 성능 차이를 숫자로 표현할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fib(<span class="hljs-number">1</span>)<br><span class="hljs-number">1</span><br>julia&gt; fibonacci(<span class="hljs-number">1</span>)<br><span class="hljs-number">1</span><br>julia&gt; <span class="hljs-meta">@time</span> fib(<span class="hljs-number">40</span>)<br>  <span class="hljs-number">0.567546</span> seconds (<span class="hljs-number">5</span> allocations: <span class="hljs-number">176</span> bytes)<br><span class="hljs-number">102334155</span><br>julia&gt; <span class="hljs-meta">@time</span> fibonacci(<span class="hljs-number">40</span>)<br>  <span class="hljs-number">0.000012</span> seconds (<span class="hljs-number">8</span> allocations: <span class="hljs-number">1.547</span> KiB)<br><span class="hljs-number">102334155</span><br></code></pre></td></tr></table></figure>
+<p><code>@time</code>은 함수를 실행하는 데 걸린 시간, 할당 횟수 및 결과를 반환하기 전에 할당된 메모리를 출력한다. 메모 파트에서의 <code>fibonacci</code>는 훨씬 빠르지만 더 많은 메모리를 차지한다.</p>
+<blockquote><p>세상에 공짜는 없다!</p>
+</blockquote>
+<p><strong>TIP</strong> 줄리아의 함수는 처음 실행될 때 컴파일된다. 따라서 두 알고리즘을 비교하려면 컴파일할 함수로 구현해야 하며, 처음 호출할 때는 성능 측정을 하면 안된다. 그렇지 않다면 컴파일 시간도 측정된다. 패키지 <a target="_blank" rel="noopener" href="https://github.com/JuliaCI/BenchmarkTools.jl"><code>BenchmarkTools</code></a>은 올바른 방법으로 벤치마킹하는 매크로 <code>@btime</code>을 제공한다.</p>
+<h3 id="모음-및-데이터-구조-collections-and-data-structures">모음 및 데이터 구조 (Collections and Data Structures)</h3>
+<p><a href="https://dev-bearabbit.github.io/2020/03/12/ThinkJulia/Think-Julia-Chapter-13/">딕셔너리 뺌셈 파트</a>에서 우리는 딕셔너리를 사용하여 문서에는 있지만 단어 배열에는 없는 단어를 찾았다. 해당 함수는 문서의 단어를 키로 포함한 <code>d1</code>과 단어 배열을 포함한 <code>d2</code>를 가져간다. 그후 <code>d2</code>에 없는 <code>d1</code>의 키를 포함한 딕셔너리를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> subtract(d1, d2)<br>    res = <span class="hljs-built_in">Dict</span>()<br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(d1)<br>        <span class="hljs-keyword">if</span> key ∉ keys(d2)<br>            res[key] = <span class="hljs-literal">nothing</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br>    res<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 딕셔너리에서 값은 사용하지 않기 때문에 <code>nothing</code>이먀, 결과적으로 저장 공간이 낭비된 것이다.</p>
+<p>줄리아는 마치 딕셔너리에서 키만 수집한 모음과 같은 <code>셋(set)</code>이라고 불리는 다른 내장 데이터 타입을 제공한다. 셋에 요소를 추가하는 것은 빠르다. 그리고 셋은 일반적인 작동을 계산하는 함수와 연산자를 제공한다.</p>
+<p>예를 들어 셋 뺄셈은 <code>setdiff()</code>라는 함수를 사용하면 가능하다. 그래서 아래의 코드처럼 <code>subtract()</code>을 재작성한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> subtract(d1, d2)<br>    setdiff(d1, d2)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>결과는 딕셔너리를 대신한 셋 형태이다.</p>
+<p>이 책의 몇 가지 예제는 셋을 사용하여 간결하고 효율적으로 실행할 수 있다. 다음은 딕셔너리를 사용하여 중복을 해결하는 솔루션이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> hasduplicates(t)<br>    d = <span class="hljs-built_in">Dict</span>()<br>    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> t<br>        <span class="hljs-keyword">if</span> x ∈ d<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>        <span class="hljs-keyword">end</span><br>        d[x] = <span class="hljs-literal">nothing</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">false</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>요소가 처음에 나타날 때는 딕셔너리에 추가된다. 만약 동일한 요소가 다시 나타나면 이 함수는 <code>true</code>을 반환한다.</p>
+<p>셋을 사용하면 우리는 같은 함수를 아래와 같이 작성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> hasduplicates(t)<br>    length(<span class="hljs-built_in">Set</span>(t)) &lt; length(t)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>요소는 오직 셋에서 한번만 나타날 수 있기 때문에 <code>t</code>의 요소가 한번 이상으로 나타나면 셋은 <code>t</code>보다 더 작아질 것이다. 만약 중복이 없다면 셋은 <code>t</code>와 똑같은 사이즈일 것이다.</p>
+<p>또한 <a href="https://dev-bearabbit.github.io/2020/03/06/ThinkJulia/Think-Julia-Chapter-9/">워드 플레이 예제</a>에서도 셋을 사용할 수 있다. 예를 들어 루프가 포함된 <code>useonly</code>의 버전을 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> usesonly(word, available)<br>    <span class="hljs-keyword">for</span> letter <span class="hljs-keyword">in</span> word<br>        <span class="hljs-keyword">if</span> letter ∉ available<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">true</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>useonly</code>는 <code>word</code>에 있는 모든 알파벳들이 <code>available</code>에 속해 있는지를 확인한다. 위의 함수를 아래와 같이 재작성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> usesonly(word, available)<br>    <span class="hljs-built_in">Set</span>(word) ⊆ <span class="hljs-built_in">Set</span>(available)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>⊆ (\subseteq TAB)</code> 연산자는 두 개의 <code>word</code>의 단어가 <code>available</code>와 같은지의 가능성을 포함하여 한 셋이 서브셋인지를 확인한다.</p>
+<h3 id="수학-mathematics">수학 (Mathematics)</h3>
+<p>복소수(Complex numbers)는 줄리아에서 제공된다. 글로벌 상수 <code>im</code>은 복소수 <span class="math inline">\(i\)</span>이며, <span class="math inline">\(-1\)</span>의 제곱근을 나타낸 것이다.</p>
+<p>이제는 오일러의 등식(Euler’s identity)을 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-literal">ℯ</span>^(<span class="hljs-literal">im</span>*<span class="hljs-literal">π</span>)+<span class="hljs-number">1</span><br><span class="hljs-number">0.0</span> + <span class="hljs-number">1.2246467991473532e-16</span><span class="hljs-literal">im</span><br></code></pre></td></tr></table></figure>
+<p>기호 <code>ℯ (\euler TAB)</code>는 자연로그의 기초이다.</p>
+<p>이제는 삼각함수의 식을 작성해보자.</p>
+<p><span class="math display">\[
+\begin{equation}
+cos(x)=\frac{e^{ix}+e^{-1x}}{2}
+\end{equation}
+\]</span></p>
+<p>우리는 x에 다른 값을 넣어서 위의 방정식을 테스트할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = <span class="hljs-number">0</span>:<span class="hljs-number">0.1</span>:<span class="hljs-number">2</span><span class="hljs-literal">π</span><br><span class="hljs-number">0.0</span>:<span class="hljs-number">0.1</span>:<span class="hljs-number">6.2</span><br>julia&gt; cos.(x) == <span class="hljs-number">0.5</span>*(<span class="hljs-literal">ℯ</span>.^(<span class="hljs-literal">im</span>*x)+<span class="hljs-literal">ℯ</span>.^(-<span class="hljs-literal">im</span>*x))<br><span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 점 연산자의 다른 예시이다. 줄리아는 또한 숫자가 <code>2π</code>와 같은 계수로서 병치되는 것을 허용한다.</p>
+<h3 id="문자열">문자열</h3>
+<p><a href="https://dev-bearabbit.github.io/2020/03/05/ThinkJulia/Think-Julia-Chapter-8/">문자열 파트</a>와 <a href="https://dev-bearabbit.github.io/2020/03/06/ThinkJulia/Think-Julia-Chapter-9/">워드 플레이 파트</a>에서는 우리는 문자열 객체에서 몇 가지 기본 검색을 진행하였다. 그러나 줄리아는 'Perl 호환 정규식(PCRE)'을 처리할 수 있으므로 문자열 객체에서 복잡한 채턴을 쉽게 찾을 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> usesonly(word, available)<br>  r = <span class="hljs-built_in">Regex</span>(<span class="hljs-string">&quot;[^<span class="hljs-subst">$(available)</span>]&quot;</span>)<br>  !occursin(r, word)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>정규식(regex)은 <code>available</code> 문자열에 없는 문자를 찾고, <code>occursin</code>은 패턴이 <code>word</code>에 있는 경우 <code>true</code>를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; usesonly(<span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;abn&quot;</span>)<br><span class="hljs-literal">true</span><br>julia&gt; usesonly(<span class="hljs-string">&quot;bananas&quot;</span>, <span class="hljs-string">&quot;abn&quot;</span>)<br><span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+<p>정규식들은 <code>r</code>을 붙이면 일반적이지 않은 문자열로도 구성될 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; match(<span class="hljs-string">r&quot;[^abn]&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>)<br><br>julia&gt; m = match(<span class="hljs-string">r&quot;[^abn]&quot;</span>, <span class="hljs-string">&quot;bananas&quot;</span>)<br><span class="hljs-built_in">RegexMatch</span>(<span class="hljs-string">&quot;s&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>위의 경우에는 문자열 보간이 허용되지 않는다. <code>match()</code>는 패턴을 찾지 못하면 아무것도 반환하지 않으며, 패턴을 찾으면 'regexmatch' 객체를 반환한다.</p>
+<p>정규식 객체에서 다음 정보를 추출할 수 있다.</p>
+<ul>
+<li>매치된 전체 서브문자열: <code>m.match</code></li>
+<li>캡처된 서브문자열을 문자 배열화: <code>m.captures</code></li>
+<li>전체 매치가 시작되는 오프셋: <code>m.offset</code></li>
+<li>캡쳐된 서브문자열 오프셋의 배열: <code>m.offsets</code></li>
+</ul>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; m.match<br><span class="hljs-string">&quot;s&quot;</span><br>julia&gt; m.offset<br><span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
+<p>정규식들은 매우 강력하며, <a target="_blank" rel="noopener" href="http://perldoc.perl.org/perlre.html">PERL 페이지</a>에서 다양한 세부 정보들을 제공한다.</p>
+<h3 id="배열">배열</h3>
+<p><a href="https://dev-bearabbit.github.io/2020/03/08/ThinkJulia/Think-Julia-Chapter-10/">배열 파트</a>에서는 배열 객체를 인덱스를 가진 1차원 컨테이너를 사용하여 해당 요소를 처리하였다. 하지만 줄리아에서 배열은 다차원 컬렉션이다.</p>
+<p>2 x 3 제로 행렬을 만들어보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; z = zeros(<span class="hljs-built_in">Float64</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">0.0</span><br> <span class="hljs-number">0.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">0.0</span><br>julia&gt; typeof(z)<br><span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;<br></code></pre></td></tr></table></figure>
+<p>이 매트릭스의 데이터 타입은 부동소수점으로 구성된 2차원 배열이다. <code>size()</code>는 각 차원을 나타내는 숫자를 요소로 가진 튜플을 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; size(z)<br>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br></code></pre></td></tr></table></figure>
+<p><code>ones()</code>는 인수로 데이터 타입과 숫자를 받아 매트릭스를 생성한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; s = ones(<span class="hljs-built_in">String</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>)<br><span class="hljs-number">1</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">String</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-string">&quot;&quot;</span>  <span class="hljs-string">&quot;&quot;</span>  <span class="hljs-string">&quot;&quot;</span><br></code></pre></td></tr></table></figure>
+<p>문자열 유닛 요소는 빈 문자열을 나타낸다.</p>
+<p><strong>WARNING</strong> <code>s</code>는 1차원 배열이 아니다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; s ==  [<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>]<br><span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure></p>
+<p><code>s</code>는 행(row) 매트릭스이며, ["", "", ""]는 열(column) 매트릭스이다.</p>
+<p>매트릭스는 요소를 행으로 분리하기 위해 <code>;</code>을 구분자로 사용한다. 행을 직접 분리하는 코드는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; a = [<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>; <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>]<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br><span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span><br><span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
+<p>매트릭스 이름 뒤 대괄호를 사용하여 개별 요소들을 직접 입력할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; z[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] = <span class="hljs-number">1</span><br><span class="hljs-number">1</span><br>julia&gt; z[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>] = <span class="hljs-number">1</span><br><span class="hljs-number">1</span><br>julia&gt; z<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span><br> <span class="hljs-number">0.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span><br></code></pre></td></tr></table></figure>
+<p>또한 각 차원의 슬라이스를 사용하여 요소의 하위 그룹을 선택할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; u = z[:,<span class="hljs-number">2</span>:<span class="hljs-keyword">end</span>]<br><span class="hljs-number">2</span>×<span class="hljs-number">2</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span><br> <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span><br></code></pre></td></tr></table></figure>
+<p><code>.</code> 연산자는 모든 차원에 적용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-literal">ℯ</span>.^(<span class="hljs-literal">im</span>*u)<br><span class="hljs-number">2</span>×<span class="hljs-number">2</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Complex</span>&#123;<span class="hljs-built_in">Float64</span>&#125;,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0.540302</span>+<span class="hljs-number">0.841471</span><span class="hljs-literal">im</span>       <span class="hljs-number">1.0</span>+<span class="hljs-number">0.0</span><span class="hljs-literal">im</span><br>      <span class="hljs-number">1.0</span>+<span class="hljs-number">0.0</span><span class="hljs-literal">im</span>       <span class="hljs-number">0.540302</span>+<span class="hljs-number">0.841471</span><span class="hljs-literal">im</span><br></code></pre></td></tr></table></figure>
+<h3 id="인터페이스">인터페이스</h3>
+<p>줄리아는 비공식 인터페이스를 지정하여 동작, 즉 특정 목표를 가진 메서드를 정의한다. 데이터 타입에 이런 메서드를 확장하면 해당 데이터 타입의 객체를 사용하여 동작을 빌드할 수 있다.</p>
+<blockquote><p>오리처럼 보이고 오리처럼 수영하고 오리처럼 울면 아마 그것은 오리일 것이다.</p>
+</blockquote>
+<p><a href="https://dev-bearabbit.github.io/2020/03/03/ThinkJulia/Think-Julia-Chapter-6/">연습해보기 파트</a>에서 우리는 피보나치 수열의 <span class="math inline">\(n\)</span>번째 요소를 반환하는 <code>fib()</code>를 구현하였다.</p>
+<p>위의 함수는 컬렉션의 값을 반복하는 것이 인터페이스이다. 그러므로 피보나치 수열을 느리게 반환하는 이터레이터를 만들어보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">struct</span> Fibonacci&#123;T&lt;:<span class="hljs-built_in">Real</span>&#125; <span class="hljs-keyword">end</span><br>Fibonacci(d::<span class="hljs-built_in">DataType</span>) = d&lt;:<span class="hljs-built_in">Real</span> ? Fibonacci&#123;d&#125;() : error(<span class="hljs-string">&quot;No Real type!&quot;</span>)<br><br>Base.iterate(::Fibonacci&#123;T&#125;) <span class="hljs-keyword">where</span> &#123;T&lt;:<span class="hljs-built_in">Real</span>&#125; = (zero(T), (one(T), one(T)))<br>Base.iterate(::Fibonacci&#123;T&#125;, state::<span class="hljs-built_in">Tuple</span>&#123;T, T&#125;) <span class="hljs-keyword">where</span> &#123;T&lt;:<span class="hljs-built_in">Real</span>&#125; = (state[<span class="hljs-number">1</span>], (state[<span class="hljs-number">2</span>], state[<span class="hljs-number">1</span>] + state[<span class="hljs-number">2</span>]))<br></code></pre></td></tr></table></figure>
+<p>위의 코드는 외부 생성자와 <code>iterate</code> 메서드를 사용하여 <code>Fibonnaci</code> 필드 없이 파라메트릭 데이터 타입을 구현하였다. 첫 번째는 이터레이터를 초기화하기 위해 호출되며, 첫 번째 값 0과 상태(state)를 반환한다. 위 사례에서 상태는 두 번째 값인 1과 세 번째 값 1을 포함한 튜플이다.</p>
+<p>두 번째는 피보나치 수열의 다음 값을 얻기 위해 호출되고 첫 번째 요소는 다음 값, 두 번째 요소는 두 개의 다음 값을 가진 튜플을 반환한다.</p>
+<p>이제는 <code>Fibonnaci</code>를 <code>for</code>루프로 나타낼 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> Fibonacci(<span class="hljs-built_in">Int64</span>)<br>           e &gt; <span class="hljs-number">100</span> &amp;&amp; <span class="hljs-keyword">break</span><br>           print(e, <span class="hljs-string">&quot; &quot;</span>)<br>       <span class="hljs-keyword">end</span><br><span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span> <span class="hljs-number">13</span> <span class="hljs-number">21</span> <span class="hljs-number">34</span> <span class="hljs-number">55</span> <span class="hljs-number">89</span><br></code></pre></td></tr></table></figure>
+<p>이것은 마술처럼 보일 수 있지만, 원리는 간단하다. 줄리아에서 <code>for</code>루프는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> iter<br>    <span class="hljs-comment"># body</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 루프의 프로세스를 풀어서 설명한다면 아래 코드와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">next = iterate(iter)<br><span class="hljs-keyword">while</span> next !== <span class="hljs-literal">nothing</span><br>    (i, state) = next<br>    <span class="hljs-comment"># body</span><br>    next = iterate(iter, state)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이것은 잘 정의된 인터페이스가 어떻게 그에 맞는 함수들을 구현할 수 있게 허용하는지 보여주는 좋은 예시이다.</p>
+<h3 id="대화식-유틸리티-interactive-utilities">대화식 유틸리티 (Interactive Utilities)</h3>
+<p>우리는 이미 <code>InteractiveUtils</code> 모듈을 <a href="https://dev-bearabbit.github.io/2020/03/18/ThinkJulia/Think-Julia-Chapter-18/#more">디버깅 파트</a>에서 보았다. <code>@which</code> 매크로는 빙산의 일각에 불과하다.</p>
+<p>줄리아 코드는 <code>LLVM</code> 라이브러리에 의해 여러 단계로 기계코드화 된다. 각 단계의 결과들을 직접 시각화할 수 있다.</p>
+<p>아래의 간단한 예제를 살펴보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> squaresum(a::<span class="hljs-built_in">Float64</span>, b::<span class="hljs-built_in">Float64</span>)<br>    a^<span class="hljs-number">2</span> + b^<span class="hljs-number">2</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>첫 번째 단계는 '낮은 수준의 코드(lowered code)'를 보는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">using</span> InteractiveUtils<br><br>julia&gt; <span class="hljs-meta">@code_lowered</span> squaresum(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>CodeInfo(<br><span class="hljs-number">1</span> ─ %<span class="hljs-number">1</span> = (Core.apply_type)(Base.<span class="hljs-built_in">Val</span>, <span class="hljs-number">2</span>)<br>│   %<span class="hljs-number">2</span> = (%<span class="hljs-number">1</span>)()<br>│   %<span class="hljs-number">3</span> = (Base.literal_pow)(:^, a, %<span class="hljs-number">2</span>)<br>│   %<span class="hljs-number">4</span> = (Core.apply_type)(Base.<span class="hljs-built_in">Val</span>, <span class="hljs-number">2</span>)<br>│   %<span class="hljs-number">5</span> = (%<span class="hljs-number">4</span>)()<br>│   %<span class="hljs-number">6</span> = (Base.literal_pow)(:^, b, %<span class="hljs-number">5</span>)<br>│   %<span class="hljs-number">7</span> = %<span class="hljs-number">3</span> + %<span class="hljs-number">6</span><br>└──      <span class="hljs-keyword">return</span> %<span class="hljs-number">7</span><br>)<br></code></pre></td></tr></table></figure>
+<p><code>@code_lowered</code> 매크로는 컴파일러가 일반화한 최적화 코드의 중간 단계를 배열로 반환한다.</p>
+<p>다음 단계는 데이터 타입 정보를 추가하는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-meta">@code_typed</span> squaresum(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>CodeInfo(<br><span class="hljs-number">1</span> ─ %<span class="hljs-number">1</span> = (Base.mul_float)(a, a)::<span class="hljs-built_in">Float64</span><br>│   %<span class="hljs-number">2</span> = (Base.mul_float)(b, b)::<span class="hljs-built_in">Float64</span><br>│   %<span class="hljs-number">3</span> = (Base.add_float)(%<span class="hljs-number">1</span>, %<span class="hljs-number">2</span>)::<span class="hljs-built_in">Float64</span><br>└──      <span class="hljs-keyword">return</span> %<span class="hljs-number">3</span><br>) =&gt; <span class="hljs-built_in">Float64</span><br></code></pre></td></tr></table></figure>
+<p>위의 결과에서 중간 결과의 데이터 타입과 정확하게 유추된 반환 값을 확인할 수 있다.</p>
+<p>이 코드의 표현들을 <code>LLVM</code>코드로 변환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-meta">@code_llvm</span> squaresum(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>;  @ none:<span class="hljs-number">2</span> within <span class="hljs-string">`squaresum&#x27;</span><br><span class="hljs-string">define double @julia_squaresum_14821(double, double) &#123;</span><br><span class="hljs-string">top:</span><br><span class="hljs-string">; ┌ @ intfuncs.jl:243 within `</span>literal_pow&#x27;<br>; │┌ @ float.jl:<span class="hljs-number">399</span> within <span class="hljs-string">`*&#x27;</span><br><span class="hljs-string">    %2 = fmul double %0, %0</span><br><span class="hljs-string">    %3 = fmul double %1, %1</span><br><span class="hljs-string">; └└</span><br><span class="hljs-string">; ┌ @ float.jl:395 within `</span>+&#x27;<br>   %<span class="hljs-number">4</span> = fadd double %<span class="hljs-number">2</span>, %<span class="hljs-number">3</span><br>; └<br>  ret double %<span class="hljs-number">4</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>그러면 마지막으로 기계 코드가 생성된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs julia">julia&gt; <span class="hljs-meta">@code_native</span> squaresum(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>)<br>	.section	__TEXT,__text,regular,pure_instructions<br>; ┌ @ none:<span class="hljs-number">2</span> within <span class="hljs-string">`squaresum&#x27;</span><br><span class="hljs-string">; │┌ @ intfuncs.jl:243 within `</span>literal_pow&#x27;<br>; ││┌ @ none:<span class="hljs-number">2</span> within <span class="hljs-string">`*&#x27;</span><br><span class="hljs-string">	vmulsd	%xmm0, %xmm0, %xmm0</span><br><span class="hljs-string">	vmulsd	%xmm1, %xmm1, %xmm1</span><br><span class="hljs-string">; │└└</span><br><span class="hljs-string">; │┌ @ float.jl:395 within `</span>+&#x27;<br>	vaddsd	%xmm1, %xmm0, %xmm0<br>; │└<br>	retl<br>	nopl	(%eax)<br>; └<br></code></pre></td></tr></table></figure>
+<h3 id="디버깅">디버깅</h3>
+<p><code>Logging</code> 매크로는 프린트 구문의 스캐폴딩을 대체할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-meta">@warn</span> <span class="hljs-string">&quot;Abandon printf debugging, all ye who enter here!&quot;</span><br>┌ Warning: Abandon printf debugging, all ye who enter here!<br>└ @ Main REPL[<span class="hljs-number">1</span>]:<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>소스(source)에서 디버그 구문을 제거할 필요는 없다. 예를 들어 위의 <code>@warn</code>과 달리 아래의 코드는 기본적으로 출력이 생성되지 않는다. 이 경우 '디버그 로깅( debug logging)'을 사용하지 않으면 <code>sum(rand(100))</code>은 평가되지 않는다.</p>
+<p>로깅 레벨은 환경 변수인 <code>JULIA_DEBUG:</code>로 선택할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">$ JULIA_DEBUG=all julia -e &#x27;<span class="hljs-meta">@debug</span> <span class="hljs-string">&quot;The sum of some values <span class="hljs-subst">$(sum(rand(<span class="hljs-number">100</span>)</span>))&quot;</span>&#x27;<br>┌ Debug: The sum of some values <span class="hljs-number">47.116520814555024</span><br>└ @ Main none:<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>여기서는 모든 디버그 정보를 얻기 위해서 모두 사용햇지만 특정 파일 또는 모듈에 대한 출력만 생성하도록 선택할 수도 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>19. 베이스 및 표준 라이브러리</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-19/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 24일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-20/" title="20. 디버깅">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">20. 디버깅</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-18/" title="18. 기타 문법들">
+                        <span class="hidden-mobile">18. 기타 문법들</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

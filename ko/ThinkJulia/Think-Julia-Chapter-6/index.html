@@ -1,0 +1,845 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Iteration를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6. 반복">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-6/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Iteration를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/reassign.png">
+<meta property="article:published_time" content="2020-03-05T04:24:12.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:42:01.447Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/reassign.png">
+  
+  
+  
+  <title>6. 반복 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="6. 반복"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-05 13:24" pubdate>
+          2020년 3월 5일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          611 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">6. 반복</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap07">Iteration</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="반복-iteration">반복 (Iteration)</h2>
+<p>이번 장에서는 명령문들을 반복해주는 반복문에 대해서 살펴볼 것이다. 우리는 이미 <a href="https://dev-bearabbit.github.io/2020/03/03/ThinkJulia/Think-Julia-Chapter-5/">조건문과 재귀</a>에서 <code>for</code>루프를 사용한 반복문을 살펴보았다. 이번 장에서는 <code>while</code>문을 사용하는 방법을 배울 것이다. 그 전에 변수 할당에 대해서 조금 더 알아보자.</p>
+<h3 id="재할당-reassignment">재할당 (Reassignment)</h3>
+<p>제목에서 알 수 있듯이, 한 변수에 값을 여러 번 할당하는 것은 가능하다. 새로운 할당문은 이전의 값을 제거하고 새로운 값으로 변경한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = <span class="hljs-number">5</span><br><span class="hljs-number">5</span><br>julia&gt; x = <span class="hljs-number">7</span><br><span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
+<p>처음 코드에서 <code>x</code>는 값으로 <code>5</code>를 할당받았지만, 두 번째 코드가 실행된 이후에는 값이 <code>7</code>로 재할당된다.</p>
+<p>이런 재할당의 방식은 다이어그램으로 보면 아래와 같다.</p>
+<figure>
+<img src="/images/reassign.png" srcset="/img/loading.gif" lazyload alt="state diagram" /><figcaption aria-hidden="true">state diagram</figcaption>
+</figure>
+<p>줄리아는 할당에 등호(<code>=</code>)를 사용하기 때문에 수학식에서의 <code>a``=``b</code>와 같은 동일성(equal)으로 이해하는 경우가 종종 있다. 하지만 이것은 잘못된 개념 정의이다.</p>
+<p>먼저 동일성은 대칭관계이지만 할당은 그렇지 않다. 예를 들어 수학에서 <code>a``=``7</code>인 경우 <code>7``=``a</code>도 성립하지만, 줄리아에서는 <code>a``=``7</code>로 할당한다고 해서 <code>7``=``a</code>가 옳은 것은 아니다.</p>
+<p>또한 수학에서 '동일성의 속성(a proposition of equality)'은 항상 참(true) 또는 거짓(false)이다. 예를 들어 <code>a``=``b</code>가 참이라면 <code>a</code>는 항상 <code>b</code>와 같아야 한다. 하지만 줄리아는 재할당하면 위의 참 가정이 언제든지 깨질 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; a = <span class="hljs-number">5</span><br><span class="hljs-number">5</span><br>julia&gt; b = a    <span class="hljs-comment"># a 와 b 가 현재는 동일하다.</span><br><span class="hljs-number">5</span><br>julia&gt; a = <span class="hljs-number">3</span>    <span class="hljs-comment"># a 를 재할당 하는 순간 동일성은 깨진다.</span><br><span class="hljs-number">3</span><br>julia&gt; b<br><span class="hljs-number">5</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드에서 볼 수 있듯이 <code>a</code>을 재할당해도 <code>b</code>도 같이 재할당되지 않는다. 이는 할당과 동일성이 다르다는 것을 증명한다.</p>
+<p><strong>주의</strong> 변수를 재할당 하는 것은 종종 유용하지만, 주의해서 사용해야 한다. 너무 자주 변경하면 이후 코드를 읽고 디버깅하기 어려울 수 있다. 또한 이미 생성된 변수와 같은 이름으로 함수를 생성할 수 없다.</p>
+<h3 id="변수-업데이트-updating-variables">변수 업데이트 (Updating Variables)</h3>
+<p>일반적인 재할당 유형은 업데이트이며, 변수의 새 값은 이전 값에 따라 다르다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = x + <span class="hljs-number">1</span><br><span class="hljs-number">8</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 <code>x</code>의 현재 값을 얻고, 1을 더한 다음 <code>x</code>를 새로운 값으로 업데이트한다.</p>
+<p>하지만 아직 생성되지 않은 변수를 업데이트 하려고 한다면, 줄리아는 오류를 일으킨다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; y = y + <span class="hljs-number">1</span><br>ERROR: <span class="hljs-built_in">UndefVarError</span>: y not defined<br></code></pre></td></tr></table></figure>
+<p>변수를 업데이트하기 전에, 간단하게 값을 할당하여 초기화를 해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; y = <span class="hljs-number">0</span><br><span class="hljs-number">0</span><br>julia&gt; y = y + <span class="hljs-number">1</span><br><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>1을 추가하여 변수를 업데이트 하는 것을 증가(increment)라고 하며, 1을 빼는 것을 감소(decrement)라고 한다.</p>
+<h3 id="while문"><code>while</code>문</h3>
+<p>컴퓨터는 종종 반복적인 일들을 자동으로 사용한다. 오류 없이 동일한 일을 반복하는 것은 컴퓨터가 가장 잘하는 일이며, 사람들이 가장 못하는 일이다.</p>
+<p>우리는 이미 재귀를 사용하여 반복하는 <code>countdown()</code>, <code>printn()</code>를 보았다. 반복문은 많이 사용되기 때문에 줄리아는 반복문을 더 쉽게 만들 수 있도록 설계되었다. 그 중 하나인 <code>for</code>문은 우리가 <a href="https://dev-bearabbit.github.io/2020/03/02/ThinkJulia/Think-Julia-Chapter-4/">간단한 반복 파트</a>에서 봤기 때문에 <code>while</code>문 먼저 볼 것이다. 아래 코드는 <code>while</code>문을 사용하여 작성한 <code>countdown()</code>이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> countdown(n)<br>    <span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">0</span><br>        print(n, <span class="hljs-string">&quot; &quot;</span>)<br>        n = n - <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br>    println(<span class="hljs-string">&quot;Blastoff!&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>while</code>문에 대해서 본 적이 없을지라도 위의 코드를 대부분 이해할 수 있을 것이다. <code>n</code>이 0보다 크다면, <code>n</code>을 보여주고 <code>n</code>에서 1을 뺀다. <code>n</code>이 0이 될 때까지 반복하다가 0이 되면, "Blastoff!"를 반환한다.</p>
+<p>더 형식적으로, <code>while</code>문의 실행 흐름을 정리해보자.</p>
+<ul>
+<li><code>while</code>문의 조건이 참인지 거짓인지 판별하라</li>
+<li>조건이 <code>true</code>인 경우 본문을 실행한 후, 다시 1단계로 돌아가라</li>
+<li>조건이 <code>false</code>인 경우 <code>while</code>문을 종료하고 다음 명령문을 실행하라</li>
+</ul>
+<p>위와 같이 명령문을 실행한 후 다시 앞으로 올라가는 실행 흐름의 종류를 루프(loop)라고 한다.</p>
+<p>루프의 본문은 조건이 결국 <code>false</code>가 되어 루프가 종료되도록 하나 이상의 변수 값을 변경해야 한다. 그러허지 않으면 루프가 영원히 반복되며, 이런 현상을 무한 루프라고 한다.</p>
+<p><code>countdown()</code>의 경우에서는 루프 본문에서 <code>n</code>을 변경함으로써 <code>n</code>이 0이나 음수가 되면 루프가 종료되게 설정하였다. 이는 유한한 루프임이 확실하다.</p>
+<p>이제는 다른 루프도 살펴보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> seq(n)<br>    <span class="hljs-keyword">while</span> n != <span class="hljs-number">1</span><br>        println(n)<br>        <span class="hljs-keyword">if</span> n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>        <span class="hljs-comment"># n is even</span><br>            n = n / <span class="hljs-number">2</span><br>        <span class="hljs-keyword">else</span>                 <span class="hljs-comment"># n is odd</span><br>            n = n*<span class="hljs-number">3</span> + <span class="hljs-number">1</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 루프의 조건은 <code>n!= 1</code>이다. 따라서 이 루프는 <code>n</code>이 1이 되어 <code>false</code>가 될 때까지 반복될 것이다.</p>
+<p>루프가 매번 작동할 때, 프로그램은 <code>n</code>의 값을 도출한 후 해당 <code>n</code>이 짝수인지 홀수인지 확인한다. 만약에 <code>n</code>이 짝수라면 2로 나눠지며, 홀수라면 <code>n</code>은 <code>n*3 + 1</code> 값으로 대체된다. 예를 들어 <code>seq()</code>에 인수로 3을 준다면, 결괏값으로 3,10,5,16,8,4,2,1을 도출할 것이다.</p>
+<p><code>n</code>은 증가하거나 감소하기 때문에 <code>n</code>이 1이 되어 프로그램이 종료된다는 명백한 증거는 없다. 다만 위의 예시와 같이 <code>n</code>의 특정 값에 대해서는 종료를 증명할 수 있다. 예를 들어 시작 값이 2의 거듭제곱인 경우 <code>n</code>은 루프를 통과할 때마다 짝수가 되며, 결국 1이 되어 종료될 수 있다.</p>
+<p>여기서 어려운 질문은 과연 프로그램은 <code>n</code>이 모든 양수 값일 때 종료되는가이다. 지금가지 누구도 저 문제를 증명하거나 반증하지 못했다.</p>
+<h3 id="break문"><code>break</code>문</h3>
+<p>때때로 함수를 작성하다보면 루프를 끝내는 지점을 처음에 정하지 못할 수도 있다. 그런 경우에는 <code>break</code>문을 사용하여 루프를 빠져나올 수 있다.</p>
+<p>예를 들어, 만약에 사용자가 <code>done</code>이라고 작성할 때까지 사용자로부터 입력을 받고 싶다고 가정하자. 그렇다면 아래와 같이 코드를 작성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">while</span> <span class="hljs-literal">true</span><br>    print(<span class="hljs-string">&quot;&gt; &quot;</span>)<br>    line = readline()<br>    <span class="hljs-keyword">if</span> line == <span class="hljs-string">&quot;done&quot;</span><br>        <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">end</span><br>    println(line)<br><span class="hljs-keyword">end</span><br>println(<span class="hljs-string">&quot;Done!&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>해당 루프의 조건은 항상 <code>true</code>이기 때문에, 루프는 <code>break</code>문에 도달할 때까지 계속 반복된다.</p>
+<p>매번 사용자에게 "&gt; "가 표시되며, 사용자가 <code>done</code>이라고 입력하는 즉시 <code>break</code>문이 루프를 종료한다. 만약 <code>done</code>을 입력하지 않으면, 사용자가 입력한 내용을 반영하고 다시 루프의 위로 올라간다.</p>
+<p>실행한 결과는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">&gt; not done<br>not done<br>&gt; done<br>Done!<br></code></pre></td></tr></table></figure>
+<p>이렇게 루프를 작성하는 방법은 루프의 어느 곳에서든 조건을 확인할 수 있고, 멈춰야 하는 지점도 정확히 설정할 수 있기 때문에 일반적으로 사용된다.</p>
+<h3 id="continue문"><code>continue</code>문</h3>
+<p><code>break</code>문이 루프를 빠져나가게 한다면, <code>continue</code>문은 명령문들 중간에서 루프의 시작점으로 올려준다. 예를 통해 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">10</span><br>    <span class="hljs-keyword">if</span> i % <span class="hljs-number">3</span> == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">continue</span><br>    <span class="hljs-keyword">end</span><br>    print(i, <span class="hljs-string">&quot; &quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 코드 실행의 결과는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
+<p>코드를 살펴보면, <code>i</code>가 3으로 나눠지면 <code>continue</code>문을 만나서 루프의 처음으로 돌아가며, <code>i</code>가 3으로 나눠지지 않으면 그대로 <code>print()</code>로 넘어간다. 따라서 결과에서 3으로 나눠지는 수들은 다 제외되고 출력된 것이다.</p>
+<h3 id="제곱근-square-roots">제곱근 (Square Roots)</h3>
+<p>루프는 반복하여 수치 결과를 개선하는 프로그램에도 자주 사용된다.</p>
+<p>예로 제곱근을 계산하는 방법 중 하나인 뉴턴의 방법을 보자. 만약 <code>a</code>라는 수의 제곱근을 알고 싶다면, 아래의 공식을 반복하여 값을 찾을 수 있다.</p>
+<p><span class="math display">\[
+\begin{equation}
+y= \frac{1}{2}\left(x+\frac{a}{x}\right)
+\end{equation}
+\]</span></p>
+<p>임의로 <code>a</code>에 4을 할당하고, <code>x</code>에 3을 할당한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; a = <span class="hljs-number">4</span><br><span class="hljs-number">4</span><br>julia&gt; x = <span class="hljs-number">3</span><br><span class="hljs-number">3</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.1666666666666665</span><br></code></pre></td></tr></table></figure>
+<p>위 결과는 4의 제곱근인 2와 가깝다. 만약에 위 과정을 반복한다면, 2와 더 가까운 결과를 얻을 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = y<br><span class="hljs-number">2.1666666666666665</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0064102564102564</span><br></code></pre></td></tr></table></figure>
+<p>몇 번의 업데이트 이후, 거의 2와 같은 결과를 얻었다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = y<br><span class="hljs-number">2.0064102564102564</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0000102400262145</span><br>julia&gt; x = y<br><span class="hljs-number">2.0000102400262145</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0000000000262146</span><br></code></pre></td></tr></table></figure>
+<p>일반적으로 정답에 도달하는데 걸리는 반복 수를 미리 예측할 수는 없지만, 일정 구간이 지나면 값이 도달하여 변하지 않는 것을 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = y<br><span class="hljs-number">2.0000000000262146</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0</span><br>julia&gt; x = y<br><span class="hljs-number">2.0</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0</span><br></code></pre></td></tr></table></figure>
+<p><code>y == x</code>에 도달했을 때는 반복문을 멈출 수 있다. 위의 과정을 <code>while</code>문으로 작성하면 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">while</span> <span class="hljs-literal">true</span><br>    println(x)<br>    y = (x + a/x) / <span class="hljs-number">2</span><br>    <span class="hljs-keyword">if</span> y == x<br>        <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">end</span><br>    x = y<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>대부분의 값은 정상적으로 작동하지만 <span class="math display">\[\sqrt{2}\]</span> 와 같은 수들은 <code>Float64</code>로 표현되지 않기 때문에 피하는게 좋다.</p>
+<p><code>y</code>와 <code>x</code>가 정확하게 동일한지 확인하기 위해서는 내장 함수 <code>abs()</code>를 사용하여 이들의 차이를 절대 값으로 계산하는 것이 더 안전하다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">if</span> abs(y-x) &lt; ε<br>    <span class="hljs-keyword">break</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>여기서 <code>ε</code>(<code>\varepsilon TAB</code>)은 <code>0.0000001</code>과 같이 얼마나 가까운지 결정한다.</p>
+<h3 id="알고리즘">알고리즘</h3>
+<p>뉴턴의 방법은 알고리즘 예시 중 하나이다. 알고리즘(Algorithms)은 제곱근 계산과 같이 문제들을 해결하는 기계적인 프로세스이다.</p>
+<p>알고리즘이 무엇인지 이해하기 위해서는 알고리즘이 아닌 것들을 먼저 보는 것이 더 효과적일 수 있다. 예로 한 자리 숫자를 곱하는 법을 배울 때, 단순히 곱셈표를 외웠을 것이다. 이런 종류의 지식은 알고리즘이라고 할 수 없다.</p>
+<p>그러나 게으른 사람이라면 몇 가지의 요령을 획득했을 것이다. 예를 들어 n과 9의 곱을 찾으려면 n−1을 첫 번째 숫자로, 10−n을 두 번째 숫자로 사용하여 답을 만들 수 있다. 이 식은 한자리 숫자와 9를 곱하는 일반적인 해결방안이다. 이것이 알고리즘이다.</p>
+<p>알고리즘의 특징 중 하나는 이를 수행할 지능이 필요하지 않다는 점이다. 알고리즘들은 간단한 규칙에 따라서 진행하는 기계적인 프로세스이다.</p>
+<p>알고리즘 실행은 지루하지만 알고리즘 설계는 흥미롭고 도전적이다. 또한 알고리즘 설계는 컴퓨터 과학의 핵심이다.</p>
+<p>사람들이 자연스럽게 하는 것들 중 일부는 알고리즘으로 구현하기가 어렵다. 예로 자연어를 이해하는 것 등이다. 우리는 모두 자연어를 이해하고 있지만, 알고리즘적으로 어떻게 이해하는지 설명하는 것은 매우 어렵다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>더 큰 프로그램을 작성하기 시작하면 디버깅에 많은 시간을 투자하게 된다. 코드가 많을수록 오류가 발생할 확률도 올라가며 버그가 숨어있을 수 있는 공간도 많아진다.</p>
+<p>디버깅 시간을 줄일 수 있는 한 가지 방법은 이분법 디버깅이다. 이분법 디버깅은 프로그램 코드를 중간 단위로 분해하여 확인하면서 문제점을 빠르게 찾는 방법이다. 예를 들어 프로그램 코드가 100줄이라면, 50줄 쯤에서 나눈 다음 그 근처를 확인하는 것이다. 확인하는 방법은 <code>print</code>문을 넣어 코드가 잘 작동하는지 보는 것이다. 이때 잘 작동한다면 프로그램 후반부에 문제가 있는 것이고, 아니라면 전반부에 문제가 있는 것이다. 이 방식으로 검사하면 100줄을 전부 다 볼 필요 없다.</p>
+<p>하지만 실제 상황에서는 프로그램 중간이 무엇인지 명확하지 않을 수 있다. 코드 줄 개수에 맞춰 반으로 나누는 것은 합리적이지 않다. 따라서 프로그램에 오류가 있을 수 있는 장소와 코드를 먼저 점검한 후, 개발자가 생각하는 합리적인 중간점을 찾는 것이 좋다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>6. 반복</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 5일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-7/" title="7. 문자열">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">7. 문자열</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-5/" title="5. 결과 있는 함수">
+                        <span class="hidden-mobile">5. 결과 있는 함수</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

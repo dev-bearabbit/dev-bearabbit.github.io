@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Tuples를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="11. 튜플">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-11/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Tuples를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-03-10T16:31:08.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:50.598Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>11. 튜플 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="11. 튜플"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-11 01:31" pubdate>
+          2020년 3월 11일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          957 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">11. 튜플</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap12">Tuples</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="튜플-tuples">튜플 (Tuples)</h2>
+<p>이번 장에서는 또다른 내장된 데이터 타입인 튜플(Tuples)에 대해서 알아보고 배열과 딕셔너리, 튜플이 어떻게 같이 작동하는지 공부할 것이다. 또한 유용한 기능인 '수집과 분산 연산자(gather and scatter operators.)'와 '가변 인수 배열(variable-length argument arrays)' 등을 살펴볼 것이다.</p>
+<h3 id="튜플은-불변이다">튜플은 불변이다</h3>
+<p>튜플은 일련의 값들이다. 값은 어떤 데이터 타입도 될 수 있으며, 또한 정수로 인덱싱되기 때문에 배열과 유사한 점이 많다. 중요한 차이점은 튜플은 요소를 변경할 수 없으며 각각의 요소들은 고유한 데이터 타입을 가진다.</p>
+<p>문법적으로 튜플은 쉼표로 구분된 값 목록이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t = <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span><br>(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<p>하지만 필요하진 않더라도 괄호를 사용해서 튜플을 작성하는 것이 일반적이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t = (<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>)<br>(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<p>하나의 요소로 튜플을 만들기 위해서는 마지막에 쉼표를 넣어주어야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t1 = (<span class="hljs-string">&#x27;a&#x27;</span>,)<br>(<span class="hljs-string">&#x27;a&#x27;</span>,)<br>julia&gt; typeof(t1)<br><span class="hljs-built_in">Tuple</span>&#123;<span class="hljs-built_in">Char</span>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>WARNING</strong> 쉼표 없는 괄호 안의 값은 튜플이 아니다.</p>
+<p><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t2 = (<span class="hljs-string">&#x27;a&#x27;</span>)<br><span class="hljs-string">&#x27;a&#x27;</span>: ASCII/Unicode U+<span class="hljs-number">0061</span> (category Ll: Letter, lowercase)<br>julia&gt; typeof(t2)<br><span class="hljs-built_in">Char</span><br></code></pre></td></tr></table></figure></p>
+<p>튜플을 만드는 다른 방법은 내장 함수를 이용하는 것이다. 인수가 없는 상태인 <code>tuple()</code>을 입력하면 빈 튜플이 생성된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; tuple()<br>()<br></code></pre></td></tr></table></figure>
+<p>여러 개의 인수들을 입력한다면, 인수들이 값인 튜플을 생성한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t3 = tuple(<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-literal">pi</span>)<br>(<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-literal">π</span> = <span class="hljs-number">3.1415926535897</span>...)<br></code></pre></td></tr></table></figure>
+<p><code>tuple</code>은 내장 함수의 이름이기 때문에 변수의 이름으로는 사용하지 않는 것이 좋다.</p>
+<p>대부분의 배열 연산자들은 튜플에서 작동한다. 대괄호 연산자는 해당 인덱스의 요소를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t = (<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>);<br><br>julia&gt; t[<span class="hljs-number">1</span>]<br><span class="hljs-string">&#x27;a&#x27;</span>: ASCII/Unicode U+<span class="hljs-number">0061</span> (category Ll: Letter, lowercase)<br></code></pre></td></tr></table></figure>
+<p>슬라이스 연산자 또한 요소들의 특정 범위를 선택한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t[<span class="hljs-number">2</span>:<span class="hljs-number">4</span>]<br>(<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<p>그러나 튜플의 한 요소를 수정하려고 시도하면, 아래의 오류 메시지가 나타난다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t[<span class="hljs-number">1</span>] = <span class="hljs-string">&#x27;A&#x27;</span><br>ERROR: <span class="hljs-built_in">MethodError</span>: no method matching setindex!(::<span class="hljs-built_in">NTuple</span>&#123;<span class="hljs-number">5</span>,<span class="hljs-built_in">Char</span>&#125;, ::<span class="hljs-built_in">Char</span>, ::<span class="hljs-built_in">Int64</span>)<br></code></pre></td></tr></table></figure>
+<p>튜플은 변하지 않기 때문에 요소들을 수정할 수 없다.</p>
+<p>관계 연산자들도 튜플이나 기타 시퀀스에서 작동한다. 줄리아는 각 시퀀스에서 첫 번째 요소를 비교하며 시작한다. 동일하면 다음 요소로 진행되며 다른 요소를 찾을 때까지 계속한다. 서브시퀀스는 고려되지 않는다. (실제로 큰 경우에도)</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>) &lt; (<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-literal">true</span><br>julia&gt; (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2000000</span>) &lt; (<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>첫 번째 예시에서는 뒤의 튜플의 모든 요소가 앞의 튜플의 요소보다 모두 크기 때문에 <code>true</code>를 반환했다. 두 번째 예시는 세 번째 요소가 뒤의 튜플보다 앞의 튜플이 더 크지만 앞의 두 개의 요소가 모두 뒤의 튜플이 더 크기 때문에 <code>true</code>를 반환했다. 즉, 하나라도 큰 요소가 있다면 <code>true</code>이고 아니라면 <code>false</code>를 반환한다.</p>
+<h3 id="튜플-할당">튜플 할당</h3>
+<p>이것은 두 변수의 값을 바꿀 때 유용하다. 기존 할당에서는 임시 변수를 사용해야 한다. 예를 들어 <code>a</code>와 <code>b</code>를 바꾸려고 한다면, 아래와 같이 중간에 임시 변수가 필요하다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">temp = a<br>a = b<br>b = temp<br></code></pre></td></tr></table></figure>
+<p>위의 방식은 번거롭다. 튜플은 훨씬 간단한 방법으로 변경한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">a, b = b, a<br></code></pre></td></tr></table></figure>
+<p>왼쪽은 튜플의 변수들이며, 오른쪽은 튜플의 표현식이다. 각 값들은 해당 변수에 할당되며, 오른쪽의 모든 표현식은 할당 전에 평가된다.</p>
+<p>왼쪽에 있는 변수의 수는 오른쪽 값의 수보다 작으면 작동하지만, 초과된 값은 사라진다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; (a, b) = (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br>julia&gt; a, b, c = <span class="hljs-number">1</span>, <span class="hljs-number">2</span><br>ERROR: <span class="hljs-built_in">BoundsError</span>: attempt to access (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br>  at index [<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+<p>일반적으로 오른쪽은 문자열, 배열, 튜플 등 어떤 종류의 시퀀스도 입력될 수 있다. 예를 들어 이메일 주소를 사용자 이름과 도메인으로 나누려면 다음과 같이 작성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; addr = <span class="hljs-string">&quot;julius.caesar@rome&quot;</span><br><span class="hljs-string">&quot;julius.caesar@rome&quot;</span><br>julia&gt; uname, domain = split(addr, <span class="hljs-string">&#x27;@&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p><code>split()</code>으로부터 반환된 두 값은 배열의 두 요소가 된다. 첫 번째 요소는 <code>uname</code>에 할당되며, 두 번째는 <code>domain</code>에 할당된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; uname<br><span class="hljs-string">&quot;julius.caesar&quot;</span><br>julia&gt; domain<br><span class="hljs-string">&quot;rome&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="반환-값으로서의-튜플">반환 값으로서의 튜플</h3>
+<p>엄격하게 말하자면, 함수는 오직 한 개의 값만 반환하지만 그러나 그 한 개의 값이 튜플이라면 여러 개의 값을 반환하는 것과 같은 효과를 가진다. 예를 들어 두 정수의 나눗셈에서 몫과 나머지를 구하려 할 때, <code>x ÷ y</code>을 계산한 후 <code>x % y</code>를 계산하는 것은 비효율적이다. 두 개의 수식을 한번에 계산하는 것이 더 낫다.</p>
+<p>내장 함수인 <code>divrem()</code>은 두 인수를 가져가 몫과 나머지인 두 개의 값을 가진 튜플로 반환한다. 이후 결과를 튜플로 저장할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t = divrem(<span class="hljs-number">7</span>, <span class="hljs-number">3</span>)<br>(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<p>또는 요소들을 각각 저장하기 위해서 튜플 할당을 이용할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; q, r = divrem(<span class="hljs-number">7</span>, <span class="hljs-number">3</span>);<br><br>julia&gt; <span class="hljs-meta">@show</span> q r;<br>q = <span class="hljs-number">2</span><br>r = <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>아래의 함수는 튜플을 결과로 반환하는 예시이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> minmax(t)<br>    minimum(t), maximum(t)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>minimum()</code>과 <code>maximum()</code>은 시퀀스에서 가장 작은 수와 큰 수를 찾아주는 내장된 함수이다. <code>minmax()</code>은 두 개의 값을 튜플로 반환한다. 같은 결과를 주는 내장 함수인 <code>extrema()</code>도 효과적이다.</p>
+<h3 id="가변-인수-튜플-variable-length-argument-tuples">가변 인수 튜플 (Variable-length Argument Tuples)</h3>
+<p>함수들은 가변적인 개수의 인수를 받아들일 수 있다. <code>...</code>로 끝나는 매개 변수 이름은 인수를 튜플로 <strong>수집(gather)</strong>한다. 예를 들어 <code>printall()</code>은 여러 인수들을 사용하여 출력한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> printall(args...)<br>    println(args)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>수집 매개 변수는 어떤 이름도 사용할 수 있지만 관례 상으로 <code>args</code>를 사용된다. 아래의 코드는 함수가 어떻게 작동하는지 보여준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; printall(<span class="hljs-number">1</span>, <span class="hljs-number">2.0</span>, <span class="hljs-string">&#x27;3&#x27;</span>)<br>(<span class="hljs-number">1</span>, <span class="hljs-number">2.0</span>, <span class="hljs-string">&#x27;3&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<p>위에서 본 수집을 보완해주는 것이 <strong>분산(scatter)</strong>이다. 만약 값의 시퀀스가 있고 여러 인수로 함수에 값을 전달하려는 경우 <code>...</code> 연산자를 사용하면 된다. 예를 들어 <code>divrem()</code>은 정확히 2개의 인수를 받으며, 2개의 요소를 가진 튜플을 넣어도 작동하지 않는다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t = (<span class="hljs-number">7</span>, <span class="hljs-number">3</span>);<br><br>julia&gt; divrem(t) <span class="hljs-comment"># 튜플의 값은 2개이지만 여기서 인수는 1개로 인식된다.</span><br>ERROR: <span class="hljs-built_in">MethodError</span>: no method matching divrem(::<span class="hljs-built_in">Tuple</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Int64</span>&#125;)<br></code></pre></td></tr></table></figure>
+<p>그러나 튜플에 <code>...</code> 연산자를 사용하면 작동한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; divrem(t...) <span class="hljs-comment">#튜플의 값에 가변성을 부여하여 개수를 맞춰준다.</span><br>(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<p>많은 내장 함수들이 가변 인수 튜플을 사용한다. 예를 들어, <code>min()</code>과 <code>max()</code>은 여러 인수들을 가져올 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; max(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br><span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+<p>하지만 <code>sum()</code>은 작동하지 않는다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; sum(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br>ERROR: <span class="hljs-built_in">MethodError</span>: no method matching sum(::<span class="hljs-built_in">Int64</span>, ::<span class="hljs-built_in">Int64</span>, ::<span class="hljs-built_in">Int64</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="배열과-튜플">배열과 튜플</h3>
+<p><code>zip()</code>은 두 개 이상의 시퀀스들을 가져온 후 시퀀스들을 요소로 가진 튜플로 반환하는 내장 함수이다. 함수의 이름은 두 줄의 치아를 연결하고 끼워 넣는 지퍼에서 가져왔다.</p>
+<p>아래의 예시는 문자열과 배열을 <code>zip()</code>의 인수로 입력한 결과이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; s = <span class="hljs-string">&quot;abc&quot;</span>;<br><br>julia&gt; t = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><br>julia&gt; zip(s, t)<br>Base.Iterators.Zip&#123;<span class="hljs-built_in">Tuple</span>&#123;<span class="hljs-built_in">String</span>,<span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">1</span>&#125;&#125;&#125;((<span class="hljs-string">&quot;abc&quot;</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]))<br></code></pre></td></tr></table></figure>
+<p>위의 결과는 페어 단위로 정리할 수 있는 짚(zip) 객체이다. <code>zip()</code>은 일반적으로 <code>for</code> 루프에서 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">for</span> pair <span class="hljs-keyword">in</span> zip(s, t)<br>           println(pair)<br>       <span class="hljs-keyword">end</span><br>(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>)<br>(<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>)<br>(<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">3</span>)<br></code></pre></td></tr></table></figure>
+<p>짚 객체는 일종의 이터레이터(iterator)이며 시퀀스를 반복하는 객체이다. 이터레이터는 몇 가지 측면에서 배열과 비슷하지만, 배열과 달리 인덱스를 사용하여 요소를 선택할 수 없다.</p>
+<p>만약 배열 연산자나 함수를 사용하고 싶다면, 짚 객체를 이용하여 배열을 만들면 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; collect(zip(s, t))<br><span class="hljs-number">3</span>-element <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Tuple</span>&#123;<span class="hljs-built_in">Char</span>,<span class="hljs-built_in">Int64</span>&#125;,<span class="hljs-number">1</span>&#125;:<br> (<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>)<br> (<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>)<br> (<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">3</span>)<br></code></pre></td></tr></table></figure>
+<p>위의 결과는 튜플의 배열이다. 이 예시에서 각각의 튜플은 문자열에서 온 문자와 배열에서 온 요소들을 포함한다.</p>
+<p>만약 시퀀스가 다른 길이라면, 더 짧은 시퀀스를 기준으로 결과가 출력된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; collect(zip(<span class="hljs-string">&quot;Anne&quot;</span>, <span class="hljs-string">&quot;Elk&quot;</span>))<br><span class="hljs-number">3</span>-element <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Tuple</span>&#123;<span class="hljs-built_in">Char</span>,<span class="hljs-built_in">Char</span>&#125;,<span class="hljs-number">1</span>&#125;:<br> (<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>)<br> (<span class="hljs-string">&#x27;n&#x27;</span>, <span class="hljs-string">&#x27;l&#x27;</span>)<br> (<span class="hljs-string">&#x27;n&#x27;</span>, <span class="hljs-string">&#x27;k&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<p>튜플의 배열을 순회하기 위해서는 <code>for</code> 루프에서 튜플 할당을 사용할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t = [(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">3</span>)];<br><br>julia&gt; <span class="hljs-keyword">for</span> (letter, number) <span class="hljs-keyword">in</span> t<br>           println(number, <span class="hljs-string">&quot; &quot;</span>, letter)<br>       <span class="hljs-keyword">end</span><br><span class="hljs-number">1</span> a<br><span class="hljs-number">2</span> b<br><span class="hljs-number">3</span> c<br></code></pre></td></tr></table></figure>
+<p>루프가 실행될 때마다 줄리아는 배열에서 다음 튜플을 선택하고 그 요소들을 letter와 number로 할당한다. <code>for</code> 루프에서 <code>(letter, number)</code>와 같이 괄호를 사용하는 것은 의무적이다.</p>
+<p>만약 <code>zip()</code>, <code>for</code> 루프, 튜플 할당을 모두 결합하면, 동시에 두 개 이상의 시퀀스를 순회하는데 유용한 관용구를 얻는다. 예를 들어, <code>hasmatch()</code>는 <code>t1</code>과 <code>t2</code> 2개의 시퀀스를 가져가서 특정 인덱스 <code>i</code>가 <code>t1[i] == t2[i]</code>라면 <code>true</code>를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> hasmatch(t1, t2)<br>    <span class="hljs-keyword">for</span> (x, y) <span class="hljs-keyword">in</span> zip(t1, t2)<br>        <span class="hljs-keyword">if</span> x == y<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">false</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>시퀀스의 요소와 인덱스들을 순회해야 한다면, 내장 함수인 <code>enumerate()</code>를 사용할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">for</span> (index, element) <span class="hljs-keyword">in</span> enumerate(<span class="hljs-string">&quot;abc&quot;</span>)<br>           println(index, <span class="hljs-string">&quot; &quot;</span>, element)<br>       <span class="hljs-keyword">end</span><br><span class="hljs-number">1</span> a<br><span class="hljs-number">2</span> b<br><span class="hljs-number">3</span> c<br></code></pre></td></tr></table></figure>
+<p><code>enumerate()</code>의 결과는 enumerate 객체이며, 일련의 쌍을 반복한다. 각 쌍에는 인덱스와 시퀀스 요소가 포함되어 있다.</p>
+<h3 id="딕셔너리와-튜플">딕셔너리와 튜플</h3>
+<p>딕셔너리는 키-값 페어를 반복하는 이터레이터(iterator)로 사용할 수 있다. <code>for</code> 루프에서 사용한다면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; d = <span class="hljs-built_in">Dict</span>(<span class="hljs-string">&#x27;a&#x27;</span>=&gt;<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>=&gt;<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;c&#x27;</span>=&gt;<span class="hljs-number">3</span>);<br><br>julia&gt; <span class="hljs-keyword">for</span> (key, value) <span class="hljs-keyword">in</span> d<br>           println(key, <span class="hljs-string">&quot; &quot;</span>, value)<br>       <span class="hljs-keyword">end</span><br>a <span class="hljs-number">1</span><br>c <span class="hljs-number">3</span><br>b <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<p>딕셔너리와 동일하게 아이템들은 특정한 순서가 없다.</p>
+<p>또한 튜플 배열을 사용하여 새 딕셔너리로 초기화할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; t = [(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">3</span>), (<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>)];<br><br>julia&gt; d = <span class="hljs-built_in">Dict</span>(t)<br><span class="hljs-built_in">Dict</span>&#123;<span class="hljs-built_in">Char</span>,<span class="hljs-built_in">Int64</span>&#125; with <span class="hljs-number">3</span> entries:<br>  <span class="hljs-string">&#x27;a&#x27;</span> =&gt; <span class="hljs-number">1</span><br>  <span class="hljs-string">&#x27;c&#x27;</span> =&gt; <span class="hljs-number">3</span><br>  <span class="hljs-string">&#x27;b&#x27;</span> =&gt; <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<p><code>Dict()</code>과 <code>zip()</code>을 결합하면 딕셔너리를 만드는 간결한 방법이 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; d = <span class="hljs-built_in">Dict</span>(zip(<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-number">1</span>:<span class="hljs-number">3</span>))<br><span class="hljs-built_in">Dict</span>&#123;<span class="hljs-built_in">Char</span>,<span class="hljs-built_in">Int64</span>&#125; with <span class="hljs-number">3</span> entries:<br>  <span class="hljs-string">&#x27;a&#x27;</span> =&gt; <span class="hljs-number">1</span><br>  <span class="hljs-string">&#x27;c&#x27;</span> =&gt; <span class="hljs-number">3</span><br>  <span class="hljs-string">&#x27;b&#x27;</span> =&gt; <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<p>이것은 튜플을 딕셔너리의 키로 사용하는 일반적인 방법이다. 예를 들어 전화 번호부는 성과 이름 쌍에서 전화 번호로 매핑될 수 있다. 우리가 이름 쌍과 전화 번호를 알고 있다면 아래와 같이 작성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">directory[last, first] = number<br></code></pre></td></tr></table></figure>
+<p>위의 예시에서 대활호 안에 있는 표현식은 튜플이다. 즉, 이 딕셔너리를 순회하기 위해서는 튜플 할당을 사용할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">for</span> ((last, first), number) <span class="hljs-keyword">in</span> directory<br>    println(first, <span class="hljs-string">&quot; &quot;</span>, last, <span class="hljs-string">&quot; &quot;</span>, number)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이 루프는 <code>directory</code>에서 튜플인 키-값 페어를 순회한다. 각 튜플의 키 요소를 <code>last</code>와 <code>first</code>에, 값을 숫자에 할당한 다음 이름과 해당 전화번호를 출력한다.</p>
+<h3 id="시퀀스의-시퀀스-sequences-of-sequences">시퀀스의 시퀀스 (Sequences of Sequences)</h3>
+<p>지금까지는 튜플 배열(arrays of tuples)에 중점을 두었지만, 이번 장의 모든 예제들은 배열의 배열(arrays of arrays), 튜플의 튜플(tuples of tuples), 배열 튜플(tuples of arrays)에서도 작동한다. 앞과 같이 가능한 조합을 열거하지 않기 위해서 시퀀스의 시퀀스로 이야기 하는 것이 훨씬 편하다.</p>
+<p>많은 상황에서 문자열, 배열 및 튜플 등 서로 다른 종류의 시퀀스들을 바꿔서 사용할 수 있다. 만약 바꾼다면 어떤 것을 선택해야 할까?</p>
+<p>확실한 것부터 시작하자면, 문자열은 요소들이 문자로 이루어져야 하기 때문에 다른 시퀀스보다 제한적이다. 또한 문자열은 불변이다. 만약 문자열에서 문자를 변경하는 함수가 필요한 경우, 새 문자열을 만드는 것 대신 문자 배열을 사용할 수 있다.</p>
+<p>배열은 대부분 변경이 가능하기 때문에 튜플보다는 일반적으로 사용된다. 그러나 튜플이 더 적합한 몇 가지의 경우가 있다.</p>
+<ul>
+<li>반환 구문과 같은 일부 코드에서는 배열보다 튜플을 만드는 것이 문법 상 더 간단하다.</li>
+<li>시퀀스를 함수에 인수로 전달하는 경우 튜플을 사용하면 에일리어싱으로 인한 오류의 가능성이 줄어든다.</li>
+<li>성능상의 이유로 컴파일러가 튜플 타입을 전문화할 수 있다.</li>
+</ul>
+<p>튜플은 변경할 수 없으므로 배열을 수정하는 <code>sort!()</code>나 <code>reverse!()</code>와 같은 함수를 제공하지 않는다. 그러나 줄리아는 배열의 요소들을 가져와 정렬된 상태의 새로운 배열을 반환하는 내장 함수 <code>sort()</code>를 제공하며, 시퀀스를 가져와 역순으로 반환하는 <code>reverse()</code>도 제공한다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>배열, 딕셔너리 그리고 튜플은 데이터 구조의 예이다. 이 장에서는 튜플 배열 또는 튜플을 키로 가진 딕셔너리와 같은 복합 데이터 구조를 보기 시작하였다. 복합 데이터 구조는 유용하지만 형태 오류(shape errors)가 나기 쉽다. 즉, 데이터 구조가 잘못된 데이터 타입이나 크기 또는 구조를 가지는 것이다. 예를 들어 함수는 하나의 정수가 있는 배열을 기대하는데 개발자가 정수 하나만 입력한다면, 그 함수는 작동하지 않는다.</p>
+<p>줄리아는 시퀀스의 요소에 데이터 타입을 첨부할 수 있다. 이 작업을 수행하는 방법은 다중 디스패치 파트에서 자세하게 설명할 것이다. 데이터 타입을 지정하면 많은 형태 오류가 제거된다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>11. 튜플</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-11/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 11일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-12/" title="12. 사례 연구 - 데이터 구조 선택">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">12. 사례 연구 - 데이터 구조 선택</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-10/" title="10. 딕셔너리">
+                        <span class="hidden-mobile">10. 딕셔너리</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

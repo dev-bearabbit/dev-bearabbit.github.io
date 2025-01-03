@@ -1,0 +1,772 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="러스트 제네릭 타입에 대해 공부한 내용을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust 제네릭 타입">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Rust/rust-6/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="러스트 제네릭 타입에 대해 공부한 내용을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2021-10-30T04:03:32.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:37:40.850Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="Vec">
+<meta property="article:tag" content="Option">
+<meta property="article:tag" content="generic">
+<meta property="article:tag" content="제네릭타입">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Rust 제네릭 타입 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="Rust 제네릭 타입"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-30 13:03" pubdate>
+          2021년 10월 30일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          393 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rust 제네릭 타입</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>러스트 제네릭 타입에 대해 공부한 내용을 정리합니다. <span id="more"></span></p>
+<h2 id="제네릭-타입이란">제네릭 타입이란</h2>
+<p>보편적으로 함수 코드를 작성할 때는 매개변수와 결과값에 대한 데이터 타입을 지정한다. 그렇기에 해당 함수는 지정한 데이터 타입을 이외의 다른 타입이 매개변수로 들어온다면 타입에러를 발생시킨다. 따라서 만약 정수와 문자 모두를 매개변수로 받는 프로그램을 만들고 싶다면 아래와 같은 코드가 필요하다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">find_max_i32</span>(list: &amp;[<span class="hljs-type">i32</span>]) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span> &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">max</span> = list[<span class="hljs-number">0</span>];<br><br>    <span class="hljs-keyword">for</span> &amp;item <span class="hljs-keyword">in</span> list.<span class="hljs-title function_ invoke__">iter</span>() &#123;<br>        <span class="hljs-keyword">if</span> item &gt; max  &#123;<br>            max = item;<br>        &#125;<br>    &#125;<br>    max<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">find_max_char</span>(list: &amp;[<span class="hljs-type">char</span>]) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">char</span> &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">max</span> = list[<span class="hljs-number">0</span>];<br><br>    <span class="hljs-keyword">for</span> &amp;item <span class="hljs-keyword">in</span> list.<span class="hljs-title function_ invoke__">iter</span>() &#123;<br>        <span class="hljs-keyword">if</span> item &gt; max  &#123;<br>            max = item;<br>        &#125;<br>    &#125;<br>    max<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">i32_list</span> = [<span class="hljs-number">10</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>, <span class="hljs-number">15</span>, <span class="hljs-number">30</span>];<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">i32_result</span> = <span class="hljs-title function_ invoke__">find_max_i32</span>(&amp;i32_list);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;max num: &#123;&#125;&quot;</span>, i32_result);<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">char_list</span> = [<span class="hljs-string">&#x27;r&#x27;</span>,<span class="hljs-string">&#x27;h&#x27;</span>,<span class="hljs-string">&#x27;j&#x27;</span>,<span class="hljs-string">&#x27;k&#x27;</span>,<span class="hljs-string">&#x27;n&#x27;</span>];<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">char_result</span> = <span class="hljs-title function_ invoke__">find_max_char</span>(&amp;char_list);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;max char: &#123;&#125;&quot;</span>, char_result);<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>위에서 정의된 함수 <code>find_max_i32()</code> <code>find_max_char()</code>은 매개변수와 결과값은 데이터 타입만 다를 뿐 동일한 로직을 가지고 있다. 만약 위 예시처럼 두 가지가 아닌 모든 데이터 타입을 받는 함수를 작성하고 싶다면 어떻게 해야할까? 예시처럼 모든 데이터 타입에 맞추어 코드를 짜는 것은 복잡하다.</p>
+<p>위와 같은 상황에서 사용할 수 있는 방법이 바로 <code>제네릭 타입</code>이다. 제네릭 타입이란 말 그대로 데이터 타입을 정의해야 하는 부분을 대신하는 추상적인 데이터 타입이다. 이번 글에서는 데이터 타입을 정의해야 하는 상황에 따라 어떻게 제네릭 타입을 사용하는지 알아볼 것이다.</p>
+<h2 id="함수-정의">함수 정의</h2>
+<p>위 예시를 그대로 사용해보자. 위 예시에서는 i32 타입과 char 타입의 데이터를 모두 받아서 처리하는 프로그램을 작성하기 위한 방법 중 하나였다. 이는 각각의 데이터 타입에 맞춰 코드를 작성해야 하기에 코드가 길고 중복된다는 문제점이 있었다. 이를 제네릭 타입을 사용하여 수정해보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">find_max</span>(list: &amp;[T]) <span class="hljs-punctuation">-&gt;</span> T &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">max</span> = list[<span class="hljs-number">0</span>];<br><br>    <span class="hljs-keyword">for</span> &amp;item <span class="hljs-keyword">in</span> list.<span class="hljs-title function_ invoke__">iter</span>() &#123;<br>        <span class="hljs-keyword">if</span> item &gt; max  &#123;<br>            max = item;<br>        &#125;<br>    &#125;<br>    max<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">i32_list</span> = [<span class="hljs-number">10</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>, <span class="hljs-number">15</span>, <span class="hljs-number">30</span>];<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">i32_result</span> = <span class="hljs-title function_ invoke__">find_max</span>(&amp;i32_list);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;max num: &#123;&#125;&quot;</span>, i32_result);<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">char_list</span> = [<span class="hljs-string">&#x27;r&#x27;</span>,<span class="hljs-string">&#x27;h&#x27;</span>,<span class="hljs-string">&#x27;j&#x27;</span>,<span class="hljs-string">&#x27;k&#x27;</span>,<span class="hljs-string">&#x27;n&#x27;</span>];<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">char_result</span> = <span class="hljs-title function_ invoke__">find_max</span>(&amp;char_list);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;max char: &#123;&#125;&quot;</span>, char_result);<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>이전의 예시 코드의 위 코드의 차이점은 무엇인가? 일단 max값을 찾는 코드가 하나로 줄었다. 또한 그 함수이름 옆에 <code>&lt;T&gt;</code>가 추가되었고, 매개변수의 데이터 타입을 지정해야 하는 위치에 <code>T</code>로 변경되었다. 이 변경 사항들이 함수 정의에서 제네릭 타입을 사용하는 문법이다. 이 문법은 함수 <code>find_max()</code>가 어떤 타입 <code>T</code>를 일반화한 함수이며, 타입 <code>T</code>로 구성된 리스트를 매개변수로 받아 타입 <code>T</code>를 결과값으로 반환한다는 의미를 나타낸다. 이제 위 예시코드를 컴파일해보자. 그러면 아래의 에러가 발생한다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs rust">error[E0369]: binary operation `&gt;` cannot be applied to <span class="hljs-keyword">type</span> `T`<br> -<span class="hljs-punctuation">-&gt;</span> test.rs:<span class="hljs-number">5</span>:<span class="hljs-number">17</span><br>  |<br><span class="hljs-number">5</span> |         <span class="hljs-keyword">if</span> item &gt; max  &#123;<br>  |            ---- ^ --- T<br>  |            |<br>  |            T<br>  |<br>help: consider restricting <span class="hljs-keyword">type</span> <span class="hljs-title class_">parameter</span> `T`<br>  |<br><span class="hljs-number">1</span> | <span class="hljs-keyword">fn</span> <span class="hljs-title function_">find_max</span>&lt;T: std::cmp::<span class="hljs-built_in">PartialOrd</span>&gt;(list: &amp;[T]) <span class="hljs-punctuation">-&gt;</span> T &#123;<br></code></pre></td></tr></table></figure>
+<p>위 에러는 러스트 트레이트와 관련이 있기 때문에 트레이트 관련 글에서 자세히 다뤄볼 것이다.</p>
+<h2 id="구조체-정의">구조체 정의</h2>
+<p>다음으로는 구조체를 정의할 때 제네릭 타입을 사용하는 방법이다. 일반적으로 구조체는 정의 당시에 해당 변수의 데이터 타입을 지정한다. 아래의 예시를 살펴보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span> &#123;<br>    x: <span class="hljs-type">i32</span>,<br>    y: <span class="hljs-type">i32</span>,<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위처럼 정의된 <code>Point</code> 구조채에는 무조건 <code>i32</code> 타입만 필드 값으로 사용될 수 있다. 하지만 <code>float</code>도 필드값으로 사용하고 싶다면 어떻게 해야 할까? 답은 예상했다시피 제네릭 타입을 사용하면 된다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span>&lt;T&gt; &#123;<br>    x: T,<br>    y: T,<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">int</span> = Point &#123;x: <span class="hljs-number">4</span>, y: <span class="hljs-number">7</span>&#125;;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">float</span> = Point &#123;x: <span class="hljs-number">4.1</span>, y: <span class="hljs-number">7.1</span>&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드는 문제없이 작동된다. 하지만 구조체 정의에서 두 필드값을 동일한 <code>T</code> 타입으로 정의했기 때문에 필드의 데이터 타입은 동일해야 한다. 즉, 둘다 <code>i32</code>아거나 <code>float</code>이어야 한다. 만약 두 필드의 데이터 타입을 다르게 정의하고 싶다면 다중 제네릭 타입을 사용하면 된다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span>&lt;T,U&gt; &#123;<br>    x: T,<br>    y: U,<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">int</span> = Point &#123;x: <span class="hljs-number">4</span>, y: <span class="hljs-number">7.1</span>&#125;;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">float</span> = Point &#123;x: <span class="hljs-number">4.1</span>, y: <span class="hljs-number">7</span>&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="열거자-정의">열거자 정의</h2>
+<p>열거자를 정의할 때도 제네릭 타입을 사용할 수 있다. 표준 라이브러리인 <code>Option&lt;T&gt;</code>를 통해서 알아보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Option</span>&lt;T&gt; &#123;<br>    <span class="hljs-title function_ invoke__">some</span>(T),<br>    <span class="hljs-literal">None</span>,<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드에서 알 수 있듯이 <code>Option&lt;T&gt;</code>는 타입 <code>T</code>를 일반화한 열거자이며, <code>some</code>은 <code>T</code>값을 저장하고, <code>None</code>은 아무것도 저장하지 않는다.</p>
+<p>구조체와 마찬가지로 열거자 또한 다중 제네릭 타입을 사용할 수 있다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">verification</span>&lt;T,E&gt; &#123;<br>    <span class="hljs-title function_ invoke__">success</span>(T),<br>    <span class="hljs-title function_ invoke__">fail</span>(E),<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위에서 정의한 <code>verification&lt;T,E&gt;</code>는 성공했을 때와 실패했을 때의 값들을 모두 나타낼 수 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/rust/" class="category-chain-item">rust</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vec/" class="print-no-link">#Vec</a>
+      
+        <a href="/tags/option/" class="print-no-link">#Option</a>
+      
+        <a href="/tags/generic/" class="print-no-link">#generic</a>
+      
+        <a href="/tags/%EC%A0%9C%EB%84%A4%EB%A6%AD%ED%83%80%EC%9E%85/" class="print-no-link">#제네릭타입</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rust 제네릭 타입</div>
+      <div>https://dev-bearabbit.github.io/ko/Rust/rust-6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2021년 10월 30일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Certificate/ADsP-1/" title="[ADsP] 통계의 이해">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[ADsP] 통계의 이해</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Web/web-1/" title="Resume 페이지 만들기">
+                        <span class="hidden-mobile">Resume 페이지 만들기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

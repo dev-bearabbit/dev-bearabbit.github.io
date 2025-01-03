@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 The Goodies: Syntax를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="18. 기타 문법들">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-18/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 The Goodies: Syntax를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/25.png">
+<meta property="article:published_time" content="2020-03-22T09:27:01.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:58.993Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/25.png">
+  
+  
+  
+  <title>18. 기타 문법들 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="18. 기타 문법들"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-22 18:27" pubdate>
+          2020년 3월 22일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">18. 기타 문법들</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap19">The Goodies: Syntax</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="기타-문법들-syntax">기타 문법들 (Syntax)</h2>
+<p>이 책의 목적 중 하나는 가능한 적게 줄리아를 사용하는 법을 알려주는 것이었다. 만약 동일한 어떤 일을 하는 두 가지의 방법이 있다면, 그 중 하나만 이 책에 적었으며 나머지는 언급하지 않았다. 때로는 나머지 방법을 연습문제에 포함시켰다.</p>
+<p>지금부터는 언급하지 않았던 것들 중에 알아두면 좋은 것들을 소개할 것이다. 줄리아는 실제로 필수적이지는 않은 여러 가지 기능들을 제공한다. 이런 기능 없이도 좋은 코드를 작성할 수 있지만, 기능을 포함하면 더 간결하고 읽기 쉽고 효율적인 코드를 작성할 수 있다.</p>
+<p>이 장과 다음 장에서는 이전 장에서 생략한 아래의 사항들에 대해 설명할 것이다.</p>
+<ul>
+<li>문법 보충</li>
+<li><code>Base</code>에서 직접 사용 가능한 함수, 데이터 타입 및 매크로</li>
+<li>표준 라이브러리에 있는 함수, 데이터 타입 및 매크로</li>
+</ul>
+<h3 id="네임드-튜플-named-tuples">네임드 튜플 (Named Tuples)</h3>
+<p>네임드 튜플을 만들어 튜플의 구성요소 이름을 지정할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = (a=<span class="hljs-number">1</span>, b=<span class="hljs-number">1</span>+<span class="hljs-number">1</span>)<br>(a = <span class="hljs-number">1</span>, b = <span class="hljs-number">2</span>)<br>julia&gt; x.a<br><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>네임드 튜플에서는 점 문법인 <code>(x.a)</code>을 사용하여 필드에 접근할 수 있다.</p>
+<h3 id="함수">함수</h3>
+<p>줄리아에서 함수는 간결한 문법으로 정의할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; f(x,y) = x + y<br>f (generic <span class="hljs-keyword">function</span> with <span class="hljs-number">1</span> method)<br></code></pre></td></tr></table></figure>
+<h4 id="익명-함수-anonymous-functions">익명 함수 (Anonymous Functions)</h4>
+<p>이름 설정 없이 함수를 정의할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x -&gt; x^<span class="hljs-number">2</span> + <span class="hljs-number">2</span>x - <span class="hljs-number">1</span><br><span class="hljs-comment">#1 (generic function with 1 method)</span><br>julia&gt; <span class="hljs-keyword">function</span> (x)<br>           x^<span class="hljs-number">2</span> + <span class="hljs-number">2</span>x - <span class="hljs-number">1</span><br>       <span class="hljs-keyword">end</span><br><span class="hljs-comment">#3 (generic function with 1 method)</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 익명 함수의 예시이다. 익명 함수는 종종 다른 함수의 인수로 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">using</span> Plots<br><br>julia&gt; plot(x -&gt; x^<span class="hljs-number">2</span> + <span class="hljs-number">2</span>x - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>, xlabel=<span class="hljs-string">&quot;x&quot;</span>, ylabel=<span class="hljs-string">&quot;y&quot;</span>)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="/images/25.png" srcset="/img/loading.gif" lazyload alt="Plot" /><figcaption aria-hidden="true">Plot</figcaption>
+</figure>
+<p>위의 그래프는 <code>Plot</code> 명령어의 결과이다.</p>
+<h4 id="키워드-인수-keyword-arguments">키워드 인수 (Keyword Arguments)</h4>
+<p>함수 인수 또한 아래와 같이 명명될 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">ulia&gt; <span class="hljs-keyword">function</span> myplot(x, y; style=<span class="hljs-string">&quot;solid&quot;</span>, width=<span class="hljs-number">1</span>, color=<span class="hljs-string">&quot;black&quot;</span>)<br>           <span class="hljs-comment">###</span><br>       <span class="hljs-keyword">end</span><br>myplot (generic <span class="hljs-keyword">function</span> with <span class="hljs-number">1</span> method)<br>julia&gt; myplot(<span class="hljs-number">0</span>:<span class="hljs-number">10</span>, <span class="hljs-number">0</span>:<span class="hljs-number">10</span>, style=<span class="hljs-string">&quot;dotted&quot;</span>, color=<span class="hljs-string">&quot;blue&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>함수에서 키워드 인수는 세미콜론(;) 뒤에 지정되며, 쉼표로 호출된다.</p>
+<h4 id="클로저-closures">클로저 (Closures)</h4>
+<p>클로저는 함수가 함수의 호출 범위 밖에 정의된 변수를 캡쳐할 수 있게 하는 기술이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; foo(x) = ()-&gt;x<br>foo (generic <span class="hljs-keyword">function</span> with <span class="hljs-number">1</span> method)<br><br>julia&gt; bar = foo(<span class="hljs-number">1</span>)<br><span class="hljs-comment">#1 (generic function with 1 method)</span><br><br>julia&gt; bar()<br><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>이 예시에서 함수 <code>foo()</code>는 <code>foo()</code>의 인수<code>x</code>에 접근하는 익명 함수를 반환한다. <code>bar</code>는 해당 익명함수를 지정하고 <code>foo()</code>의 인수인 값을 반환한다.</p>
+<h3 id="블럭-blocks">블럭 (Blocks)</h3>
+<p>블럭은 여러 명령문들을 그룹화하는 방법이다. 블럭은 키워드 <code>begin</code>로 시작하고 <code>end</code>로 끝난다.</p>
+<p><a href="https://dev-bearabbit.github.io/2020/03/02/ThinkJulia/Think-Julia-Chapter-4/">인터페이스 디자인</a>에서 <code>@svg</code>를 소개했다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">🐢 = Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    forward(🐢, <span class="hljs-number">100</span>)<br>    turn(🐢, -<span class="hljs-number">90</span>)<br>    forward(🐢, <span class="hljs-number">100</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이 예시에서 <code>@svg</code>는 3개의 함수 호출을 그룹화한 블록인 단일 인수가 있다.</p>
+<h4 id="let-블럭"><code>let</code> 블럭</h4>
+<p><code>let</code> 블럭은 값을 참조할 수 있는 위치와 같은 새로운 바인딩(binding)을 생성하는 데 유용하다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x, y, z = -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>;<br><br>julia&gt; <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span>, z<br>           <span class="hljs-meta">@show</span> x y z;<br>       <span class="hljs-keyword">end</span><br>x = <span class="hljs-number">1</span><br>y = -<span class="hljs-number">1</span><br>ERROR: <span class="hljs-built_in">UndefVarError</span>: z not defined<br>julia&gt; <span class="hljs-meta">@show</span> x y z;<br>x = -<span class="hljs-number">1</span><br>y = -<span class="hljs-number">1</span><br>z = -<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>위 예시에서 첫 번째 <code>@show</code>매크로는 로컬 변수 <code>x</code>와 글로벌 변수 <code>y</code>와 정의되지 않은 <code>z</code>를 보여준다. 글로벌 변수는 그대로 유지된다.</p>
+<h4 id="do-블럭"><code>do</code> 블럭</h4>
+<p><a href="https://dev-bearabbit.github.io/2020/03/13/ThinkJulia/Think-Julia-Chapter-14/">14장의 읽고 쓰기 파트</a>에서 우리는 작성이 끝난 파일을 닫아야 했다. 이것은 <code>do</code> 블럭을 사용하여 자동화할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; data = <span class="hljs-string">&quot;This here&#x27;s the wattle,\nthe emblem of our land.\n&quot;</span><br><span class="hljs-string">&quot;This here&#x27;s the wattle,\nthe emblem of our land.\n&quot;</span><br>julia&gt; open(<span class="hljs-string">&quot;output.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">do</span> fout<br>           write(fout, data)<br>       <span class="hljs-keyword">end</span><br><span class="hljs-number">48</span><br></code></pre></td></tr></table></figure>
+<p>위 예시에서 <code>fout</code>는 결과를 위해 사용된 파일 스트림이다.</p>
+<p>이것은 기능적으로 아래의 코드와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; f = fout -&gt; <span class="hljs-keyword">begin</span><br>           write(fout, data)<br>       <span class="hljs-keyword">end</span><br><span class="hljs-comment">#3 (generic function with 1 method)</span><br>julia&gt; open(f, <span class="hljs-string">&quot;output.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>)<br><span class="hljs-number">48</span><br></code></pre></td></tr></table></figure>
+<p>익명 함수는 <code>open()</code>의 첫 번째 인수로서 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> open(f::<span class="hljs-built_in">Function</span>, args...)<br>    io = open(args...)<br>    <span class="hljs-keyword">try</span><br>        f(io)<br>    <span class="hljs-keyword">finally</span><br>        close(io)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>do</code> 블럭은 둘러싸는 범위에서 변수를 캡처할 수 있다. 예를 들어 위의 예시였던 <code>open...do</code>에 있는 변수 데이터는 외부 범위에서 캡처된다.</p>
+<h3 id="제어-흐름-control-flow">제어 흐름 (Control Flow)</h3>
+<h4 id="삼항-연산자-ternary-operator">삼항 연산자 (Ternary Operator)</h4>
+<p>삼항 연산자 <code>?:</code>는 단일 표현식 값들 중에서 선택해야 할 때 사용되는 <code>if-elseif</code>문의 대안이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; a = <span class="hljs-number">150</span><br><span class="hljs-number">150</span><br>julia&gt; a % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> ? println(<span class="hljs-string">&quot;even&quot;</span>) : println(<span class="hljs-string">&quot;odd&quot;</span>)<br>even<br></code></pre></td></tr></table></figure>
+<p><code>?</code>앞의 표현식은 조건을 나타낸 것이다. 만약 조건이 <code>true</code>면 <code>:</code> 이전의 표현식을 실행하며, <code>false</code>면 <code>:</code>뒤의 표현식을 실행한다.</p>
+<h4 id="단락-평가-short-circuit-evaluation">단락 평가 (Short-Circuit Evaluation)</h4>
+<p>연산자 <code>&amp;&amp;</code>와 <code>||</code>는 단락 평가를 수행한다. 즉, 다음 인수는 오직 최종값을 결정할 때만 평가된다.</p>
+<p>예를 들어 재귀적인 팩토리얼 함수 정의는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n::<span class="hljs-built_in">Integer</span>)<br>    n &gt;= <span class="hljs-number">0</span> || error(<span class="hljs-string">&quot;n must be non-negative&quot;</span>)<br>    n == <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    n * fact(n-<span class="hljs-number">1</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h4 id="테스크-일명-coroutines">테스크 (일명 Coroutines)</h4>
+<p>테스크(task)는 반환 없이 협력적으로 제어할 수 있는 제어 구조이다. 줄리아에서, 테스크는 첫 번째 인수로 <code>channel</code> 객체를 가지는 함수로 구현될 수 있다. <code>channel</code>은 함수에서 수신자에게 값을 전달하는 데 사용된다.</p>
+<p>피보나치 수열은 테스크를 사용하여 생성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fib(c::<span class="hljs-built_in">Channel</span>)<br>    a = <span class="hljs-number">0</span><br>    b = <span class="hljs-number">1</span><br>    put!(c, a)<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span><br>        put!(c, b)<br>        (a, b) = (b, a+b)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>put!</code>은 <code>channel</code>객체에 값을 저장하며, <code>take!</code>은 객체로부터 값을 읽는다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fib_gen = <span class="hljs-built_in">Channel</span>(fib);<br><br>julia&gt; take!(fib_gen)<br><span class="hljs-number">0</span><br>julia&gt; take!(fib_gen)<br><span class="hljs-number">1</span><br>julia&gt; take!(fib_gen)<br><span class="hljs-number">1</span><br>julia&gt; take!(fib_gen)<br><span class="hljs-number">2</span><br>julia&gt; take!(fib_gen)<br><span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+<p>생성자 <code>Channel</code>은 테스크를 만든다. <code>fib()</code>는 <code>put!</code>을 호출할 때마다 일시 중지되고 <code>take!</code>이후에 다시 시작된다. 성능상의 이유로 시퀀스의 여러 값은 재개와 일시정지 동안에 <code>Channel</code> 객체에 저장된다.</p>
+<p>또한 <code>Channel</code> 객체는 이터레이터(iterator)로써도 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> <span class="hljs-built_in">Channel</span>(fib)<br>           print(val, <span class="hljs-string">&quot; &quot;</span>)<br>           val &gt; <span class="hljs-number">20</span> &amp;&amp; <span class="hljs-keyword">break</span><br>       <span class="hljs-keyword">end</span><br><span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span> <span class="hljs-number">13</span> <span class="hljs-number">21</span><br></code></pre></td></tr></table></figure>
+<h3 id="데이터-타입">데이터 타입</h3>
+<h4 id="기본-데이터-타입-primitive-types">기본 데이터 타입 (Primitive Types)</h4>
+<p>기본적으로 사용되는 구체적 데이터 타입들을 기본 데이터 타입이라고 한다. 다른 언어들과 달리 줄리아에서는 고유한 기본 데이터 타입을 선언할 수 있다. 표준 기본 데이터 타입도 같은 방식으로 정의된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">primitive type</span> <span class="hljs-built_in">Float64</span> &lt;: <span class="hljs-built_in">AbstractFloat</span> <span class="hljs-number">64</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">primitive type</span> <span class="hljs-built_in">Bool</span> &lt;: <span class="hljs-built_in">Integer</span> <span class="hljs-number">8</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">primitive type</span> <span class="hljs-built_in">Char</span> &lt;: <span class="hljs-built_in">AbstractChar</span> <span class="hljs-number">32</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">primitive type</span> <span class="hljs-built_in">Int64</span> &lt;: <span class="hljs-built_in">Signed</span> <span class="hljs-number">64</span> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 명령문에 있는 숫자들은 얼마나 많은 비트가 요구되는지 나타낸다.</p>
+<p>아래의 예시는 기본 데이터 타입인 <code>Byte</code>와 생성자를 만든다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">primitive type</span> Byte <span class="hljs-number">8</span> <span class="hljs-keyword">end</span><br><br>julia&gt; Byte(val::<span class="hljs-built_in">UInt8</span>) = reinterpret(Byte, val)<br>Byte<br>julia&gt; b = Byte(<span class="hljs-number">0x01</span>)<br>Byte(<span class="hljs-number">0x01</span>)<br></code></pre></td></tr></table></figure>
+<p><code>reinterpret()</code>은 8비트의 부호없는 정수 비트를 바이트에 저장하는 데 사용된다.</p>
+<h4 id="파라메트릭-데이터-타입-parametric-types">파라메트릭 데이터 타입 (Parametric Types)</h4>
+<p>줄리아의 데이터 타입 시스템은 파라메트릭, 즉 데이터 타입이 매개 변수를 가질 수 있다.</p>
+<p>데이터 타입 매개 변수는 데이터 타입 이름 뒤에 중괄호로 묶여 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">struct</span> Point&#123;T&lt;:<span class="hljs-built_in">Real</span>&#125;<br>    x::T<br>    y::T<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 <code>Real</code>을 supertype으로 갖는 모든 데이터 타입인 <code>T</code>의 좌표를 가진 새로운 파라메트릭 타입 <code>Point&#123;T&lt;:Real&#125;</code> 정의한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; Point(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br>Point&#123;<span class="hljs-built_in">Float64</span>&#125;(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)<br></code></pre></td></tr></table></figure>
+<p>복합 데이터 타입 외에도 추상 데이터 타입이나 기본 데이터 타입에도 매개 변수가 있을 수 있다.</p>
+<p><strong>Tip</strong> 성능상의 이유로 구조체 필드에 구체적 데이터 타입을 사용하는 것이 절대적으로 권장되며, 그것이 <code>Point</code>를 빠르고 유연하게 만드는 좋은 방법이다.</p>
+<h4 id="데이터-타입-유니언-type-unions">데이터 타입 유니언 (Type Unions)</h4>
+<p>데이터 타입 유니언은 임의의 인수 타입으로 작용할 수 있는 추상적인 파라메트릭 데이터 타입이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; IntOrString = <span class="hljs-built_in">Union</span>&#123;<span class="hljs-built_in">Int64</span>, <span class="hljs-built_in">String</span>&#125;<br><span class="hljs-built_in">Union</span>&#123;<span class="hljs-built_in">Int64</span>, <span class="hljs-built_in">String</span>&#125;<br>julia&gt; <span class="hljs-number">150</span> :: IntOrString<br><span class="hljs-number">150</span><br>julia&gt; <span class="hljs-string">&quot;Julia&quot;</span> :: IntOrString<br><span class="hljs-string">&quot;Julia&quot;</span><br></code></pre></td></tr></table></figure>
+<p>대부분의 컴퓨터 언어에서 데이터 타입 유니언은 데이터 타입을 추론하기 위한 내부 구조이다. 하지만 줄리아에서는 데이터 타입 유니언이 적을 때 효율적인 코드를 작성할 수 있기 때문에 이 기능을 사용자에게 노출한다. 이 기능은 줄리아를 사용하는 개발자에게 디스패치를 제어할 수 있는 유연성을 제공한다.</p>
+<h3 id="메서드-methods">메서드 (Methods)</h3>
+<h4 id="파라메트릭-메서드-parametric-methods">파라메트릭 메서드 (Parametric Methods)</h4>
+<p>메서드 정의 또한 데이터 타입 매개 변수를 가질 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; isintpoint(p::Point&#123;T&#125;) <span class="hljs-keyword">where</span> &#123;T&#125; = (T === <span class="hljs-built_in">Int64</span>)<br>isintpoint (generic <span class="hljs-keyword">function</span> with <span class="hljs-number">1</span> method)<br>julia&gt; p = Point(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br>Point&#123;<span class="hljs-built_in">Int64</span>&#125;(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br>julia&gt; isintpoint(p)<br><span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<h4 id="함수형-객체-function-like-objects">함수형 객체 (Function-like Objects)</h4>
+<p>줄리아에서는 어떤 임의의 객체도 "호출 가능"하게 만들 수 있다. 이런 "호출 가능"한 객체를 펑터(functor)라고도 부른다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">struct</span> Polynomial&#123;R&#125;<br>    coeff::<span class="hljs-built_in">Vector</span>&#123;R&#125;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> (p::Polynomial)(x)<br>    val = p.coeff[<span class="hljs-keyword">end</span>]<br>    <span class="hljs-keyword">for</span> coeff <span class="hljs-keyword">in</span> p.coeff[<span class="hljs-keyword">end</span>-<span class="hljs-number">1</span>:-<span class="hljs-number">1</span>:<span class="hljs-number">1</span>]<br>        val = val * x + coeff<br>    <span class="hljs-keyword">end</span><br>    val<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 <code>Polynomial</code>을 평가하기 위해서는 간단하게 호출하면 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; p = Polynomial([<span class="hljs-number">1</span>,<span class="hljs-number">10</span>,<span class="hljs-number">100</span>])<br>Polynomial&#123;<span class="hljs-built_in">Int64</span>&#125;([<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, <span class="hljs-number">100</span>])<br>julia&gt; p(<span class="hljs-number">3</span>)<br><span class="hljs-number">931</span><br></code></pre></td></tr></table></figure>
+<h3 id="생성자-constructors">생성자 (Constructors)</h3>
+<p>파라메트릭 데이터 타입은 명시적 또는 암시적으로 생성될 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; Point(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>)         <span class="hljs-comment"># implicit T</span><br>Point&#123;<span class="hljs-built_in">Int64</span>&#125;(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br>julia&gt; Point&#123;<span class="hljs-built_in">Int64</span>&#125;(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) <span class="hljs-comment"># explicit T</span><br>Point&#123;<span class="hljs-built_in">Int64</span>&#125;(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br>julia&gt; Point(<span class="hljs-number">1</span>,<span class="hljs-number">2.5</span>)       <span class="hljs-comment"># implicit T</span><br>ERROR: <span class="hljs-built_in">MethodError</span>: no method matching Point(::<span class="hljs-built_in">Int64</span>, ::<span class="hljs-built_in">Float64</span>)<br></code></pre></td></tr></table></figure>
+<p>기본 내부 생성자 및 외부 생성자는 각 <code>T</code>에서 생성된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">struct</span> Point&#123;T&lt;:<span class="hljs-built_in">Real</span>&#125;<br>    x::T<br>    y::T<br>    Point&#123;T&#125;(x,y) <span class="hljs-keyword">where</span> &#123;T&lt;:<span class="hljs-built_in">Real</span>&#125; = new(x,y)<br><span class="hljs-keyword">end</span><br><br>Point(x::T, y::T) <span class="hljs-keyword">where</span> &#123;T&lt;:<span class="hljs-built_in">Real</span>&#125; = Point&#123;T&#125;(x,y);<br></code></pre></td></tr></table></figure>
+<p>그리고 <code>x</code>와 <code>y</code>는 같은 데이터 타입이어야 한다.</p>
+<p><code>x</code>와 <code>y</code>가 다른 데이터 타입을 가지면, 외부 생성자를 아래와 같이 정의될 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Point(x::<span class="hljs-built_in">Real</span>, y::<span class="hljs-built_in">Real</span>) = Point(promote(x,y)...);<br></code></pre></td></tr></table></figure>
+<p><code>promote()</code>의 세부사항은 아래에서 다룰 것이다.</p>
+<h3 id="전환-및-프로모션-conversion-and-promotion">전환 및 프로모션 (Conversion and Promotion)</h3>
+<p>줄리아는 인수를 공동 데이터 타입으로 승격시키는 시스탬을 가지고 잇다. 이 작업은 자동으로 수행되지는 않지만 쉽게 확장할 수 있다.</p>
+<h4 id="전환-conversion">전환 (Conversion)</h4>
+<p>값은 다른 데이터 타입으로 변환될 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = <span class="hljs-number">12</span><br><span class="hljs-number">12</span><br>julia&gt; typeof(x)<br><span class="hljs-built_in">Int64</span><br>julia&gt; convert(<span class="hljs-built_in">UInt8</span>, x)<br><span class="hljs-number">0x0c</span><br>julia&gt; typeof(ans)<br><span class="hljs-built_in">UInt8</span><br></code></pre></td></tr></table></figure>
+<p>또한 고유한 <code>convert</code>메서드도 추가할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; Base.convert(::<span class="hljs-built_in">Type</span>&#123;Point&#123;T&#125;&#125;, x::<span class="hljs-built_in">Array</span>&#123;T, <span class="hljs-number">1</span>&#125;) <span class="hljs-keyword">where</span> &#123;T&lt;:<span class="hljs-built_in">Real</span>&#125; = Point(x...)<br><br>julia&gt; convert(Point&#123;<span class="hljs-built_in">Int64</span>&#125;, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>])<br>Point&#123;<span class="hljs-built_in">Int64</span>&#125;(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)<br></code></pre></td></tr></table></figure>
+<h4 id="프로모션-promotion">프로모션 (Promotion)</h4>
+<p>프로모션은 혼합 데이터 타입의 값을 단일 공통 데이터 타입으로 변환하는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; promote(<span class="hljs-number">1</span>, <span class="hljs-number">2.5</span>, <span class="hljs-number">3</span>)<br>(<span class="hljs-number">1.0</span>, <span class="hljs-number">2.5</span>, <span class="hljs-number">3.0</span>)<br></code></pre></td></tr></table></figure>
+<p><code>promote()</code>의 메서드 일반적으로 직접 정의되지는 않지만, 보조 함수인 <code>promote_rule()</code>은 프로모션의 규칙을 나타내는 데 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">promote_rule(::<span class="hljs-built_in">Type</span>&#123;<span class="hljs-built_in">Float64</span>&#125;, ::<span class="hljs-built_in">Type</span>&#123;<span class="hljs-built_in">Int32</span>&#125;) = <span class="hljs-built_in">Float64</span><br></code></pre></td></tr></table></figure>
+<h3 id="메타프로그래밍-metaprogramming">메타프로그래밍 (Metaprogramming)</h3>
+<p>줄리아 코드는 언어 자체의 데이터 구조로서 표현할 수 있다. 이는 프로그램이 자체적으로 코드를 변환하고 생성할 수 있도록 허락한다.</p>
+<h4 id="표현식">표현식</h4>
+<p>모든 줄리아 프로그램은 문자열로서 시작한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; prog = <span class="hljs-string">&quot;1 + 2&quot;</span><br><span class="hljs-string">&quot;1 + 2&quot;</span><br></code></pre></td></tr></table></figure>
+<p>다음 단계는 줄리아 문자열의 문자 각각을 분석하여 <code>Expr</code>라는 줄리아 데이터 타입의 표현식 객체로 나타내는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; ex = Meta.parse(prog)<br>:(<span class="hljs-number">1</span> + <span class="hljs-number">2</span>)<br>julia&gt; typeof(ex)<br><span class="hljs-built_in">Expr</span><br>julia&gt; dump(ex)<br><span class="hljs-built_in">Expr</span><br>  head: <span class="hljs-built_in">Symbol</span> call<br>  args: <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Any</span>&#125;((<span class="hljs-number">3</span>,))<br>    <span class="hljs-number">1</span>: <span class="hljs-built_in">Symbol</span> +<br>    <span class="hljs-number">2</span>: <span class="hljs-built_in">Int64</span> <span class="hljs-number">1</span><br>    <span class="hljs-number">3</span>: <span class="hljs-built_in">Int64</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<p><code>dump()</code>은 expr 객체의 주석을 보여준다.</p>
+<p>괄호 안에 <code>:</code>을 쓰거나 또는 <code>quote</code> 블록을 사용하여 표현식을 직접 구성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; ex = <span class="hljs-keyword">quote</span><br>           <span class="hljs-number">1</span> + <span class="hljs-number">2</span><br>       <span class="hljs-keyword">end</span>;<br></code></pre></td></tr></table></figure>
+<h4 id="eval"><code>eval</code></h4>
+<p>줄리아는 <code>eval</code>을 사용하여 표현식 객체를 평가할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; eval(ex)<br><span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+<p>모든 모듈은 범위 내에서 표현식을 평가하는 고유한 <code>eval()</code>을 가진다.</p>
+<p><strong>WARNING</strong> <code>eval()</code>을 과도하게 사용하는 것은 사실 무언가가 잘못되었다는 것을 의미한다.</p>
+<h4 id="매크로-macros">매크로 (Macros)</h4>
+<p>매크로는 프로그램에서 생성된 코드를 포함할 수 있다. 매크로는 <code>Expr</code>객체의 튜플을 컴파일된 표현식에 직접 매핑한다.</p>
+<p>아래의 코드는 간단한 매크로이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">macro</span> containervariable(container, element)<br>    <span class="hljs-keyword">return</span> esc(:($(<span class="hljs-built_in">Symbol</span>(container,element)) = $container[$element]))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>매크로는 이름 앞에 <code>@(at-sign)</code>을 붙인다. <code>@containervariable letters 1</code> 매크로 호출은 아래의 코드로 대체된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">:(letters1 = letters[<span class="hljs-number">1</span>])<br></code></pre></td></tr></table></figure>
+<p><code>@macroexpand @containervariable letters 1</code>은 디버깅에 매우 유용한 표현식을 반환한다.</p>
+<p>이 예제는 매크로가 어떻게 인수 이름에 접근하는지 보여준다. 반환 표현식은 매크로 호출 환경에서 분석되어야 하므로 <code>esc</code>를 사용하여 "escaped" 처리를 해야한다.</p>
+<p><strong>NOTE</strong> 왜 매크로인가? 전체 프로그램이 실행되기 전에 매크로는 분석 시간 동안 맟춤형 코드의 조각들을 생성하고 포함한다.</p>
+<h4 id="생성-함수-generated-functions">생성 함수 (Generated Functions)</h4>
+<p>매크로 <code>@generated</code>는 인수의 타입에 따라 메서드에 대한 특수 코드를 생성한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@generated</span> <span class="hljs-keyword">function</span> square(x)<br>    println(x)<br>    :(x * x)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>함수를 호출할 경우, 생성 함수는 일반 함수처럼 작동한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = square(<span class="hljs-number">2</span>); <span class="hljs-comment"># note: output is from println() statement in the body</span><br><span class="hljs-built_in">Int64</span><br>julia&gt; x              <span class="hljs-comment"># now we print x</span><br><span class="hljs-number">4</span><br>julia&gt; y = square(<span class="hljs-string">&quot;spam&quot;</span>);<br><span class="hljs-built_in">String</span><br>julia&gt; y<br><span class="hljs-string">&quot;spamspam&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="결측값-missing-values">결측값 (Missing Values)</h3>
+<p>결측값은 <code>Missing</code>유형의 싱글톤(singleton) 인스턴스인 <code>missing</code>객체를 통해 표현될 수 있다.</p>
+<p>배열은 결측값을 포함할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; a = [<span class="hljs-number">1</span>, <span class="hljs-literal">missing</span>]<br><span class="hljs-number">2</span>-element <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Union</span>&#123;<span class="hljs-built_in">Missing</span>, <span class="hljs-built_in">Int64</span>&#125;,<span class="hljs-number">1</span>&#125;:<br> <span class="hljs-number">1</span><br>  <span class="hljs-literal">missing</span><br></code></pre></td></tr></table></figure>
+<p>이런 배열 요소의 데이터 타입은 <code>Union&#123;Missing, T&#125;</code> 이며, 결측값이 아닌 <code>T</code> 데이터 타입이다.</p>
+<p>결측값이 포함된 배열을 호출하면 리듀스 함수가 결측값을 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; sum(a)<br><span class="hljs-literal">missing</span><br></code></pre></td></tr></table></figure>
+<p>이 상황에서는 결측값을 넘겨주는 <code>skipmissing()</code>을 사용하면 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; sum(skipmissing([<span class="hljs-number">1</span>, <span class="hljs-literal">missing</span>]))<br><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<h3 id="c와-포트란-코드-호출-calling-c-and-fortran-code">C와 포트란 코드 호출 (Calling C and Fortran Code)</h3>
+<p>많은 코드들이 C 또는 포트란으로 작성된다. 테스트된 코드를 다시 사용하는 것이 직접 만든 알고리즘 버전을 코드로 작성하는 것보다 더 낫다. 줄리아는 <code>ccall</code> 문법을 사용하여 기존 C 또는 포트란 라이브러리를 직접 호출할 수 있다.</p>
+<p>우리는 <a href="https://dev-bearabbit.github.io/2020/03/13/ThinkJulia/Think-Julia-Chapter-14/">데이터베이스</a> 파트에서 데이터베이스 함수의 GDBM 라이브러리에 줄리아 인터페이스를 도입하였다. 라이브러리는 C로 작성되며, 데이터베이스를 닫으려면 close (db)에 대한 함수를 호출해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Base.close(dbm::DBM) = gdbm_close(dbm.handle)<br><br><span class="hljs-keyword">function</span> gdbm_close(handle::<span class="hljs-built_in">Ptr</span>&#123;<span class="hljs-built_in">Cvoid</span>&#125;)<br>    <span class="hljs-keyword">ccall</span>((:gdbm_close, <span class="hljs-string">&quot;libgdbm&quot;</span>), <span class="hljs-built_in">Cvoid</span>, (<span class="hljs-built_in">Ptr</span>&#123;<span class="hljs-built_in">Cvoid</span>&#125;,), handle)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>dbm 객체는 <code>Ptr&#123;Cvoid&#125;</code>데이터 타입의 필드 <code>handle</code>을 가지고 있다. 이 필드에는 데이터베이스를 참조하는 C 포인터가 있다. 데이터베이스를 닫으려면 C 함수인 <code>gdbm_close()</code>는 데이터베이스를 가리키는 C 포인터만 반환 값 없이 호출해야 한다. 줄리아는 인수를 가진 <code>ccall()</code>을 사용하여 직접 수행한다.</p>
+<ul>
+<li>우리가 호출하고자하는 함수의 이름을 요소로 가지는 튜플: <code>gdbm_close</code> 및 문자열로 지정된 공유 라이브러리 <code>"libgdm"</code></li>
+<li>반환 데이터 타입: <code>Cvoid</code></li>
+<li>인수 데이터 타입의 튜플: <code>(Ptr&#123;Cvoid&#125;)</code></li>
+<li>인수 값: <code>handle</code></li>
+</ul>
+<p>GDBM 라이브러리의 완전한 맵핑은 ThinkJulia 소스에서 예제로 찾을 수 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>18. 기타 문법들</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-18/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 22일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-19/" title="19. 베이스 및 표준 라이브러리">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">19. 베이스 및 표준 라이브러리</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Algorithms/Algorithms-0/" title="Big-O 표기법">
+                        <span class="hidden-mobile">Big-O 표기법</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

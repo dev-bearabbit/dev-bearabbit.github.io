@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Structs and Functions를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15. 구조체와 함수">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-15/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Structs and Functions를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/22.png">
+<meta property="article:published_time" content="2020-03-16T11:28:58.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:43.716Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/22.png">
+  
+  
+  
+  <title>15. 구조체와 함수 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="15. 구조체와 함수"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-16 20:28" pubdate>
+          2020년 3월 16일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          483 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">15. 구조체와 함수</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap16">Structs and Functions</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="구조체와-함수-structs-and-functions">구조체와 함수 (Structs and Functions)</h2>
+<p>저번 장에서 새로운 복합 데이터 타입을 생성하는 방법에 대해서 알아보았다면, 지금부터는 개발자가 정의한 고유 객체들을 매개 변수로 사용하여 결과로 반환하는 함수를 작성해볼 것이다. 따라서 이번 장에서는 "함수적 프로그래밍 스타일(unctional programming style)"과 새로운 두 가지 프로그램 개발 계획을 볼 것이다.</p>
+<h3 id="시간-time">시간 (Time)</h3>
+<p>복합 데이터 타입의 또 다른 에시로서, 시간을 기록하는 <code>MyTime</code>을 <code>struct</code>로 정의할 것이다. 코드는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">Represents the time of day.</span><br><span class="hljs-string"></span><br><span class="hljs-string">fields: hour, minute, second</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">struct</span> MyTime<br>    hour<br>    minute<br>    second<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>Time</code>이라는 이름은 이미 줄리아에서 사용 중이기 때문에, 충돌을 방지하기 위해 <code>MyTime</code>로 결정하였다. 이제 새로운 <code>MyTime</code> 객체를 생성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; time = MyTime(<span class="hljs-number">11</span>, <span class="hljs-number">59</span>, <span class="hljs-number">30</span>)<br>MyTime(<span class="hljs-number">11</span>, <span class="hljs-number">59</span>, <span class="hljs-number">30</span>)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="/images/22.png" srcset="/img/loading.gif" lazyload alt="object diagram" /><figcaption aria-hidden="true">object diagram</figcaption>
+</figure>
+<p><code>MyTime</code> 객체 다이어그램은 위와 같다.</p>
+<h3 id="순수-함수-pure-functions">순수 함수 (Pure Functions)</h3>
+<p>지금부터 시간 값을 추가하는 두 개의 함수를 작성할 것이다. 두 개의 함수 중 하나는 '순수 함수(pure functions)'이며 다른 하나는 '변경자(modifiers)'이다. 또한 이 함수들은 간단한 프로토타입으로 시작하여 복잡한 문제를 점진적으로 해결하는 방법인 '프로토타입 및 패치(prototype and patch)'를 호출하여 개발 계획도 시연할 것이다.</p>
+<p>아래의 코드는 <code>addtime</code>의 간단한 프로토타입이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> addtime(t1, t2)<br>    MyTime(t1.hour + t2.hour, t1.minute + t2.minute, t1.second + t2.second)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이 함수는 <code>MyTime</code> 객체를 새로 생성한 후, 필드를 초기화하고 새로운 객체에 대한 참조를 반환한다. 이렇게 인수로 전달된 객체를 수정하지 않고 반환하는 함수를 '순수 함수'라고 한다. 즉, 인수로 전달된 객체들은 값을 제공하거나 보여지는 정도만 실행되고 어떤 영향도 받지 않는다.</p>
+<p>위 함수를 테스트하기 위해서 두 개의 <code>MyTime</code> 객체를 만든다. <code>start</code>에는 'Monty Python and the Holy Grail' 영화의 시작시간이 포함되고, <code>duration</code>에는 영화의 상영 시간인 1시간 35분이 포함된다.</p>
+<p><code>addtime</code>은 영화가 끝난 시간을 보여준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; start = MyTime(<span class="hljs-number">9</span>, <span class="hljs-number">45</span>, <span class="hljs-number">0</span>);<br><br>julia&gt; duration = MyTime(<span class="hljs-number">1</span>, <span class="hljs-number">35</span>, <span class="hljs-number">0</span>);<br><br>julia&gt; done = addtime(start, duration);<br><br>julia&gt; printtime(done)<br><span class="hljs-number">10</span>:<span class="hljs-number">80</span>:<span class="hljs-number">00</span><br></code></pre></td></tr></table></figure>
+<p>결과는 <code>10:80:00</code>으로 우리가 원하던 시간은 아니다. 문제는 해당 함수가 분단위와 초단위가 60을 초과하는 경우를 처리하지 못한다는 것이다. 그렇게 되면 60분을 1시간으로, 60초를 1분으로 헤당 열에 반입해야 한다. 이를 해결한 코드는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> addtime(t1, t2)<br>    second = t1.second + t2.second<br>    minute = t1.minute + t2.minute<br>    hour = t1.hour + t2.hour<br>    <span class="hljs-keyword">if</span> second &gt;= <span class="hljs-number">60</span><br>        second -= <span class="hljs-number">60</span><br>        minute += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">if</span> minute &gt;= <span class="hljs-number">60</span><br>        minute -= <span class="hljs-number">60</span><br>        hour += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br>    MyTime(hour, minute, second)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 함수는 정확하게 작동하지만 코드가 복잡해졌다. 이후 더 짧은 대안들을 배울 것이다.</p>
+<h3 id="변경자-modifiers">변경자 (Modifiers)</h3>
+<p>때로는 함수가 매개 변수로 얻는 객체를 수정하는 것이 더 유용하다. 이 경우에는 변경 사항이 호출자에게 보여진다. 이런 방식으로 작동하는 함수를 '변경자(Modifiers)'라고 한다.</p>
+<p>인수인 'second'의 숫자를 <code>MyTime</code> 객체에 추가하는 <code>increment!()</code>는 변경자를 사용하여 자연스럽게 작성할 수 있다. 초안은 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> increment!(time, seconds)<br>    time.second += seconds<br>    <span class="hljs-keyword">if</span> time.second &gt;= <span class="hljs-number">60</span><br>        time.second -= <span class="hljs-number">60</span><br>        time.minute += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">if</span> time.minute &gt;= <span class="hljs-number">60</span><br>        time.minute -= <span class="hljs-number">60</span><br>        time.hour += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>첫 번째 줄은 기본적인 작동을 수행하며, 나머지 줄은 우리가 봤던 특별한 경우들을 처리한다.</p>
+<p>이 함수는 정확한가? 만약 <code>second</code>가 60보다 크면 어떻게 작동하는가?</p>
+<p>함수가 제대로 작동하는지 확인하기 위해서는 <code>time.second</code> 가 60이 넘을 때까지 여러 번 실행해야 한다. 이를 위한 방법으로는 <code>if</code>문을 <code>while</code>문으로 바꾸는 것이다. 이것은 정확하게 작동하지만, 효과적이지는 않다.</p>
+<h3 id="프로토타이핑-vs.-계획-prototyping-versus-planning">프로토타이핑 vs. 계획 (Prototyping Versus Planning)</h3>
+<p>개발자가 시연하고 있는 개발 계획을 '프로토타입 및 패치(prototype and patch)'라고 한다. 각 함수에서 기본 계산을 실행하는 프로토타입을 만들어 테스트 한 후, 발생한 오류들을 패치한다.</p>
+<p>이 방법은 문제가 무엇인지 깊게 이해하지 못한 경우에 특히 효과적이다. 그러나 점진적인 수정방법은 모든 오류를 한번에 볼 수 없기에, 가끔 불필요하게 복잡한 코드로 수정하도록 한다.</p>
+<p>위 문제의 대안은 문제에 대한 높은 수준의 통찰력을 통해 프로그래밍이 훨씬 쉬워질 수 있도록 설계하는 개발방식이다. 이전 '초단위 문제'의 경우, 필요한 통찰력은 <code>Time</code> 객체가 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sexagesimal">육십진법</a>의 3개의 숫자라는 것이다. 초단위 <code>second</code>속성이 1열, 분단위 <code>minute</code>속성이 60열, 시단위 <code>hour</code>속성이 3600열이다.</p>
+<p><code>addtime()</code>와 <code>increment!()</code>를 작성할 때, 육십진법에서는 한 열에서 다음 열로 이동해야 하기 때문에 이를 효과적으로 추가하는 방식을 고려하고 싶다.</p>
+<p>이런 생각은 전체적인 문제의 다른 접근법을 제안한다. <code>MyTime</code> 객체를 정수로 변환하고 컴퓨터의 계산을 활용하는 것이다.</p>
+<p>아래의 함수는 <code>MyTime</code> 객체를 정수로 변환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> timetoint(time)<br>    minutes = time.hour * <span class="hljs-number">60</span> + time.minute<br>    seconds = minutes * <span class="hljs-number">60</span> + time.second<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>그리고 아래의 함수는 정수를 <code>MyTime</code>으로 변환한다. (<code>divrem</code>은 첫 번째 인수를 두 번째 인수로 나누고 몫과 나머지를 튜플로 반환한다)</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> inttotime(seconds)<br>    (minutes, second) = divrem(seconds, <span class="hljs-number">60</span>)<br>    hour, minute = divrem(minutes, <span class="hljs-number">60</span>)<br>    MyTime(hour, minute, second)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 함수가 올바른지 확인하기 위해서는 약간의 생각과 테스트를 진행하면 된다. 테스트하는 방법은 <code>timetoint(inttotime(x)) == x</code>가 많은 <code>x</code>값에도 작동하는지 확인하는 것이다. 일관성 검사(consistency check)의 예이다.</p>
+<p>위의 함수가 정확하다고 확신한다면, <code>addtime</code>을 다시 작성하는데 사용할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> addtime(t1, t2)<br>    seconds = timetoint(t1) + timetoint(t2)<br>    inttotime(seconds)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>해당 버전은 처음보다 훨씬 쉽고 명확하다.</p>
+<p>어떤면에서 육십진법에서 십진법 또는 그 반대로 변환하는 것은 시간을 처리하는 것보다 어렵다. 기본 변환이 더 추상적이기 때문이다.</p>
+<p>하지만 시간을 육십진법으로 취급하고 <code>timetoint()</code> 및 <code>inttotime()</code>와 같은 변환 함수를 작성하는데 투자할 수 있는 통찰력만 있다면 더 짧고 읽기 쉬운 안정적인 프로그램을 만들 수 있다.</p>
+<p>또한 나중에 함수를 추가하는 것이 더 쉽다. 예를 들어, 두 개의 <code>MyTime</code>을 빼서 둘 사이의 지속 시간을 찾는다고 가정해보자. 가장 편한 방법은 두 개를 빼주는 것이다. 변환 함수를 사용하면 더 쉽고 정확하게 뺄 수 있다.</p>
+<p>아이러니하게도, 때로는 문제를 더 일반화하여 만드는 것이 더 쉽다. 그 이유는 특별한 경우도 적고 오류 가능성도 적어지기 때문이다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p><code>MyTime</code> 객체는 <code>minute</code>과 <code>second</code>의 값이 0부터 60사이(0은 포함, 60은 불포함)이고, <code>hour</code>이 양수이면 올바르게 생성된다. <code>minute</code>와 <code>hour</code>는 값이 정수여야 하지만, <code>second</code>은 소수도 가능하다.</p>
+<p>이와 같은 요구사항들은 항상 참이여야 하기 때문에 고정 변수(invariants)라 불린다. 다른 방식으로 말하면, 만약 요구사항들이 참이 아니라면 무언가가 잘못되었다는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isvalidtime(time)<br>    <span class="hljs-keyword">if</span> time.hour &lt; <span class="hljs-number">0</span> || time.minute &lt; <span class="hljs-number">0</span> || time.second &lt; <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">if</span> time.minute &gt;= <span class="hljs-number">60</span> || time.second &gt;= <span class="hljs-number">60</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-literal">true</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>고정 변수를 확인하는 코드를 작성하면 오류를 감지하고 원인을 찾을 수 있다. 예를 들어 <code>isvalidtime()</code>가 <code>MyTime</code> 객체를 가져와서 고정 변수를 위반하면 <code>false</code>를 반환한다.</p>
+<p>각 함수의 시작 부분에 <code>isvalidtime()</code>를 추가하여 인수가 유효한지 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> addtime(t1, t2)<br>    <span class="hljs-keyword">if</span> !isvalidtime(t1) || !isvalidtime(t2)<br>        error(<span class="hljs-string">&quot;invalid MyTime object in add_time&quot;</span>)<br>    <span class="hljs-keyword">end</span><br>    seconds = timetoint(t1) + timetoint(t2)<br>    inttotime(seconds)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>또는 주어진 고정 변수를 확인하고 실패하면 예외를 제공하는 <code>@assert</code> 매크로를 사용할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> addtime(t1, t2)<br>    <span class="hljs-meta">@assert</span>(isvalidtime(t1) &amp;&amp; isvalidtime(t2), <span class="hljs-string">&quot;invalid MyTime object in add_time&quot;</span>)<br>    seconds = timetoint(t1) + timetoint(t2)<br>    inttotime(seconds)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>@assert</code> 매크로는 정상적인 조건을 처리하는 코드와 오류를 확인하는 코드를 구분하기 때문에 유용하다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>15. 구조체와 함수</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-15/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 16일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-16/" title="16. 다중 디스패치">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">16. 다중 디스패치</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-14/" title="14. 구조체와 객체">
+                        <span class="hidden-mobile">14. 구조체와 객체</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

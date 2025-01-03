@@ -1,0 +1,934 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8. 인공신경망 구현 - 역전파 설명">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-8/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/43.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/44.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/51.png">
+<meta property="article:published_time" content="2020-04-15T13:56:01.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:34:42.641Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="신경망">
+<meta property="article:tag" content="역전파">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/43.png">
+  
+  
+  
+  <title>8. 인공신경망 구현 - 역전파 설명 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="8. 인공신경망 구현 - 역전파 설명"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-04-15 22:56" pubdate>
+          2020년 4월 15일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">8. 인공신경망 구현 - 역전파 설명</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<p>이전 글에서는 왼쪽 방향에서 오른쪽 방향으로 이동하는 미분법인 순전파 알고리즘을 살펴보았다. 순전파 알고리즘은 학습을 진행할 때마다 각각 매개변수의 미분값을 구해야 하기 때문에 신경망 계산이 매개변수 개수의 두 배가 진행된다. 이전 글에서의 신경망 모델을 예시로 보면 가중치와 편향이 총 4개이기 때문에 순전파 기반으로 학습을 한 번 할 때마다 신경망 계산은 총 8번 이루어진다. 이 방식은 매우 비효율적이고 시간이 오래걸린다. 순전파보다 더 효율적으로 미분하는 방법이 바로 역전파 알고리즘이다. 이번 장에서는 역전파 알고리즘에 대해서 살펴볼 것이다.</p>
+<h2 id="역전파란">역전파란</h2>
+<p>역전파(backward propagation)는 순전파와 다르게 미분을 반대로 하는 것을 의미한다. 즉, 순전파는 왼쪽에서 오른쪽 방향으로 미분이 이루어진다면, 역전파는 오른쪽에서 왼쪽 방향으로 미분이 이루어진다. 도식에서 확인하자면 아래와 같다.</p>
+<figure>
+<img src="../images/43.png" srcset="/img/loading.gif" lazyload alt="신경망 계산 방향" /><figcaption aria-hidden="true">신경망 계산 방향</figcaption>
+</figure>
+<p>또한 순전파와 역전파는 신경망 계산이 이루어지는 과정도 약간 다르다. 우리가 만든 2층 신경망 모델의 순전파 알고리즘은 각각 가중치와 편향의 편미분 값을 구하기 위해서 신경망 계산이 8번 이루어지지만, 역전파 알고리즘은 한번 진행될 때 가중치와 편향의 편미분 값을 바로 구할 수 있다. 이것이 역전파가 순전파보다 훨씬 빠르게 진행되는 이유이다. 신경망 계산은 행렬 계산으로 이루어지기 때문에 매우 복잡하고 계산량이 많다. 따라서 계산을 여러 번 할수록 훨씬 많은 시간이 소요된다. 따라서 시간의 관점에서 역전파는 순전파보다 훨씬 더 효율적인 알고리즘이라고 볼 수 있다. 순전파와 역전파의 차이를 정리하면 다음과 같다.</p>
+<figure>
+<img src="../images/44.png" srcset="/img/loading.gif" lazyload alt="미분 알고리즘 비교" /><figcaption aria-hidden="true">미분 알고리즘 비교</figcaption>
+</figure>
+<h2 id="역전파의-원리-합성함수의-미분">역전파의 원리: 합성함수의 미분</h2>
+<p>역전파가 한번에 편미분을 구할 수 있는 원리는 합성함수의 미분을 이용한 것이다. 먼저 우리가 만들었던 2층 신경망 모델의 수식을 확인해보자.</p>
+<p><span class="math display">\[\hat{y}=\sigma(h(XW1+B1)\times W2+B2)\]</span></p>
+<p>위의 수식을 다음과 같이 정리할 수 있다.</p>
+<p><span class="math display">\[Z1=XW1+B1\\
+ A1 = h(Z1)\\
+Z2=A1W2+B2\\
+\sigma(Z2) = \hat{y}\]</span></p>
+<p>위 수식은 신경망 계산 순서를 그대로 나열한 것이다. 순전파 알고리즘에서는 각각 매개변수를 편미분하여 예측값을 비교한다. 하지만 역전파 알고리즘은 위의 수식들을 미분한 식을 바탕으로 기존 매개변수들을 받아 각 매개변수들의 미분값을 한번에 계산한다.</p>
+<p>즉, 역전파 알고리즘은 다음과 같다.</p>
+<p><span class="math display">\[\partial\hat{y} =
+\partial\sigma(Z2)\\
+\partial Z2= \partial(A1W2 + B2)\\
+\partial A1 = \partial h(Z1)\\
+\partial Z1 = \partial(XW1+B1)\]</span></p>
+<p>위 순서는 합성함수의 미분이다. 합성함수는 변수가 두개 이상의 함수에 둘러싸인 경우를 의미한다. 예시로 아래의 사례를 보자.</p>
+<p><span class="math display">\[ y = t^2 , t = x+2\]</span></p>
+<p>위의 식 <span class="math inline">\(y\)</span>에서 <span class="math inline">\(x\)</span>를 미분하기 위해서는 중간의 <span class="math inline">\(t\)</span>를 미분해야 한다. 따라서 다음과 같은 방법으로 미분된다.</p>
+<p><span class="math display">\[\frac{dy}{dx}= \frac{dy}{dt} \cdot \frac{dt}{dx}\]</span></p>
+<p>위의 미분식에서 <span class="math inline">\(dt\)</span>는 약분되기 때문에 결국 <span class="math inline">\(\frac{dy}{dx}\)</span>가 남는 것이다. 이를 정리하면 다음과 같다.</p>
+<p><span class="math display">\[\begin{matrix}
+\frac{\partial y}{\partial x}&amp; = &amp; \partial (t^2) \times \partial t\\
+&amp;=&amp; 2t \times \partial (x+2) \\
+&amp;=&amp; 2(x+2) \times 1 \\
+&amp;=&amp; 2x+4\\
+\end{matrix}\]</span></p>
+<p>이 방식을 2층 신경망 역전파 알고리즘에 대입하여 미분식을 구할 수 있다. 미분식은 아래와 같다.</p>
+<p><span class="math display">\[\begin{matrix}
+\frac{\partial \hat{y}}{\partial W1}&amp; = &amp; \frac{\partial \hat{y}}{\partial Z2} &amp;\times&amp; \frac{\partial Z2}{\partial A1} &amp;\times&amp; \frac{\partial A1}{\partial Z1} &amp;\times&amp; \frac{\partial Z1}{\partial W1}\\
+&amp;&amp;\\
+\frac{\partial \hat{y}}{\partial W2}&amp; = &amp; \frac{\partial \hat{y}}{\partial Z2} &amp;\times&amp; \frac{\partial Z2}{\partial W2}\\
+&amp;&amp;\\
+\frac{\partial \hat{y}}{\partial b1}&amp; = &amp; \frac{\partial \hat{y}}{\partial Z2} &amp;\times&amp; \frac{\partial Z2}{\partial A1} &amp;\times&amp; \frac{\partial A1}{\partial Z1} &amp;\times&amp; \frac{\partial Z1}{\partial b1}\\
+&amp;&amp;\\
+\frac{\partial \hat{y}}{\partial b2}&amp; = &amp; \frac{\partial \hat{y}}{\partial Z2} &amp;\times&amp; \frac{\partial Z2}{\partial b2}\\
+\end{matrix}\]</span></p>
+<p>위의 공식을 비교해보면 각각 매개 변수에 동일하게 적용되는 미분이 있을 것이다. 이를 알고리즘으로 구현하여 좀 더 빠르게 미분값을 구할 수 있도록 고안한 것이 역전파 알고리즘이다.</p>
+<h2 id="역전파-알고리즘-미분-과정">역전파 알고리즘 미분 과정</h2>
+<figure>
+<img src="../images/51.png" srcset="/img/loading.gif" lazyload alt="역전파 알고리즘" /><figcaption aria-hidden="true">역전파 알고리즘</figcaption>
+</figure>
+<p>2층 신경망 역전파 알고리즘은 위와 같은 구조로 이루어져 있다. 우리는 위의 역전파 알고리즘에서 각 층을 함수로 구현할 것이다. 참고로 아래의 수식에서 사용되는 대문자는 행렬이며, 소문자는 스칼라이다. 특히 <span class="math inline">\(Z_n\)</span>과 같은 기호는 행렬 <span class="math inline">\(Z\)</span>의 <span class="math inline">\(n\)</span>(인덱스)위치에 속해있는 요소를 가리킨다.</p>
+<h3 id="softmax-with-loss-layer">Softmax with Loss Layer</h3>
+<p>역전파 알고리즘에서는 출력층에서 사용되는 소프트맥스 함수와 손실 함수인 교차 엔트로피 오차 수식을 같이 미분한다. 그 이유는 두 함수를 동시에 미분한 결과가 훨씬 간단하기 때문이다. 역전파의 미분은 손실 함수인 교차 엔트로피 오차 수식 미분을 먼저 진행하고 그다음 소프트맥스 함수를 미분하여 결과를 도출할 것이다.</p>
+<ul>
+<li>교차 엔트로피 오차 수식 미분</li>
+</ul>
+<p><span class="math display">\[L = -\sum_{n} T_n \ln Y_n\]</span></p>
+<p>위 식은 교차 엔트로피 오차이이며, <span class="math inline">\(T\)</span>는 정답레이블, <span class="math inline">\(Y\)</span>는 예측값, <span class="math inline">\(n\)</span>은 신경망 노드의 개수를 의미한다. 즉, 소프트맥스 함수에서 예측값이 <span class="math inline">\([y_1, y_2, y_3]\)</span>로 왔다면 <span class="math inline">\(n\)</span>은 3이다. 위 식을 미분하면 다음과 같은 결과를 얻을 수 있다.</p>
+<p><span class="math display">\[\partial L = -\sum_{n} \frac{T_n}{Y_n} \]</span></p>
+<p>위의 식에서 <span class="math inline">\(-\frac{1}{Y_n}\)</span>가 각각의 소프트맥스 함수의 신경망으로 전달된다. 예를 들어 소프트맥스 함수의 결과값이 총 3개가 들어왔다면 <span class="math inline">\(-\frac{T_1}{Y_1}, -\frac{T_2}{Y_2}, -\frac{T_3}{Y_3}\)</span>이 소프트맥스 미분식의 입력값으로 들어간다.</p>
+<ul>
+<li>소프트맥스 함수 미분</li>
+</ul>
+<p><span class="math display">\[\sigma(Z_k)=\frac{e^{Z_k}}{\sum_{i=n}^n e^{Z_n}}\]</span></p>
+<p>위 수식은 소프트맥스 함수이다. 위의 교차 엔트로피 오차와 마찬가지로 <span class="math inline">\(n\)</span>은 신경망 노드 개수이다. 즉, 입력값이 <span class="math inline">\([z_1, z_2, z_3]\)</span>이라면 <span class="math inline">\(n\)</span>은 3이고, <span class="math inline">\(k\)</span>는 <span class="math inline">\(1,2,3\)</span> 중에 하나이다. 이를 미분하면 다음과 같은 결과를 얻을 수 있다.</p>
+<ol type="1">
+<li>소프트맥스의 입력값과 편미분 대상이 동일할 때 (둘 다 <span class="math inline">\(Z_k\)</span>)</li>
+</ol>
+<p><span class="math display">\[\frac{\partial\sigma(Z_k)}{\partial Z_k} = \frac{e^{Z_k}(\sum_{i} e^{Z_i})-e^{Z_k}e^{Z_k}}{(\sum_{i} e^{Z_i})^2}\]</span></p>
+<p><span class="math display">\[\quad \quad \quad \ = \frac{e^{Z_k}\{(\sum_{i} e^{Z_i})-e^{Z_k}\}}{(\sum_{i} e^{Z_i})^2}\]</span></p>
+<p><span class="math display">\[\quad \quad \quad \quad = \frac{e^{Z_k}}{\sum_{i} e^{Z_i}} \frac{(\sum_{i} e^{Z_i})-e^{Z_k}}{\sum_{i} e^{Z_i}}\]</span></p>
+<p><span class="math display">\[\quad \quad \quad \quad = \frac{e^{Z_k}}{\sum_{i} e^{Z_i}}\Bigg(1-\frac{e^{Z_k}}{\sum_{i} e^{Z_i}}\Bigg)\]</span></p>
+<p><span class="math display">\[\quad \quad  = \sigma(Z_k)(1-\sigma(Z_k))\]</span></p>
+<ol start="2" type="1">
+<li>소프트맥스의 입력값과 편미분 대상이 다를 때 (<span class="math inline">\(Z_k\)</span>와 <span class="math inline">\(Z_j\)</span>)</li>
+</ol>
+<p><span class="math display">\[\frac{\partial\sigma(Z_j)}{\partial Z_k} = \frac{0-e^{Z_k}e^{Z_j}}{(\sum_{i=1} e^{Z_i})^2}\]</span></p>
+<p><span class="math display">\[\quad \quad \quad \quad \quad \quad \quad = -\frac{e^{Z_k}}{\sum_{i=1} e^{Z_i}} \frac{e^{Z_j}}{\sum_{i=1} e^{Z_i}}\]</span></p>
+<p><span class="math display">\[\quad \quad \quad \quad = -\sigma(Z_k)\sigma(Z_j)\]</span></p>
+<p>소프트맥스 함수는 미분될 때 동일한 변수와 동일하지 않은 변수를 모두 미분해야 한다. 그 이유는 손실 함수에서 <span class="math inline">\(n\)</span>개의 변수를 미분하는데 <span class="math inline">\(n\)</span>에는 편미분 변수인 <span class="math inline">\(k\)</span>도 들어가지만 편미분 변수가 아닌 <span class="math inline">\(j\)</span>도 포함되기 때문이다.</p>
+<p>위의 미분식들을 활용하여 역전파 알고리즘에 사용되는 함수를 정리해보자.</p>
+<p><span class="math display">\[\frac{\partial L}{\partial Z_k} = \frac{\partial L}{\partial \sigma(Z_n)}\frac{\partial\sigma(Z_n)}{\partial Z_k}\]</span></p>
+<p><span class="math display">\[\quad \quad \ \ =-\sum_{n}\frac{Y_n}{Z_n}\frac{\partial\sigma(Z_n)}{\partial Z_k}\]</span></p>
+<p><span class="math inline">\(\frac{\partial\sigma(Z_n)}{\partial Z_k}\)</span>은 <span class="math inline">\(k\)</span>에 대한 미분과 <span class="math inline">\(j\)</span>에 대한 미분을 모두 포함한다. 따라서 분리하여 미분을 진행한다.</p>
+<p><span class="math display">\[\quad \quad \quad =-\frac{Y_k}{Z_k}Z_k(1-Z_k)-\sum_{n \ne k}\frac{Y_n}{Z_n}(-Z_kZ_n)\]</span></p>
+<p><span class="math display">\[=-Y_k(1-Z_k)-\sum_{n \ne k}-Y_nZ_k\]</span></p>
+<p><span class="math display">\[=-Y_k+Y_kZ_k+\sum_{n \ne k}Y_nZ_k\]</span></p>
+<p><span class="math display">\[=-Y_k+Z_k\sum_{n}Y_n\]</span></p>
+<p>여기서 <span class="math inline">\(\sum_{n}Y_n\)</span>는 기존 소프트맥스 확률의 합이기 때문에 1이 된다.</p>
+<p><span class="math display">\[=-Y_k+Z_k \times 1\]</span></p>
+<p><span class="math display">\[=Z_k-Y_k\]</span></p>
+<p>결론적으로 'Softmax with Loss'는 위와 같은 간단한 수식이다. 어차피 우리는 결론인 위의 간단한 수식만 사용할 것이기 때문에 만약 위의 수식들이 어렵다면 결론만 봐도 무방하다.</p>
+<h3 id="dense-layer">Dense Layer</h3>
+<p>'Dense Layer'는 들어온 입력값에 가중치를 곱하고 편향을 더하는 방정식이다. 수식으로 쓰면 아래와 같다.</p>
+<p><span class="math display">\[Z=XW+B\]</span></p>
+<p>위 수식을 미분해보자. 참고로 Dense Layer에서 사용되는 모든 변수들은 행렬을 기본으로 하고 있다. 즉, <span class="math inline">\(XW\)</span>은 행렬곱이다. 그렇다면 행렬곱은 어떻게 미분되는가? 기본적으로 신경망에서 사용되는 행렬은 벡터 단위이다. 즉, 행렬도 벡터가 여러 개 합쳐져 있는 형태로 바라본다는 것이다.</p>
+<p>미분을 이해하기 위해서 간단하게 예시를 보자.</p>
+입력값인 행렬 <span class="math inline">\(X\)</span>와 가중치인 행렬 <span class="math inline">\(W\)</span>를 다음과 같이 설정한다. 벡터는 열벡터 형태가 기본이기 때문에 아래의 행렬은 벡터 별 색깔을 다르게 설정하였다. <span class="math display">\[\begin{matrix}
+\quad \quad X_1 &amp; X_2 &amp;&amp;&amp;&amp; W_1 &amp; W_2 &amp;W_3
+\end{matrix}\]</span> $$X=
+<span class="math display">\[\begin{bmatrix}
+\color{ForestGreen}{x_{11}} &amp;\color{LimeGreen}{x_{12}}\\
+\color{ForestGreen}{x_{21}} &amp; \color{LimeGreen}{x_{22}}
+\end{bmatrix}\]</span>
+W=
+<span class="math display">\[\begin{bmatrix}
+\color{OrangeRed}{w_{11}} &amp; \color{Orange}{w_{12}} &amp; \color{Salmon}{w_{13}}\\
+\color{OrangeRed}{w_{21}} &amp; \color{Orange}{w_{22}} &amp; \color{Salmon}{w_{23}}
+\end{bmatrix}\]</span>
+<p>$$</p>
+<p>두 행렬을 곱할 때는 열 단위로 내적되는 것이 아니라 X가 행벡터로 변환되어 내적된다. 즉, 수식으로 표현하면 다음과 같다.</p>
+<p><span class="math display">\[X \cdot W = X^TW\]</span></p>
+<p>따라서 <span class="math inline">\(X \cdot W\)</span>인 식이 결과값 <span class="math inline">\(Y\)</span>라고 했을 때, <span class="math inline">\(Y\)</span>는 다음과 같다.</p>
+<p><span class="math display">\[Y=\begin{bmatrix}
+\color{ForestGreen}{x_{11}}\color{OrangeRed}{w_{11}}+ \color{ForestGreen}{x_{21}}\color{OrangeRed}{w_{21}}&amp; \color{ForestGreen}{x_{11}}\color{Orange}{w_{12}} +\color{ForestGreen}{x_{21}}\color{Orange}{w_{22}}&amp; \color{ForestGreen}{x_{11}}\color{Salmon}{w_{13}}+\color{ForestGreen}{x_{21}}\color{Salmon}{w_{23}}\\
+\color{LimeGreen}{x_{12}}\color{OrangeRed}{w_{11}}+ \color{LimeGreen}{x_{22}}\color{OrangeRed}{w_{21}}&amp; \color{LimeGreen}{x_{12}}\color{Orange}{w_{12}}+ \color{LimeGreen}{x_{22}}\color{Orange}{w_{22}}&amp; \color{LimeGreen}{x_{12}}\color{Salmon}{w_{13}}+\color{LimeGreen}{x_{22}}\color{Salmon}{w_{23}}
+\end{bmatrix}\]</span></p>
+<p>위의 행렬을 벡터의 곱으로 표현해보자.</p>
+<p><span class="math display">\[Y=\begin{bmatrix}
+X_1W_1 &amp; X_1W_2 &amp; X_1W_3\\
+X_2W_1 &amp; X_2W_2 &amp; X_2W_3\\
+\end{bmatrix}\]</span></p>
+<p>위 식은 행렬 <span class="math inline">\(W\)</span>가 행렬 <span class="math inline">\(X^T\)</span>와 곱한 형태라는 것을 증명한다. 위의 행렬을 <span class="math inline">\(W_1~ or~ W_2~ or~ W_3\)</span>로 각각 미분해도 결과는 동일하다.</p>
+<p><span class="math display">\[\frac{\partial Y}{\partial W} =
+\begin{bmatrix}
+X_1\\
+X_2\\
+\end{bmatrix}\]</span></p>
+<p>이를 행렬로 풀면 다음과 같다.</p>
+<p><span class="math display">\[\frac{\partial Y}{\partial W} =
+\begin{bmatrix}
+\color{ForestGreen}{x_{11}} &amp;\color{ForestGreen} {x_{21}}\\
+\color{LimeGreen}{x_{12}} &amp; \color{LimeGreen}{x_{22}}\\
+\end{bmatrix}
+=
+X^T\]</span></p>
+<p>위와 같은 원리로 다음과 같은 결론을 낼 수 있다.</p>
+<p><span class="math display">\[\frac{\partial Y}{\partial W} = X^T\]</span> <span class="math display">\[\frac{\partial Y}{\partial X} = W^T\]</span></p>
+<p>우리는 역전파 알고리즘에서 입력값과 가중치의 미분값으로 위의 식을 사용할 것이다.</p>
+<p>편향의 경우, 신경망 계산 시에 모든 원소에 더해지기 때문에 미분값을 열 기준으로 전부 더하면 된다.</p>
+<h3 id="sigmoid-layer">Sigmoid Layer</h3>
+<p>시그모이드 함수의 미분은 간단하다. 아래의 식을 확인하자.</p>
+<p><span class="math display">\[\frac{\partial h(Z_k)}{\partial Z_k} = \frac{0\times(1+e^{-Z_k})-1\times (0+e^{(-Z_k)})(-1) }{(1+e^{-Z_k})^2}\]</span></p>
+<p><span class="math display">\[\quad =\frac{e^{(-Z_k)}}{(1+e^{-Z_k})^2}= \frac{1+e^{(-Z_k)}-1}{(1+e^{-Z_k})^2}\]</span></p>
+<p><span class="math display">\[=\frac{(1+e^{(-Z_k)})}{(1+e^{-Z_k})^2}-\frac{1}{(1+e^{-Z_k})^2}\]</span></p>
+<p><span class="math display">\[= \frac{1}{(1+e^{-Z_k})}-\frac{1}{(1+e^{-Z_k})^2}\]</span></p>
+<p><span class="math display">\[\quad = \frac{1}{(1+e^{-Z_k})}\Big(1-\frac{1}{(1+e^{-Z_k})}\Big)\]</span></p>
+<p><span class="math display">\[ = h(Z_k)(1-h(Z_k))\]</span></p>
+<p>시그모이드 함수를 미분하여 정리하면 <span class="math inline">\(h(Z_k)(1-h(Z_k))\)</span> 이 도출된다. 따라서 역전파 알고리즘에 사용되는 시그모이드 함수는 위의 수식을 사용하여 구현될 것이다.</p>
+<h3 id="relu-layer">ReLU Layer</h3>
+<p>ReLU 함수는 입력값 <span class="math inline">\(x\)</span>가 음수인 경우만 0으로 변경하고 그대로 출력한다. 이를 수식으로 표현하면 다음과 같다.</p>
+<p><span class="math display">\[
+y =
+ \begin{cases}
+0 &amp; \text{(x≤0)\]</span>}\ x &amp; \ \end{cases} $$</p>
+<p>위 수식을 입력값 <span class="math inline">\(x\)</span>로 미분하면 아래와 같은 결과가 도출된다.</p>
+<p><span class="math display">\[
+\frac{\partial y}{\partial x} =
+ \begin{cases}
+0 &amp; \text{(x≤0)\]</span>}\ 1 &amp; \ \end{cases} $$</p>
+<p>따라서 역전파 알고리즘에서 Relu 함수는 입력값 <span class="math inline">\(x\)</span>가 0보다 같거나 작으면 미분값에 0을 곱해서 출력하고, <span class="math inline">\(x\)</span>보다 크면 1을 곱해서 출력한다. 그렇기 때문에 입력값에서 음수의 위치를 저장해두어야 한다.</p>
+<h2 id="순전파-vs.-역전파">순전파 vs. 역전파</h2>
+<p>다음 글에서 살펴볼 역전파 알고리즘이 과연 잘 구현되었는지 확인해보자. 먼저 훈련데이터 이미지 3개를 <code>x_batch</code>와 <code>t_batch</code>에 할당한다. (참고로 사용된 훈련데이터는 MNIST 데이터이며, <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">이전 글</a>에서 가져오는 방법을 볼 수 있다.)</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x_batch = train_x[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>, :]<br>t_batch = t[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>, :]<br></code></pre></td></tr></table></figure>
+<p>그 다음 순전파 알고리즘을 먼저 작동해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">TwoLayerNet_numerical_gradient(loss, x_batch, t_batch)<br></code></pre></td></tr></table></figure>
+<p>위 코드를 실행하면 순전파 알고리즘으로부터 도출된 미분값을 얻을 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">grad_forward_W1 = grads[<span class="hljs-string">&quot;W1&quot;</span>]<br>grad_forward_b1 = grads[<span class="hljs-string">&quot;b1&quot;</span>]<br>grad_forward_W2 = grads[<span class="hljs-string">&quot;W2&quot;</span>]<br>grad_forward_b2 = grads[<span class="hljs-string">&quot;b2&quot;</span>]<br></code></pre></td></tr></table></figure>
+<p>위 코드를 입력하여 미분값을 저장하자. 이제 역전파 알고리즘을 사용하여 매개 변수의 미분값을 얻으려 한다. 역전파 알고리즘은 아직 살펴보지 못했기에 그 결과를 아래의 식에 도입해서 확인해보자.</p>
+<p><span class="math display">\[Difference = \frac{\sum{|forward~gradient - backward~gradient|}}{the~number~of~elements~in~Matrix}\]</span></p>
+<p>위 식을 코드로 구현하면 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; diffW1 = sum((abs.(grad_forward_W1-grad_backward_W1))) / (size(grad_backward_W1)[<span class="hljs-number">1</span>]*size(grad_backward_W1)[<span class="hljs-number">2</span>])<br>Julia&gt; diffW2 = sum((abs.(grad_forward_W2-grad_backward_W2))) / (size(grad_backward_W2)[<span class="hljs-number">1</span>]*size(grad_backward_W2)[<span class="hljs-number">2</span>])<br>Julia&gt; diffb1 = sum((abs.(grad_forward_b1-grad_backward_b1))) / (size(grad_backward_b1)[<span class="hljs-number">1</span>]*size(grad_backward_b1)[<span class="hljs-number">2</span>])<br>Julia&gt; diffb2 = sum((abs.(grad_forward_b2-grad_backward_b2))) / (size(grad_backward_b2)[<span class="hljs-number">1</span>]*size(grad_backward_b2)[<span class="hljs-number">2</span>])<br></code></pre></td></tr></table></figure>
+<p>위 코드는 다음 글에서 역전파 알고리즘을 구현한 후 작동할 것이다. 결과는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; diffW1<br> <span class="hljs-number">1.9589789748798898e-10</span><br>Julia&gt; diffW2<br> <span class="hljs-number">7.040410144965037e-8</span><br>Julia&gt; diffb1<br> <span class="hljs-number">8.881836618344343e-10</span><br>Julia&gt; diffb2<br> <span class="hljs-number">1.394640827490079e-7</span><br></code></pre></td></tr></table></figure>
+<p>순전파와 역전파 알고리즘으로 도출된 미분값들의 차이가 매우 작은 것을 확인할 수 있다. 즉, 역전파가 잘 구현되었다는 것이다. 그렇다면 역전파는 어떻게 줄리아로 구현하였을까? 다음 글에서 확인해보자.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/%EC%8B%A0%EA%B2%BD%EB%A7%9D/" class="print-no-link">#신경망</a>
+      
+        <a href="/tags/%EC%97%AD%EC%A0%84%ED%8C%8C/" class="print-no-link">#역전파</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>8. 인공신경망 구현 - 역전파 설명</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-8/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 4월 15일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/AboutHexo/about-hexo-2/" title="카테고리 및 태그 설정">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">카테고리 및 태그 설정</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Mathematic/mathematic-2/" title="Linear Algebra (2)">
+                        <span class="hidden-mobile">Linear Algebra (2)</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

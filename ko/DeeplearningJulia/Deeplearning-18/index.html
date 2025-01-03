@@ -1,0 +1,835 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="18. 간단한 CNN 모델 구현">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-18/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/81.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/82.png">
+<meta property="article:published_time" content="2020-08-01T03:06:31.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:35:09.524Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="CNN">
+<meta property="article:tag" content="합성곱">
+<meta property="article:tag" content="이미지신경망">
+<meta property="article:tag" content="풀링">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="모델">
+<meta property="article:tag" content="im2col">
+<meta property="article:tag" content="col2im">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/81.png">
+  
+  
+  
+  <title>18. 간단한 CNN 모델 구현 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="18. 간단한 CNN 모델 구현"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-08-01 12:06" pubdate>
+          2020년 8월 1일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          614 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">18. 간단한 CNN 모델 구현</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<p>지금까지 <code>im2col()</code>, <code>col2im()</code>을 적용한 새로운 합성곱과 풀링에 대해 알아보았다. 이번 글에서는 새로운 합성곱과 풀링을 사용하여 새로운 <code>simpleNet</code>을 구현할 것이다. <code>im2col()</code>, <code>col2im()</code>을 적용하지 않은 기존 <code>simpleNet</code>은 1에폭에 1시간이 걸린 반면 새로운 <code>simpleNet</code>은 1에폭에 5분이면 학습이 완료된다.</p>
+<h2 id="cnn-모델-구현">CNN 모델 구현</h2>
+<h3 id="준비-단계">준비 단계</h3>
+<p>이제 설계한 모델을 직접 구현해보자. 먼저 모델을 생성하고 학습하는데 필요한 재료들을 가져와야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia">해당 깃허브 사이트</a>에 가서 코드를 다운받으면 바로 학습을 진행할 수 있다. 만약 다운받기 싫다면 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/CNN">이 사이트</a>에서 아래의 파일들의 코드를 모두 복사해서 사용해도 된다.</p>
+<p>깃허브 데스크탑에 코드를 클론하거나 저장한 분들은 현재 사용하고 있는 커맨드의 경로를 <code>CNN</code> 파일로 변경해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">pwd <span class="hljs-comment"># 현재 경로 확인</span><br>cd 코드가 있는 파일 경로 입력/Deep_Learning_in_Julia/CNN<br></code></pre></td></tr></table></figure>
+<p>다시 <code>pwd</code>를 입력했을 때 아래와 같이 변경되어 있으면 변경이 완료된 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">/Users/코드가 있는 파일 경로/Deep_Learning_in_Julia/CNN<br></code></pre></td></tr></table></figure>
+<p>변경이 완료된 후 아래의 코드를 입력하자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">include(<span class="hljs-string">&quot;MNIST_data.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;functions.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;layers.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;making_network.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;optimizers.jl&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p><strong>Note</strong> 만약 터미널 변경에는 성공했는데 위 코드가 작동하지 않는다면 해당 터미널이 줄리아 언어로 세팅되어 있는지를 확인해보자. 줄리아 언어로 변경하는 방법은 줄리아가 저장되어 있는 경로를 찾아서 입력하면 사용할 수 있다.</p>
+<p>위 코드는 파일에 들어 있는 모든 코드들을 작동시킨다. 만약 코드를 복사하여 사용할 분들은 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/CNN">해당 페이지</a>에서 위의 파일들의 코드를 복사하여 입력해주면 된다.</p>
+<p>이제 간단한 CNN 모델을 만들 준비가 끝났다.</p>
+<h3 id="cnn-모델-설계">CNN 모델 설계</h3>
+<p><code>MNIST</code> 데이터는 간단하게 손글씨로 쓴 숫자이기에 비교적 얕은 모델로도 높은 성능의 분류기를 만들 수 있다. 아래의 그림을 참고해보자.</p>
+<figure>
+<img src="../images/81.png" srcset="/img/loading.gif" lazyload alt="model" /><figcaption aria-hidden="true">model</figcaption>
+</figure>
+<p>위의 각 계층들에 대한 세부적인 정보는 아래와 같다.</p>
+<ul>
+<li>input data: MNIST, batch = 100, data_shape = 28 x 28 x 1 x 100</li>
+<li>합성곱 계층: padding 없음, stride = 1, filter size = 5 x 5 x 1 x 30, output = 24 x 24 x 30 x 100</li>
+<li>ReLU 계층: 음수 0으로 변경, output = 24 x 24 x 30 x 100</li>
+<li>풀링 계층: padding 없음, stride = 2, pooling size = 2 x 2, output = 12 x 12 x 30 x 100</li>
+<li>flatten 계층: 4차원 데이터를 2차원으로 변경, output = 100 x 4320</li>
+<li>Dense 계층: weight size = 4320 x 100, bias = 1 x 100, output = 100 x 100</li>
+<li>ReLU 계층: 음수 0으로 변경, output = 100 x 100</li>
+<li>Dense 계층: weight size = 100 x 10, bias = 1 x 10, output = 100 x 10</li>
+<li>softmax with loss 계층: 손실 값 도출</li>
+</ul>
+<p>각 계층들을 살펴보면 데이터가 어떻게 변화하면서 흐르는지 파악할 수 있다. 매우 간단한 모델이지만, MLP보다는 훨씬 좋은 성능을 보여준다.</p>
+<p>학습 알고리즘은 아래와 같이 설계하여 진행할 것이다.</p>
+<ul>
+<li>Algorithm: backward propagation</li>
+<li>batch size: 100</li>
+<li>optimizer: Adam</li>
+<li>weight initialization: std</li>
+</ul>
+<h3 id="학습-구현">학습 구현</h3>
+<p>학습을 구현하기 위해서는 총 3가지의 과정을 거쳐야 한다.</p>
+<ul>
+<li><code>predict()</code> 및 저장소 설정</li>
+<li>가중치와 편향 초기값 설정</li>
+<li>모델 계층 쌓기</li>
+</ul>
+<p>먼저 <code>predict()</code>를 위의 모델 설계에 따라 구성해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span>  predict(input)<br><br>    pconv_1 = convolution2D_forward(pre_dense,input, params[<span class="hljs-string">&quot;W1&quot;</span>], params[<span class="hljs-string">&quot;b1&quot;</span>],<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)<br>    pconv_Re = relu.(pconv_1)<br>    ppool_1 = Maxpooling_forward(pre_pool,pconv_Re, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)<br>    flatten_1 = flatten_forward_batch(pre_flatten,ppool_1)<br>    dense_1 = (flatten_1 * params[<span class="hljs-string">&quot;W2&quot;</span>]) .+ params[<span class="hljs-string">&quot;b2&quot;</span>]<br>    dense_relu = relu.(dense_1)<br>    dense_2 = (dense_relu * params[<span class="hljs-string">&quot;W3&quot;</span>]) .+ params[<span class="hljs-string">&quot;b3&quot;</span>]<br>    result = softmax(dense_2)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>predict()</code>는 손실 값을 구할 때 사용되는 함수이다. 모델의 구성과 동일하며, 이때 사용되는 저장소들은 실제 필요한 데이터들이 아니라 함수의 작동을 위해 기술해둔 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># predict용 저장소(사용x)</span><br>pre_dense = dense_layer(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>pre_pool= repository(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>pre_flatten = repository(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br><br><br><span class="hljs-comment"># 실제 저장소</span><br>result = SoftmaxwithLoss(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>dense1 = dense_layer(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>dense2 = dense_layer(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>dense3 = dense_layer(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>Relu1 = repository(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>Relu2 = repository(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>optimizer = optimizers(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>pool1= repository(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br>flatten1 = repository(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># 미분값, 손실값 저장</span><br>grads = <span class="hljs-built_in">Dict</span>()<br>train_loss_list= []<br></code></pre></td></tr></table></figure>
+<p>그 다음 각 계층에 필요한 저장소들을 생성한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 가중치, 편향 생성</span><br>W =[<span class="hljs-string">&quot;W1&quot;</span>,<span class="hljs-string">&quot;W2&quot;</span>,<span class="hljs-string">&quot;W3&quot;</span>]<br>b = [<span class="hljs-string">&quot;b1&quot;</span>,<span class="hljs-string">&quot;b2&quot;</span>,<span class="hljs-string">&quot;b3&quot;</span>]<br>weight_size = [(<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">30</span>),(<span class="hljs-number">4320</span>,<span class="hljs-number">100</span>),(<span class="hljs-number">100</span>,<span class="hljs-number">10</span>)];<br>output_shape = [(<span class="hljs-number">28</span>,<span class="hljs-number">28</span>,<span class="hljs-number">1</span>),(<span class="hljs-number">24</span>,<span class="hljs-number">24</span>,<span class="hljs-number">30</span>),(<span class="hljs-number">1</span>,<span class="hljs-number">100</span>)]<br><br>params = making_network(W, b, weight_size,output_shape,<span class="hljs-string">&quot;std&quot;</span>);<br></code></pre></td></tr></table></figure>
+<p>두 번째 단계인 가중치와 편향 초기값을 생성한다. <code>weight_size</code>는 합성곱 계층과 Dense 계층에 사용되는 가중치의 형상을 나타내며, <code>output_shape</code>은 각 층마다 도출되는 결과값의 형상이다. 이를 사용하여 초기값인 <code>params</code>를 생성한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@time</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">600</span><br><br>        batch_size = rand(<span class="hljs-number">1</span>:size(train_x)[<span class="hljs-number">4</span>],<span class="hljs-number">100</span>)<br>        train_x_batch = train_x[:,:,:,batch_size]<br>        t_batch = reshape(t[batch_size,:],<span class="hljs-number">100</span>,<span class="hljs-number">10</span>)<br><br>        <span class="hljs-comment">#신경망 계산</span><br>        conv_1 = convolution2D_forward(dense1,train_x_batch,params[<span class="hljs-string">&quot;W1&quot;</span>],params[<span class="hljs-string">&quot;b1&quot;</span>],<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)<br>        conv_Re = relu_forward(Relu1, conv_1)<br>        pool_1 = Maxpooling_forward(pool1, conv_Re, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)<br>        flatten_1 = flatten_forward_batch(flatten1, pool_1)<br>        dense_1 = dense_layer_forward(dense2,flatten_1,params[<span class="hljs-string">&quot;W2&quot;</span>],params[<span class="hljs-string">&quot;b2&quot;</span>])<br>        dense_relu = relu_forward(Relu2, dense_1)<br>        dense_2 = dense_layer_forward(dense3,dense_relu,params[<span class="hljs-string">&quot;W3&quot;</span>],params[<span class="hljs-string">&quot;b3&quot;</span>])<br>        num = SoftmaxwithLoss_forward(dense_2,t_batch)<br><br>        <span class="hljs-comment">#역전파 알고리즘</span><br>        last_layer = SoftmaxwithLoss_backward(result)<br>        dense_2_back = dense_layer_backward(dense3, last_layer)<br>        grads[<span class="hljs-string">&quot;W3&quot;</span>] = dense3.dw<br>        grads[<span class="hljs-string">&quot;b3&quot;</span>] = dense3.db<br>        dense_relu_back = relu_backward(Relu2, dense_2_back)<br>        dense_1_back = dense_layer_backward(dense2, dense_relu_back)<br>        grads[<span class="hljs-string">&quot;W2&quot;</span>] = dense2.dw<br>        grads[<span class="hljs-string">&quot;b2&quot;</span>] = dense2.db<br>        flatten_1_back = flatten_backward_batch(flatten1,dense_1_back)<br>        pool_1_back = Maxpooling_backward(pool1, flatten_1_back, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>)<br>        conv_Re_back = relu_backward(Relu1, pool_1_back)<br>        conv_back = convolution2D_backward(dense1,conv_Re_back,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)<br>        grads[<span class="hljs-string">&quot;W1&quot;</span>] = dense1.dw<br>        grads[<span class="hljs-string">&quot;b1&quot;</span>] = dense1.db<br><br>        <span class="hljs-comment">#가중치 갱신</span><br>        Adam(params,grads)<br><br>        temp_loss = loss_CNN_batch(train_x_batch,t_batch)<br>        print(<span class="hljs-string">&quot;NO.<span class="hljs-variable">$i</span>: &quot;</span>)<br>        println(temp_loss)<br>        append!(train_loss_list, temp_loss)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이제 마지막으로 모델 설계에 알맞게 계층을 쌓아 학습을 시작한다. 위 코드는 한번 학습할 때마다 입력 데이터 100개가 입력되며, 1에폭은 600번이다. 따라서 위 코드를 그래도 사용하면 1에폭을 학습한다. 학습 종료 후 정확도를 확인하고 싶다면 아래의 코드를 입력해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 테스트셋 정확도 계산</span><br>evaluate_CNN_batch(test_x, test_y)<br></code></pre></td></tr></table></figure>
+<h2 id="결과">결과</h2>
+<p>위 코드를 사용하여 총 5에폭(3000번)을 학습시켰으며, 그 결과 정확도를 아래와 같이 증가하였다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 1에폭: 96.37</span><br><span class="hljs-comment"># 2에폭: 97.22</span><br><span class="hljs-comment"># 3에폭: 98.1</span><br><span class="hljs-comment"># 4에폭: 98.46000000000001</span><br><span class="hljs-comment"># 5에폭: 98.57000000000001</span><br></code></pre></td></tr></table></figure>
+<p><code>im2col()</code>, <code>col2im()</code>을 적용하지 않았던 모델과 비교해봤을 때 초기값의 랜덤 설정을 고려한다면 같은 결과를 얻었다고 볼 수 있다. 손실값의 그래프를 확인해도 잘 학습되는 것을 확인할 수 있다.</p>
+<figure>
+<img src="../images/82.png" srcset="/img/loading.gif" lazyload alt="loss" /><figcaption aria-hidden="true">loss</figcaption>
+</figure>
+<p>하지만 5에폭을 진행하는데 걸린 시간은 고작 약 25분 정도이다. 기존의 <code>simpleNet</code>은 1에폭에 1시간이었다는 것을 떠올려보면 엄청난 발전이라고 볼 수 있다. 하지만 <code>simpleNet</code>은 테스트셋의 정확도 99%를 넘기지는 못한다. 따라서 다음 시간에는 tensorflow에서 MNIST의 예제로 제공하는 <code>convNet</code>을 살펴보고 이와 동일하게 모델을 설계하여 테스트셋의 정확도 99%를 달성해볼 것이다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/cnn/" class="print-no-link">#CNN</a>
+      
+        <a href="/tags/%ED%95%A9%EC%84%B1%EA%B3%B1/" class="print-no-link">#합성곱</a>
+      
+        <a href="/tags/%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%8B%A0%EA%B2%BD%EB%A7%9D/" class="print-no-link">#이미지신경망</a>
+      
+        <a href="/tags/%ED%92%80%EB%A7%81/" class="print-no-link">#풀링</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/%EB%AA%A8%EB%8D%B8/" class="print-no-link">#모델</a>
+      
+        <a href="/tags/im2col/" class="print-no-link">#im2col</a>
+      
+        <a href="/tags/col2im/" class="print-no-link">#col2im</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>18. 간단한 CNN 모델 구현</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-18/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 8월 1일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/AWS/AWS-0/" title="AWS 기초">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AWS 기초</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-17/" title="17. col2im을 적용한 합성곱과 풀링">
+                        <span class="hidden-mobile">17. col2im을 적용한 합성곱과 풀링</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

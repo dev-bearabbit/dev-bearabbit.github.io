@@ -1,0 +1,797 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="하둡 에코시스템 중 하나인 Apache Ranger 설치 방법을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache Ranger 설치 in Docker (2)">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Hadoop/hadoop-12/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="하둡 에코시스템 중 하나인 Apache Ranger 설치 방법을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/177.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/174.png">
+<meta property="article:published_time" content="2023-04-11T06:26:21.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:36:06.143Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="apache">
+<meta property="article:tag" content="compose">
+<meta property="article:tag" content="ranger">
+<meta property="article:tag" content="authentication">
+<meta property="article:tag" content="ldap">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/177.png">
+  
+  
+  
+  <title>Apache Ranger 설치 in Docker (2) - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="Apache Ranger 설치 in Docker (2)"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-11 15:26" pubdate>
+          2023년 4월 11일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          743 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Apache Ranger 설치 in Docker (2)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>하둡 에코시스템 중 하나인 Apache Ranger 설치 방법을 정리합니다. <span id="more"></span></p>
+<h2 id="ranger-admin-setup">Ranger Admin Setup</h2>
+<p>이전 글에서 Ranger Admin 도커 이미지 빌드까지 성공하였다. 이번 글에서는 admin 서버를 셋팅하고 웹페이지 접속할 것이다.</p>
+<h3 id="container">Container</h3>
+<p>먼저 빌드한 이미지로 컨테이너를 올려보자. 아래 명령어로 컨테이너를 구동할 수 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ docker run -it  -d -p 6080:6080 ranger-admin:2.4.0<br></code></pre></td></tr></table></figure>
+<p>명령어를 잠깐 살펴보면 이미지 <code>ranger-admin:2.4.0</code>로 컨테이너를 실시하며, 포트는 6080으로 할당하라는 의미이다. <code>-d</code>는 컨테이너를 백그라운드로 실행하라는 의미이다.</p>
+<p>정상적으로 실행되었는지 확인하기 위해서는 아래 명령어를 입력한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ docker ps | grep ranger<br>&lt;container-id&gt;   ranger-admin:2.4.0      <span class="hljs-string">&quot;/bin/bash&quot;</span>      2 days ago    Up 2 days    0.0.0.0:6080-&gt;6080/tcp, :::6080-&gt;6080/tcp<br></code></pre></td></tr></table></figure>
+<h3 id="configuration">Configuration</h3>
+<p>다음으로는 해당 컨테이너에 접속해서 config 값을 수정한 후 웹서버를 활성화해야 한다. 아래 명령어로 컨테이너에 접속한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">exec</span> -it &lt;container-id&gt; /bin/bash<br></code></pre></td></tr></table></figure>
+<p>접속한 후 <code>ll</code>을 입력하면 아래와 같은 목록이 보일 것이다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash">drwxr-xr-x 1 ranger ranger   107 Apr  7 07:59 bin<br>-r-xr--r-- 1 ranger ranger  4321 Apr  7 07:59 changepasswordutil.py<br>-r-xr--r-- 1 ranger ranger  5173 Apr  7 07:59 changeusernameutil.py<br>lrwxrwxrwx 1 root   root      55 Apr 10 03:16 conf -&gt; /opt/ranger-2.4.0-admin/ews/webapp/WEB-INF/classes/conf<br>drwxrwxr-x 1 ranger ranger    97 Apr  7 07:59 contrib<br>drwxr-xr-x 1 ranger ranger    17 Apr  9 07:43 cred<br>drwxrwxr-x 1 ranger ranger    85 Apr  7 07:59 db<br>-r-xr--r-- 1 ranger ranger 77697 Apr  7 07:59 db_setup.py<br>-r-xr--r-- 1 ranger ranger 89187 Apr 10 03:15 dba_script.py<br>-r-xr--r-- 1 ranger ranger  9960 Apr  7 07:59 deleteUserGroupUtil.py<br>drwxrwxr-x 1 ranger ranger   189 Apr 10 03:16 ews<br>-rwx------ 1 ranger ranger  9431 Apr 10 03:06 install.properties<br>drwxr-xr-x 1 ranger ranger    17 Apr  9 07:43 jisql<br>-rw-r--r-- 1 ranger ranger  9097 Apr 10 03:16 logfile<br>-r-xr--r-- 1 ranger ranger  3056 Apr  7 07:59 ranger_credential_helper.py<br>-r-xr--r-- 1 ranger ranger 17942 Apr  7 07:59 restrict_permissions.py<br>-r-xr--r-- 1 ranger ranger  6549 Apr  7 07:59 rolebasedusersearchutil.py<br>-r-xr--r-- 1 ranger ranger  3990 Apr  7 07:59 set_globals.sh<br>-r-xr--r-- 1 ranger ranger 66437 Apr  7 07:59 setup.sh<br>-r-xr--r-- 1 ranger ranger  2855 Apr  7 07:59 setup_authentication.sh<br>drwxr-xr-x 1 ranger ranger    27 Apr  7 07:59 stability-tests<br>drwxr-xr-x 1 ranger ranger    70 Apr  9 07:43 templates-upgrade<br>-r-xr--r-- 1 ranger ranger  3452 Apr  7 07:59 updateUserAndGroupNamesInJson.py<br>-r-xr--r-- 1 ranger ranger  1921 Apr  7 07:59 update_property.py<br>-r-xr--r-- 1 ranger ranger  1247 Apr  7 07:59 upgrade.sh<br>-r-xr--r-- 1 ranger ranger 13928 Apr  7 07:59 upgrade_admin.py<br>-r--r--r-- 1 ranger ranger     5 Apr  7 09:31 version<br></code></pre></td></tr></table></figure>
+<p>위 목록에서 <code>install.properties</code>을 수정해야 한다. <code>vim</code> 명령어로 해당 파일을 열어 아래 config 값들을 수정한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#DB_FLAVOR=MYSQL|ORACLE|POSTGRES|MSSQL|SQLA</span><br>DB_FLAVOR=MYSQL<br><br><span class="hljs-comment">#SQL_CONNECTOR_JAR=/usr/share/java/ojdbc6.jar</span><br><span class="hljs-comment">#SQL_CONNECTOR_JAR=/usr/share/java/mysql-connector-java.jar</span><br><span class="hljs-comment">#SQL_CONNECTOR_JAR=/usr/share/java/postgresql.jar</span><br><span class="hljs-comment">#SQL_CONNECTOR_JAR=/usr/share/java/sqljdbc4.jar</span><br><span class="hljs-comment">#SQL_CONNECTOR_JAR=/opt/sqlanywhere17/java/sajdbc4.jar</span><br>SQL_CONNECTOR_JAR=/opt/mysql-connector-java.jar<br><br>db_root_user=&lt;DB_ADMIN&gt;<br>db_root_password=&lt;DB_ADMIN_PWD&gt;<br>db_host=&lt;DB_HOSTNAME&gt;<br><span class="hljs-comment">#SSL config</span><br>db_ssl_enabled=<span class="hljs-literal">false</span><br>db_ssl_required=<span class="hljs-literal">false</span><br>db_ssl_verifyServerCertificate=<span class="hljs-literal">false</span><br><br><span class="hljs-comment"># DB UserId used for the Ranger schema</span><br>db_name=ranger<br>db_user=rangeradmin<br>db_password=rangeradmin<br></code></pre></td></tr></table></figure>
+<p>여기서 주의해야 할 점이 있다. 보통 RDS를 사용하면 <code>DB_HOSTNAME</code>이 <strong>매우</strong> 길다. 너무 긴 호스트 이름은 Mysql을 DB로 사용하는 경우 유저 생성 시 호스트 이름이 잘린 채로 추가된다. 이렇게 잘못된 사용자가 생성되면 나중에 문제가 발생하니 RDS를 사용하는 사람은 <code>Route53</code>을 사용하여 DB에 도메인을 붙여주는 것을 추천한다.</p>
+<p>시스템 DB 정보를 모두 입력했다면 살짝 내려가서 audit store로 사용할 검색엔진 정보도 추가하자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#Source for Audit Store. Currently solr, elasticsearch and cloudwatch logs are supported.</span><br><span class="hljs-comment"># * audit_store is solr</span><br>audit_store=elasticsearch<br><br><span class="hljs-comment"># * audit_solr_url Elasticsearch Host(s). E.g. 127.0.0.1</span><br>audit_elasticsearch_urls=&lt;OPENSEARCH_VPC_ENDPOINT&gt;<br>audit_elasticsearch_port=80<br>audit_elasticsearch_protocol=https<br>audit_elasticsearch_user=<br>audit_elasticsearch_password=<br>audit_elasticsearch_index=ranger_audits<br>audit_elasticsearch_bootstrap_enabled=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>모든 값을 입력했다면 <code>:wq</code>로 저장한다.</p>
+<h3 id="db-migrations">DB Migrations</h3>
+<p>이제 ranger-admin이 사용할 DB와 Table을 만들어줄 것이다. 다시 <code>ll</code>을 입력하여 목록을 확인해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash">drwxr-xr-x 1 ranger ranger   107 Apr  7 07:59 bin<br>-r-xr--r-- 1 ranger ranger  4321 Apr  7 07:59 changepasswordutil.py<br>-r-xr--r-- 1 ranger ranger  5173 Apr  7 07:59 changeusernameutil.py<br>lrwxrwxrwx 1 root   root      55 Apr 10 03:16 conf -&gt; /opt/ranger-2.4.0-admin/ews/webapp/WEB-INF/classes/conf<br>drwxrwxr-x 1 ranger ranger    97 Apr  7 07:59 contrib<br>drwxr-xr-x 1 ranger ranger    17 Apr  9 07:43 cred<br>drwxrwxr-x 1 ranger ranger    85 Apr  7 07:59 db<br>-r-xr--r-- 1 ranger ranger 77697 Apr  7 07:59 db_setup.py<br>-r-xr--r-- 1 ranger ranger 89187 Apr 10 03:15 dba_script.py<br>-r-xr--r-- 1 ranger ranger  9960 Apr  7 07:59 deleteUserGroupUtil.py<br>drwxrwxr-x 1 ranger ranger   189 Apr 10 03:16 ews<br>-rwx------ 1 ranger ranger  9431 Apr 10 03:06 install.properties<br>drwxr-xr-x 1 ranger ranger    17 Apr  9 07:43 jisql<br>-rw-r--r-- 1 ranger ranger  9097 Apr 10 03:16 logfile<br>-r-xr--r-- 1 ranger ranger  3056 Apr  7 07:59 ranger_credential_helper.py<br>-r-xr--r-- 1 ranger ranger 17942 Apr  7 07:59 restrict_permissions.py<br>-r-xr--r-- 1 ranger ranger  6549 Apr  7 07:59 rolebasedusersearchutil.py<br>-r-xr--r-- 1 ranger ranger  3990 Apr  7 07:59 set_globals.sh<br>-r-xr--r-- 1 ranger ranger 66437 Apr  7 07:59 setup.sh<br>-r-xr--r-- 1 ranger ranger  2855 Apr  7 07:59 setup_authentication.sh<br>drwxr-xr-x 1 ranger ranger    27 Apr  7 07:59 stability-tests<br>drwxr-xr-x 1 ranger ranger    70 Apr  9 07:43 templates-upgrade<br>-r-xr--r-- 1 ranger ranger  3452 Apr  7 07:59 updateUserAndGroupNamesInJson.py<br>-r-xr--r-- 1 ranger ranger  1921 Apr  7 07:59 update_property.py<br>-r-xr--r-- 1 ranger ranger  1247 Apr  7 07:59 upgrade.sh<br>-r-xr--r-- 1 ranger ranger 13928 Apr  7 07:59 upgrade_admin.py<br>-r--r--r-- 1 ranger ranger     5 Apr  7 09:31 version<br></code></pre></td></tr></table></figure>
+<p>위 목록에서 우리는 <code>dba_script.py</code>와 <code>setup.sh</code>을 사용할 것이다. 먼저 <code>dba_script.py</code>을 실행한다.</p>
+<p>참고로 Mysql을 사용하는 경우 실행 전에 작은 버그 하나를 확인해야 한다. Mysql은 5.5버전 이후부터는 JDBC 연결 기본 값이 SSL 활성화로 변경되었는데 해당 스크립트에는 반영이 안되어서 바로 진행하면 SSL 에러가 발생한다. 이걸 해결하기 위해 코드를 살짝 수정해야 한다. 해당부분은 일단 ranger에 <a target="_blank" rel="noopener" href="https://github.com/apache/ranger/pull/244">PR</a>을 올려두었다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MysqlConf</span>(<span class="hljs-title class_ inherited__">BaseDB</span>):<br>    .<br>    .<br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_jisql_cmd</span>(<span class="hljs-params">self, user, password ,db_name</span>):<br>		<span class="hljs-comment">#<span class="hljs-doctag">TODO:</span> User array for forming command</span><br>		path = RANGER_ADMIN_HOME<br>		db_ssl_param=<span class="hljs-string">&#x27;&#x27;</span><br>		db_ssl_param=<span class="hljs-string">&#x27;?useSSL=false&#x27;</span> <span class="hljs-comment">#change default value</span><br>		db_ssl_cert_param=<span class="hljs-string">&#x27;&#x27;</span><br>		<span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.db_ssl_enabled == <span class="hljs-string">&#x27;true&#x27;</span>:<br>			db_ssl_param=<span class="hljs-string">&quot;?useSSL=%s&amp;requireSSL=%s&amp;verifyServerCertificate=%s&quot;</span> %(<span class="hljs-variable language_">self</span>.db_ssl_enabled,<span class="hljs-variable language_">self</span>.db_ssl_required,<span class="hljs-variable language_">self</span>.db_ssl_verifyServerCertificate)<br></code></pre></td></tr></table></figure>
+<p>이 다음 스크립트를 실행하면 DB 관련 정보를 입력받는다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3 dba_script.py <br>2023-04-12 14:23:22,797  [I] Running DBA setup script. QuiteMode:False<br>2023-04-12 14:23:22,798  [I] Using Java:/usr/lib/jvm/java-openjdk/bin/java<br>2023-04-12 14:23:22,799  Enter db flavour&#123;MYSQL|ORACLE|POSTGRES|MSSQL|SQLA&#125; :<br>MYSQL<br>2023-04-12 14:23:27,291  [I] DB FLAVOR:MYSQL<br>2023-04-12 14:23:27,291  Enter JDBC connector file <span class="hljs-keyword">for</span> :MYSQL<br>/opt/mysql-connector-java.jar<br>2023-04-12 14:23:38,116  Enter DB Host :<br>&lt;HOST&gt;<br>2023-04-12 14:23:46,890  [I] DB Host:&lt;HOST&gt;<br>2023-04-12 14:23:46,890  Enter db root user:<br>admin<br>2023-04-12 14:23:50,127  Enter db root password:<br>Enter db root password:<br>2023-04-12 14:23:53,487  Enter DB Name :<br>ranger<br>2023-04-12 14:23:56,159  Enter db user name:<br>rangeradmin<br>2023-04-12 14:24:01,899  Enter db user password:<br>Enter db user password:<br></code></pre></td></tr></table></figure>
+<p>스크립트 실행이 끝난 후 DB에 접속해보면 ranger DB와 사용자가 생겼을 것이다. 그 다음 <code>setup.sh</code>을 실행한다.</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-number">2023</span><span class="hljs-number">-04</span><span class="hljs-number">-12</span> <span class="hljs-number">14</span>:<span class="hljs-number">41</span>:<span class="hljs-number">23</span>,<span class="hljs-number">722</span>  [I] Checking <span class="hljs-keyword">connection</span> passed.<br><span class="hljs-number">2023</span><span class="hljs-number">-04</span><span class="hljs-number">-12</span> <span class="hljs-number">14</span>:<span class="hljs-number">41</span>:<span class="hljs-number">23</span>,<span class="hljs-number">723</span>  [I] RANGER_ADMIN_ENV_PATH : /opt/ranger_admin<br><span class="hljs-number">2023</span><span class="hljs-number">-04</span><span class="hljs-number">-12</span> <span class="hljs-number">14</span>:<span class="hljs-number">41</span>:<span class="hljs-number">23</span>,<span class="hljs-number">723</span>  [I] env_file_path : /opt/ranger_admin/ranger-<span class="hljs-keyword">admin</span>-env*.sh<br>Installation <span class="hljs-keyword">of</span> Ranger PolicyManager Web Application <span class="hljs-keyword">is</span> completed.<br></code></pre></td></tr></table></figure>
+<p>모든 것이 성공적으로 완료되었다면 셋팅은 끝난 것이다.</p>
+<h3 id="web-server-start">Web Server Start</h3>
+<p>마지막으로 ranger-admin 웹서버를 활성화한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ranger-admin start<br></code></pre></td></tr></table></figure>
+<p>그 다음 <code>&lt;instance IP&gt;:6080</code>으로 접속하면 아래와 같이 로그인 페이지가 보일 것이다. 로그인은 아이디와 패스워드 모두 <code>admin</code>이다.</p>
+<figure>
+<img src="/images/177.png" srcset="/img/loading.gif" lazyload alt="rangeradmin" /><figcaption aria-hidden="true">rangeradmin</figcaption>
+</figure>
+<p>로그인하면 본격적으로 정책을 관리할 수 있는 페이지가 보인다.</p>
+<figure>
+<img src="/images/174.png" srcset="/img/loading.gif" lazyload alt="rangeradmin" /><figcaption aria-hidden="true">rangeradmin</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/bigdata/" class="category-chain-item">BigData</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/bigdata/hadoop/" class="category-chain-item">hadoop</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/docker/" class="print-no-link">#docker</a>
+      
+        <a href="/tags/apache/" class="print-no-link">#apache</a>
+      
+        <a href="/tags/compose/" class="print-no-link">#compose</a>
+      
+        <a href="/tags/ranger/" class="print-no-link">#ranger</a>
+      
+        <a href="/tags/authentication/" class="print-no-link">#authentication</a>
+      
+        <a href="/tags/ldap/" class="print-no-link">#ldap</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Apache Ranger 설치 in Docker (2)</div>
+      <div>https://dev-bearabbit.github.io/ko/Hadoop/hadoop-12/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2023년 4월 11일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Reviews/2023/" title="2023년 상반기 회고">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2023년 상반기 회고</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Hadoop/hadoop-11/" title="Apache Ranger 설치 in Docker (1)">
+                        <span class="hidden-mobile">Apache Ranger 설치 in Docker (1)</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

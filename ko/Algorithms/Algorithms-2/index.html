@@ -1,0 +1,805 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="하노이 탑 문제를 재귀 알고리즘으로 해결합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="하노이 탑 문제">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Algorithms/Algorithms-2/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="하노이 탑 문제를 재귀 알고리즘으로 해결합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2022-03-08T08:11:20.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:32:58.698Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="재귀">
+<meta property="article:tag" content="하노이탑">
+<meta property="article:tag" content="recursion">
+<meta property="article:tag" content="recursive">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>하노이 탑 문제 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="하노이 탑 문제"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-03-08 17:11" pubdate>
+          2022년 3월 8일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          292 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">하노이 탑 문제</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>하노이 탑 문제를 재귀 알고리즘으로 해결합니다. <span id="more"></span></p>
+<h2 id="하노이-탑-문제">하노이 탑 문제</h2>
+<p>하노이 탑은 3개의 기둥에서 원판을 옮기는 과정을 찾는 문제이다. 아래의 글은 <a target="_blank" rel="noopener" href="https://www.acmicpc.net/problem/1914">백준의 하노이 탑 문제</a>의 설명을 가져온 것이다.</p>
+<blockquote>
+<p>세 개의 장대가 있고 첫 번째 장대에는 반경이 서로 다른 n개의 원판이 쌓여 있다. 각 원판은 반경이 큰 순서대로 쌓여있다. 이제 수도승들이 다음 규칙에 따라 첫 번째 장대에서 세 번째 장대로 옮기려 한다.</p>
+<ul>
+<li>한 번에 한 개의 원판만을 다른 탑으로 옮길 수 있다.</li>
+<li>쌓아 놓은 원판은 항상 위의 것이 아래의 것보다 작아야 한다.</li>
+<li>이 작업을 수행하는데 필요한 이동 횟수는 최소가 되는 이동 순서를 출력하는 프로그램을 작성하라.</li>
+</ul>
+</blockquote>
+<p>이제 문제를 분석해보자.</p>
+<h3 id="문제-분석">문제 분석</h3>
+<p>하노이 탑 문제에서는 기둥이 3개로 제한된다. 처음에는 C 원판을 3기둥으로 옮겨야 하는데 이를 위해서는 위에 있던 나머지 원판들을 모두 2기둥에 옮겨야 한다. 결국 원판을 목적지까지 옮기면 아래처럼 정리된다.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">A ║─  ║   ║   ║       ║   ║   ║   ║       ║   ║   ║   ║       ║   ║   ║   ║       ║   ║   ║   ║    <br>B ║── ║   ║   ║   -&gt;  ║── ║   ║   ║   -&gt;  ║   ║   ║   ║   -&gt;  ║   ║─  ║   ║   -&gt;  ║   ║─  ║   ║ <br>C ║───║   ║   ║       ║───║   ║─  ║       ║───║── ║─  ║       ║───║── ║   ║       ║   ║── ║───║<br>    1   2   3 <br></code></pre></td></tr></table></figure>
+<ul>
+<li>C원판은 B원판이 보관 기둥인 2에 먼저 도착한 후에 도착 기둥인 3으로 이동할 수 있다.</li>
+<li>B원판 위에 있는 A원판이 보관 기둥인 3에 도착한 후에 도착 기둥인 2로 이동할 수 있다.</li>
+<li>A원판은 B원판이 도착하고자 하는 2를 제외한 보관 기둥인 3으로 이동해야 한다.</li>
+<li>B원판은 도착 기둥인 2로 이동하며, B원판이 도착했으므로 A원판도 2로 이동한다.</li>
+<li>B원판이 보관 기둥에 이동한 후에 C원판은 3으로 이동한다.</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">A ║   ║   ║   ║       ║   ║   ║   ║       ║   ║   ║   ║<br>B ║   ║─  ║   ║   -&gt;  ║   ║   ║   ║   -&gt;  ║   ║   ║── ║<br>C ║   ║── ║───║       ║─  ║── ║───║       ║─  ║   ║───║<br>    1   2   3 <br></code></pre></td></tr></table></figure>
+<ul>
+<li>C원판이 도착했으므로 B원판은 보관 기둥 2에서 도착기둥 3으로 이동한다.</li>
+<li>B원판이 이동하기 위해서는 위에 있는 A원판이 보관 기둥인 1로 이동한다.</li>
+<li>B원판이 도착한다.</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">A ║   ║   ║   ║       ║   ║   ║─  ║<br>B ║   ║   ║── ║  -&gt;   ║   ║   ║── ║<br>C ║─  ║   ║───║       ║   ║   ║───║<br>    1   2   3<br></code></pre></td></tr></table></figure>
+<ul>
+<li>B원판이 도착했으므로 A원판도 도착 기둥인 3으로 이동한다.</li>
+<li>원판이 하나만 남았을 경우에는 보관이 필요 없이 바로 이동할 수 있다.</li>
+</ul>
+<p>이런 구조는 A원판을 제외한 원판마다 출발 -&gt; 경유, 경유 -&gt; 도착 형태의 동일 로직을 사용하고 있음을 보여준다. 또한 각 원판들이 모두 바로 위에 있는 원판의 이동 후에 움직일 수 있다는 규칙도 찾을 수 있다. 이를 로직으로 표현해보자.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">1. C(1 -&gt; 3) --- B(1 -&gt; 2) --- 이동(A(1 -&gt; 3))<br>2.          |             |   이동(B(1 -&gt; 2))<br>3.          |              --- 이동(A(3 -&gt; 2))<br>4.          |    이동(C(1 -&gt; 3))<br>5.           --- B(2 -&gt; 3) --- 이동(A(2 -&gt; 1))<br>6.                        |    이동(B(2 -&gt; 3))<br>7.                         --- 이동(A(1 -&gt; 3))<br></code></pre></td></tr></table></figure>
+<p>결론적으로 하노이 문제에서 핵심은 크게 3가지로 나눠볼 수 있다.</p>
+<ul>
+<li>위에 있는 원판을 보관 기둥으로 옯기자</li>
+<li>그 다음 도착 기둥으로 가자</li>
+<li>워에 있던 원판을 다시 가져오자.</li>
+</ul>
+<p>이제 위 로직을 코드로 작성해보자.</p>
+<h2 id="파이썬-코드">파이썬 코드</h2>
+<p>아래 함수는 원판의 개수와 출발 기둥, 도착 기둥을 인자 값으로 넣어주면 원판들의 이동 과정을 출력한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_func</span>(<span class="hljs-params">n, _<span class="hljs-keyword">from</span>, _to</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(_<span class="hljs-keyword">from</span>)+<span class="hljs-string">&quot; &quot;</span>+<span class="hljs-built_in">str</span>(_to))<br>    <span class="hljs-keyword">else</span>:<br>        hanoi_func(n-<span class="hljs-number">1</span>,_<span class="hljs-keyword">from</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(_<span class="hljs-keyword">from</span>)+<span class="hljs-string">&quot; &quot;</span>+<span class="hljs-built_in">str</span>(_to))<br>        hanoi_func(n-<span class="hljs-number">1</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to),_to)<br></code></pre></td></tr></table></figure>
+<p>원판이 1인 경우에는 위에 다른 원판이 없기 때문에 나만 옮겨지면 된다. 그래서 if문으로 예외를 두었다. 나머지의 경우 이전 원판(n-1)을 보관 기둥으로 옮겨주는 과정과 보관 기둥에서 도착 기둥으로 가는 과정을 재귀로 작성하였다. 보관 기둥을 구하는 식은 <code>6-출발기둥-도착기둥</code>인데 그 이유는 간단하다. 기둥이 3개로 한정되어 있고 1+2+3에서 각 기둥을 빼주면 남는 숫자가 보관 기둥이 되기 때문이다.</p>
+<p>위 코드는 이동 순서들을 모두 보여주기 때문에 이해하기는 쉽지만, 원판의 개수가 많아질수록 성능이 떨어질 것이다. 만약 이동 순서가 필요없다면 이동 횟수만 수학식으로 구할 수는 없을까?</p>
+<p>다행히도 있다. 위에서 찾았던 패턴을 바탕으로 일반항을 구할 수 있다. 어떤 원반의 도착할 때까지의 이동 횟수를 구하려면 다음의 과정이 필요하다.</p>
+<ul>
+<li><span class="math inline">\(a_{n-1}\)</span>: 위(n-1)에 있는 원반이 보관 기둥으로 이동하는 것</li>
+<li><span class="math inline">\(+1\)</span>: 해당 원반이 도착 기둥으로 이동하는 것</li>
+<li><span class="math inline">\(a_{n-1}\)</span>: 위(n-1)에 있는 원반이 도착 기둥으로 이동하는 것</li>
+</ul>
+<p>이를 정리하면 아래의 식이 도출된다.</p>
+<p><span class="math display">\[a_n = 2a_{n-1}+1\]</span></p>
+<p>위 수식을 정리해서 일반항을 구해보자.</p>
+<p><span class="math display">\[a_n+1 = 2(a_{n-1}+1) = 2^{n-1}(a_1+1)\]</span> <span class="math display">\[a_1 = 1 이므로\]</span> <span class="math display">\[a_n+1 = 2^{n}\]</span> <span class="math display">\[a_n = 2^{n}-1\]</span></p>
+<p>이를 파이썬 코드로 작성하면 아래와 같다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_num_func</span>(<span class="hljs-params">n</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>**n - <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/computerscience/" class="category-chain-item">ComputerScience</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/computerscience/algorithms/" class="category-chain-item">algorithms</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%9E%AC%EA%B7%80/" class="print-no-link">#재귀</a>
+      
+        <a href="/tags/%ED%95%98%EB%85%B8%EC%9D%B4%ED%83%91/" class="print-no-link">#하노이탑</a>
+      
+        <a href="/tags/recursion/" class="print-no-link">#recursion</a>
+      
+        <a href="/tags/recursive/" class="print-no-link">#recursive</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>하노이 탑 문제</div>
+      <div>https://dev-bearabbit.github.io/ko/Algorithms/Algorithms-2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2022년 3월 8일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Rust/rust-8/" title="Rust print 매크로 병목현상">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Rust print 매크로 병목현상</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Web/web-5/" title="Flask 웹 서버 구축하기">
+                        <span class="hidden-mobile">Flask 웹 서버 구축하기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

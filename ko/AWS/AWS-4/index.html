@@ -1,0 +1,805 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="터미널에서 코드만을 사용하여 AWS EC2 인스턴스를 생성하고 접속하는 과정을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EC2 인스턴스 생성하기">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/AWS/AWS-4/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="터미널에서 코드만을 사용하여 AWS EC2 인스턴스를 생성하고 접속하는 과정을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-09-21T12:10:49.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:33:19.560Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="cloud">
+<meta property="article:tag" content="클라우드">
+<meta property="article:tag" content="Amazon">
+<meta property="article:tag" content="아마존">
+<meta property="article:tag" content="터미널">
+<meta property="article:tag" content="boto3">
+<meta property="article:tag" content="S3">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>EC2 인스턴스 생성하기 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="EC2 인스턴스 생성하기"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-09-21 21:10" pubdate>
+          2020년 9월 21일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          313 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">EC2 인스턴스 생성하기</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>터미널에서 코드만을 사용하여 AWS EC2 인스턴스를 생성하고 접속하는 과정을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="aws-ec2">AWS EC2</h2>
+<p>EC2(Elastic Compute Cloud)는 가상 컴퓨터를 임대해주는 서비스이다. 만약 좋은 성능의 컴퓨터가 없는데 일정 기간동안 빅데이터를 다뤄야 하거나 무거운 딥러닝 모델을 학습시켜야 하는 상황에 부딪힌다면 막막하게 느껴질 것이다. 그런 상황에서 EC2를 사용하여 성능 좋은 컴퓨터를 빌릴 수 있다. 사실 '가상 컴퓨터'라는 말 때문에 물리적인 컴퓨터가 존재하지 않는건가 할 수 있겠지만, amazon 회사 건물에 있는 서버 일부를 우리에게 빌려주는 것이라 생각하면 된다.</p>
+<h2 id="인스턴스-생성하기">인스턴스 생성하기</h2>
+<p>인스턴스는 EC2에서 대여받는 가상 켬퓨터이다. EC2는 서비스 이름이라면 인스턴스는 그 서비스에서 제공해주는 제품인 셈이다. 인스턴스 유형은 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/ec2/instance-types/">해당 페이지</a>에서 확인할 수 있다. 보통 딥러닝 모델을 학습할 때는 GPU 인스턴스인 P나 G를 사용한다.</p>
+<p><strong>NOTE</strong> 만약 사용하려는 인스턴스의 시간 당 비용이 궁금하다면 <a target="_blank" rel="noopener" href="https://calculator.aws/#/">비용 계산기</a>에 들어가서 먼저 확인해볼 수 있다. 해당 프로젝트에서 사용하려는 인스턴스는 시간 당 0.7달러 정도가 청구된다고 보여준다.</p>
+<h3 id="키-페어-생성">1. 키 페어 생성</h3>
+<p>키 페어(key pairs)는 인스턴스 사용자의 정보를 암호화하고 해독하는 키와 값이다. 이는 EC2를 해당 키 페어를 가진 사용자만 SSH로 접속할 수 있도록 하여 다른 이가 사용할 수 없도록 해준다. EC2 인스턴스를 생성하기 위해서는 필수적으로 만들어야 한다. 아래의 코드를 입력하여 키 페어를 생성해주자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 create-key-pair --key-name <span class="hljs-string">&#x27;키 페어 이름&#x27;</span> --query <span class="hljs-string">&#x27;KeyMaterial&#x27;</span> --output text &gt; <span class="hljs-string">&#x27;키 페어 이름&#x27;</span>.pem<br></code></pre></td></tr></table></figure>
+<p>이후 AWS EC2 콘솔 페이지에서 키 페어가 생성되었는지 확인할 수 있으며, 해당 커맨드라인의 디렉토리에서 <code>키 페어 이름.pem</code> 를 찾을 수 있다. 만약 키 페어를 삭제하고 싶다면 아래의 코드를 입력하면 삭제된다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 delete-key-pair --key-name <span class="hljs-string">&#x27;키 페어 이름&#x27;</span><br></code></pre></td></tr></table></figure>
+<h3 id="보안-그룹-생성">2. 보안 그룹 생성</h3>
+<p>보안 그룹(Security Groups)이란 네트워크 트래픽(접근)을 모니터링하고 제어하는 가상 방화벽이며, 모든 EC2 인스턴스는 보안 그룹에 속해 있어야 한다. 이런 보안 그룹을 사용하는 이유는 해당 인스턴스에 요청하는 .보안 그룹의 세부적인 설정을 살펴보면 다음과 같다.</p>
+<ul>
+<li>보안 그룹 ID</li>
+<li>보안 그룹 이름</li>
+<li>VPC ID (가상 네트워크망 ID)</li>
+<li>소유자</li>
+<li>인바운드 규칙</li>
+<li>아웃바운드 규칙</li>
+</ul>
+<p><strong>NOTE</strong> 인바운드 규칙: 인스턴스로 들어오는 트래픽들을 제어한다. 보통 혼자 사용하는 가상 서버인 경우 SSH를 설정하여 키를 가진 사람들만 들어올 수 있게 하며, 만약 웹페이지를 호스팅하는 서버라면 HTTP와 같은 PC 사용자들만 들어올 수 있게 허용할 수도 있다. 아웃바운드 규칙: 인스턴스에서 다른 인스턴스로 나가는 트레픽을 제어한다. 보통 아웃바운드는 모두 허용으로 설정한다.</p>
+<p>이제 간단하게 커맨드라인에 아래의 코드를 입력하여 보안그룹을 생성해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 create-security-group --group-name <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span> --description <span class="hljs-string">&#x27;보안 그룹 설명&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드를 입력하면 보안 그룹 ID가 나타날 것이다. 이후 EC2 인스턴스를 생성할 때 필요하니 적어두거나 복사해두는 것이 좋다. 만약 예전에 설정했던 보안 그룹 이름은 기억이 나는데 ID를 잊어버렸다면 아래의 코드를 입력하여 해당 보안 그룹의 전반적인 정보들을 확인할 수 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 describe-security-groups --group-names <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>다음으로는 해당 인스턴스에 우리만 접속할 수 있도록 인바운드에 SSH를 설정해준다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 authorize-security-group-ingress --group-name <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span> --protocol tcp --port 22 --cidr <span class="hljs-string">&#x27;내 IP&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>위 코드에서 <code>tcp</code>는 연결된 컴퓨터의 데이터를 오류없이 전송할 수 있도록 해주는 개방형 프로토콜이며, <code>port</code>는 컴퓨터 프로그램이 가지는 고유한 번호이다 (SSH의 경우는 22번을 사용한다). 마지막으로 <code>cidr</code>은 '사이더'라는 IP 할당 방법이며, 우리는 해당 인스턴스를 본인만 사용할 것이기에 개인적으로 사용하는 IP를 설정해주면 된다. 이후 다시 그룹 정보를 확인하면 인바운드 규칙이 변경된 것을 확인할 수 있다. 만약 보안 그룹을 삭제하고 싶다면 아래의 코드를 입력하면 된다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 delete-security-group --group-name <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span><br></code></pre></td></tr></table></figure>
+<h3 id="인스턴스-생성">3. 인스턴스 생성</h3>
+<p>이제 인스턴스를 생성해보자. 커맨드라인에서 바로 인스턴스를 생성하기 위해서는 사용할 인스턴스의 AMI를 알아야 한다. <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/">AWS 사이트</a> 로그인한 후 콘솔에 들어가면 여러 종류의 이미지들을 살펴볼 수 있다. 우리는 프리티어가 사용할 수 있는 Linux기반의 인스턴스를 사용할 것이다. 해당 AMI와 인스턴스 타입은 다음과 같다.</p>
+<ul>
+<li>image-id : ami-064c81ce3a290fde1 (Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type (Free tier))</li>
+<li>instance-type: t2.micro</li>
+</ul>
+<p>이제 아래의 코드를 입력하여 EC2 인스턴스를 생성해보자.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 run-instances --image-id <span class="hljs-string">&#x27;인스턴스 이미지&#x27;</span> --count <span class="hljs-string">&#x27;인스턴스 수&#x27;</span> --instance-type <span class="hljs-string">&#x27;인스턴스 타입&#x27;</span> --key-name <span class="hljs-string">&#x27;키 페어 이름&#x27;</span> --security-groups <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>그럼 아래와 같이 생성된 인스턴스의 정보가 나타난다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">&#123;<br>    <span class="hljs-string">&quot;Groups&quot;</span>: [],<br>    <span class="hljs-string">&quot;Instances&quot;</span>: [<br>        &#123;<br>.<br>.<br>.        &#125;<br>    ],<br>    <span class="hljs-string">&quot;OwnerId&quot;</span>: <span class="hljs-string">&quot;---------&quot;</span>,<br>    <span class="hljs-string">&quot;ReservationId&quot;</span>: <span class="hljs-string">&quot;---------&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>현재 인스턴스가 생성되었는지 확인해보자. 아래의 코드를 입력하면 인스턴스 ID 목록을 확인할 수 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 describe-instances --filters <span class="hljs-string">&quot;Name=instance-type,Values=t2.micro&quot;</span> --query <span class="hljs-string">&quot;Reservations[].Instances[].InstanceId&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="인스턴스-종료">3. 인스턴스 종료</h3>
+<p>현재 우리가 만든 EC2 인스턴스가 있다. 주의할 점은 EC2 인스턴스가 작동되는 순간부터 요금책정이 시작된다. (다행히 우리가 사용하는 인스턴스는 프리 티어 전용이라서 요금이 청구되지는 않는다) 즉, 인스턴스를 사용하지 않을 때에는 꼭 종료해주어야 한다. 아래의 코드를 입력하여 생성했던 인스턴스를 종료해보자. 인스턴스 ID는 위 코드를 입력하여 확인할 수 있다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash">aws ec2 terminate-instances --instance-ids <span class="hljs-string">&#x27;인스턴스 ID&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>지금까지 AWS EC2 인스턴스를 생성하는 방법에 대해 알아보았다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/devops/" class="category-chain-item">DevOps</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/devops/aws/" class="category-chain-item">aws</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/aws/" class="print-no-link">#AWS</a>
+      
+        <a href="/tags/cloud/" class="print-no-link">#cloud</a>
+      
+        <a href="/tags/%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C/" class="print-no-link">#클라우드</a>
+      
+        <a href="/tags/amazon/" class="print-no-link">#Amazon</a>
+      
+        <a href="/tags/%EC%95%84%EB%A7%88%EC%A1%B4/" class="print-no-link">#아마존</a>
+      
+        <a href="/tags/%ED%84%B0%EB%AF%B8%EB%84%90/" class="print-no-link">#터미널</a>
+      
+        <a href="/tags/boto3/" class="print-no-link">#boto3</a>
+      
+        <a href="/tags/s3/" class="print-no-link">#S3</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>EC2 인스턴스 생성하기</div>
+      <div>https://dev-bearabbit.github.io/ko/AWS/AWS-4/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 9월 21일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Containers/docker-1/" title="모델 훈련 Docker image 생성하기">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">모델 훈련 Docker image 생성하기</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/AWS/AWS-3/" title="S3에 데이터 업로드하기">
+                        <span class="hidden-mobile">S3에 데이터 업로드하기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

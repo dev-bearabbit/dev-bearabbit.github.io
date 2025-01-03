@@ -1,0 +1,805 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="러스트 소유권 참조와 대여 방식에 대해 공부한 내용을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="소유권 참조와 대여">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Rust/rust-1/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="러스트 소유권 참조와 대여 방식에 대해 공부한 내용을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2021-09-03T15:11:07.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:37:27.879Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="Rust">
+<meta property="article:tag" content="ownership">
+<meta property="article:tag" content="memory">
+<meta property="article:tag" content="slice">
+<meta property="article:tag" content="borrowing">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>소유권 참조와 대여 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="소유권 참조와 대여"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-09-04 00:11" pubdate>
+          2021년 9월 4일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          559 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">소유권 참조와 대여</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>러스트 소유권 참조와 대여 방식에 대해 공부한 내용을 정리합니다. <span id="more"></span></p>
+<hr />
+<p><a href="https://dev-bearabbit.github.io/2021/08/30/Rust/rust-0/#more">이전 글</a>에서는 러스트 소유권 원리에 대해 살펴보았다. 힙 메모리에 사용된 변수의 경우, 복제(clone)라는 방식을 통해서만 특정 변수를 복사할 수 있었다. 하지만 이 방식은 경우에 따라 효율적이지 못하다. 만약 특정 변수값을 전달하기만 하면 되는 경우에는 특히 더 비효율적이다. 그렇기에 러스트는 참조와 대여라는 방법을 제공한다. 즉, 도서관에서 책 빌려주듯이 러스트도 특정 변수를 범위 내의 다른 함수에 빌려줄 수 있는 것이다. 물론 해당 변수의 소유권은 그대로 가진 채 말이다.</p>
+<h2 id="변수-참조">변수 참조</h2>
+<p>참조(Reference)는 변수의 포인터, 길이, 용량 등의 값을 저장하고 있는 그 값들을 가져오는 방식이다. 아래의 코드를 보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">len</span> = <span class="hljs-title function_ invoke__">check_length</span>(&amp;s);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#x27;&#123;&#125;&#x27;의 길이는 &#123;&#125;입니다.&quot;</span>,s, len)<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">check_length</span>(s: &amp;<span class="hljs-type">String</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> &#123;<br>    s.<span class="hljs-title function_ invoke__">len</span>()<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드에서는 <code>check_length()</code>가 <code>s</code>를 참조하여 길이 값을 리턴한다. 이는 <code>main()</code>에서 정의된 변수 <code>s</code>의 소유권을 가져오지 않으며 해당 변수의 정보를 사용할 수 있다는 것을 의미한다. 변수를 참조할 때는 변수이름 앞에 <code>&amp;(Ampersand)</code>을 붙임으로써 참조변수라는 것을 나타낸다. 즉 참조는 'read only' 정도의 권한을 제공받는 것이라고 볼 수 있다. 읽을 수 있기에 위 코드처럼 길이는 리턴하는 것도 가능하며, 또한 아래 코드처럼 해당 변수를 그대로 프린트 할 수도 있다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-title function_ invoke__">print_test</span>(&amp;s);<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_test</span>(s: &amp;<span class="hljs-type">String</span>)&#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>,s);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드는 'hello'라는 결과값을 도출한다. 그렇다면 'read only' 권한 상태에서 불가능한 것은 무엇인가? 바로 '수정(edit)'이다. 만약 참조받은 변수를 일부 수정하여 사용하고 싶다면 복제밖에 방법이 없는걸까?</p>
+<h2 id="가변-참조">가변 참조</h2>
+<p>물론 몇가지 값만 추가한다면 참조받은 변수를 변경할 수 있다. 우선 아래의 코드를 살펴보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-title function_ invoke__">add_word</span>(&amp;<span class="hljs-keyword">mut</span> s);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, s);<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_word</span>(s: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">String</span>)&#123;<br>    s.<span class="hljs-title function_ invoke__">push_str</span>(<span class="hljs-string">&quot; world!&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드의 결과는 어떻게 나올까? 과연 프린트되는 단어는 'hello'일까, 아니면 'hello world!' 일까? 정답은 'hello world!' 이다. 그 이유는 변수를 생성할 때 가변 참조가 가능하도록 생성했기 때문이다. <code>가변 참조</code>란 소유권 없이 참조만으로도 변수의 값을 변경할 수 있는 방법이다. 가변 참조 방법을 이용하면 참조받은 변수를 수정하여 리턴할 수 있다. 하지만 러스트는 데이터 경합(Data race)을 방지하기 위하여 가변 참조에 몇 가지 제한을 둔다.</p>
+<h3 id="데이터-경합이란">데이터 경합이란</h3>
+<p>데이터 경합(Data race)은 병렬 프로그래밍을 할 때 범하기 쉬운 오류로, 멀티 스레드가 동일한 데이터를 이용하는 도중에 다른 스레드가 업데이트 하는 경우를 말한다. 즉, 멀티 스레드로 코드를 작동시키는 과정에서 각각의 스레드가 메모리에 올라간 동일한 변수를 가져다가 사용하고, 이를 변경하는 것이다. 예시로 이해해보자.</p>
+<ul>
+<li>변수 'num'을 10으로 저장한다.</li>
+<li>'add()'는 변수에 1을 더해서 리턴한다. 'add(num)'을 멀티 스레드로 실행시킨다.</li>
+<li>그러면 두 스레드 모두 'num' 값인 10을 받아서 11로 리턴한다.</li>
+<li>즉, 병렬로 처리되는 12를 기대했지만 사실상 두 스레드 모두 11을 리턴한다.</li>
+</ul>
+<p>데이터 경합은 왜 발생하는 것일까? 데이터 경합이 발생하는 조건은 다음과 같다.</p>
+<ul>
+<li>두 개 이상의 포인터가 동시에 같은 데이터에 접근</li>
+<li>그 중 최소 하나 이상의 포인터가 데이터를 쓰기로 사용</li>
+<li>데이터 동시 접근에 대한 동기화 메커니즘이 없음</li>
+</ul>
+<p>러스트는 해당 문제를 컴파일러단에서 미리 찾아 개발자에게 알려준다.</p>
+<h3 id="가변-참조-조건-1-가변-변수로-생성">가변 참조 조건 1: 가변 변수로 생성</h3>
+<p>위 코드를 보면 변수 <code>s</code>는 정의될 때 <code>mut</code>이라는 단어가 앞에 붙음으로서 가변 참조가 가능한 변수로 생성되었다. 따라서 <code>add_word()</code>가 참조만으로도 'world!'를 추가할 수 있던 것이다. 만약 변경하려는 변수 <code>s</code>를 가변 변수로 생성하지 않는다면 어떻게 될까?</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-title function_ invoke__">add_word</span>(&amp;<span class="hljs-keyword">mut</span> s);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, s);<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_word</span>(s: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">String</span>)&#123;<br>    s.<span class="hljs-title function_ invoke__">push_str</span>(<span class="hljs-string">&quot; world!&quot;</span>);<br>&#125;<br><br>error[E0596]: cannot borrow `s` <span class="hljs-keyword">as</span> mutable, <span class="hljs-keyword">as</span> it is not declared <span class="hljs-keyword">as</span> mutable<br> -<span class="hljs-punctuation">-&gt;</span> test.rs:<span class="hljs-number">3</span>:<span class="hljs-number">14</span><br>  |<br><span class="hljs-number">2</span> |     <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>  |         - help: consider changing this to be mutable: `<span class="hljs-keyword">mut</span> s`<br><span class="hljs-number">3</span> |     <span class="hljs-title function_ invoke__">add_word</span>(&amp;<span class="hljs-keyword">mut</span> s);<br>  |              ^^^^^^ cannot borrow <span class="hljs-keyword">as</span> mutable<br><br>error: aborting due to previous error<br><br>For more information about this error, <span class="hljs-keyword">try</span> `rustc --explain E0596`.<br></code></pre></td></tr></table></figure>
+<p>컴파일러가 가변 참조가 불가능하다고 에러를 리턴한다.</p>
+<h3 id="가변-참조-조건-2-소유권-범위에-가변-참조는-1개만-존재">가변 참조 조건 2: 소유권 범위에 가변 참조는 1개만 존재</h3>
+<p>가변 참조는 실제 데이터의 값을 변경할 수 있다. 그렇기에 2개 이상의 갸변 변수가 발생하면 당연히 데이터 경합의 문제가 발생한다. 이를 방지하기 위해 러스트는 컴파일러단에서 가변 변수 갯수를 제한한다. 만약 가변 변수 2개를 생성하면 어떻게 될까? 아래의 코드에서 확인해보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&#123;&#125;&quot;</span>,s1,s2);<br>&#125;<br>error[E0499]: cannot borrow `s` <span class="hljs-keyword">as</span> mutable more than once at a time<br> -<span class="hljs-punctuation">-&gt;</span> test.rs:<span class="hljs-number">4</span>:<span class="hljs-number">14</span><br>  |<br><span class="hljs-number">3</span> |     <span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>  |              ------ first mutable borrow occurs here<br><span class="hljs-number">4</span> |     <span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>  |              ^^^^^^ second mutable borrow occurs here<br><span class="hljs-number">5</span> |     <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&#123;&#125;&quot;</span>,s1,s2);<br>  |                     -- first borrow later used here<br><br>error: aborting due to previous error<br></code></pre></td></tr></table></figure>
+<p>위 코드는 가변 변수 <code>s1</code>, <code>s2</code>를 생성한다. 러스트는 컴파일 단에서 에러를 리턴한다. 그렇다면 만약 가변 변수의 소유 범위가 다르다면 어떻게 될까?</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>    <span class="hljs-title function_ invoke__">add_word</span>(s1);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>,s1)<br>    &#125;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>,s2)<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_word</span>(s: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">String</span>)&#123;<br>    s.<span class="hljs-title function_ invoke__">push_str</span>(<span class="hljs-string">&quot; world!&quot;</span>);<br>&#125;<br>hello world!<br>hello world!<br></code></pre></td></tr></table></figure>
+<p>위 코드는 에러 없이 컴파일이 되며, 결과값으로 "hello world!"가 2번 프린트 된다. 그 이유는 변수 <code>s1</code>은 소유 범위인 <code>&#123;&#125;</code>를 벗어나면서 메모리 할당이 해제되고 실제 데이터에 어떤 포인터도 없는 상태에서 변수 <code>s2</code>가 다시 가변 변수로 생성되기 때문이다.</p>
+<h3 id="가변-참조-조건-3-불변-참조와-가변-참조는-동시-사용-불가">가변 참조 조건 3: 불변 참조와 가변 참조는 동시 사용 불가</h3>
+<p>만약 불변 참조와 가변 참조를 동시에 진행하면 어떻게 될까? 아래의 코드를 작동시켜 확인해보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = &amp;s;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&#123;&#125;&quot;</span>,s1,s2);<br>&#125;<br>error[E0502]: cannot borrow `s` <span class="hljs-keyword">as</span> mutable because it is also borrowed <span class="hljs-keyword">as</span> immutable<br> -<span class="hljs-punctuation">-&gt;</span> test.rs:<span class="hljs-number">4</span>:<span class="hljs-number">14</span><br>  |<br><span class="hljs-number">3</span> |     <span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = &amp;s;<br>  |              -- immutable borrow occurs here<br><span class="hljs-number">4</span> |     <span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = &amp;<span class="hljs-keyword">mut</span> s;<br>  |              ^^^^^^ mutable borrow occurs here<br><span class="hljs-number">5</span> |     <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&#123;&#125;&quot;</span>,s1,s2);<br>  |                     -- immutable borrow later used here<br><br>error: aborting due to previous error<br></code></pre></td></tr></table></figure>
+<p>결과는 당연히 되지 않는다. 왜 불변 참조와 가변 참조는 동시에 진행되지 않을까? 바로 윗 글에서 답안을 찾을 수 있다. 바로 데이터 경합의 문제가 발생하기 때문이다. 불변 참조와 가변 참조가 동시에 한 데이터를 바라보고 있기에 2개 이상의 포인터가 존재하는 상황에서 하나의 포인터(가변 참조)는 쓰기 권한도 가지고 있다. 따라서 이 또한 러스트가 컴파일 단에서 에러를 일으킨다.</p>
+<h2 id="죽은-참조">죽은 참조</h2>
+<p>죽은 참조(dangling pointer)란 이미 메모리에서 해제된 데이터를 참조하는 포인터를 말한다. 아래 코드를 통해 좀 더 자세히 알아보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">dangling</span> = <span class="hljs-title function_ invoke__">dangle</span>();<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">dangle</span>() <span class="hljs-punctuation">-&gt;</span> &amp;<span class="hljs-type">String</span> &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span>  = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    &amp;s<br>&#125;<br><br>error[E0106]: missing lifetime specifier<br> -<span class="hljs-punctuation">-&gt;</span> test.rs:<span class="hljs-number">4</span>:<span class="hljs-number">16</span><br>  |<br><span class="hljs-number">4</span> | <span class="hljs-keyword">fn</span> <span class="hljs-title function_">dangle</span>() <span class="hljs-punctuation">-&gt;</span> &amp;<span class="hljs-type">String</span> &#123;<br>  |                ^ expected named lifetime parameter<br>  |<br>  = help: this function<span class="hljs-symbol">&#x27;s</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">contains</span> a borrowed value, but there is no value <span class="hljs-keyword">for</span> <span class="hljs-title class_">it</span> to be borrowed from<br>help: consider using the `<span class="hljs-symbol">&#x27;static</span>` lifetime<br></code></pre></td></tr></table></figure>
+<p>위 코드는 에러를 일으킨다. 그 이유는 <code>dangle()</code> 에서 생성된 변수 <code>s</code>는 함수가 종료되는 순간 소유 범위를 벗어났기에 메모리에서 해제되기 때문이다. 즉, 변수 <code>s</code> 데이터는 이미 존재하지 않지만 변수 <code>s</code>를 참조하는 포인터가 생성된다. 즉 죽은 참조가 발생하는 것이다. 러스트는 컴파일 단에서 이를 확인하고 에러로 반환해준다. 만약 위 코드를 죽은 참조없이 사용하려면 어떻게 해야 할까?</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">dangling</span> = <span class="hljs-title function_ invoke__">dangle</span>();<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">dangle</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">String</span> &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span>  = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    s<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드는 문제를 일으키지 않는다. <code>dangle()</code> 에서 생성된 변수 <code>s</code>가 변수 <code>dangling</code>로 이동하면서 메모리 할당이 해제되지 않기 때문이다.</p>
+<h2 id="참조-사용-시-주의할-점">참조 사용 시 주의할 점</h2>
+<p>이번 글에서는 러스트에서 참조를 사용하는 방법들에 대해 알아보았다. 위 내용들을 바탕으로 참조를 사용할 때 주의해야 할 점들을 정리해보자.</p>
+<ul>
+<li>불변 참조는 여러 개가 가능하지만 가변 참조는 하나만 가능하다.</li>
+<li>불변 참조와 가변 참조는 동시에 사용될 수 없다.</li>
+<li>가변 참조는 소유 범위 내에서 1개만 사용할 수 있다.</li>
+<li>참조는 항상 유효해야 한다.</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/rust/" class="category-chain-item">rust</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rust/" class="print-no-link">#Rust</a>
+      
+        <a href="/tags/ownership/" class="print-no-link">#ownership</a>
+      
+        <a href="/tags/memory/" class="print-no-link">#memory</a>
+      
+        <a href="/tags/slice/" class="print-no-link">#slice</a>
+      
+        <a href="/tags/borrowing/" class="print-no-link">#borrowing</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>소유권 참조와 대여</div>
+      <div>https://dev-bearabbit.github.io/ko/Rust/rust-1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2021년 9월 4일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Certificate/sqld-0/" title="[SQLD] 데이터 모델링의 이해">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[SQLD] 데이터 모델링의 이해</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/AboutHexo/about-hexo-3/" title="움직이는 배경 설정하기">
+                        <span class="hidden-mobile">움직이는 배경 설정하기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

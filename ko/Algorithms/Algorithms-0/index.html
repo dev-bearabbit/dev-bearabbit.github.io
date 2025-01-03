@@ -1,0 +1,798 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 글은 Sanjoy Dasgupta, Christos Papadimitriou, Umesh 의 저서인 Algorithms를 참고하여 정리한 글임을 알려드립니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Big-O 표기법">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Algorithms/Algorithms-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 글은 Sanjoy Dasgupta, Christos Papadimitriou, Umesh 의 저서인 Algorithms를 참고하여 정리한 글임을 알려드립니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/23.png">
+<meta property="article:published_time" content="2020-03-18T21:20:02.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:32:53.887Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="Algorithms">
+<meta property="article:tag" content="알고리즘">
+<meta property="article:tag" content="빅오 표기법">
+<meta property="article:tag" content="피보나치">
+<meta property="article:tag" content="기초">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/23.png">
+  
+  
+  
+  <title>Big-O 표기법 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="Big-O 표기법"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-19 06:20" pubdate>
+          2020년 3월 19일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          307 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Big-O 표기법</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>글을 시작하기에 앞서 해당 글은 Sanjoy Dasgupta, Christos Papadimitriou, Umesh 의 저서인 Algorithms를 참고하여 정리한 글임을 알려드립니다. <span id="more"></span></p>
+<h2 id="피보나치-입문">피보나치 입문</h2>
+<p>피보나치는 유명한 수열로 가장 많이 알려져있다. 수열 내에서 각 숫자들은 이전 두 숫자의 합이라는 것이 피보나치 수열의 원리이다. 피보나치수 <span class="math inline">\(F_n\)</span>은 다음과 같다.</p>
+<p><span class="math display">\[
+fib(n) =
+ \begin{cases}
+0 &amp; \text{if n=0 \]</span>}\ 1 &amp; \ fib(n-1)+fib(n-2) &amp; \ \end{cases} $$</p>
+<h3 id="지수적-알고리즘">지수적 알고리즘</h3>
+<p>피보나치 수열은 <span class="math inline">\(2^n\)</span>과 거의 같은 속도로 증가한다. 일반적으로 <span class="math inline">\(F_n\)</span>≈<span class="math inline">\(2^{0.694n}\)</span> 이다. 따라서 피보나치 함수 fib(n)의 수행속도는 <span class="math inline">\(2^{0.694n}\)</span>인 <span class="math inline">\((1.6)^n\)</span>에 비례한다. 즉, <span class="math inline">\(F_n+1\)</span>을 계산하는 것은 <span class="math inline">\(F_n\)</span>을 계산하는 시간의 1.6배가 더 걸린다는 것이다.</p>
+<p>지수함수를 기반으로 한 피보나치 수열을 구하는 공식은 <span class="math inline">\(n\)</span>에서 <span class="math inline">\(0\)</span>이 될 때까지 스스로를 반복해야 하기 때문에 <span class="math inline">\(n\)</span>이 크면 클수록 엄청나게 많은 시간이 소요된다. 그렇다면 좀 더 빠르게 만들 수는 없을까? 피보나치에서 나온 값들을 배열에 저장한다면, 더 빠르게 작동할 것이다.</p>
+<h3 id="다항-시간-알고리즘">다항 시간 알고리즘</h3>
+<p>다항함수는 지수함수보다 훨씬 빠르게 작동한다. 따라서 다항함수를 기반으로 작성된 코드가 훨씬 효율적이다. 코드는 먼저 <span class="math inline">\(0\)</span>부터 <span class="math inline">\(n\)</span>까지의 배열을 만든 후, 해당 배열의 인수를 다항식인 <span class="math inline">\(f(X)=f(x-2)+f(x-1)\)</span> 넣는 프로세스로 진행된다. 물론 <span class="math inline">\(f(0)\)</span>과 <span class="math inline">\(f(1)\)</span>은 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span>로 값을 따로 지정한다. 이 방식은 지수함수를 기반으로 작성했을 때보다 훨씬 빠르고 효율적으로 작동한다.</p>
+<h3 id="좀-더-정확한-분석">좀 더 정확한 분석</h3>
+<p>위의 지수적 알고리즘과 다항 시간 알고리즘을 좀 더 정확하게 알아보고자 한다. 뒤의 1장에서 배우겠지만, <span class="math inline">\(n\)</span>비트의 두 숫자를 더하는데 걸리는 시간은 <span class="math inline">\(n\)</span>에 비례한다. 따라서 지수적 알고리즘은 <span class="math inline">\(F_n\)</span>을 <span class="math inline">\(n\)</span>의 수만큼 반복하여 더했기 때문에 연산 개수는 <span class="math inline">\(n*F_n\)</span>이라고 할 수 있다. 또한 다항 시간 알고리즘의 연산 개수는 <span class="math inline">\(n\)</span>의 개수에 따른 결과값들을 더하기 때문에 <span class="math inline">\(n^2\)</span>에 비례한다. 정확하게 분석해도 다항시간 알고리즘이 훨씬 빠르다.</p>
+<h2 id="빅오-표기법-big-o-notation">빅오 표기법 (big-O notation)</h2>
+<p>알고리즘의 효율성은 데이터 개수인 <span class="math inline">\(n\)</span>에 따라 연산되는 횟수를 의미하며, 크게 '시간 복잡도(시간 효율성)'와 '공간 복잡도(공간 효율성)'로 나뉜다. 이런 알고리즘의 효율성을 나타내는 방법으로는 빅오(Big-O), 빅오메가(big-Ω), 빅세타(big-Θ) 표기법이 있다.</p>
+<ul>
+<li>빅오(Big-O)표기법: 상한선 기준 (≤)</li>
+<li>빅오메가(big-Ω): 하한선 기준 (≥)</li>
+<li>빅세타(big-Θ): 상한선과 하한선 사이를 기준 (≤ ≤)</li>
+</ul>
+<p>알고리즘 효율성은 그래프가 위로 향할수록(값이 클수록) 비효율적이라는 뜻이다. 빅오 표기법은 상한선을 기준으로 표기하기 때문에 알고리즘의 최악의 효율정도를 제시할 수 있어 주로 사용된다.</p>
+<p>하지만 상한선이 꼭 해당 알고리즘의 최악의 효율성과 동일한 것은 아니다. 만약 최악의 효율성은 <span class="math inline">\(n\)</span>값이 <span class="math inline">\(1000\)</span>일 때 나타난다고 가정하자. 하지만 알고리즘은 찾고자 하는 값을 5번만에도 찿을 수 있다. 따라서 최악의 효율성이 항상 그 알고리즘의 효율성을 대변하지는 않는다.</p>
+<h3 id="빅오-표기법의-수학적-정의">빅오 표기법의 수학적 정의</h3>
+<p>빅오 표기법의 수학적 정의는 다음과 같다.</p>
+<p>"모든 <span class="math inline">\(n≥n_0≥0\)</span> 에 대하여 <span class="math inline">\(0≤f(n)≤c*g(n)\)</span> 인 양수 <span class="math inline">\(c\)</span>와 <span class="math inline">\(n_0\)</span>가 존재하면 <span class="math inline">\(f(n)=O(g(n))\)</span>이다."</p>
+<p>예를 통해 개념을 정리하자. 내가 만든 알고리즘의 시간 효율성을 나타내는 함수 <span class="math inline">\(f(n)\)</span>이고 <span class="math inline">\(n\)</span>과 상수 <span class="math inline">\(c\)</span>을 아래의 방정식과 같다고 가정한다.</p>
+<p><span class="math inline">\(f(n)=n^2+5n+8\)</span> <span class="math inline">\(g(n)=n^2+4\)</span></p>
+<p>위의 방정식은 <span class="math inline">\(0≤f(n)≤c*g(n)\)</span>을 만족하는 상수 <span class="math inline">\(c\)</span>가 존재한다. 또한 <span class="math inline">\(n_0\)</span>은 <span class="math inline">\(f(n)\)</span>와 <span class="math inline">\(g(n)\)</span>가 같은 값일 때를 찾으면 되는데, 예시에서는 존재한다. 여기서 같은 값이란 그래프의 비교가 시작되는 지점이다. 상수 <span class="math inline">\(c\)</span>와 <span class="math inline">\(n_0\)</span>를 찾았다면 빅오 표기법으로 작성할 수 있다.</p>
+<h3 id="빅오-표기법의-특징">빅오 표기법의 특징</h3>
+<p>빅오 표기법은 몇 가지의 특징을 가지고 있다.</p>
+<ul>
+<li>상수항을 무시한다. 빅오 표기법에서는 데이터 입력값인 <span class="math inline">\(n\)</span>이 충분히 크다고 가정하며, 알고리즘의 효율성 또한 <span class="math inline">\(n\)</span>값에 좌우되기 때문에 상수항처럼 사소한 부분은 무시한다.</li>
+</ul>
+<p><span class="math inline">\(O(3n^2)\)</span> -&gt; <span class="math inline">\(O(n^2)\)</span></p>
+<ul>
+<li>영향력이 크지 않은 항도 무시한다. 빅오 표기법에서는 가장 영향력이 큰 항을 제외한 나머지는 큰 영향력이 없다. 따라서 제외하여 판단한다.</li>
+</ul>
+<p><span class="math inline">\(O(3n^2+5n+15)\)</span> -&gt; <span class="math inline">\(O(n^2)\)</span></p>
+<p>아래의 그래프는 각 함수마다의 성능을 보여준다.</p>
+<figure>
+<img src="/images/23.png" srcset="/img/loading.gif" lazyload alt="big-O notation" /><figcaption aria-hidden="true">big-O notation</figcaption>
+</figure>
+<p>그래프에 나와있는 시간 효율성을 정리하면 다음과 같다.</p>
+<p><span class="math inline">\(O(1) &lt; O(log n) &lt; O(n) &lt; O(nlog n) &lt; O(n^2) &lt; O(2^n)\)</span></p>
+<p>상수함수 &lt; 로그함수 &lt; 선형함수 &lt; 다항함수 &lt; 지수함수</p>
+<p>위의 순서를 보면, 상수함수가 가장 작고 지수함수가 가장 크다. 즉 상수함수는 데이터 수가 많아도 빠르게 작동하는 알고리즘이며, 지수함수는 데이터 수가 많아질수록 급격하게 느려지는 알고리즘이라는 뜻이다. 시간 효율성 관점에서는 상수함수가 더욱 우월하다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/computerscience/" class="category-chain-item">ComputerScience</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/computerscience/algorithms/" class="category-chain-item">algorithms</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/algorithms/" class="print-no-link">#Algorithms</a>
+      
+        <a href="/tags/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" class="print-no-link">#알고리즘</a>
+      
+        <a href="/tags/%EB%B9%85%EC%98%A4-%ED%91%9C%EA%B8%B0%EB%B2%95/" class="print-no-link">#빅오 표기법</a>
+      
+        <a href="/tags/%ED%94%BC%EB%B3%B4%EB%82%98%EC%B9%98/" class="print-no-link">#피보나치</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88/" class="print-no-link">#기초</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Big-O 표기법</div>
+      <div>https://dev-bearabbit.github.io/ko/Algorithms/Algorithms-0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 19일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-18/" title="18. 기타 문법들">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">18. 기타 문법들</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-17/" title="17. 서브타이핑">
+                        <span class="hidden-mobile">17. 서브타이핑</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

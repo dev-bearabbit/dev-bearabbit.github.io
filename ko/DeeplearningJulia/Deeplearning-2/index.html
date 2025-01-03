@@ -1,0 +1,844 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2. 활성화 함수">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-2/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/33.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/32.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/34.png">
+<meta property="article:published_time" content="2020-03-28T19:53:05.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:34:24.941Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="ReLU">
+<meta property="article:tag" content="렐루">
+<meta property="article:tag" content="시그모이드">
+<meta property="article:tag" content="sigmoid">
+<meta property="article:tag" content="softmax">
+<meta property="article:tag" content="소프트맥스">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/33.png">
+  
+  
+  
+  <title>2. 활성화 함수 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="2. 활성화 함수"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-29 04:53" pubdate>
+          2020년 3월 29일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          382 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2. 활성화 함수</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<h2 id="활성화-함수">활성화 함수</h2>
+<p>활성화 함수란 신경망 노드에 위치해 있는 함수로서 입력값들을 출력 신호의 여부로 변환해주는 함수이다. 보통 은닉층에서 사용하는 활성화 함수와 출력층에서 사용하는 활성화 함수로 나눠져 있으며, <span class="math inline">\(h(x)\)</span>로 표기한다.</p>
+<h3 id="은닉층에서-사용하는-활성화-함수">은닉층에서 사용하는 활성화 함수</h3>
+<p>은닉층에서 사용되는 기본적인 활성화 함수로는 3가지 정도가 있다.</p>
+<h4 id="계단-함수">계단 함수</h4>
+<p>계단 함수는 입력값이 <span class="math inline">\(0\)</span>이하이면 <span class="math inline">\(0\)</span>, <span class="math inline">\(0\)</span>을 초과하면 <span class="math inline">\(1\)</span>로 변환해주는 함수이다. 수식으로는 다음과 같다.</p>
+<p><span class="math display">\[
+h(x) =
+ \begin{cases}
+0 &amp; \text{(x≤0) \]</span>}\ 1 &amp; \ \end{cases} $$</p>
+<p>아래는 위 수식의 코드 구현이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> step_function(x)<br>    <span class="hljs-keyword">if</span> x&lt;=<span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이를 그래프로 나타내보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; <span class="hljs-keyword">using</span> Plots<br>Julia&gt; x = range(-<span class="hljs-number">5.0</span>, <span class="hljs-number">5.0</span>, step = <span class="hljs-number">0.1</span>)<br>Julia&gt; y = step_function.(x)<br>Julia&gt; plot(x,y)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="/images/33.png" srcset="/img/loading.gif" lazyload alt="계단 함수" /><figcaption aria-hidden="true">계단 함수</figcaption>
+</figure>
+<p>그래프에서 보면 <span class="math inline">\(0\)</span>을 기준으로 <span class="math inline">\(0\)</span> 또는 <span class="math inline">\(1\)</span>을 반환하는 것을 확인할 수 있다. 위의 함수는 연속적인 값이 아닌 이진수를 결과로 반환한다.</p>
+<p><strong>Tip</strong> 위의 코드를 보면 <code>step_function.(x)</code>에 도트 연산자를 확인할 수 있다. 도트 연산자는 배열 단위의 입력 값에 함수나 연산자를 각 요소별로 적용해준다.</p>
+<h4 id="시그모이드-함수">시그모이드 함수</h4>
+<p>시그모이드 함수는 입력값들을 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span>사이의 수로 변환해주는 함수이다. 수식은 아래와 같다.</p>
+<p><span class="math display">\[h(x)=\frac{1}{1+e^{-x}}\]</span></p>
+<p>위의 식을 코드로 구현해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> sigmoid(x)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / (<span class="hljs-number">1</span>+exp(-x))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>그래프를 그려보면 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span> 사이의 소수들로 구성된 것을 볼 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; <span class="hljs-keyword">using</span> Plots<br>Julia&gt; x = range(-<span class="hljs-number">5.0</span>, <span class="hljs-number">5.0</span>, step = <span class="hljs-number">0.1</span>)<br>Julia&gt; y = sigmoid.(x)<br>Julia&gt; plot(x,y)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="/images/32.png" srcset="/img/loading.gif" lazyload alt="시그모이드 함수" /><figcaption aria-hidden="true">시그모이드 함수</figcaption>
+</figure>
+<p>시그모이드 함수는 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span>의 사이에서 연속적인 값을 반환하며, <span class="math inline">\(0\)</span>을 중간값인 <span class="math inline">\(0.5\)</span>로 설정한다. 따라서 계단 함수와 달리 각 신호의 강도를 표현할 수 있다.</p>
+<h4 id="relu-함수">ReLU 함수</h4>
+<p>ReLU 함수는 음수를 모두 <span class="math inline">\(0\)</span>으로 바꾸고 양수는 그대로 출력하는 함수이다. 수식은 다음과 같다.</p>
+<p><span class="math display">\[
+h(x) =
+ \begin{cases}
+0 &amp; \text{(x≤0)\]</span>}\ x &amp; \ \end{cases} $$</p>
+<p>위 수식을 코드로 구현해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> relu(x)<br>    <span class="hljs-keyword">return</span> max(<span class="hljs-number">0</span>,x)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<figure>
+<img src="/images/34.png" srcset="/img/loading.gif" lazyload alt="ReLU 함수" /><figcaption aria-hidden="true">ReLU 함수</figcaption>
+</figure>
+<p>위의 그래프를 통해 음수는 모두 <span class="math inline">\(0\)</span>으로 처리되며, 양수는 값이 그대로 출력되는 것을 확인할 수 있다.</p>
+<h4 id="세-가지-함수-비교">세 가지 함수 비교</h4>
+<p>지금까지 은닉층에서 사용하는 활성화 함수들을 살펴보았다. 이제는 배열에 직접 적용해봄으로서 각 함수들을 비교해보고자 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; x = [-<span class="hljs-number">1</span> -<span class="hljs-number">2</span> -<span class="hljs-number">3</span>;<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">7</span>]<br></code></pre></td></tr></table></figure>
+<p>위의 코드는 예시로 적용해 볼 <span class="math inline">\(2\times3\)</span> 배열이다. 계단 함수와 시그모이드 함수, ReLU 함수 순서로 적용해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; step_function.(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">0</span><br> <span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>계단 함수는 음수와 <span class="math inline">\(0\)</span>은 모두 '<span class="math inline">\(0\)</span>'으로 바꾸고 양수들을 '<span class="math inline">\(1\)</span>'로 출력하였다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; sigmoid.(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0.268941</span>  <span class="hljs-number">0.119203</span>  <span class="hljs-number">0.0474259</span><br> <span class="hljs-number">0.5</span>       <span class="hljs-number">0.952574</span>  <span class="hljs-number">0.999089</span><br></code></pre></td></tr></table></figure>
+<p>시그모이드 함수는 각 배열 요소들을 <span class="math inline">\(0\)</span>부터 <span class="math inline">\(1\)</span>까지의 수로 변환하여 출력하였다. 요소 중 하나인 <span class="math inline">\(0\)</span>은 중간값 0.5로 설정된 것을 볼 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; relu.(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">0</span><br> <span class="hljs-number">0</span>  <span class="hljs-number">3</span>  <span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
+<p>ReLU 함수의 경우 음수는 모두 <span class="math inline">\(0\)</span>으로 바꾸고 양수는 그대로 출력한 것을 확인할 수 있다.</p>
+<h3 id="출력층에서-사용하는-활성화-함수">출력층에서 사용하는 활성화 함수</h3>
+<p>출력층에서 사용되는 활성화 함수는 목적에 따라 달라진다. 일반적으로 회귀에는 항등 함수, 분류에는 소프트맥스 함수가 쓰인다.</p>
+<h4 id="항등-함수">항등 함수</h4>
+<p>항등 함수는 입력값을 그대로 출력한다. 수식과 코드는 아래와 같다.</p>
+<p><span class="math display">\[σ(x)=x\]</span></p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> identity_function(x)<br>    <span class="hljs-keyword">return</span> x<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h4 id="소프트맥스-함수">소프트맥스 함수</h4>
+<p>소프트맥스 함수는 0과 1사이의 값을 비율로 출력하기 때문에 "확률"로 해석할 수 있다. 이런 이유로 분류 신경망에서 소프트맥스 함수를 사용한다. 예를 들어, 꽃 사진 하나를 분석하여 어떤 꽃인지 분류하는 신경망을 구현 중이라면 소프트맥스 함수는 (장미 70%, 진달래 21%, 붓꽃 9%) 이런 식으로 결과를 제공한다. 수식은 다음와 같다.</p>
+<p><span class="math display">\[y_k=\frac{e^{a_k}}{\sum_{i=1}^n e^{a_i}}\]</span></p>
+<p>이 수식에서 <span class="math inline">\(y_k\)</span>는 출력층의 <span class="math inline">\(k\)</span>번째 노드이며, 분자의 <span class="math inline">\(a_k\)</span>는 <span class="math inline">\(k\)</span>번째 입력 값이다. 또한 분모에서 <span class="math inline">\(n\)</span>은 총 출력층의 개수이며, 분모 전체는 출력된 값의 전체 합을 의미한다. 이를 코드로 구현하면 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> softmax(x)<br>    c = maximum(x)<br>    exp.(x.-c)/sum(exp.(x.-c))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 코드에서 입력 신호의 최대값을 빼는 이유는 오버플로(overflow) 문제를 막기 위함이다. 오버플로(overflow)란 결과값이 컴퓨터가 표현할 수 있는 값을 넘어갔을 때 발생하는 문제이며, 최대값을 빼주면 에러를 막을 수 있다.</p>
+<h4 id="두-가지-함수-비교">두 가지 함수 비교</h4>
+<p>지금까지 출력층에서 사용하는 항등 함수와 소프트맥스 함수를 살펴보았다. 이제는 예시에 직접 적용해보면서 각 함수들의 결과들을 비교해보고자 한다. 예시로 사용할 배열은 은닉층 활성화 함수들 비교했던 <code>x</code>를 그대로 사용하기로 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; x = [-<span class="hljs-number">1</span> -<span class="hljs-number">2</span> -<span class="hljs-number">3</span>;<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">7</span>]<br></code></pre></td></tr></table></figure>
+<p>먼저 항등 함수부터 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; identity_function(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br> -<span class="hljs-number">1</span>  -<span class="hljs-number">2</span>  -<span class="hljs-number">3</span><br>  <span class="hljs-number">0</span>   <span class="hljs-number">3</span>   <span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
+<p>입력값을 그대로 반환하는 것을 알 수 있다. 그 다음으로는 소프트맥스 함수를 적용해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; softmax(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0.000328971</span>  <span class="hljs-number">0.000121022</span>  <span class="hljs-number">4.45214e-5</span><br> <span class="hljs-number">0.000894237</span>  <span class="hljs-number">0.0179612</span>    <span class="hljs-number">0.98065</span><br></code></pre></td></tr></table></figure>
+<p><span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span> 사이의 값들로 변환되어 출력하는 것을 확인할 수 있다. 여기서 소프트맥스가 제대로 구현되었는지 확인하려면 모든 요소들을 더해서 <span class="math inline">\(1\)</span>이 나오면 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; sum(softmax(x))<br><span class="hljs-number">1.0</span><br></code></pre></td></tr></table></figure>
+<p>요소들의 합이 <span class="math inline">\(1\)</span>임을 확인할 수 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/relu/" class="print-no-link">#ReLU</a>
+      
+        <a href="/tags/%EB%A0%90%EB%A3%A8/" class="print-no-link">#렐루</a>
+      
+        <a href="/tags/%EC%8B%9C%EA%B7%B8%EB%AA%A8%EC%9D%B4%EB%93%9C/" class="print-no-link">#시그모이드</a>
+      
+        <a href="/tags/sigmoid/" class="print-no-link">#sigmoid</a>
+      
+        <a href="/tags/softmax/" class="print-no-link">#softmax</a>
+      
+        <a href="/tags/%EC%86%8C%ED%94%84%ED%8A%B8%EB%A7%A5%EC%8A%A4/" class="print-no-link">#소프트맥스</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2. 활성화 함수</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 29일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-3/" title="3. 손실 함수">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">3. 손실 함수</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-1/" title="1. 행렬과 벡터의 곱">
+                        <span class="hidden-mobile">1. 행렬과 벡터의 곱</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

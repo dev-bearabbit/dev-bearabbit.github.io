@@ -1,0 +1,916 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[DAsP] 전사 아키텍처 이해">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Certificate/DAsP-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/110.jpg">
+<meta property="article:published_time" content="2021-05-15T17:51:25.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:33:36.204Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="자격증">
+<meta property="article:tag" content="DAsP">
+<meta property="article:tag" content="데이터아키텍처">
+<meta property="article:tag" content="전사아키텍처">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/110.jpg">
+  
+  
+  
+  <title>[DAsP] 전사 아키텍처 이해 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="[DAsP] 전사 아키텍처 이해"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-05-16 02:51" pubdate>
+          2021년 5월 16일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          163 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[DAsP] 전사 아키텍처 이해</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="전사-아키텍처enterprise-architecture-ea">전사 아키텍처(Enterprise Architecture, EA)</h2>
+<p>기업 전체의 정보화 시스템을 쉽게 파악하기 위해서 생성한 설계도. 기업의 목표와 요구를 효율적으로 지원하기 위해 IT 인프라 각 부분들이 어떻게 구성되고 작동되어야 하는지가 체계적으로 기술되어 있다. 전사 아키텍처가 구성되어 있어야 거대한 시스템들도 상황에 따른 변화를 도모할 수 있다.</p>
+<h3 id="전사">전사</h3>
+<p>프로젝트에서 수행하고자 하는 단위. 기업 및 기관뿐만 아니라 어떤 조직의 아이템이나 사업단위를 지칭할 수도 있다.</p>
+<h3 id="아키텍처">아키텍처</h3>
+<p>시스템의 큰 골격이나 뼈대. 크게 규칙(Rule), 계획(Plan), 모델(Model)로 구성된다.</p>
+<ul>
+<li>규칙: 아키텍처의 일관성을 위해 준수하여야 하는 원칙을 수립 및 적용</li>
+<li>계획: 현재 상황과 목표 아키텍처를 정의한 후 목표 달성을 위한 이행 전략 및 계획을 수립</li>
+<li>모델: 특정 시스템의 원리를 구조적으로 정의</li>
+</ul>
+<p>아키텍처는 비즈니스 모델을 바탕으로 한 비즈니스 아키텍처와 시스템 아키텍처로 나뉘며, 또 시스템 아키텍처는 데이터, 애플리케이션, 기술(하드웨어)로 구성된다.</p>
+<h2 id="전사-아키텍처-프레임워크">전사 아키텍처 프레임워크</h2>
+<p>전사 아키텍처 진행에서 발생하는 산출물들을 조직적으로 관리하기 위한 틀. 이해한 바로는 각 기업마다 요구되는 전사 아키텍처가 다르기에 프로젝트 시작 초반에 프레임워크를 구성함으로써 목표 및 진행과정을 명확하게 나타낼 수 있어서 사용하는 것 같다. 프레임워크는 기업마다 다르지만 보통 정책, 정보, 관리로 구성된다.</p>
+<h3 id="전사-아키텍처-정책">전사 아키텍처 정책</h3>
+<ul>
+<li>아키텍처 메트릭스: EA의 정보를 체계적으로 분류한 틀. 기업이 요구하는 EA 수준과 활용 계층을 결정</li>
+<li>EA 비전: 전사 아키텍처 수립을 통해 기업이 궁극적으로 달성하고자 하는 모습</li>
+<li>EA 원칙: 효율적인 진행을 위해 프로젝트 시 조직 구성원이 공유해야 할 규범</li>
+</ul>
+<h3 id="전사-아키텍처-정보">전사 아키텍처 정보</h3>
+<ul>
+<li>현행 아키텍처: 아키텍처 도메인 별 현재의 아키텍처 상태</li>
+<li>이행 계획: 목표 아키텍처로 변환하기 위한 이행 과정 및 계획</li>
+<li>목표 아키텍처: 아키텍처 도메인 별 목표로 정의한 아키텍처 상태</li>
+</ul>
+<h3 id="전사-아키텍처-관리">전사 아키텍처 관리</h3>
+<ul>
+<li>관리 쳬계: 구축된 EA를 유지 및 개선하기 위한 제도적 기반 수립</li>
+<li>관리 시스템: 효율적인 EA사용을 위한 시스템 구축. 모델링 도구, 레포지터리, 포털 등으로 구성</li>
+<li>평가(성숙도 모형): EA관리 및 활용 수준을 주기적으로 평가 및 개선점 도출</li>
+</ul>
+<h2 id="아키텍처-도메인">아키텍처 도메인</h2>
+<p>아키텍처 메트릭스가 어떻게 구성되는지에 따라 달라진다. 도메인은 크게 BA, AA, DA, TA로 구분되며, 각각의 아키텍처들은 아키텍처 매트릭스의 사용자관점(Perspective)에 따라 활용 내용과 업무가 달라진다.</p>
+<h3 id="babusiness-architecture">BA(Business Architecture)</h3>
+<p>기업의 최종 목표를 달성하기 위한 업무 구조를 정의한 아키텍처.<br />
+아래의 다른 아키텍처들의 방향을 정의하고 검증하는 기준이 된다.</p>
+<h3 id="aaapplication-architecture">AA(Application Architecture)</h3>
+<p>업무 수행에 필요한 어플리케이션을 식별하고 구조를 체계화 한 아키텍처.</p>
+<h3 id="dadata-architecture">DA(Data Architecture)</h3>
+<p>업무 수행에 있어 필요한 데이터 구조를 체계적으로 정의한 아키텍처.</p>
+<h3 id="tatechnical-architecture">TA(Technical Architecture)</h3>
+<p>다른 아키텍처에서 요구하는 인프라 체계를 정의한 아키텍처.</p>
+<h2 id="전사-아키텍처-참조모델">전사 아키텍처 참조모델</h2>
+<p>각각의 아키텍처들의 표준으로 제시된 모델. 전사 아키텍처를 빠르게 수립할 수 있도록 도와준다.</p>
+<ul>
+<li>업무 참조모델(Business Reference Model, BRM): 비즈니스 아키텍처의 표준</li>
+<li>데이터 참조모델(Data Reference Model, DRM): 데이터 아키텍처의 표준</li>
+<li>서비스 참조모델(Service Reference Model, SRM): 애플리케이션 아키텍처의 표준</li>
+<li>기술 참조모델(Technical Reference Model, TRM): 기술 아키텍처의 표준</li>
+<li>성과참조모델(Performance Reference Model, PRM): 성과 측정을 위한 항목과 방법 제시</li>
+</ul>
+<h2 id="전사-아키텍처-프로세스">전사 아키텍처 프로세스</h2>
+<p>전사 아키텍처를 구축하고 관리하는 절차. 구성은 EA 비전 수립, EA 구축, EA 관리, EA 활용 단계로 구분한다.</p>
+<figure>
+<img src="/images/110.jpg" srcset="/img/loading.gif" lazyload alt="process" /><figcaption aria-hidden="true">process</figcaption>
+</figure>
+<h3 id="ea-비전-수립">EA 비전 수립</h3>
+<table>
+<thead>
+<tr class="header">
+<th>과정</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EA 환경 분석</td>
+<td>기업 내외부 환경 분석 및 이해관계자로부터 수립 요건들을 도출</td>
+</tr>
+<tr class="even">
+<td>EA 구축 방향 정의</td>
+<td>환경 분석 결과를 토대로 EA 구축 목적 및 범위를 정의</td>
+</tr>
+<tr class="odd">
+<td>EA 프레임워크 구성 정의</td>
+<td>산출물 분류 및 유지관리를 위한 프레임워크 정립</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ea-구축">EA 구축</h3>
+<h4 id="ea-정보-구성-정의">EA 정보 구성 정의</h4>
+<table>
+<thead>
+<tr class="header">
+<th>과정</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>아키텍처 매트릭스 정의</td>
+<td>요구된 산출물들을 사용자관점(Perspective)과 정보유형(View) 두 축을 바탕으로 매트릭스 구성</td>
+</tr>
+<tr class="even">
+<td>참조모델 정의</td>
+<td>각 정보유형(View)의 참조모델을 정의</td>
+</tr>
+<tr class="odd">
+<td>아키텍처 원칙 수립</td>
+<td>해당 아키텍처에 동일하게 적용되는 원칙 수립</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ea-정보-구축">EA 정보 구축</h4>
+<table>
+<thead>
+<tr class="header">
+<th>과정</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EA 자료 수집</td>
+<td>현행 아키텍처를 정의하기 위해 기존의 자료들을 수집</td>
+</tr>
+<tr class="even">
+<td>현행 아키텍처 정의</td>
+<td>현행 시스템의 기존 자료를 분석하여 현행 아키텍처를 정의</td>
+</tr>
+<tr class="odd">
+<td>목표 아키텍처 정의</td>
+<td>현행 아키텍처의 문제점의 개선안을 바탕으로 목표 아키텍처를 정의</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ea-관리">EA 관리</h3>
+<table>
+
+<thead>
+<tr class="header">
+<th>과정</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EA 관리 체계</td>
+<td>EA 정보를 활용하기 위한 인력 및 조직, 프로세스 정의</td>
+</tr>
+<tr class="even">
+<td>EA 관리 시스템</td>
+<td>EA 정보를 관리하기 위한 도구 선정 및 시스템 구축 <br> - 정보를 생산하는 모델링 도구 영역 <br> - 정보를 저장 및 관리하는 레파지토리 영역 <br> - 정보를 활용하는 포털 <br> - EA 정보를 활용하는 영역</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ea-활용">EA 활용</h3>
+<table>
+<thead>
+<tr class="header">
+<th>과정</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EA 이행 계획</td>
+<td>다른 IT 업무에도 해당 아키텍처를 적용하기 위한 중장기 계획 수립</td>
+</tr>
+<tr class="even">
+<td>EA 정보 활용</td>
+<td>EA 정보를 활용하여 다른 IT 업무를 수행</td>
+</tr>
+</tbody>
+</table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/etc/" class="category-chain-item">etc.</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/etc/certificate/" class="category-chain-item">certificate</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%9E%90%EA%B2%A9%EC%A6%9D/" class="print-no-link">#자격증</a>
+      
+        <a href="/tags/dasp/" class="print-no-link">#DAsP</a>
+      
+        <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/" class="print-no-link">#데이터아키텍처</a>
+      
+        <a href="/tags/%EC%A0%84%EC%82%AC%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/" class="print-no-link">#전사아키텍처</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[DAsP] 전사 아키텍처 이해</div>
+      <div>https://dev-bearabbit.github.io/ko/Certificate/DAsP-0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2021년 5월 16일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Certificate/DAsP-1/" title="[DAsP] 데이터 요건 분석">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[DAsP] 데이터 요건 분석</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ERROR/error-1/" title="Windows 환경에서 Rust 컴파일 link 에러">
+                        <span class="hidden-mobile">Windows 환경에서 Rust 컴파일 link 에러</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

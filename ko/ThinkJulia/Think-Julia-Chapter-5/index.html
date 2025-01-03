@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Fruitful Functions를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5. 결과 있는 함수">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-5/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Fruitful Functions를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-03-03T13:30:30.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:56.216Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>5. 결과 있는 함수 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="5. 결과 있는 함수"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-03 22:30" pubdate>
+          2020년 3월 3일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          854 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">5. 결과 있는 함수</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap06">Fruitful Functions</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="결과-있는-함수-fruitful-functions">결과 있는 함수 (Fruitful Functions)</h2>
+<p>줄리아가 제공하는 많은 함수들은 반환 값을 생성한다. 하지만 우리가 사용했던 <code>Turtle()</code>과 같은 결과 없는 함수(void function)는 명령을 수행하기만 하고 반환 값을 제공하지는 않는다. 이번 장에서는 결과 있는 함수를 작성하는 법을 알아볼 것이다.</p>
+<h3 id="반환-값">반환 값</h3>
+<p>함수를 호출하면 일반적으로 변수에 할당하거나 표현식의 일부로 사용하는 반환 값이 생성된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">e = exp(<span class="hljs-number">1.0</span>)<br>height = radius * sin(radians)<br></code></pre></td></tr></table></figure>
+<p>결과 없는 함수는 반환 값을 가지고 있지 않다. 정확하게는 반환 값으로 <code>nothing</code>을 가지고 있다. 결과 있는 함수의 첫 번째 예시로 원의 넓이를 반환하는 <code>area()</code>를 살펴볼 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> area(radius)<br>    a = <span class="hljs-literal">π</span> * radius^<span class="hljs-number">2</span><br>    <span class="hljs-keyword">return</span> a<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 <code>return</code>문을 사용하여 값을 보여준다. <code>return</code>문은 함수의 결괏값을 다음의 반환 값으로 사용하게 만들어주는 명령문이다. 결과 있는 함수는 <code>return</code>문을 내장하고 있기 때문에 쓸 필요가 없다. 따라서 수정된 코드는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> area(radius)<br>    <span class="hljs-literal">π</span> * radius^<span class="hljs-number">2</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>함수 본문의 마지막에 위치해 있는 표현식의 결과가 값으로 반환된다. 반면에 함수 내부에서 정의되는 임시 변수 <code>a</code>의 경우는 <code>return</code>문을 사용해야 디버깅하기 쉽다. 때때로 조건문의 조건마다 <code>return</code>문을 가지는 것은 유용하다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> absvalue(x)<br>    <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> -x<br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> x<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이런 <code>return</code>문들은 각각의 대체 조건문에 들어가 있으며, 조건에 따라 작동된다. <code>return</code>문이 실행되면 뒤의 명령문들은 실행되지 않고 종료되는데, 이때 뒤에 있던 명령문들을 데드 코드(dead code)이라고 한다.</p>
+<p>결과 있는 함수에서는 프로그램의 모든 경로가 <code>return</code>문으로 끝나게 작성하는 것이 좋다. 아래 예시를 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> absvalue(x)<br>    <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> -x<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">if</span> x &gt; <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> x<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 함수는 <code>x</code>가 0이 되면 어떤 조건도 참이 아니고 반환할 <code>return</code>문도 없기 때문에 올바른 함수가 아니다. 만약 <code>x</code>가 0인채로 함수가 진행된다면 반환 값으로 <code>nothing</code>을 준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; show(absvalue(<span class="hljs-number">0</span>))<br><span class="hljs-literal">nothing</span><br></code></pre></td></tr></table></figure>
+<p><strong>Tip</strong> 줄리아는 절대값을 반환해주는 <code>abs()</code>를 내장하고 있다.</p>
+<h3 id="점진적인-개발-incremental-development">점진적인 개발 (Incremental Development)</h3>
+<p>크고 복잡한 함수들을 작성할수록 디버깅에 많은 시간을 쏟아야 할 것이다. 복잡한 프로그램들을 점점 향상시키기 위해서, 점진적인 개발이라는 과정을 배우는 것은 중요하다. 점진적인 개발의 목표는 작은 단위의 코드들을 계속 테스트해야하고 수정해야하는 디버깅에 소요되는 시간을 줄이는 것이다. 예로 두 점인 (x1,y1)와 (x2,y2)의 거리를 구하려고 한다. 피타고라스 정리에 따르면 수학식은 다음과 같다.</p>
+<p><span class="math display">\[\begin{equation} \label{eq1}
+d= \sqrt{(x2-x1)^2+(y2-y1)^2}
+\end{equation}\]</span></p>
+<p>위의 수학식을 줄리아에서 구현하기 위해서는 어떻게 해야할까? 첫 번째로는 무엇을 인수로 제공하며, 얻으려는 반환 값은 무엇인지 정하는 것이다. 위의 사례에서는 두 점인 (x1,y1)와 (x2,y2)을 인수로 제공하면 된다. 반환 값의 경우는 소수로 표현된 거리를 얻을 것이다. 인수와 반환 값을 결정하면 바로 아래와 같은 코드를 완성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> distance(x₁, y₁, x₂, y₂)<br>    <span class="hljs-number">0.0</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 거리를 계산하지는 않으며, 본문에 따라 항상 0을 반환한다. 그러나 본문에 다른 명령문을 추가하기 전에 코드가 작동하는지 확인할 수 있다. 작동을 확인하기 위해 아래의 코드를 입력해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">distance(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>)<br></code></pre></td></tr></table></figure>
+<p>위의 코드에서 두 점은 수평 거리가 3이 되고 수직 거리가 4가 되도록 선택하였다. 그 결과 두 점의 거리 값은 5이며, 반환 값도 5가 되어야 한다. 이와 같이 코드를 테스트할 때는 정답을 알고 있는 상태에서 해야 올바르게 작동하고 있는지 확인할 수 있다.</p>
+<p>위의 테스트를 통해서 해당 함수가 문법적으로는 문제가 없다고 확인하였다. 그러면 이제부터는 본문에 명령문들을 추가해보자. 다음 단계는 <code>x2−x1</code> 과 <code>y2−y1</code> 을 설정하는 것이다. 함수 내부에 임시 변수로서 두 식의 값을 저장하도록 설정해보자. 그 다음 <code>@show</code>를 사용하여 임시 변수가 올바르게 생성되는지 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> distance(x₁, y₁, x₂, y₂)<br>    dx = x₂ - x₁<br>    dy = y₂ - y₁<br>    <span class="hljs-meta">@show</span> dx dy<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 함수가 제대로 작동했다면, <code>dx = 3</code> 과 <code>dy = 4</code> 가 보였을 것이다. 만약 그렇다면 우리는 함수가 올바른 인수를 받아 제대로 작동하고 있다고 안심할 수 있다.</p>
+<p>다음 명령문으로 <code>dx</code> 와 <code>dy</code> 을 제곱하여 더하는 계산을 추가한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> distance(x₁, y₁, x₂, y₂)<br>    dx = x₂ - x₁<br>    dy = y₂ - y₁<br>    d² = dx^<span class="hljs-number">2</span> + dy^<span class="hljs-number">2</span><br>    <span class="hljs-meta">@show</span> d²<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>다시 위의 함수를 작동했을 때에는 <code>d²</code> 값이 25로 나와야 한다. 만약 올바르게 작동한다면 마지막으로 제곱근을 계산해주는 <code>sqrt()</code>를 추가해준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> distance(x₁, y₁, x₂, y₂)<br>    dx = x₂ - x₁<br>    dy = y₂ - y₁<br>    d² = dx^<span class="hljs-number">2</span> + dy^<span class="hljs-number">2</span><br>    sqrt(d²)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>코드가 제대로 작동했다면, 우리는 위의 수학식을 코드로 올바르게 구현한 것이다.</p>
+<p>최종적으로 사용한 위의 함수는 반환 값을 가지고 있지만 결과를 출력하지는 않는다. 따라서 반환 값이 올바른지 체크하기 위해서는 <code>println()</code>과 같은 함수로 직접 츌력해서 확인해야 한다. 이런 작업을 스캐폴딩(scaffolding)이라고 한다. 이런 함수들은 디버깅을 할 때 도움이 되지만, 나중에 최종 프로그램을 구현할 때는 제거해야 한다.</p>
+<p>초보자가 함수를 작성할 때는 명령문을 한 줄 또는 두 줄만을 추가하여 올바르게 작동하는지 확인해야 한다. 그 과정이 익숙해지면 더 큰 덩어리 단위로 명령문을 작성하고 디버깅할 수 있다.</p>
+<p>요약하자면 함수를 개발하는 방법은 다음과 같다.</p>
+<ul>
+<li>프로그램을 작동하여 확인하면서 작은 부분들을 변경하자. 언제라도 오류가 발생하면 어느 부분에서 문제가 생긴 것인지 알고 있어야 한다.</li>
+<li>함수 내부에 임시 변수를 사용하여 값들을 저장하면서 값이 올바른지 확인하자.</li>
+<li>프로그램이 작동하면 스캐폴딩을 제거하고, 명령문들을 복합 표현식으로 사용하는 등 코드를 간단하게 수정하자.</li>
+</ul>
+<h3 id="컴포지션-composition">컴포지션 (composition)</h3>
+<p>함수를 작성할 때, 필요하다면 미리 작성한 함수를 가져와 사용할 수 있다. 예를 들어 원의 중심과 둘레의 점을 두 점으로 하여 원의 면적을 계산하는 함수를 살펴 보자.</p>
+<p>중심점을 변수 <code>xc</code>와 <code>yc</code>로 표현하고, 둘레점을 <code>xp</code>와 <code>yp</code>로 표현한다. 그 이후 첫 번째 단계로 두 지점 사이의 거리인 원의 반경을 찾기로 한다. 우리는 윗 장에서 두 점의 거리를 구하는 <code>distance()</code>를 작성했기 때문에 이를 이용할 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">radius = distance(xc, yc, xp, yp)<br></code></pre></td></tr></table></figure>
+<p>다음 단계로는 우리가 만들었던 <code>area()</code>를 사용하여 원의 면적을 구한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">result = area(radius)<br></code></pre></td></tr></table></figure>
+<p>마지막으로 위의 변수들을 하나의 함수로 캡슐화해준다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circlearea(xc, yc, xp, yp)<br>    radius = distance(xc, yc, xp, yp)<br>    result = area(radius)<br>    <span class="hljs-keyword">return</span> result<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>임시 변수인 <code>radius</code>와 <code>result</code>는 디버깅을 할 때 유용하지만, 굳이 임시 변수를 사용하지 않고 인수 자리에 함수를 바로 입력하여 더 간결하게 표현할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circlearea(xc, yc, xp, yp)<br>    area(distance(xc, yc, xp, yp))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h3 id="불-함수-boolean-functions">불 함수 (Boolean Functions)</h3>
+<p>함수는 불(true or false)를 반환할 수 있으며, 이는 종종 복잡한 테스트를 함수 내부에 숨기는데 유용하다. 예는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isdivisible(x, y)<br>    <span class="hljs-keyword">if</span> x % y == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이것은 yes/no 질문이라고 불리는 전형적인 불 함수이다. <code>isdivisible()</code>은 x값을 y값으로 나눈 나머지 값에 따라 <code>true</code> 또는 <code>false</code>를 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; isdivisible(<span class="hljs-number">6</span>, <span class="hljs-number">4</span>)<br><span class="hljs-literal">false</span><br>julia&gt; isdivisible(<span class="hljs-number">6</span>, <span class="hljs-number">3</span>)<br><span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p><code>==</code> 연산자는 자동으로 불 표현식의 결괏값을 반환하므로 함수를 더 간결하게 작성할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isdivisible(x, y)<br>    x % y == <span class="hljs-number">0</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>불 함수는 종종 조건문에 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">if</span> isdivisible(x, y)<br>    println(<span class="hljs-string">&quot;x is divisible by y&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>또는 다음과 같이 작성할 수도 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">if</span> isdivisible(x, y) == <span class="hljs-literal">true</span><br>    println(<span class="hljs-string">&quot;x is divisible by y&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>하지만 위의 코드에서 <code>true</code>는 불필요하다.</p>
+<h3 id="재귀-정의-more-recursion">재귀 정의 (More Recursion)</h3>
+<p>우리는 고작 줄리아의 작은 서브셋(subset)들을 배웠지만, 사실 이 서브셋들은 완벽한 프로그래밍 언어이다. 지금까지 습득한 언어로 대부분의 수학 계산식들을 표현할 수 있다. 즉, 프로그램을 작성하는데 어려움이 없다는 것이다.</p>
+<p>프로그래밍 언어가 수학 계산식을 표현할 수 있다는 사실은 수학자 앨런 튜링(Alan Turing)에 의해서 증명되었으며, 해당 이론을 튜링 이론이라고 한다. 만약 튜링 이론에 관심이 있다면 Michael Sipser의 저서인 Introduction to the Theory of Computation을 추천한다.</p>
+<p>지금부터는 우리가 배운 도구들을 사용하여 만들어진 몇 가지 재귀 함수를 살펴볼 것이다. 재귀 정의는 어떤 단어를 설명하는데 있어 그 단어를 선택한다는 점에서 순환 정의와 유사하다.</p>
+<p><strong>vorpal</strong> An adjective used to describe something that is vorpal.</p>
+<p>위의 예시를 보면 vorpal이란 단어를 정의하는데 vorpal이란 단어가 쓰이는 것을 볼 수 있다. 재귀함수도 이와 유사한 구조를 가지고 있다. 재귀 함수의 예로 계승 함수(factorial function)을 살펴보자.</p>
+<p><span class="math display">\[
+n! =
+ \begin{cases}
+1 &amp; \text{if n=0 \]</span>}\ n(n-1)! &amp; \ \end{cases} $$</p>
+<p>위의 정의는 <code>n</code>이 0이면 1을 반환하고, 만약 <code>n</code>이 0이상이라면 <code>n</code>과 <code>(n-1)!</code>을 곱하라고 설명한다.</p>
+<p>예를 들면 3!은 3과 2!를 곱하고, 2!는 2와 1!을 곱하며, 1!는 1과 0을 곱한다. 따라서 3!는 3<em>2</em>1<em>1</em>0이기에 6인 것이다.</p>
+<p>재귀 정의를 이용하여 위의 수학식을 함수로 작성할 수 있다. 첫 번째 단계는 인수가 무엇인지 결정하는 것이다. 이 경우에서는 정수가 인수로 사용된다는 것이 명확하다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n) <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>만약 인수가 0이라면, 1을 반환해야 하므로 조건문을 사용한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n)<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이 부분이 가장 흥미로운데, 만약 인수가 0이 아니라면 우리는 <code>n</code>과 <code>(n-1)!</code>를 곱하기 위해서 재귀 함수을 사용해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n)<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span><br>        recurse = fact(n-<span class="hljs-number">1</span>)<br>        result = n * recurse<br>        <span class="hljs-keyword">return</span> result<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>n</code>에 3을 부여한 위 코드의 진행 과정은 다음과 같다.</p>
+<ul>
+<li><code>3</code>은 <code>0</code>이 아니기 때문에, <code>else</code>문으로 넘어가 <code>3</code>과 <code>2!</code>을 곱하려고 한다.</li>
+<li><code>2</code>은 <code>0</code>이 아니기 때문에, <code>else</code>문으로 넘어가 <code>2</code>과 <code>1!</code>을 곱하려고 한다.</li>
+<li><code>1</code>은 <code>0</code>이 아니기 때문에, <code>else</code>문으로 넘어가 <code>1</code>과 <code>0!</code>을 곱하려고 한다.</li>
+<li><code>n</code>이 <code>0</code>이기 때문에, <code>0!</code>은 첫 번째 코드를 따라 1을 반환한다.</li>
+<li><code>0!</code>가 <code>1</code>을 반환했기 때문에 <code>1</code>과 곱해져 <code>1!</code>을 반환한다.</li>
+<li><code>1!</code>가 <code>1</code>을 반환했기 때문에 <code>2</code>과 곱해져 <code>2!</code>을 반환한다.</li>
+<li><code>2!</code>가 <code>2</code>을 반환했기 때문에 <code>3</code>과 곱해져 <code>6</code>을 반환한다.</li>
+</ul>
+<p>결국 마지막으로 작동된 명령문의 결과값인 6이 반환 값으로 보여준다. 또한 로컬 변수인 <code>result</code>나 <code>recurse</code>도 함수가 작동을 멈추는 동시에 사라진다.</p>
+<p><strong>Tip</strong> 줄리아는 계승 함수(factorial function)를 제공한다.</p>
+<h3 id="믿음의-도약-leap-of-faith">믿음의 도약 (Leap of Faith)</h3>
+<p>실행 흐름을 따르는 것은 프로그램을 읽는 하나의 방법이다. 그러나 때에 따라선 믿음의 도약이라고 부르는 방법도 사용할 수 있다. 믿음의 도약이란 함수가 어떻게 작동하는지를 파악하기 전에 함수를 호출하여 올바른 결괏값을 도출하는지 확인하여 그 함수가 잘 작동하고 있다고 믿는 것이다. 즉, 프로그램의 실행 흐름을 보는 것이 아니라 결괏값만을 보고 프로그램이 올바르게 작동하고 있는지 파악하는 것이다.</p>
+<p>실제로 내장 함수를 사용할 때 우리는 이 방법을 많이 사용한다. 예를 들어 <code>cos()</code>나 <code>exp()</code>를 사용할 때, 해당 함수의 본문을 검사하지 않으며, 결괏값만 보고 믿음을 주는 것이다. 재귀 프로그램 또한 실행 흐름을 따르는 대신에 재귀 호출이 되었다고 가정하여 결괏값을 확인한다.</p>
+<h3 id="연습해보기">연습해보기</h3>
+<p>가장 재귀적으로 정의된 가장 보편적인 수학 표현식 중 하나인 피보나치를 작성해보자. 피보나치에 대한 정의는 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Fibonacci_number">이 링크</a>를 확인하면 된다.</p>
+<p><span class="math display">\[
+fib(n) =
+ \begin{cases}
+0 &amp; \text{if n=0 \]</span>}\ 1 &amp; \ fib(n-1)+fib(n-2) &amp; \ \end{cases} $$</p>
+<p>위 식을 줄리아 코드로 표현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fib(n)<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">elseif</span> n == <span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> fib(n-<span class="hljs-number">1</span>) + fib(n-<span class="hljs-number">2</span>)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이 함수에서 실행 흐름대로 파악하려면 <code>n</code>이 아주 작은 경우에도 머리가 복잡하다. 그렇기 때문에 믿음의 도약에 따라 재귀 함수가 올바르게 작동한다고 가정한후 <code>n</code>에 3 정도를 넣어보면 빠르게 좋은 결과를 얻을 수 있다.</p>
+<h3 id="데이터-타입-확인하기">데이터 타입 확인하기</h3>
+<p>민약에 <code>fact()</code>에 인수로 <code>1.5</code>를 넣으면 어떻게 될까?</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fact(<span class="hljs-number">1.5</span>)<br>ERROR: <span class="hljs-built_in">StackOverflowError</span>:<br>Stacktrace:<br> [<span class="hljs-number">1</span>] fact(::<span class="hljs-built_in">Float64</span>) at ./REPL[<span class="hljs-number">3</span>]:<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<p>무한 재귀로 작동된 에러 결과가 나왔다. 어떻게 그게 가능할까? <code>fact()</code>는 <code>n</code>이 <code>0</code>일때 함수 작동이 끝나는 재귀 정의를 가지고 있다. <code>1.5</code>는 <code>0</code>이 아니기 때문에 <code>else</code>문으로 실행되며 첫 번째 실행 이후 <code>n</code>값이 <code>0.5</code>가 된다. 그 다음 두 번째 실행에서는 <code>n</code>값이 <code>-0.5</code>가 된다. 결국 <code>n</code>값이 <code>0</code>이 되지 못하기 때문에 무한대로 재귀가 작동하는 결과가 초래된 것이다.</p>
+<p>따라서 이 문제를 해결하기 위해서는 소수점 숫자도 인수로 받을 수 있게 <code>fact()</code>를 일반화하거나, 데이터 타입을 미리 확인하라는 명령문을 추가할 수 있다. 첫 번째 방법은 <strong>감마 함수</strong>라고 하며 이 책의 범위를 벗어나기 때문에, 우리는 두 번째 방법을 선택할 것이다.</p>
+<p>내장 연산자인 <code>isa</code>를 이용하여 인수 유형을 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n)<br>    <span class="hljs-keyword">if</span> !(n <span class="hljs-keyword">isa</span> <span class="hljs-built_in">Int64</span>)<br>        error(<span class="hljs-string">&quot;Factorial is only defined for integers.&quot;</span>)<br>    <span class="hljs-keyword">elseif</span> n &lt; <span class="hljs-number">0</span><br>        error(<span class="hljs-string">&quot;Factorial is not defined for negative integers.&quot;</span>)<br>    <span class="hljs-keyword">elseif</span> n == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> n * fact(n-<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>첫 번째 <code>if</code>문은 정수가 아닌 수들에 대한 에러 메시지를 도출하며, 두 번째 <code>elseif</code>문은 음수에 대한 에러 메시지를 도출한다. 에러 메시지가 출력될 경우 그 함수의 결과는 <code>nothing</code>을 반환한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fact(<span class="hljs-string">&quot;fred&quot;</span>)<br>ERROR: Factorial is only defined <span class="hljs-keyword">for</span> integers.<br>julia&gt; fact(-<span class="hljs-number">2</span>)<br>ERROR: Factorial is not defined <span class="hljs-keyword">for</span> negative integers.<br></code></pre></td></tr></table></figure>
+<p>두 검사를 모두 통과하면 <code>n</code>이 양수이거나 0임이 증명되기 때문에, 바로 재귀 함수로 넘어갈 수 있다.</p>
+<p>이런 프로그램 구조는 가이드라인을 보여준다. 처음 두 조건이 가이드 역할을 하여 오류를 일으킬 수 있는 값에서 구출하고 오류를 막아준다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>큰 프로그램들을 작은 함수들로 분해하는 것은 자연스러운 디버깅 포인트들을 만들어준다. 만약 함수가 작동하고 있지 않다면, 아래의 세 가지 가능성을 고려야봐야 한다.</p>
+<ul>
+<li>함수의 인수가 잘못 배정된 경우 (전제조건 오류)</li>
+<li>함수 자체에 오류가 있는 경우 (사후조건 오류)</li>
+<li>반환 값이나 사용되는 방식에 문제가 있는 경우 (함수의 연결부분)</li>
+</ul>
+<p>첫 번째의 가능성을 배제하기 위해, <code>println()</code>을 추가하고 나오는 결괏값을 확인하여 데이터 타입을 정확히 확인하라. 아니면 해당 함수의 전제 조건을 다시 정확히 확인하라. 인수가 양호하다면 각 <code>return</code>문 앞에 <code>println()</code>을 추가하고 반환 값을 표시해서 가능하면 결과값을 확인하라. 옳은 결과인지 확인하기 쉬운 값을 인수로 주는 것이 좋다. 함수가 작동하는 것 같으면 함수 호출을 보고 반환 값이 올바르게 사용되는지 확인하라. 함수의 시작과 끝에 <code>println()</code>을 추가하면 실행 흐름을 더 잘 볼 수 있다. 예로 아래의 함수는 <code>println()</code>문이 포함된 <code>fact()</code> 코드 이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n)<br>    space = <span class="hljs-string">&quot; &quot;</span> ^ (<span class="hljs-number">4</span> * n)<br>    println(space, <span class="hljs-string">&quot;factorial &quot;</span>, n)<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span><br>        println(space, <span class="hljs-string">&quot;returning 1&quot;</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span><br>        recurse = fact(n-<span class="hljs-number">1</span>)<br>        result = n * recurse<br>        println(space, <span class="hljs-string">&quot;returning &quot;</span>, result)<br>        <span class="hljs-keyword">return</span> result<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>space</code>는 출력의 들여 쓰기를 제어하는 공백 문자열이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fact(<span class="hljs-number">4</span>)<br>                factorial <span class="hljs-number">4</span><br>            factorial <span class="hljs-number">3</span><br>        factorial <span class="hljs-number">2</span><br>    factorial <span class="hljs-number">1</span><br>factorial <span class="hljs-number">0</span><br>returning <span class="hljs-number">1</span><br>    returning <span class="hljs-number">1</span><br>        returning <span class="hljs-number">2</span><br>            returning <span class="hljs-number">6</span><br>                returning <span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>
+<p>만약에 실행 흐름이 헷갈리면, 위와 같은 출력들이 도움이 될 것이다. 효과적인 스캐폴딩을 개발하는 것은 조금 시간이 걸리겠지만, 작은 스캐폴딩으로도 많은 디버깅 요소들을 찾을 수 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>5. 결과 있는 함수</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-5/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 3일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-6/" title="6. 반복">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">6. 반복</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-4/" title="4. 조건문과 재귀">
+                        <span class="hidden-mobile">4. 조건문과 재귀</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

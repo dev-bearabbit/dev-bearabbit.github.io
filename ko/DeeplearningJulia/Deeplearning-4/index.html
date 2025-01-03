@@ -1,0 +1,817 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4. 경사하강법">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-4/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-03-30T16:52:13.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:34.723Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
+<meta property="article:tag" content="경사하강법">
+<meta property="article:tag" content="미분">
+<meta property="article:tag" content="편미분">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>4. 경사하강법 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="4. 경사하강법"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-31 01:52" pubdate>
+          2020년 3월 31일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          574 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">4. 경사하강법</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<p>이전 글에서 우리는 손실 함수에 대해서 살펴보았다. 손실 함수는 신경망을 평가하는 판단지표로서 사용되며, 손실 함수의 값을 줄이는 방향으로 신경망을 학습시킨다고 하였다. 다른 말로, 좋은 신경망 모델은 손실 함수 값이 작아야 한다. 그렇다면 이쯤에서 "어떻게 손실 함수의 값을 줄일 수 있을까?"라는 의문이 들 것이다. 이것이 바로 최적화의 문제이다. 이번 글에서는 손실 함수를 최소화하는 경사하강법에 대해서 살펴볼 것이다.</p>
+<h2 id="경사하강법이란">경사하강법이란</h2>
+<p>경사하강법은 신경망 학습에서 손실함수의 값을 최소화하는 가중치와 편향을 찾는 최적화 알고리즘이다. 신경망 모델의 학습 과정을 순서대로 나열하면 다음과 같다.</p>
+<ol type="1">
+<li>임의의 값을 가진 가중치와 편향을 생성한다.</li>
+<li>신경망 계산을 한다.</li>
+<li>손실 함수로 출력층의 결과인 예측값과 정답을 비교한다.</li>
+<li>예측값과 정답의 격차를 줄이기 위해 가중치와 편향을 조정한다.</li>
+<li>2~4의 과정을 반복하여 손실 함수의 값을 줄인다.</li>
+</ol>
+<p>위의 순서 중에서 경사하강법은 4, 5번 과정을 진행하는 알고리즘이다. 그렇다면 경사하강법의 작동 원리는 무엇인가? 바로 미분이다. 경사하강법은 손실 함수의 미분값(기울기)을 도출하여 가중치와 편향에서 빼주는 방식으로 적절한 가중치와 편향을 찾는다.</p>
+<h2 id="미분">미분</h2>
+<p>최적화된 가중치와 편향을 찾는 방법은 바로 손실 함수 수식의 "기울기"이다. 손실 함수 그래프에서 가장 아래에 있는 점(최솟점)을 찾기 위해서는 임의의 점에서 기울기를 구해 이동할 방향을 잡아야 한다. 그렇다면 기울기를 구하는 방법은 무엇인가? 바로 미분이다.</p>
+<p>미분은 순간변화량을 나타내며, 수식은 다음과 같다.</p>
+<p><span class="math display">\[f&#39;(x)=\frac{df(x)}{dx}=\lim_{h\to0} \frac{f(x+h)-f(x)}{h}\]</span></p>
+<p>위 수식은 <span class="math inline">\(f(x)\)</span>에서 <span class="math inline">\(x\)</span>가 아주 작은 값인 <span class="math inline">\(h\)</span>만큼 이동했을 때의 변화량을 구하는 식이며, 이는 <span class="math inline">\(x\)</span>의 이동이 <span class="math inline">\(f(x)\)</span>를 얼마나 변화시키는지를 나타낸다.</p>
+<p>하지만 위의 식을 컴퓨터에서 구현하는 것은 반올림오차 문제때문에 기술적으로 어렵다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; h = <span class="hljs-number">1e-50</span><br>Julia&gt; x = <span class="hljs-number">3</span><br>Julia&gt; f(x) = x^<span class="hljs-number">2</span><br>Julia&gt; (f(x+h) - f(x)) / h<br><span class="hljs-number">0.0</span><br></code></pre></td></tr></table></figure>
+<p>수학적 원리로는 아주 미세한 값의 차이가 나지만, 컴퓨터는 이를 0으로 처리해버린다. 이런 문제로 보통 <span class="math inline">\(h\)</span>의 값을 <span class="math inline">\(10^{-4}\)</span>로 사용한다. 또한 위의 코드는 <span class="math inline">\((x+h)\)</span>와 <span class="math inline">\(x\)</span>사이의 기울기이기에 약간의 오차가 발생한다. 이런 오차를 줄이기 위해서 사용하는 방식이 <strong>중앙 차분</strong>이다.</p>
+<p><span class="math display">\[f&#39;(x)=\frac{dy}{dx}=\lim_{h\to0} \frac{f(x+h)-f(x-h)}{2h}\]</span></p>
+<p>중앙 차분이란 <span class="math inline">\(f(x+h)\)</span>에서 <span class="math inline">\(f(x-h)\)</span>의 값을 뺀 후 <span class="math inline">\(2h\)</span>로 나누는데, 이는 <span class="math inline">\((x+h)\)</span>와 <span class="math inline">\((x-h)\)</span> 사이의 기울기를 구함으로써 보다 정확한 값을 얻을 수 있다. 아래의 코드는 기존의 미분 공식과 중앙차분을 적용한 값의 비교이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; (f(x+h) - f(x))/ h<br><span class="hljs-number">6.000100000012053</span><br>Julia&gt; (f(x+h) - f(x-h))/ <span class="hljs-number">2</span>h<br><span class="hljs-number">6.000000000012661</span><br></code></pre></td></tr></table></figure>
+<p><span class="math inline">\(f(x)=x^2\)</span>이기 때문에 이를 미분하면 <span class="math inline">\(f&#39;(x)=2x\)</span>이다. 즉, <span class="math inline">\(x\)</span>가 3일 때 <span class="math inline">\(f&#39;(x)\)</span>는 6인 것이다. 이를 바탕으로 위의 코드를 보면 약간의 차이로 중앙 차분이 적용된 미분 공식이 6에 가까운 것을 확인할 수 있다.</p>
+<p>위의 미분 공식으로 코드로 구현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> derivative(f,x)<br>    h = <span class="hljs-number">10</span>^-<span class="hljs-number">4</span><br>    <span class="hljs-keyword">return</span> (f(x+h)-f(x-h)) / <span class="hljs-number">2</span>h<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h2 id="편미분">편미분</h2>
+<p>미분 파트에서는 <span class="math inline">\(f(x)=x^2\)</span>과 같은 변수가 1개인 경우만을 살펴보았다. 하지만 대부분의 손실 함수들은 신경망 디자인에 따라서 변수의 개수가 변동하는 다변수 함수이다. 따라서 실제 사용되는 손실 함수들을 미분해야 하며, 그 방법을 편미분이라고 한다.</p>
+<p>편미분이란 변수가 2개 이상인 수식에서 각각의 변수들을 기준으로 미분하는 것을 말한다. 다음 식을 편미분해보자.</p>
+<p><span class="math display">\[f(x,y)=x^2+2xy+y^2\]</span></p>
+<p>위 식에서 편미분 <span class="math inline">\(\frac{\partial f}{\partial x}\)</span> 와 <span class="math inline">\(\frac{\partial f}{\partial y}\)</span>를 수식으로 나타내면 아래와 같다.</p>
+<p><span class="math inline">\(\frac{\partial f}{\partial x} = 2x+2y\)</span></p>
+<p><span class="math inline">\(\frac{\partial f}{\partial y} = 2y+2x\)</span></p>
+<p>편미분은 각각의 변수를 기준으로 하여 나머지 변수는 상수화하여 미분을 진행하면 된다. 위에서 편미분 <span class="math inline">\(\frac{\partial f}{\partial x}\)</span>은 <span class="math inline">\(x\)</span>만을 변수로 하고 <span class="math inline">\(y\)</span>를 상수화 하였으며, 편미분 <span class="math inline">\(\frac{\partial f}{\partial y}\)</span>은 <span class="math inline">\(y\)</span>만을 변수로 하여 <span class="math inline">\(x\)</span>을 상수화하였다.</p>
+<p>위의 수식들을 코드로 구현해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; x = <span class="hljs-number">5</span><br>Julia&gt; y = <span class="hljs-number">8</span><br></code></pre></td></tr></table></figure>
+<p>먼저 필요한 변수들을 임의로 정의한다. 편미분 <span class="math inline">\(\frac{\partial f}{\partial x}\)</span>부터 비교하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; f(x) = x^<span class="hljs-number">2</span>+<span class="hljs-number">2</span>*x*y+y^<span class="hljs-number">2</span><br>Julia&gt; derivative(f,x)       <span class="hljs-comment"># 미분 함수 사용</span><br><span class="hljs-number">25.999999999868347</span><br>Julia&gt; <span class="hljs-number">2</span>*x + <span class="hljs-number">2</span>*y               <span class="hljs-comment"># 편미분 수식 직접 입력</span><br><span class="hljs-number">26</span><br></code></pre></td></tr></table></figure>
+<p>코드 결과에서 두 개의 미분 값이 거의 유사함을 확인할 수 있다. 다음으로 편향을 기준으로 하는 편미분 <span class="math inline">\(\frac{\partial f}{\partial y}\)</span>도 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; f(y) = x^<span class="hljs-number">2</span>+<span class="hljs-number">2</span>*x*y+y^<span class="hljs-number">2</span><br>Julia&gt; derivative(f,y)      <span class="hljs-comment"># 미분 함수 사용</span><br><span class="hljs-number">25.999999999868347</span><br>Julia&gt; <span class="hljs-number">2</span>*y + <span class="hljs-number">2</span>*x        <span class="hljs-comment"># 편미분 수식 직접 입력</span><br><span class="hljs-number">26</span><br></code></pre></td></tr></table></figure>
+<h2 id="기울기">기울기</h2>
+<p>지금까지 우리는 경사하강법에서 사용되는 미분에 대해 알아보았다. 손실 함수는 보통 변수가 2개 이상이기 때문에 편미분을 통해 각각의 변수 값들을 구하며, 이전 파트에서 변수 하나씩의 값을 구하였다. 하지만 실제 신경망에서 작동하는 기울기(미분값)은 한번에 도출되어야 한다. 따라서 다변수 함수를 한번에 미분해주는 코드를 구현하고자 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> numerical_gradient(f, x)<br>    h = <span class="hljs-number">10</span>^-<span class="hljs-number">4</span><br>    grad = zeros(<span class="hljs-number">1</span>,length(x))<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> (<span class="hljs-number">1</span>:length(x))<br>        origin=x[i]<br>        x[i] += h<br>        fx1 = f(x)<br>        x[i] -= <span class="hljs-number">2</span>*h<br>        fx2 = f(x)<br>        grad[i] = (fx1-fx2)/<span class="hljs-number">2</span>h<br>        x[i] = origin<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span>  grad<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이제 위의 예시를 다시 사용하여 값이 잘 도출되는지 확인해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; g = [<span class="hljs-number">5.0</span> <span class="hljs-number">8.0</span>]   <span class="hljs-comment"># 다변수</span><br>Julia&gt; f(g) = g[<span class="hljs-number">1</span>]^<span class="hljs-number">2</span>+<span class="hljs-number">2</span>*g[<span class="hljs-number">1</span>]*g[<span class="hljs-number">2</span>]+g[<span class="hljs-number">2</span>]^<span class="hljs-number">2</span> <span class="hljs-comment"># 함수 수식</span><br></code></pre></td></tr></table></figure>
+<p>편미분 파트의 예시와는 다르게 두 개의 변수를 한번에 계산하기 위해 배열화하였다. 또한 함수 수식에서 각 변수들의 기호를 배열 <code>g</code>의 인덱스로 변경하였다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; numerical_gradient(f, g)<br><span class="hljs-number">1</span>×<span class="hljs-number">2</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br><span class="hljs-number">26.0</span>  <span class="hljs-number">26.0</span><br></code></pre></td></tr></table></figure>
+<p>각자 편미분한 값과 같은 결과가 출력된다.</p>
+<h3 id="경사하강법">경사하강법</h3>
+<p>이제 기울기를 통해 변수들을 최적화하는 알고리즘인 경사하강법을 살펴볼 것이다. '경사하강법(gradient_descent)'은 함수의 미분을 통해 얻은 기울기를 사용해 기존 변수 값을 갱신하여 오차를 점점 줄여나가는 알고리즘이다. 먼저 경사하강법의 수식을 살펴보자.</p>
+<p><span class="math display">\[W:=W-\eta \frac{\partial f}{\partial W}\]</span> <span class="math display">\[B:=B-\eta \frac{\partial f}{\partial B}\]</span></p>
+<p>위 식에서 기호 <span class="math inline">\(\eta\)</span>는 학습률을 나타낸다. <strong>학습률(learning rate)</strong>이란 기울기를 어느 정도 반영할 것인가를 나타낸다. 보통 학습률은 미리 정하며, <span class="math inline">\(0.01\)</span>이나 <span class="math inline">\(0.001\)</span> 등을 사용한다. 위의 수식을 한 문장으로 정리한다면 다음과 같다.</p>
+<p>"이전 변수에서 학습률을 곱한 기울기(편미분)를 뺀 결과가 새로운 변수이며, 이를 여러 번 반복하여 오차를 0으로 만드는 적절한 변수를 반한한다."</p>
+<p>경사하강법의 코드는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> gradient_descent(f,x,lr,step_num)<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:step_num<br>        grad = numerical_gradient(f, x)<br>        x -= grad.*lr<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> x<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 코드는 매개 변수로 함수 공식인 <code>f</code>, 변수의 초기 값인 <code>x</code>, 학습률인 <code>lr</code>,반복 횟수인 <code>step_num</code>을 받는다. 이제 위에서 사용했던 예시를 가지고 경사하강법을 실행해보자. 신경망 학습에서 경사하강법 결과에 대한 이해는 필수적이기에 이번 예시는 신경망에서의 경사하강법이라고 전제하고 설명할 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; g = [<span class="hljs-number">5.0</span> <span class="hljs-number">8.0</span>]   <span class="hljs-comment"># 다변수 (가중치 또는 편향)</span><br>Julia&gt; f(g) = g[<span class="hljs-number">1</span>]^<span class="hljs-number">2</span>+<span class="hljs-number">2</span>*g[<span class="hljs-number">1</span>]*g[<span class="hljs-number">2</span>]+g[<span class="hljs-number">2</span>]^<span class="hljs-number">2</span> <span class="hljs-comment"># 함수 수식 (손실 함수)</span><br></code></pre></td></tr></table></figure>
+<p>위의 식을 바탕으로 오차를 계산하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; f(g)<br><span class="hljs-number">169.0</span><br></code></pre></td></tr></table></figure>
+<p>오차가 <code>169</code>로 도출되었다. 손실 함수의 값이 매우 큰 상태이다. 즉, 아주 좋지 못한 신경망이다. 이제 경사하강법으로 최적화된 가중치와 편향을 찾아보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; gradient_descent(f, g, <span class="hljs-number">0.01</span>, <span class="hljs-number">100</span>)<br><span class="hljs-number">1</span>×<span class="hljs-number">2</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br>-<span class="hljs-number">1.39034</span>  <span class="hljs-number">1.60966</span><br></code></pre></td></tr></table></figure>
+<p>경사하강법의 결과가 나왔다. 확실히 <span class="math inline">\(5\)</span>과 <span class="math inline">\(8\)</span>보다는 매우 작은 값이 출력되었다. 손실 함수 수식에 해당 결과를 대입함으로써 정말 최적화된 값인지 확인해보고자 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; g = [-<span class="hljs-number">1.39034</span>  <span class="hljs-number">1.60966</span>]<br><span class="hljs-number">1</span>×<span class="hljs-number">2</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> -<span class="hljs-number">1.39034</span>  <span class="hljs-number">1.60966</span><br><br>Julia&gt; f(g)<br><span class="hljs-number">0.0481012623999999</span><br></code></pre></td></tr></table></figure>
+<p>오차값이 거의 0에 도달하였다. 최적화에 성공한 것이다. 신경망은 이런 경사하강법을 통해서 적절한 가중치와 편향을 찾는다. 이제는 신경망을 구현하기 위한 모든 재료들을 살펴보았다. 다음 포스트에서는 지금까지 만들었던 함수들을 바탕으로 신경망을 직접 구현해보자.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
+      
+        <a href="/tags/%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95/" class="print-no-link">#경사하강법</a>
+      
+        <a href="/tags/%EB%AF%B8%EB%B6%84/" class="print-no-link">#미분</a>
+      
+        <a href="/tags/%ED%8E%B8%EB%AF%B8%EB%B6%84/" class="print-no-link">#편미분</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>4. 경사하강법</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-4/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 31일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-5/" title="5. 인공신경망 구현 - 수학식 풀이">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">5. 인공신경망 구현 - 수학식 풀이</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-3/" title="3. 손실 함수">
+                        <span class="hidden-mobile">3. 손실 함수</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,817 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hive 아키텍쳐">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Hadoop/hadoop-9/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/146.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/147.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/148.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/149.png">
+<meta property="article:published_time" content="2021-12-30T00:48:06.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:35:57.826Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="Hive">
+<meta property="article:tag" content="빅데이터">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="ecosystem">
+<meta property="article:tag" content="SQL">
+<meta property="article:tag" content="Tez">
+<meta property="article:tag" content="mapreduce">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/146.png">
+  
+  
+  
+  <title>Hive 아키텍쳐 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="Hive 아키텍쳐"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-30 09:48" pubdate>
+          2021년 12월 30일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          158 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Hive 아키텍쳐</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>하둡 에코시스템 중 하나인 Hive의 아키텍처에 대해서 공부한 내용을 정리합니다. <span id="more"></span></p>
+<p>지금까지 HDFS, YARN이라는 하둡의 코어 서비스들을 살펴보았다. 사실 두 서비스만 사용해도 하둡 플랫폼을 사용할 수는 있다. 하지만 <a href="https://dev-bearabbit.github.io/2021/11/21/Hadoop/hadoop-0/">이전 글</a>에서 말했듯이 사용자의 다양성과 편의를 위해서 많은 에코 시스템들이 등장하였으며, 그 중 대표적인 서비스 중 하나가 바로 하이브(Hive)이다.</p>
+<h2 id="hive">Hive</h2>
+<p>하이브(hive)는 Hadoop용 RDB 서비스이다. HDFS를 사용함에 있어 데이터베이스나 테이블 개념으로 디렉토리를 구성하고 관리하며, 이를 바탕으로 SQL과 유사한 HiveQL이라는 문법을 지원한다. 즉, 자바로 맵리듀스 프로그램을 작성하는 것이 아니라 간단한 sql 문법만으로도 Hadoop에 데이터를 저장하거나 가져올 수 있다. 이렇게만 보면 사용방법은 mysql과 같은 RDB와 매우 유사해보인다. 하지만 스키마를 정의하고 데이터를 입력하는 구조는 기존 RDB와는 다르다. 스키마를 먼저 작성하고 그 다음 데이터를 입력해야 하는 기존 RDB와 달리 하이브는 데이터를 HDFS에 파일단위로 저장한 후에 스키마를 정의하여 데이터를 가져올 수 있다. 하이브는 RDB에 요구되는 스키마 정보들을 metastore에 저장하며, metastore는 다른 DBMS를 사용한다.</p>
+<h2 id="hive-roles">Hive Roles</h2>
+<p>하이브를 구성하고 있는 컴포넌트는 아래 시진과 같다.</p>
+<figure>
+<img src="/images/146.png" srcset="/img/loading.gif" lazyload alt="hive1" /><figcaption aria-hidden="true">hive1</figcaption>
+</figure>
+<p>하이브는 크게 metastore 관리, SQL 쿼리 실행의 업무로 나눠지며 이에 따라 컴포넌트들도 분리된다. HiveServer2(HS2)의 경우 하이브 서비스에 대한 모든 클라이언트들의 요청을 받으며, metastore 서버는 HS2에서 요청하는 메타정보들을 API로 제공한다.</p>
+<h2 id="hive-architecture">Hive Architecture</h2>
+<p>하이브 아키텍처는 매우 간단하다.</p>
+<figure>
+<img src="/images/147.png" srcset="/img/loading.gif" lazyload alt="hive2" /><figcaption aria-hidden="true">hive2</figcaption>
+</figure>
+<p>하이브에 접근할 수 있는 방법은 Beeline, Hue, JDBC or ODBC 크게 3가지이다. 여기서 Beeline이란 노드 터미널에서 HS2에 바로 접속할 수 있는 방법이며 Beeline을 사용하면 터미널에서 직접 하이브로 쿼리를 날릴 수 있다. 다음 방법인 Hue는 apache의 오픈소스 서비스 중 하나로 하둡 에코 시스템들을 통합 사용할 수 있는 에디터이다. 마지막으로 JDBC or ODBC는 하둡을 DB로 사용하거나 데이터 IO가 있는 어플리케이션들과 연동할 때 보통 사용되는 방법이다.</p>
+<p><strong>NOTE</strong> JDBC or ODBC 란?<br />
+특정 언어로 구현된 어플리케이션들이 데이터베이스에 접속할 때 두 언어를 변역해주는 인터페이스의 역할을 한다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>용어</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>JDBC(Java DataBase Connectivity)</td>
+<td>JAVA 기반 앱들에서만 사용가능한 API</td>
+</tr>
+<tr class="even">
+<td>ODBC(Open DataBase Connectivity)</td>
+<td>특정 언어와 상관없이 독립적으로 사용가능한 API</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hive-process">Hive Process</h2>
+<p>다음으로는 하이브가 작동되는 과정에 대해서 살펴보고자 한다.</p>
+<figure>
+<img src="/images/148.png" srcset="/img/loading.gif" lazyload alt="hive3" /><figcaption aria-hidden="true">hive3</figcaption>
+</figure>
+<p>간단하게 생각해보면 하이브는 SQL 쿼리를 받아서 맵리듀스 코드로 변환한 뒤 실행 엔진을 통해 작업을 진행한다. 이 과정들을 진행하기 위해서는 위 사진과 같은 과정들이 새부적으로 진행된다. 이를 정리하면 아래와 같다.</p>
+<ol type="1">
+<li>인터페이스 단에서 SQL 쿼리를 받은 후 드라이버에게 전달한다. (Hive Thrift)</li>
+<li>드라이버는 컴파일러에게 SQL 쿼리 컴파일을 요청한다.</li>
+<li>컴파일러는 Metastore 정보를 사용하여 쿼리에 필요한 데이터들을 가져오는 맵리듀스 프로그램을 작성한 후 드라이버에게 전달한다.</li>
+<li>드라이버는 실행 엔진에게 해당 작업을 전달한다.</li>
+<li>실행 엔진은 YARN에게 작업을 요청하여 작업을 진행한 후 그 결과를 가져온다.</li>
+<li>드라이버는 해당 결과를 인터페이스 단으로 다시 송부한다.</li>
+</ol>
+<p>이런 아키텍처를 이해하고 있다면 차후 플랫폼을 사용하다가 발생하는 문제들에 대한 원인을 파악하는 데 도움이 된다. 예를 들어 Hue에서 쿼리를 날렸는데 문제가 발생했다면 HS2와의 세션에서 문제가 생긴 것인지, HS2 내부에서 진행되는 컴파일에서 문제가 생긴 것인지, YARN에서 작업이 돌다가 문제가 생긴 것인지 등을 파악할 수 있다.</p>
+<h2 id="tez-engine">Tez engine</h2>
+<p>초기 Hive는 기본 실행 엔진으로 맵리듀스를 사용하였지만 Hive 3.0부터는 테즈(Tez)를 기본 실행 엔진으로 사용한다. 실행 엔진에 대해서는 따로 글을 작성할 예정이라서 간단하게만 짚고 넘어가보자. 먼저 맵리듀스 엔진과 테즈 엔진의 차이는 다음 사진에 잘 나타나 있다.</p>
+<figure>
+<img src="/images/149.png" srcset="/img/loading.gif" lazyload alt="hive4" /><figcaption aria-hidden="true">hive4</figcaption>
+</figure>
+<p>엔진에 대한 자세한 비교는 다음에 자세히 논의해보고자 한다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/bigdata/" class="category-chain-item">BigData</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/bigdata/hadoop/" class="category-chain-item">hadoop</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/hive/" class="print-no-link">#Hive</a>
+      
+        <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" class="print-no-link">#빅데이터</a>
+      
+        <a href="/tags/hadoop/" class="print-no-link">#hadoop</a>
+      
+        <a href="/tags/ecosystem/" class="print-no-link">#ecosystem</a>
+      
+        <a href="/tags/sql/" class="print-no-link">#SQL</a>
+      
+        <a href="/tags/tez/" class="print-no-link">#Tez</a>
+      
+        <a href="/tags/mapreduce/" class="print-no-link">#mapreduce</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Hive 아키텍쳐</div>
+      <div>https://dev-bearabbit.github.io/ko/Hadoop/hadoop-9/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2021년 12월 30일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Package/pack-0/" title="KBO-data 패키지">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">KBO-data 패키지</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Hadoop/hadoop-8/" title="YARN 아키텍쳐">
+                        <span class="hidden-mobile">YARN 아키텍쳐</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

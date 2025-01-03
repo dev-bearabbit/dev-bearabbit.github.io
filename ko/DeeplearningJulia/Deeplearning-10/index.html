@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10. ReLU vs. Sigmoid 성능 비교">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-10/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/52.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/53.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/54.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/55.png">
+<meta property="article:published_time" content="2020-05-02T05:50:52.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:34:48.806Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="신경망">
+<meta property="article:tag" content="ReLU">
+<meta property="article:tag" content="렐루">
+<meta property="article:tag" content="시그모이드">
+<meta property="article:tag" content="Sigmoid">
+<meta property="article:tag" content="활성화 함수">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/52.png">
+  
+  
+  
+  <title>10. ReLU vs. Sigmoid 성능 비교 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="10. ReLU vs. Sigmoid 성능 비교"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-05-02 14:50" pubdate>
+          2020년 5월 2일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          626 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">10. ReLU vs. Sigmoid 성능 비교</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<p>우리는 이전 장에서 활성화 함수로 시그모이드를 사용한 2층 신경망 학습을 구현하였다. 그렇다면 ReLU를 기반으로 한 신경망과 어떤 차이가 있을까? 이번 글에서는 두 활성화 함수의 성능을 비교할 것이다. 만약 활성화 함수에 대해서 더 공부하고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/29/DeeplearningJulia/Deeplearning-2/">이 글</a>을 참고하면 된다.</p>
+<p>먼저 간단하게 시그모이드와 ReLU 함수를 복습해보자.</p>
+<h2 id="시그모이드-함수">시그모이드 함수</h2>
+<p>시그모이드 함수는 입력값들을 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span>사이의 수로 변환해주는 함수이다. 수식은 아래와 같다.</p>
+<p><span class="math display">\[h(x)=\frac{1}{1+e^{-x}}\]</span></p>
+<p>위의 수식에서 볼 수 있듯이 시그모이드는 지수 함수로 이루어져 있다. 그래서 비교적 계산이 복잡하며, 계산량이 많을수록 느려질 수밖에 없다. 만약 지수함수가 왜 느린지 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/19/Algorithms/Algorithms-0/">이 글</a>에서 자세히 살펴볼 수 있다.</p>
+<h2 id="relu-함수">ReLU 함수</h2>
+<p>ReLU 함수는 음수를 모두 <span class="math inline">\(0\)</span>으로 바꾸고 양수는 그대로 출력하는 함수이다. 수식은 다음과 같다.</p>
+<p><span class="math display">\[
+h(x) =
+ \begin{cases}
+0 &amp; \text{(x≤0)\]</span>}\ x &amp; \ \end{cases} $$</p>
+<p>ReLU 함수는 x값을 그대로 보내거나 0을 보낸다는 점에서 복잡한 계산은 없다. 그렇기에 같은 조건에서 계산을 진행한다면 시그모이드 함수보다는 빠르며, 최근 많이 사용하는 활성화 함수 중 하나이다.</p>
+<h2 id="성능-비교">성능 비교</h2>
+<p>활성화 함수에 대해 간단하게 복습을 했으니 이제 두 함수를 비교해보자. 우리는 이번 시간에 세 가지의 항목을 기준으로 비교할 것이다. 바로 정확도(accuracy), 손실함수 값(loss value) 그리고 시간이다. 정확도는 높을 수록, 손실 함수 값은 낮을 수록, 시간은 적게 소요될수록 좋은 것이라고 판단할 것이다.</p>
+<p><strong>WARNING</strong> 이 글에서 진행하는 성능 비교는 2층 신경망이며, MNIST데이터를 기반으로 한 분류 모델이다. 다른 모델에서 성능은 이 글의 결과와 차이가 있을 수 있다.</p>
+<p>먼저 비교를 위해서 활성화 함수를 제외한 나머지 조건들은 모두 동일하게 셋팅한다. 우리가 비교에 사용할 신경망은 2층 구조이며, 데이터는 이전 글에서도 사용한 <code>MNIST</code> 데이터를 사용한다. 또한 입력층은 <code>784</code>, 은닉층은 <code>50</code>, 출력층은 <code>10</code>으로 설정한다. 마지막으로 배치 사이즈는 <code>100</code>으로, 학습률은 <code>0.1</code>로 설정하여 기본 셋팅을 완료한다. 해당 케이스에서 1에폭은 600번이다. 기본 셋팅에 대해서 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">이 글</a>에서 살펴볼 수 있다.</p>
+<p>성능을 비교하는 과정은 다음과 같다.</p>
+<ol type="1">
+<li><p>각각 활성화 함수로 이루어진 2층 인공신경망을 1에폭 학습한다.</p></li>
+<li><p>한 번 학습할 때마다 해당 신경망이 <code>test</code>데이터 10000개 중 몇 개를 맞추는지 파악하여 정확도를 측정한다.</p></li>
+<li><p>손실 함수와 정확도를 그래프로 나타낸다.</p></li>
+</ol>
+<h3 id="비교-in-순전파-알고리즘">비교 in 순전파 알고리즘</h3>
+<p>첫 번째로는 순전파 알고리즘을 학습에 사용한 신경망이다. 순전파 알고리즘 구현 방법에 대해서 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">인공신경망 구현 - 순전파 알고리즘</a>에서 살펴볼 수 있다.</p>
+<p>두 활성화 함수를 비교하기 위해서는 신경망 모델 생성에 필요한 함수와 구조체들을 정의해야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/MLP">깃허브 페이지</a>에 들어가면 코드를 확인할 수 있다. 참고로 순전파 알고리즘을 작동시키기 위해서는 <code>MNSIT_data.jl</code>과 <code>forward_propagation.jl</code>에 있는 코드를 정의해야 한다.</p>
+<p>순전파에서 활성화 함수를 바꿔주기 위해서는 <code>predict()</code>를 변경해주면 된다. 나머지는 모두 동일하게 사용된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> predict(x)<br>    a1 = (x * params[<span class="hljs-string">&quot;W1&quot;</span>]) .+ params[<span class="hljs-string">&quot;b1&quot;</span>]<br>    z1 = sigmoid.(a1)<br>    a2 = (z1 * params[<span class="hljs-string">&quot;W2&quot;</span>]) .+ params[<span class="hljs-string">&quot;b2&quot;</span>]<br>    <span class="hljs-keyword">return</span> softmax(a2)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 코드는 <code>predict()</code>이다. 함수 중간에 보면 <code>z1</code> 부분에 시그모이드가 있는 것을 확인할 수 있다. 위의 함수로 진행하면 시그모이드 기반의 신경망 모델이 작동된다. 따라서 <code>ReLU()</code>를 사용할 때는 아래의 함수 정의로 사용해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> predict(x)<br>    a1 = (x * params[<span class="hljs-string">&quot;W1&quot;</span>]) .+ params[<span class="hljs-string">&quot;b1&quot;</span>]<br>    z1 = relu.(a1)<br>    a2 = (z1 * params[<span class="hljs-string">&quot;W2&quot;</span>]) .+ params[<span class="hljs-string">&quot;b2&quot;</span>]<br>    <span class="hljs-keyword">return</span> softmax(a2)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이제 준비가 끝났다. 학습을 진행해보자. 참고로 아래의 학습 코드는 바꿀 것이 없다. <strong>활성화 함수를 변경하려면 위의 <code>predict()</code>만 변경하면 된다.</strong></p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@time</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">600</span><br>        batch_mask = rand(<span class="hljs-number">1</span>:train_size, <span class="hljs-number">100</span>)<br>        x_batch = train_x[batch_mask, :]<br>        t_batch = t[batch_mask, :]<br>        TwoLayerNet_numerical_gradient(loss, x_batch, t_batch)<br><br>        SGD(params, grads)<br><br>        temp_loss = loss(x_batch, t_batch)<br>        print(<span class="hljs-string">&quot;NO.<span class="hljs-variable">$i</span>: &quot;</span>)<br>        println(temp_loss)<br>        append!(train_loss_list, temp_loss)<br>        append!(accuracy, evaluate(test_x, test_y))<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>우리는 <code>@time</code>을 사용했기에 학습이 끝나면 하단에 소요 시간이 나타난다. 두 함수에 따라 소요되는 시간은 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">sigmoid: <span class="hljs-number">17632.126342</span> seconds<br>ReLU: <span class="hljs-number">14847.352078</span> seconds<br></code></pre></td></tr></table></figure>
+<p>1에폭이었지만 시그모이드는 약 5시간, ReLU는 약 4시간 소요된 것을 확인할 수 있다. 시간 측면에서 성능은 ReLU의 승리이다.</p>
+<p>또한 정확도인 <code>accuracy</code>와 손실함수값 리스트인 <code>train_loss_list</code>가 도출된다. 이를 사용한 활성화 함수에 따라 분리하여 저장하자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 시그모이드 기반 신경망 학습 후 저장</span><br>sig_forward_acc = vcat(accuracy)<br>sig_forward_loss = vcat(train_loss_list)<br><br><span class="hljs-comment"># ReLU 기반 신경망 학습 후 저장</span><br>relu_forward_acc = vcat(accuracy)<br>relu_forward_loss = vcat(train_loss_list)<br></code></pre></td></tr></table></figure>
+<p>이후 <code>Plots</code>를 사용하여 그래프를 그리면 아래와 같은 결과가 도출된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x = range(<span class="hljs-number">1</span>,length(relu_forward_acc),step=<span class="hljs-number">1</span>)<br>data = [relu_forward_acc sig_forward_acc]<br>labels = [<span class="hljs-string">&quot;ReLU_acc&quot;</span> <span class="hljs-string">&quot;sigmoid_acc&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x,<br>    data,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Accuracy in Forward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="../images/52.png" srcset="/img/loading.gif" lazyload alt="순전파 정확도" /><figcaption aria-hidden="true">순전파 정확도</figcaption>
+</figure>
+<p>정확도를 비교해보면 ReLU 함수가 더 높은 것을 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x1 = range(<span class="hljs-number">1</span>,length(relu_forward_loss),step=<span class="hljs-number">1</span>)<br>data1 = [relu_forward_loss sig_forward_loss]<br>labels = [<span class="hljs-string">&quot;ReLU_loss&quot;</span> <span class="hljs-string">&quot;sigmoid_loss&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x3,<br>    data3,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Loss in Forward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="../images/53.png" srcset="/img/loading.gif" lazyload alt="순전파 손실함수" /><figcaption aria-hidden="true">순전파 손실함수</figcaption>
+</figure>
+<p>손실함수 또한 ReLU가 더 낮다. 즉 순전파에서 ReLU의 완벽한 승리이다.</p>
+<h3 id="비교-in-역전파-알고리즘">비교 in 역전파 알고리즘</h3>
+<p>지금부터는 이전 글에서 만들었던 역전파 알고리즘을 사용하여 신경망 모델을 학습시킬 것이다. 역전파 알고리즘 구현 방법에 대해서 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/20/DeeplearningJulia/Deeplearning-9/">인공신경망 구현 - 역전파 알고리즘</a>에서 살펴볼 수 있다. 또한 역전파의 경우 개념이 추상적이라서 원리를 더 정확히 이해하고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/15/DeeplearningJulia/Deeplearning-8/">인공신경망 구현 - 역전파 설명</a>을 읽어보기를 추천한다.</p>
+<p>순전파와 마찬가지로 두 활성화 함수를 비교하기 위해서는 신경망 모델 생성에 필요한 함수와 구조체들을 정의해야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Machine_Learning_in_Julia/tree/master/MLP">깃허브 페이지</a>에 들어가면 코드를 확인할 수 있다. 역전파 알고리즘 또한 작동시키기 위해서는 <code>MNSIT_data.jl</code>과 <code>backward_propagation.jl</code>에 있는 코드를 정의해야 한다.</p>
+<p>역전파 알고리즘에서 활성화 함수를 변경하기 위해서는 3가지를 체크해야 한다.</p>
+<ul>
+<li><code>predict()</code> 함수 내에 있는 활성화 함수</li>
+<li>신경망 계산에 속해 있는 활성화 함수 층(layer)</li>
+<li>역전파 알고리즘에 속해 있는 활성화 함수 층(layer)</li>
+</ul>
+<p><code>predict()</code>의 경우는 순전파와 똑같기 때문에 설명은 생략하고, 나머지를 변경해보자. 우선 역전파 알고리즘을 살펴보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@time</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">600</span><br>        batch_mask = rand(<span class="hljs-number">1</span>:train_size, <span class="hljs-number">100</span>)<br>        x_batch = train_x[batch_mask, :]<br>        t_batch = t[batch_mask, :]<br><br>        <span class="hljs-comment"># 신겸망 계산</span><br>        z1 = dense_layer_forward(dense1,x_batch,params[<span class="hljs-string">&quot;W1&quot;</span>],params[<span class="hljs-string">&quot;b1&quot;</span>])<br>        a1 = sigmoid_forward(Sigmoid1,z1) <span class="hljs-comment"># 활성화 함수 층</span><br>        z2 = dense_layer_forward(dense2,a1,params[<span class="hljs-string">&quot;W2&quot;</span>],params[<span class="hljs-string">&quot;b2&quot;</span>])<br>        num = SoftmaxwithLoss_forward(z2,t_batch)<br><br>        <span class="hljs-comment"># 역전파</span><br>        last_layer = SoftmaxwithLoss_backward(result)<br>        z2_back = dense_layer_backward(dense2, last_layer)<br>        grads[<span class="hljs-string">&quot;W2&quot;</span>] = dense2.dw<br>        grads[<span class="hljs-string">&quot;b2&quot;</span>] = dense2.db<br>        a1_back = sigmoid_backward(Sigmoid1, z2_back) <span class="hljs-comment"># 활성화 함수 층</span><br>        z1_back = dense_layer_backward(dense1, a1_back)<br>        grads[<span class="hljs-string">&quot;W1&quot;</span>] = dense1.dw<br>        grads[<span class="hljs-string">&quot;b1&quot;</span>] = dense1.db<br><br>        <span class="hljs-comment">#가중치 갱신</span><br>        SGD(params, grads)<br><br>        temp_loss = loss(x_batch, t_batch)<br>        print(<span class="hljs-string">&quot;NO.<span class="hljs-variable">$i</span>: &quot;</span>)<br>        println(temp_loss)<br>        append!(train_loss_list, temp_loss)<br>        append!(accuracy, evaluate(test_x, test_y))<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 코드에 두 개의 활성화 함수 층이 있다. 이 함수를 시그모이드나 ReLU로 변경하면 된다. 위 코드는 시그모이드가 현재 활성화 함수로 사용되고 있다.</p>
+<p>해당 학습을 진행하면 결과로 시간이 나온다. 역전파 알고리즘에서 1에폭 당 소요되는 시간은 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">relu_back : <span class="hljs-number">16.509151</span> seconds<br>sigmoid_back : <span class="hljs-number">19.750770</span> seconds<br></code></pre></td></tr></table></figure>
+<p>역전파 또한 시그모이드 함수보다 ReLU 함수가 더 빠른 것을 확인할 수 있다. 역전파에서도 시간 측면에서의 성능은 ReLU의 승리이다.</p>
+<p>또한 정확도인 <code>accuracy</code>와 손실함수값 리스트인 <code>train_loss_list</code>가 도출된다. 이를 사용한 활성화 함수에 따라 분리하여 저장하자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 시그모이드</span><br>sig_backward_acc = vcat(accuracy)<br>sig_backward_loss = vcat(train_loss_list)<br><br><span class="hljs-comment"># ReLU</span><br>relu_backward_acc = vcat(accuracy)<br>relu_backward_loss = vcat(train_loss_list)<br></code></pre></td></tr></table></figure>
+<p>이후 <code>Plots</code>를 사용하여 그래프를 그리면 아래와 같은 결과가 도출된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x2 = range(<span class="hljs-number">1</span>,length(relu_backward_acc),step=<span class="hljs-number">1</span>)<br>data2 = [relu_backward_acc sig_backward_acc ]<br>labels = [<span class="hljs-string">&quot;ReLU_acc&quot;</span> <span class="hljs-string">&quot;sigmoid_acc&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x2,<br>    data2,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Accuracy in Backward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="../images/54.png" srcset="/img/loading.gif" lazyload alt="순전파 정확도" /><figcaption aria-hidden="true">순전파 정확도</figcaption>
+</figure>
+<p>정확도를 비교해보면 ReLU 함수가 더 높은 것을 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x3 = range(<span class="hljs-number">1</span>,length(relu_backward_loss),step=<span class="hljs-number">1</span>)<br>data3 = [relu_backward_loss  sig_backward_loss]<br>labels = [<span class="hljs-string">&quot;ReLU_loss&quot;</span> <span class="hljs-string">&quot;sigmoid_loss&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x3,<br>    data3,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Loss in Backward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
+<figure>
+<img src="../images/55.png" srcset="/img/loading.gif" lazyload alt="순전파 손실함수" /><figcaption aria-hidden="true">순전파 손실함수</figcaption>
+</figure>
+<p>손실함수 또한 ReLU가 더 낮다. 역전파에서도 ReLU의 완벽한 승리이다.</p>
+<h2 id="결론">결론</h2>
+<p>지금까지 순전파와 역전파 알고리즘에서 어떤 활성화 함수가 학습을 잘 진행하는지, 또 실제 모델로서 잘 예측하는지를 비교해보았다. 결론은 간단한다.</p>
+<blockquote><p>ReLU가 짱이다!</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/%EC%8B%A0%EA%B2%BD%EB%A7%9D/" class="print-no-link">#신경망</a>
+      
+        <a href="/tags/relu/" class="print-no-link">#ReLU</a>
+      
+        <a href="/tags/%EB%A0%90%EB%A3%A8/" class="print-no-link">#렐루</a>
+      
+        <a href="/tags/%EC%8B%9C%EA%B7%B8%EB%AA%A8%EC%9D%B4%EB%93%9C/" class="print-no-link">#시그모이드</a>
+      
+        <a href="/tags/sigmoid/" class="print-no-link">#Sigmoid</a>
+      
+        <a href="/tags/%ED%99%9C%EC%84%B1%ED%99%94-%ED%95%A8%EC%88%98/" class="print-no-link">#활성화 함수</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>10. ReLU vs. Sigmoid 성능 비교</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-10/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 5월 2일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-11/" title="11. 인공신경망 최적화 - Optimizer">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">11. 인공신경망 최적화 - Optimizer</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-9/" title="9. 인공신경망 구현 - 역전파 알고리즘">
+                        <span class="hidden-mobile">9. 인공신경망 구현 - 역전파 알고리즘</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

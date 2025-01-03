@@ -1,0 +1,820 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="러스트의 String과 str의 차이점에 대해 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="String과 str 차이">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Rust/rust-9/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="러스트의 String과 str의 차이점에 대해 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2022-05-17T04:59:17.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:37:48.823Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="str">
+<meta property="article:tag" content="string">
+<meta property="article:tag" content="type">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>String과 str 차이 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="String과 str 차이"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-17 13:59" pubdate>
+          2022년 5월 17일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          442 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">String과 str 차이</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>러스트의 String과 str의 차이점에 대해 정리합니다. <span id="more"></span></p>
+<h2 id="string">String</h2>
+<p><code>String</code>은 u8타입 벡터(Vector)를 포함한 구조체이다. <a target="_blank" rel="noopener" href="https://github.com/rust-lang/rust/blob/master/library/alloc/src/string.rs">Rust 오픈소스 페이지</a>에서 아래의 코드를 확인할 수 있다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">pub</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">String</span> &#123;<br>    vec: <span class="hljs-type">Vec</span>&lt;<span class="hljs-type">u8</span>&gt;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>String</code>은 <code>str</code>과 달리 할당된 데이터의 소유권을 가지고 있으며 변수에 대한 정보는 스택(stack) 메모리에, 데이터는 힙(heap) 메모리에 저장된다. 예시는 아래 그림과 같다.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs text">                     buffer<br>                   /   capacity<br>                 /   /  length<br>               /   /   /<br>            +–––+–––+–––+<br>stack frame │ • │ 8 │ 6 │ &lt;- my_name: String<br>            +–│–+–––+–––+<br>              │<br>            [–│–––––––– capacity –––––––––––]<br>              │<br>            +–V–+–––+–––+–––+–––+–––+–––+–––+<br>       heap │ P │ a │ s │ c │ a │ l │   │   │<br>            +–––+–––+–––+–––+–––+–––+–––+–––+<br><br>            [––––––– length ––––––––]<br><br>[출처]https://blog.thoughtram.io/string-vs-str-in-rust/<br></code></pre></td></tr></table></figure>
+<p>만약 문자열에 데이터를 추가한다면 스택 프레임에서는 capacity와 length만 변동하며, 실제 데이터는 힙 메모리에 추가된다.</p>
+<h2 id="str">str</h2>
+<p><code>str</code>은 러스트에서 기본적으로 제공하는 데이터 타입 중 하나이며, '문자열 리터럴'이라고도 불린다.</p>
+<p><strong>NOTE</strong><br />
+리터럴(Literal)이란?<br />
+리터럴은 변수에 할당되는 데이터 그 자체를 의미한다. 예를 들어 프로그램에서 <code>a = 100</code> 코드는 <code>a</code>라는 변수에 <code>100</code>이라는 값이 할당된다. 여기서 <code>100</code>은 주소나 특정 의미를 내포한 개념이 아니라 그 자체 숫자로의 100을 의미하며, 이런 데이터 값들을 리터럴이라고 한다. 리터럴의 경우 데이터 세그먼트 영역에 저장되기에 불가변적이다. 예시는 아래 그림과 같다.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs text">            my_name: &amp;str<br>            [–––––––––––]<br>            +–––+–––+<br>stack frame │ • │ 6 │ <br>            +–│–+–––+<br>              │                 <br>              +––+                <br>                 │<br> preallocated  +–V–+–––+–––+–––+–––+–––+<br> read-only     │ P │ a │ s │ c │ a │ l │<br> memory        +–––+–––+–––+–––+–––+–––+<br><br> [출처]https://blog.thoughtram.io/string-vs-str-in-rust/<br></code></pre></td></tr></table></figure>
+<p>문자열 리터럴이란 문자(char)들의 시퀀스 또는 문자열 슬라이스를 의미한다. 슬라이스란 String의 일부를 참조하는 방식이며, 데이터에 대한 소유권이 없다. (슬라이스에 대해서 더 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2021/09/18/Rust/rust-2/">슬라이스 타입</a>을 참고할 수 있다.) 문자열 리터럴로 변수를 생성하는 방법은 아래와 같다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 문자들의 시퀀스</span><br><span class="hljs-keyword">let</span> <span class="hljs-variable">v_str</span> = <span class="hljs-string">&quot;This is str&quot;</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-variable">t_str</span> = <span class="hljs-string">&quot;This is str&quot;</span>;<br><span class="hljs-comment">// 문자열 슬라이스</span><br><span class="hljs-keyword">let</span> <span class="hljs-variable">string</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;This is str&quot;</span>);<br><span class="hljs-keyword">let</span> <span class="hljs-variable">slice</span> = &amp;string[<span class="hljs-number">0</span>..<span class="hljs-number">8</span>];<br></code></pre></td></tr></table></figure>
+<p>문자열 리터럴인 변수 'v_str'의 타입은 <code>&amp;str</code>으로 데이터 세그먼트에 저장된 값을 참조하는 방식이다. 그렇기 때문에 똑같은 값을 가진 다른 변수 't_str'을 생성하면 동일한 메모리 주소를 가진다는 것을 확인할 수 있다. 반면 <code>String</code>으로 생성된 변수 'string'을 문자열 슬라이스로 가져온 'slice'는 메모리 값이 다른 것을 확인할 수 있다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">v_str</span> = <span class="hljs-string">&quot;This is str&quot;</span>;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, v_str);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, v_str <span class="hljs-keyword">as</span> *<span class="hljs-keyword">const</span> _);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">t_str</span> = <span class="hljs-string">&quot;This is str&quot;</span>;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, t_str);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, t_str <span class="hljs-keyword">as</span> *<span class="hljs-keyword">const</span> _);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">string</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;This is str&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">slice</span> = &amp;string[..];<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, slice);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, slice <span class="hljs-keyword">as</span> *<span class="hljs-keyword">const</span> _);<br>&#125;<br><span class="hljs-comment">//동일한 메모리 값을 가져온다.</span><br><span class="hljs-string">&quot;This is str&quot;</span><br><span class="hljs-number">0x55e7e918c141</span><br><span class="hljs-string">&quot;This is str&quot;</span><br><span class="hljs-number">0x55e7e918c141</span><br><span class="hljs-comment">//내용은 동일하지만 다른 메모리 값을 가져온다.</span><br><span class="hljs-string">&quot;This is str&quot;</span><br><span class="hljs-number">0x55e7e9b00ad0</span><br></code></pre></td></tr></table></figure>
+<p>그 이유는 문자열(string)의 경우 힙(heap) 메모리에 데이터를 올려두며 이를 참조해가기 때문이다. 이를 그림으로 나타내면 아래와 같다.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs text">            my_name: String   last_name: &amp;str<br>            [––––––––––––]    [–––––––]<br>            +–––+––––+––––+–––+–––+–––+<br>stack frame │ • │ 16 │ 13 │   │ • │ 6 │ <br>            +–│–+––––+––––+–––+–│–+–––+<br>              │                 │<br>              │                 +–––––––––+<br>              │                           │<br>              │                           │<br>              │                         [–│––––––– str –––––––––]<br>            +–V–+–––+–––+–––+–––+–––+–––+–V–+–––+–––+–––+–––+–––+–––+–––+–––+<br>       heap │ P │ a │ s │ c │ a │ l │   │ P │ r │ e │ c │ h │ t │   │   │   │<br>            +–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+–––+<br><br> [출처]https://blog.thoughtram.io/string-vs-str-in-rust/<br></code></pre></td></tr></table></figure>
+<h2 id="비교">비교</h2>
+<p>아래의 표는 지금까지 살펴봤던 <code>str</code>, <code>String</code>을 비교 및 정리한 것이다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>비교</th>
+<th>str</th>
+<th>String</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>타입</td>
+<td>원시 타입 <Br> (Primitive Type)</td>
+<td>구조체</td>
+</tr>
+<tr class="even">
+<td>소유권</td>
+<td>없음</td>
+<td>있음</td>
+</tr>
+<tr class="odd">
+<td>형태</td>
+<td>String의 슬라이스</td>
+<td>확장가능한 배열</td>
+</tr>
+<tr class="even">
+<td>사이즈</td>
+<td>컴파일 시 확인 가능</td>
+<td>컴파일 시 확인 불가</td>
+</tr>
+<tr class="odd">
+<td>메모리</td>
+<td>데이터 세그먼트에 저장</td>
+<td>힙(heap)에 저장</td>
+</tr>
+<tr class="even">
+<td>할당</td>
+<td>&amp;로 참조하여 할당</td>
+<td>바로 할당</td>
+</tr>
+</tbody>
+</table>
+<h2 id="str-vs.-string">&amp;str vs. &amp;String</h2>
+<p>함수를 작성하다보면 문자열 참조를 파라미터로 받을 때 두 옵션 중에 헷갈릴 수 있다. 아래 예시 코드를 보자.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">string</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;Understanding the String concept?&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">v_str</span> = <span class="hljs-string">&quot;This is str&quot;</span>;<br><br>    <span class="hljs-title function_ invoke__">print_data</span>(&amp;string);<br>    <span class="hljs-title function_ invoke__">print_data</span>(v_str);<br>&#125;<br><br><span class="hljs-keyword">fn</span>  <span class="hljs-title function_">print_data</span>(data: &amp;<span class="hljs-type">str</span>) &#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;printing data &#123;&#125; &quot;</span>, data);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>위 코드는 <code>main()</code>에서 'string'이라는 <code>String</code>타입의 데이터를 생성하고 이를 문자열 슬라이스로 참조하여 <code>print_data()</code>로 넘겨준다. 러스트에서 문자열 변수의 참조는 자동으로 문자열 슬라이스로 전환한다. 따라서 <code>print_data()</code>은 'string'도 받을 수 있고, 'v_str'도 인자값으로 받을 수 있다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">string</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;Understanding the String concept?&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">v_str</span> = <span class="hljs-string">&quot;This is str&quot;</span>;<br><br>    <span class="hljs-title function_ invoke__">print_data</span>(&amp;string);<br>    <span class="hljs-title function_ invoke__">print_data</span>(v_str);<br>&#125;<br><br><span class="hljs-keyword">fn</span>  <span class="hljs-title function_">print_data</span>(data: &amp;<span class="hljs-type">String</span>) &#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;printing data &#123;&#125; &quot;</span>, data);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>반면 위 코드는 아래와 같은 에러를 출력한다.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs rust">error[E0308]: mismatched types<br> -<span class="hljs-punctuation">-&gt;</span> src/main.rs:<span class="hljs-number">6</span>:<span class="hljs-number">16</span><br>  |<br><span class="hljs-number">6</span> |     <span class="hljs-title function_ invoke__">print_data</span>(v_str);<br>  |                ^^^^^ expected <span class="hljs-keyword">struct</span> `<span class="hljs-type">String</span>`, found `<span class="hljs-type">str</span>`<br>  |<br>  = note: expected reference `&amp;<span class="hljs-type">String</span>`<br>             found reference `&amp;<span class="hljs-type">str</span>`<br><br>For more information about this error, <span class="hljs-keyword">try</span> `rustc --explain E0308`.<br>error: could not compile `playground` due to previous error<br></code></pre></td></tr></table></figure>
+<p>그 이유는 <code>&amp;String</code>이 <code>&amp;str</code>을 포함하고 있지 않기 때문이다. <code>&amp;String</code>은 힙 메모리에 올라간 데이터를 참조하고자 하기에 문자열 리터럴로 저장된 'v_str'은 받지 못한다. 따라서 해당 코드가 작동하려면 <code>.to_string()</code>을 통해 힙 메모리로 올려야 하는데 참조만 할 변수에 사용하기에는 리소스 낭비라고도 볼 수 있다.</p>
+<h2 id="참고문헌">참고문헌</h2>
+<p>이 글은 아래의 블로그들을 참고하여 작성되었다.</p>
+<p><a target="_blank" rel="noopener" href="https://blog.thoughtram.io/string-vs-str-in-rust/">https://blog.thoughtram.io/string-vs-str-in-rust/</a><br />
+<a target="_blank" rel="noopener" href="https://www.becomebetterprogrammer.com/rust-string-vs-str/">https://www.becomebetterprogrammer.com/rust-string-vs-str/</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/rust/" class="category-chain-item">rust</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rust/" class="print-no-link">#rust</a>
+      
+        <a href="/tags/str/" class="print-no-link">#str</a>
+      
+        <a href="/tags/string/" class="print-no-link">#string</a>
+      
+        <a href="/tags/type/" class="print-no-link">#type</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>String과 str 차이</div>
+      <div>https://dev-bearabbit.github.io/ko/Rust/rust-9/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2022년 5월 17일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Package/pack-2/" title="PyO3란">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">PyO3란</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Git/git-0/" title="Github Action으로 스크래핑 자동화하기">
+                        <span class="hidden-mobile">Github Action으로 스크래핑 자동화하기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

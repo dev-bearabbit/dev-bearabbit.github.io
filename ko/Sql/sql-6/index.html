@@ -1,0 +1,909 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="입양 시각 구하기(2) 해설">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Sql/sql-6/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2022-04-07T13:54:18.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:38:19.331Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="sql">
+<meta property="article:tag" content="programmers">
+<meta property="article:tag" content="question">
+<meta property="article:tag" content="groupby">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>입양 시각 구하기(2) 해설 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="입양 시각 구하기(2) 해설"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-07 22:54" pubdate>
+          2022년 4월 7일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          184 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">입양 시각 구하기(2) 해설</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>프로그래머스 문제 중 하나인 입양 시각 구하기(2) 풀이를 정리합니다. <span id="more"></span></p>
+<hr />
+<p>해당 문제는 프로그래머스에 가입이 되어 있다면 <a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/59413">이 페이지</a>에서 직접 풀어볼 수 있다.</p>
+<h2 id="문제-정보">문제 정보</h2>
+<p>ANIMAL_OUTS 테이블은 동물 보호소에서 입양 보낸 동물의 정보를 담은 테이블이다. ANIMAL_OUTS 테이블 구조는 다음과 같으며, ANIMAL_ID, ANIMAL_TYPE, DATETIME, NAME, SEX_UPON_OUTCOME는 각각 동물의 아이디, 생물 종, 입양일, 이름, 성별 및 중성화 여부를 나타낸다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>NAME</th>
+<th>TYPE</th>
+<th>NULLABLE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ANIMAL_ID</td>
+<td>VARCHAR(N)</td>
+<td>FALSE</td>
+</tr>
+<tr class="even">
+<td>ANIMAL_TYPE</td>
+<td>VARCHAR(N)</td>
+<td>FALSE</td>
+</tr>
+<tr class="odd">
+<td>DATETIME</td>
+<td>DATETIME</td>
+<td>FALSE</td>
+</tr>
+<tr class="even">
+<td>NAME</td>
+<td>VARCHAR(N)</td>
+<td>TRUE</td>
+</tr>
+<tr class="odd">
+<td>SEX_UPON_OUTCOME</td>
+<td>VARCHAR(N)</td>
+<td>FALSE</td>
+</tr>
+</tbody>
+</table>
+<p>보호소에서는 몇 시에 입양이 가장 활발하게 일어나는지 알아보려 한다. 0시부터 23시까지, 각 시간대별로 입양이 몇 건이나 발생했는지 조회하는 SQL문을 작성해라. 이때 결과는 시간대 순으로 정렬해야 한다.</p>
+<h2 id="정답-코드">정답 코드</h2>
+<p>먼저 정답은 아래와 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span><br>    T.HOUR,<br>    IFNULL(D.COUNTS,<br>    <span class="hljs-number">0</span>) <span class="hljs-keyword">AS</span> COUNT<br><span class="hljs-keyword">FROM</span><br>    (<span class="hljs-keyword">SELECT</span><br>        <span class="hljs-variable">@N</span>:<span class="hljs-operator">=</span><span class="hljs-variable">@N</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AS</span> <span class="hljs-keyword">HOUR</span> <br>    <span class="hljs-keyword">FROM</span><br>        ANIMAL_OUTS,<br>        (<span class="hljs-keyword">SELECT</span><br>            <span class="hljs-variable">@N</span>:<span class="hljs-operator">=</span><span class="hljs-number">-1</span> <br>        <span class="hljs-keyword">FROM</span><br>            DUAL) NN LIMIT <span class="hljs-number">24</span>) <span class="hljs-keyword">AS</span> T<br>    <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span><br>        (<br>            <span class="hljs-keyword">SELECT</span><br>                <span class="hljs-keyword">HOUR</span>(DATETIME) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">HOUR</span>,<br>                <span class="hljs-built_in">COUNT</span>(ANIMAL_ID) <span class="hljs-keyword">AS</span> COUNTS<br>            <span class="hljs-keyword">FROM</span><br>                ANIMAL_OUTS <br>            <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span><br>                <span class="hljs-keyword">HOUR</span> <br>            <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span><br>                <span class="hljs-keyword">HOUR</span><br>        ) <span class="hljs-keyword">AS</span> D     <br>            <span class="hljs-keyword">ON</span> T.HOUR <span class="hljs-operator">=</span>  D.HOUR<br></code></pre></td></tr></table></figure>
+<h2 id="문제-해설">문제 해설</h2>
+<p>일단 문제를 크게 3개로 나눠서 생각했다.</p>
+<ul>
+<li>시간대 필드 생성 쿼리</li>
+<li>입양 건수를 세는 쿼리</li>
+<li>최종 도출 쿼리</li>
+</ul>
+<p>각각의 쿼리를 분석해보자.</p>
+<h3 id="시간대-필드-생성-쿼리">시간대 필드 생성 쿼리</h3>
+<p>위 문제는 데이터가 없는 시간대도 쿼리 상에서 결과를 같이 도출해야 한다. 예를 들어 1시에 입양 건수가 없어도 이를 레코드로 가져와야 한다. 따라서 0 ~ 23을 레코드로 가지는 필드를 생성한다. 해당 쿼리는 아래와 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span><br>    <span class="hljs-variable">@N</span>:<span class="hljs-operator">=</span><span class="hljs-variable">@N</span><span class="hljs-operator">+</span><span class="hljs-number">1</span> <span class="hljs-keyword">AS</span> <span class="hljs-keyword">HOUR</span> <br><span class="hljs-keyword">FROM</span><br>    ANIMAL_OUTS,<br>    (<span class="hljs-keyword">SELECT</span><br>        <span class="hljs-variable">@N</span>:<span class="hljs-operator">=</span><span class="hljs-number">-1</span> <br>    <span class="hljs-keyword">FROM</span><br>        DUAL) NN LIMIT <span class="hljs-number">24</span>)<br></code></pre></td></tr></table></figure>
+<p><code>DUAL</code>은 함수에 따른 결과값을 도출하고 싶을 때 사용하는 임시 더미 테이블이다. 변수 <code>N</code>에 <code>-1</code>을 할당하여 더미 테이블을 생성한다. 생성된 더미 테이블은 아래와 같다.</p>
+<table>
+<thead>
+<tr class="header">
+<th><span class="citation" data-cites="N">@N</span>:=-1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+<p>위 더미와 ANIMAL_OUTS을 조인한 결합 테이블에서 1씩 더해지는 변수 <code>N</code>을 조회하여 가져온다. <code>LIMIT</code> 으로 24로 제한을 두어 0부터 23까지 레코드가 도출되도록 한다. 위 쿼리의 결과는 아래와 같다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>HOUR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>...</td>
+</tr>
+<tr class="even">
+<td>22</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+</tr>
+</tbody>
+</table>
+<h3 id="입양-건수를-세는-쿼리">입양 건수를 세는 쿼리</h3>
+<p>이 쿼리는 ANIMAL_ID의 개수를 확인하여 각 시간별로의 입양 건수를 가져온다. 해당 쿼리는 아래와 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span><br>    <span class="hljs-keyword">HOUR</span>(DATETIME) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">HOUR</span>,<br>    <span class="hljs-built_in">COUNT</span>(ANIMAL_ID) <span class="hljs-keyword">AS</span> COUNTS<br><span class="hljs-keyword">FROM</span><br>    ANIMAL_OUTS <br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span><br>    <span class="hljs-keyword">HOUR</span> <br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span><br>    <span class="hljs-keyword">HOUR</span><br></code></pre></td></tr></table></figure>
+<p><code>ANIMAL_OUTS</code>라는 테이블에는 DATETIME 타입의 날짜 및 시간 필드가 있다. 해당 필드에서 <code>HOUR()</code>을 사용하여 시간만을 도출하고 이를 <code>GROUP BY</code> 대상으로 사용하여 각 시간대별로 입양 건수가 합쳐져서 반환될 수 있도록 한다. 다음으로 <code>ORDER BY</code>하여 시간대 별로 정렬한다. 위 쿼리의 결과는 아래와 같다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>HOUR</th>
+<th>COUNTS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>7</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>위 결과에서 입양 건수가 있는 시간대만 반환되는 것을 볼 수 있다.</p>
+<h3 id="최종-도출-쿼리">최종 도출 쿼리</h3>
+<p>이제 위 두개의 쿼리를 하나로 합쳐서 가져오면 된다. 먼저 쿼리의 구조를 살펴보자.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span><br>    T.HOUR,<br>    IFNULL(D.COUNTS,<br>    <span class="hljs-number">0</span>) <span class="hljs-keyword">AS</span> COUNT<br><span class="hljs-keyword">FROM</span><br>    (시간대 쿼리) <span class="hljs-keyword">AS</span> T<br>    <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span><br>    (입양건수 쿼리) <span class="hljs-keyword">AS</span> D     <br>            <span class="hljs-keyword">ON</span> T.HOUR <span class="hljs-operator">=</span>  D.HOUR<br></code></pre></td></tr></table></figure>
+<p>위 쿼리는 두 테이블의 HOUR 필드를 기준으로 <code>LEFT JOIN</code>하여 시간 테이블인 <code>T</code>의 HOUR 필드와 입양건수 테이블인 <code>D</code>의 COUNT 필드의 값을 가져온다. 또한 <code>T</code>의 HOUR 필드 값이 <code>D</code>에 없는 경우 발생하는 NULL은 <code>IFNULL()</code>을 통해 0으로 변경한다. 위 쿼리의 결과는 아래와 같으며, 이는 정답 예시와 동일하다.</p>
+<table>
+<thead>
+<tr class="header">
+<th>HOUR</th>
+<th>COUNT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/sql/" class="category-chain-item">sql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/sql/" class="print-no-link">#sql</a>
+      
+        <a href="/tags/programmers/" class="print-no-link">#programmers</a>
+      
+        <a href="/tags/question/" class="print-no-link">#question</a>
+      
+        <a href="/tags/groupby/" class="print-no-link">#groupby</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>입양 시각 구하기(2) 해설</div>
+      <div>https://dev-bearabbit.github.io/ko/Sql/sql-6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2022년 4월 7일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Git/git-0/" title="Github Action으로 스크래핑 자동화하기">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Github Action으로 스크래핑 자동화하기</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Engineering/engineering-1/" title="Schema on Read란">
+                        <span class="hidden-mobile">Schema on Read란</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="AWS에서 계정을 만드는 방법을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS 계정 생성하기">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/AWS/AWS-1/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="AWS에서 계정을 만드는 방법을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/83.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/84.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/85.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/86.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/87.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/88.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/89.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/90.png">
+<meta property="article:published_time" content="2020-09-13T02:21:35.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:33:12.168Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="cloud">
+<meta property="article:tag" content="클라우드">
+<meta property="article:tag" content="Amazon">
+<meta property="article:tag" content="아마존">
+<meta property="article:tag" content="계정">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/83.png">
+  
+  
+  
+  <title>AWS 계정 생성하기 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="AWS 계정 생성하기"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-09-13 11:21" pubdate>
+          2020년 9월 13일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          125 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AWS 계정 생성하기</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>AWS에서 계정을 만드는 방법을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="aws-계정의-종류">AWS 계정의 종류</h2>
+<p>AWS 사이트에 들어가 로그인을 눌러보면 아래의 그림과 같이 루트 사용자와 IAM 사용자라는 2가지의 로그인 방식이 나온다.</p>
+<figure>
+<img src="/images/83.png" srcset="/img/loading.gif" lazyload alt="AWS1" /><figcaption aria-hidden="true">AWS1</figcaption>
+</figure>
+<p>그렇다면 이 두 사용자의 차이는 무엇일까? 이에 대해서 하나씩 살펴보자.</p>
+<ul>
+<li><p>루트 사용자 루트 사용자(root user)는 이름에서도 알 수 있듯이 AWS의 모든 서비스를 통제할 수 있는 가장 근본적인 계정이다. 가상 서버나 데이터 스토리지를 활성화하는 등의 AWS의 기초적인 서비스들을 활성화할 수 있으며, IAM 사용자 계정에 특정 권한을 부여할 수도 있다. 만약 작은 회사가 AWS를 사용한다면 루트 사용자 계정은 인사 관리자나 업무를 할당해주는 담당자가 맡아서 관리할 것이다.</p></li>
+<li><p>IAM 사용자 IAM 사용자는 루트 사용자가 위임해준 권한만을 사용할 수 있는 계정이다. 예를 들어 DB 관리자에게 데이터베이스에 접근할 수 있는 권한을 줄 때, 루트 계정에 IAM 사용자를 추가하여 데이터베이스 접근 권한만을 위임하면 된다. IAM 사용자를 사용하는 이유는 권한을 나눔으로써 데이터 유실 등 예상치 못한 피해를 막기 위함이다.</p></li>
+</ul>
+<h2 id="aws-계정-생성하기">AWS 계정 생성하기</h2>
+<p>이제 위에서 살펴봤던 계정들을 직접 생성해보자. 먼저 루트 사용자 계정을 만들 것이다. 계정 로그인 하단에 보면 <code>AWS 계정 새로 만들기</code>라는 버튼이 있다. 이 버튼을 누르면 아래와 같은 페이지가 나타난다.</p>
+<figure>
+<img src="/images/84.png" srcset="/img/loading.gif" lazyload alt="AWS2" /><figcaption aria-hidden="true">AWS2</figcaption>
+</figure>
+<p>빈칸에 알맞은 개인 정보를 입력하고 아래의 <code>계정 만들기</code>를 누르면 새로운 계정을 만들 수 있다. 여기서 생성되는 계정은 <strong>루트 사용자 계정</strong>이다. 위 이미지 왼쪽에 보면 <code>프리 티어 엑세스 포함</code>이라는 문구를 확인할 수 있다. 프리 티어(free tier)란 아마존에서 제공하는 서비스 중 일부를 무료로 체험해볼 수 있는 서비스이다. 보통 계정을 새로 만들 때 해당 서비스가 자동으로 포함된다. 만약 프리 티어에 대해 자세히 알고 싶다면 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/free/?all-free-tier.sort-by=item.additionalFields.SortRank&amp;all-free-tier.sort-order=asc">해당 페이지</a>를 확인해보자.</p>
+<p>루트 사용자 계정을 생성했다면 다음으로 IAM 사용자 계정을 추가해보자. IAM 계정을 추가하는 방법은 다음과 같다.</p>
+<p><strong>(1) 루트 계정 로그인한 후, 오른족 상단의 내 계정에서 보안 자격 증명으로 들어간다.</strong></p>
+<figure>
+<img src="/images/85.png" srcset="/img/loading.gif" lazyload alt="AWS3" /><figcaption aria-hidden="true">AWS3</figcaption>
+</figure>
+<p><strong>(2) 아래의 사진과 같은 페이지가 나오면 대시보드의 '그룹'을 클릭하여 들어간다.</strong></p>
+<figure>
+<img src="/images/86.png" srcset="/img/loading.gif" lazyload alt="AWS4" /><figcaption aria-hidden="true">AWS4</figcaption>
+</figure>
+<p><strong>(3) 그룹에서 새로운 그룹 생성을 누른 후, 해당 그룹의 이름을 입력하고 다음 단계로 넘어간다. 보통 그룹 이름으로는 직군을 사용한다.</strong></p>
+<figure>
+<img src="/images/87.png" srcset="/img/loading.gif" lazyload alt="AWS5" /><figcaption aria-hidden="true">AWS5</figcaption>
+</figure>
+<p><strong>(4) 헤당 그룹에 부여할 권한을 선택한다. 해당 프로젝트에서는 가상 서버를 돌리고 훈련 데이터를 저장해야 하기 때문에 <code>AmazonEC2FullAccess</code>와 <code>AmazonS3FullAccess</code>, <code>AdministratorAccess</code> 권한을 얻을 것이다. 이것들을 찾아서 체크한 후 다음 단계로 넘어간다.</strong></p>
+<figure>
+<img src="/images/88.png" srcset="/img/loading.gif" lazyload alt="AWS6" /><figcaption aria-hidden="true">AWS6</figcaption>
+</figure>
+<p><strong>(5) 검토에서 최종적으로 확인한 후 그룹을 생성한다. 이제 IAM 사용자 계정을 만들 수 있는 그룹이 생겼다. 해당 그룹 안에 IAM 사용자를 추가해보자.</strong></p>
+<p><strong>(6) 대시보드에 '사용자' 파트로 들어가서 사용자 추가를 클릭한 후, 이름을 입력하고 프로그래밍 방식 엑세스를 선택한다. 우리는 커맨드라인에서 바로 AWS을 연결하기 때문에 콘솔 로그인은 제외하였다. 만약 콘솔로도 해당 계정을 사용하고 싶다면 아래의 엑세스 방식도 추가로 선택할 수 있다.</strong></p>
+<figure>
+<img src="/images/89.png" srcset="/img/loading.gif" lazyload alt="AWS7" /><figcaption aria-hidden="true">AWS7</figcaption>
+</figure>
+<p><strong>(7) 아까 만들었던 그룹에 해당 사용자를 추가한다. 아래에 나타나는 그룹을 클릭한 뒤, 다음 단계로 넘어가면 된다.</strong></p>
+<figure>
+<img src="/images/90.png" srcset="/img/loading.gif" lazyload alt="AWS8" /><figcaption aria-hidden="true">AWS8</figcaption>
+</figure>
+<p><strong>(8) 다음으로는 태그 설정이다. 보통 회사에서는 직위와 이메일, 사내 번호 등을 추가하여 사용자의 정보를 추가한다. 하지만 우리는 개인 계정이기 때문에 그냥 다음 단계로 바로 넘어간다. 이후 한번 더 검토를 한 후 <code>사용자 만들기</code>를 누르면 IAM 사용자 추가가 완료된다.</strong></p>
+<p><strong>Warning</strong> IAM 사용자를 생성하면 엑세스 키와 엑세스 시크릿 키가 제공된다. 사용자를 생성할 때만 볼 수 있기 때문에 잊지 말고 다른 곳에 옮겨 적어두어야 한다.</p>
+<p>지금까지 AWS 계정의 종류와 생성 방법에 대해서 알아보았다. 다음 글에서는 생성한 IAM 계정을 통해 커맨드라인에서 AWS을 연결하는 방법에 대해서 알아볼 것이다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/devops/" class="category-chain-item">DevOps</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/devops/aws/" class="category-chain-item">aws</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/aws/" class="print-no-link">#AWS</a>
+      
+        <a href="/tags/cloud/" class="print-no-link">#cloud</a>
+      
+        <a href="/tags/%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C/" class="print-no-link">#클라우드</a>
+      
+        <a href="/tags/amazon/" class="print-no-link">#Amazon</a>
+      
+        <a href="/tags/%EC%95%84%EB%A7%88%EC%A1%B4/" class="print-no-link">#아마존</a>
+      
+        <a href="/tags/%EA%B3%84%EC%A0%95/" class="print-no-link">#계정</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AWS 계정 생성하기</div>
+      <div>https://dev-bearabbit.github.io/ko/AWS/AWS-1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 9월 13일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/AWS/AWS-2/" title="커맨드라인으로 AWS 접속하기">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">커맨드라인으로 AWS 접속하기</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/AWS/AWS-0/" title="AWS 기초">
+                        <span class="hidden-mobile">AWS 기초</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

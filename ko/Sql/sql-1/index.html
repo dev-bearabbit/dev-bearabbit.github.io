@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="mariaDB에서 기본적으로 사용하는 명령어들을 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mariaDB 기본적인 명령어 모음">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Sql/sql-1/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="mariaDB에서 기본적으로 사용하는 명령어들을 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-10-10T00:58:01.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:38:07.440Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="sql">
+<meta property="article:tag" content="database">
+<meta property="article:tag" content="명령어">
+<meta property="article:tag" content="mariaDB">
+<meta property="article:tag" content="RDBMS">
+<meta property="article:tag" content="WHERE">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>mariaDB 기본적인 명령어 모음 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="mariaDB 기본적인 명령어 모음"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-10 09:58" pubdate>
+          2020년 10월 10일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          512 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">mariaDB 기본적인 명령어 모음</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>mariaDB에서 기본적으로 사용하는 명령어들을 정리한 글입니다. <span id="more"></span></p>
+<hr />
+<h2 id="테이블에-복수-데이터-추가">테이블에 복수 데이터 추가</h2>
+<p>만약 테이블에 여러 개의 데이터를 한번에 입력해야 한다면 어떻게 해야할까? <code>VALUES</code> 아래에 여러 개의 데이터를 (,)를 사용하여 입력하면 된다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br><span class="hljs-keyword">VALUES</span><br>(<span class="hljs-string">&#x27;값1_A&#x27;</span>, <span class="hljs-string">&#x27;값2_A&#x27;</span>), (<span class="hljs-string">&#x27;값1_B&#x27;</span>, <span class="hljs-string">&#x27;값2_B&#x27;</span>), (<span class="hljs-string">&#x27;값1_C&#x27;</span>, <span class="hljs-string">&#x27;값2_C&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h2 id="특정-데이터-찾기">특정 데이터 찾기</h2>
+<p>테이블에서 특정한 조건의 데이터를 찾을 때는 <code>WHERE</code>절을 사용하면 된다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;특정 조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>위의 코드는 카테고리에서 특정 조건을 만족하는 행(record)의 전체 데이터를 가져오라는 요청이다. 만약 전체데이터가 아닌 특정 열의 데이터를 가져오고 싶다면 앞의 <code>*</code>를 원하는 열의 이름으로 변경해주면 된다. 특정 열 이름은 여러 개 입력할 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  <span class="hljs-string">&#x27;원하는 열 이름_1&#x27;</span>,<span class="hljs-string">&#x27;원하는 열 이름_2&#x27;</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;특정 조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>그렇다면 특정 열의 전체 데이터는 어떻게 볼 수 있을까? 간단하다. <code>WHERE</code>절을 제외하고 입력하면 된다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  <span class="hljs-string">&#x27;원하는 열 이름_1&#x27;</span>,<span class="hljs-string">&#x27;원하는 열 이름_2&#x27;</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="where-조건-사용법">WHERE 조건 사용법</h2>
+<p>조건에 들어갈 수 있는 기본적인 비교 연산자는 다음과 같다.</p>
+<ul>
+<li>'=' : 같다</li>
+<li>'&lt;&gt;' : 같지 않다</li>
+<li>'&lt;' : 조건보다 작다 (미만)</li>
+<li>'&gt;' : 조건보다 크다 (초과)</li>
+<li>'&lt;=' : 조건과 같거나 작다 (이하)</li>
+<li>'&gt;=' : 조건과 같거나 크다 (이상)</li>
+</ul>
+<h2 id="작은따옴표가-포함된-정보">작은따옴표가 포함된 정보</h2>
+<p>'은 SQL의 문법으로 사용되기 때문에 텍스트로 사용되는 경우 내용 안의 작은따옴표에  붙여서 추가해야 한다. 기호 개행문자를 표시한 것이다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br><span class="hljs-keyword">VALUES</span><br>(<span class="hljs-string">&#x27;값1\&#x27;</span>s<span class="hljs-string">&#x27;, &#x27;</span>값<span class="hljs-number">2</span>\<span class="hljs-string">&#x27;s&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p>위 코드는 테이블에 <code>값1's</code>, <code>값2's</code>를 추가하는 코드이다. 중간의 어퍼스트로피(Apostrophe)는 텍스트 문자로 들어간다.</p>
+<h2 id="쿼리들의-결합-and-or">쿼리들의 결합 (AND, OR)</h2>
+<p>복수의 조건을 사용하여 쿼리를 요청할 수 있다. 복수로 쿼리를 주는 기본적인 방법은 크게 <code>AND</code>와 <code>OR</code>이 있다.</p>
+<h3 id="and">AND</h3>
+<p><code>AND</code>는 주어지는 조건을 모두 만족하는 레코드를 모두 가져온다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리_1&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;특정 조건_1&#x27;</span> <span class="hljs-keyword">AND</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리_2&#x27;</span> <span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;특정 조건_2&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<h3 id="or">OR</h3>
+<p><code>OR</code>는 주어지는 조건 중 하나 이상 만족하는 레코드를 모두 가져온다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리_1&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;특정 조건_1&#x27;</span> <span class="hljs-keyword">OR</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리_2&#x27;</span> <span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;특정 조건_2&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="비교연산자로-문자열-처리">비교연산자로 문자열 처리</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;C&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>비교 연산자 조건에 알파벳을 입력하는 경우는 알파벳 순서를 기준으로 데이터를 가져온다. 위 코드의 경우 카테고리의 첫 글자가 C 순서보다 먼저인 A, B인 경우만 반환한다.</p>
+<h2 id="null">NULL</h2>
+<p>NULL은 데이터가 없는 경우 기본 값으로 이용되기도 하며, 쓰는 방법에 따라서 유용하기도 하다.</p>
+<h3 id="null-포함된-데이터-추가하기">NULL 포함된 데이터 추가하기</h3>
+<p>입력하려는 레코드의 일부 값이 없는 경우, 값이 없는 위치에 NULL을 입력하면 바로 레코드를 추가할 수 있다. 이런 방법은 앞에 카테고리 이름을 지정할 필요가 없기 때문에 매우 편리하다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br><span class="hljs-keyword">VALUES</span><br>(<span class="hljs-string">&#x27;값1&#x27;</span> , <span class="hljs-keyword">NULL</span>, <span class="hljs-string">&#x27;값3&#x27;</span>, <span class="hljs-string">&#x27;값4&#x27;</span>, <span class="hljs-string">&#x27;값5&#x27;</span>, <span class="hljs-keyword">NULL</span>);<br></code></pre></td></tr></table></figure>
+<h3 id="null-포함된-데이터-찾기">NULL 포함된 데이터 찾기</h3>
+<p>만약 특정 카테고리에 NULL값이 포함된 경우를 찾아야 할 때는 어떻게 하면 좋을까? 아래의 코드를 입력하여 확인할 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="문자-일부만으로-데이터-찾기-like">문자 일부만으로 데이터 찾기 (LIKE)</h2>
+<p>특정 카테고리에서 'World'로 끝나는 레코드를 찾고 싶다면 아래의 코드를 사용할 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;%World&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>명령어 <code>LIKE</code>는 <code>%</code>와 <code>_</code> 기호를 사용할 수 있다. <code>%World</code>는 World 앞에 오는 글자들의 수가 몇이든 상관하지 않으며, <code>_World</code>는 World 앞에 하나의 글자만 있는 경우를 반환한다.</p>
+<h2 id="사이-값-찾기">사이 값 찾기</h2>
+<p>특정 카테고리에서 두 개의 값 사이에 해당하는 경우를 가져오고 싶다면 어떻게 해야할까? 물론 <code>AND</code>를 사용하여 두 개의 조건을 연결할 수도 있지만 명령어 <code>BETWEEN</code>을 사용해서도 해결할 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-keyword">BETWEEN</span> <span class="hljs-string">&#x27;조건1&#x27;</span> <span class="hljs-keyword">AND</span> <span class="hljs-string">&#x27;조건2&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>위 코드는 특정 카테고리가 조건1과 조건2 사이인 경우를 모두 반환하라는 쿼리이다.</p>
+<h2 id="or-여러-개-in">OR 여러 개 == IN</h2>
+<p>조건 여러 개를 <code>OR</code>을 통해 사용하고 싶은 경우, 조건들 모두를 <code>OR</code>로 연결하는 경우도 있지만 코드만 길어지고 번거롭다. 명령어 <code>IN</code>을 사용하면 간결하게 여러 개의 조건을 <code>OR</code>과 동일하게 사용할 수 있다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건1&#x27;</span> <span class="hljs-keyword">OR</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건2&#x27;</span> <span class="hljs-keyword">OR</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건3&#x27;</span>;<br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;soda&#x27;</span>, <span class="hljs-string">&#x27;sprite&#x27;</span>,<span class="hljs-string">&#x27;tonic water&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h2 id="not-사용법">NOT 사용법</h2>
+<p>명령어 <code>NOT</code>은 해당 조건을 제외한 나머지 레코드를 반환한다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;soda&#x27;</span>, <span class="hljs-string">&#x27;sprite&#x27;</span>,<span class="hljs-string">&#x27;tonic water&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<p>NULL 값의 경우 IN, NOT IN 모두 포함되지 않는다.</p>
+<h2 id="delete-데이터-삭제하기">DELETE 데이터 삭제하기</h2>
+<p><code>DELETE</code>은 레코드를 삭제할 때 사용하는 명령어이다. 보통 어떤 레코드의 변경사항이 생기면 새로운 레코드를 추가하고 이전의 레코드를 삭제하는 식으로 데이터를 관리한다. 명령어를 사용하는 방법은 아래와 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>위 코드는 <code>WHERE</code> 조건에 해당하는 레코드만 삭제한다. 여기서 주의해야 할 점은 <code>WHERE</code>로 특정 레코드의 조건을 주지 않는다면, <code>DELETE</code>는 해당 테이블의 모든 레코드를 삭제한다.</p>
+<p><strong>NOTE</strong> 안전하게 삭제하는 방법</p>
+<p>만약 WHERE 명령어를 잘못 준 상태로 DELETE를 사용한다면 의도치 않게 다른 데이터들이 삭제될 수 있다. 따라서 SELECT을 사용하여 사용하려는 WHERE 명령어가 원하는 데이터만 가져오는지 확인한 후에 DELETE을 사용하는 것이 안전하다. 따라서 순서는 다음과 같다.</p>
+<ol type="1">
+<li><code>SELECT</code>을 사용하여 변경하려는 데이터 확인</li>
+<li><code>INSERT</code>를 사용하여 변경된 데이터 추가</li>
+<li><code>DELETE</code>을 사용하여 이전 데이터 삭제</li>
+</ol>
+<h2 id="update-데이터-변경하기">UPDATE 데이터 변경하기</h2>
+<p>만약 기존 레코드에서 특정 조건에 해당하는 값만 수정하고 싶다면, 명령어 <code>UPDATE</code>를 사용할 수 있다. <code>UPDATE</code>를 적용하는 코드는 다음과 같다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">SET</span> <span class="hljs-string">&#x27;변경할 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;새로운 값&#x27;</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용될 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p>위 코드는 <code>SET</code>과 <code>WHERE</code> 두 가지가 같이 사용되고 있다. 먼저 <code>SET</code>은 변경할 카테고리의 값들을 전부 새로운 값으로 변경한다. 따라서 <code>WHERE</code>로 특정 레코드를 지정해주지 않는다면 모든 레코드의 데이터가 변경된다. 그래서 보통 <code>UPDATE</code>와 <code>SET</code>에는 <code>WHERE</code>이 필수적으로 같이 사용된다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/sql/" class="category-chain-item">sql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/sql/" class="print-no-link">#sql</a>
+      
+        <a href="/tags/database/" class="print-no-link">#database</a>
+      
+        <a href="/tags/%EB%AA%85%EB%A0%B9%EC%96%B4/" class="print-no-link">#명령어</a>
+      
+        <a href="/tags/mariadb/" class="print-no-link">#mariaDB</a>
+      
+        <a href="/tags/rdbms/" class="print-no-link">#RDBMS</a>
+      
+        <a href="/tags/where/" class="print-no-link">#WHERE</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>mariaDB 기본적인 명령어 모음</div>
+      <div>https://dev-bearabbit.github.io/ko/Sql/sql-1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 10월 10일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Sql/sql-2/" title="DB 정규화와 기본키 설정하기">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DB 정규화와 기본키 설정하기</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Sql/sql-0/" title="데이터베이스와 테이블 생성하기">
+                        <span class="hidden-mobile">데이터베이스와 테이블 생성하기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

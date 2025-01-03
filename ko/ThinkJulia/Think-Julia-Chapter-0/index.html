@@ -1,0 +1,812 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Why Julia?를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0. Why Julia?">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Why Julia?를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/2020-02-25.png">
+<meta property="article:published_time" content="2020-02-27T07:25:49.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:38:26.256Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/2020-02-25.png">
+  
+  
+  
+  <title>0. Why Julia? - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="0. Why Julia?"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-02-27 16:25" pubdate>
+          2020년 2월 27일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          348 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">0. Why Julia?</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#_why_julia">Why Julia?</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<hr />
+<h2 id="introduction">introduction</h2>
+<p>Julia(이하 줄리아)는 2012년에 개발되었으며, 무료로 사용할 수 있는 오픈소스 프로그래밍 언어 중 하나이다. 사실 프로그래밍 언어를 선택하는 것은 부차적인 문제지만, 이 언어는 선택할만한 가치가 있다. 다음으로 해당 언어의 장점에 대해서 알아보자.</p>
+<ul>
+<li>줄리아는 높은 성능을 위해 개발된 프로그래밍 언어이다.</li>
+<li>줄리아는 다른 데이터 타입에 대한 함수나 메서드도 동적으로 사용 가능한 다중 디스패치(multiple dispatch)를 사용한다. (다중 디스패치는 이후 17장에서 자세히 다룰 예정입니다.)</li>
+<li>줄리아는 상호작용하기 쉬운 동적 타입의 언어이다.</li>
+<li>줄리아는 배우기 쉬운 수준의 문법을 가진다.</li>
+<li>줄리아는 데이터 타입이 정의된 언어(typed programming language)이기 때문에, 사용자의 코드를 더욱 깔끔하고 견고하게 만들어준다.</li>
+<li>줄리아는 확장된 표준 라이브러리들이 있으며, 수많은 다른 패키지들도 사용할 수 있다.</li>
+</ul>
+<p>특히 줄리아는 "두 개의 언어 문제(two language problem)"를 해결하기 때문에 매우 독특한 프로그래밍 언어이다.</p>
+<p><strong>두 개의 언어 문제란?</strong> R과 Python과 같은 고수준 언어들은 성능(속도 등)이 떨어지기 때문에, 결국 실용화하기 위에서는 C나 C++로 다시 코드를 작성해야 하는 문제를 말한다.</p>
+<p>줄리아는 고성능 코드를 작성하기 위해서 다른 프로그래밍 언어가 필요하지 않다. 즉, 줄리아는 병목현상을 자동으로 최적화해줌으로써 프로그래머들의 어려움을 덜어준다.</p>
+<h2 id="프로그램의-방식">프로그램의 방식</h2>
+<p>이 책은 독자들이 '컴퓨터 사이언티스트'처럼 생각할 수 있도록 안내한다. 그들처럼 생각하는 방식은 수학, 공학, 자연과학 등의 특징들을 결합하는 것이다. 구체적인 방식을 확인해보자. 먼저 컴퓨터 사이언티스트들은 수학자처럼 공식을 사용하여 아이디어(구체적인 계산들)를 표현한다. 그 이후 엔지니어와 마찬가지로 필요한 부품을 시스템에 조립하고 여러 대안들의 장단점을 평가하여 해당 아이디어를 설계한다. 마지막으로 과학자처럼 그들은 복잡한 시스템들의 작동을 관찰하고, 가설을 형성하며 검증한다.</p>
+<p>컴퓨터 사이언티스트에게 가장 중요한 능력은 바로 "문제해결(problem solving)" 이다. 문제해결이란 문제를 형식화하고 창의적으로 생각하여 문제에 대한 정확하고 명확한 해결방안을 표현할 수 있는 능력을 말한다. 결론적으로 프로그램을 배우는 과정은 문제해결기술을 연습하는 데 매우 훌륭한 기회라는 것이다. 이것이 이번 챕터의 제목을 "프로그램의 방식"이라고 정한 이유이다.</p>
+<h3 id="프로그램이란">프로그램이란</h3>
+<p>프로그램은 계산을 수행하는 방법을 구체화하는 연속적인 명령이다. 계산은 방정식을 풀거나 다항식의 근을 찾는 것과 같이 수학적인 의미도 있지만, 동시에 문서에서 텍스트를 검색하거나 이미지 처리와 같은 상징적인 의미도 가지고 있다. 명령문 코드의 세부적인 요소들은 언어마다 다르지만, 몇 개의 기본 명령은 모든 언어에서 똑같이 나타난다.</p>
+<ul>
+<li>Input : 파일이나 인터넷, 다른 디바이스 등에서 데이터를 가져오는 것</li>
+<li>Output: 데이터를 스크린에 띄우거나 파일을 저장하는 것, 네트워크를 통해 보내는 것 등을 의미</li>
+<li>Math: 덧셈이나 곱셈처럼 기본적인 수학 작동들을 수행하는 것.</li>
+<li>Conditional execution: 특정 환경들을 확인하고 알맞은 코드를 적용하는 것.</li>
+<li>Repetition: 약간의 변화를 주고 작업을 반복하는 것</li>
+</ul>
+<p>믿거나 말거나 이것이 프로그램의 거의 전부이다. 당신이 사용해왔던 모든 프로그램은 얼마나 복잡한지와는 상관없이 위와 같은 명령들로 만들어졌다. 따라서 프로그래밍은 크고 복잡한 기본 명령들을 충분히 수행될 할 수 있을만한 하위 작업들로 나누어 가는 과정으로 생각할 수 있다.</p>
+<h3 id="줄리아-시작하기">줄리아 시작하기</h3>
+<p>줄리아를 배우기 전에, 먼저 해당 소프트웨어를 설치해야 한다. 만약 당신이 컴퓨터의 OS체제를 알고 있다면, 홈페이지에 들어가 알맞은 소프트웨어를 다운로드 받으면 된다.</p>
+<p>Julia의 REPL(Read-Eval-Print-Loop)는 Julia 코드를 읽고 실행하는 프로그램이다. 해당 창에 Enter키를 입력하면 아래와 같은 그림이 나타난다.</p>
+<figure>
+<img src="/images/2020-02-25.png" srcset="/img/loading.gif" lazyload alt="julia intro" /><figcaption aria-hidden="true">julia intro</figcaption>
+</figure>
+<p>해당 그림의 마지막 줄에 있는 <code>Julia&gt;</code>는 명령을 입력하는 프롬프트(prompt)이며, 이곳에 코드를 입력하면 결괏값(Output)을 받을 수 있다.</p>
+<h3 id="첫-번째-프로그램">첫 번째 프로그램</h3>
+<p>첫 번째 프로그램으로 우리가 작성할 코드는 "Hello, World!" 이다. 코드는 아래 그림과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; println(<span class="hljs-string">&quot;Hello, World!&quot;</span>)<br>Hello, World!<br></code></pre></td></tr></table></figure>
+<p>위 그림은 <code>print</code>코드의 예시이다. 여기서 <code>print</code>코드는 종이에 글씨를 복사하는 것이 아니라, 단지 입력한 코드에 대한 결괏값을 스크린에 보여주는 것을 의미한다. 인용구 기호("")는 글자의 시작과 끝에 사용하며, 결괏값에는 나타나지 않는다. 또한 괄호는 <code>println</code>이 함수라는 것을 알려준다. 함수에 대해서는 3장에서 배울 것이다.</p>
+<h3 id="산술-연산자">산술 연산자</h3>
+<p>"Hello, world!" 다음으로는 사칙연산이다. 줄리아는 덧셈이나 곱셈과 같은 기본적인 연산자들을 제공한다. 연산자 기호들은 <code>+</code>는 덧셈, <code>-</code>는 뺄셈, <code>*</code>는 곱셈, <code>/</code>는 나눗셈이다. 해당 기호들을 사용한 예시는 아래의 그림과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-number">40</span>+<span class="hljs-number">2</span><br><span class="hljs-number">42</span><br><br>julia&gt; <span class="hljs-number">43</span>-<span class="hljs-number">1</span><br><span class="hljs-number">42</span><br><br>julia&gt; <span class="hljs-number">6</span>*<span class="hljs-number">7</span><br><span class="hljs-number">42</span><br><br>julia&gt; <span class="hljs-number">84</span>/<span class="hljs-number">2</span><br><span class="hljs-number">42.0</span><br></code></pre></td></tr></table></figure>
+<p>위의 계산식에서 유일하게 나눗셈만 답이 소수점으로 나오는데, 그 이유는 바로 다음 글인 데이터 타입에서 설명할 것이다.</p>
+<p>마지막으로 연산자 <code>^</code>는 거듭제곱에 대한 기호이다. 즉, 앞의 수를 뒤의 수만큼 제곱하는 것이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-number">6</span>^<span class="hljs-number">2</span>+<span class="hljs-number">6</span><br><span class="hljs-number">42</span><br><br>julia&gt; <span class="hljs-number">2</span>^<span class="hljs-number">5</span>+<span class="hljs-number">10</span><br><span class="hljs-number">42</span><br></code></pre></td></tr></table></figure>
+<h3 id="값-그리고-데이터-타입들">값 그리고 데이터 타입들</h3>
+<p>값(value)은 프로그램이 일할 때 사용하는 가장 기본적인 문자나 숫자를 말한다. 예로 우리가 이미 본 "Hello, World!"나 42.0, 2 등이 있다.</p>
+<p>위에서 제시한 3개의 값은 모두 다른 데이터 타입을 가지고 있다. 각각의 데이터 타입을 살펴보면2는 정수(integer)이며, 42.0은 소수(floating-point number), "Hello, World!"는 문자(string)이다. 위의 데이터 타입을 영어로 기재한 이유는 코드에서 영어의 축약으로 사용되기에 영어로 알아두는 것이 더 편리하기 때문이다.</p>
+<p>만약에 해당 값이 어떤 데이터 타입인지 모르겠다면, REPL에 아래의 코드를 입력해보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; typeof(<span class="hljs-number">2</span>)<br><span class="hljs-built_in">Int64</span><br><br>julia&gt; typeof(<span class="hljs-number">42.0</span>)<br><span class="hljs-built_in">Float64</span><br><br>julia&gt; typeof(<span class="hljs-string">&quot;Hello, World!&quot;</span>)<br><span class="hljs-built_in">String</span><br></code></pre></td></tr></table></figure>
+<p>정수는 <code>int64</code>로 표시되며, 소수는 <code>float64</code>로 표현된다. 또한 문자의 경우는<code>string</code>로 표시된다.</p>
+<p>그렇다면 값 "2"나 "42.0" 의 데이터 타입은 어떨까? 두 값은 숫자처럼 보이지만 인용구를 사용했기 때문에 문자로 인식된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; typeof(<span class="hljs-string">&quot;2&quot;</span>)<br><span class="hljs-built_in">String</span><br><br>julia&gt; typeof(<span class="hljs-string">&quot;42.0&quot;</span>)<br><span class="hljs-built_in">String</span><br></code></pre></td></tr></table></figure>
+<p>큰 정수를 값으로 사용할 때 자연스럽게 1,000,000와 같이 콤마를 넣어 수를 사용한다면, 줄리아에서는 이를 정수로 인식하지 못한다. 줄리아는 콤마를 연속된 정수들을 분리하는 기호로서 인식한다. 그렇기 때문에 만약 위와 같은 효과를 주고 싶다면 1_000_000 와 같이 언더바를 사용해야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-number">1</span>,<span class="hljs-number">000</span>,<span class="hljs-number">000</span><br>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br><br>julia&gt; typeof(<span class="hljs-number">1</span>,<span class="hljs-number">000</span>,<span class="hljs-number">000</span>)<br>ERROR: <span class="hljs-built_in">ArgumentError</span>: typeof: too many arguments (expected <span class="hljs-number">1</span>)<br>Stacktrace:<br> [<span class="hljs-number">1</span>] top-level scope at none:<span class="hljs-number">0</span><br><br>julia&gt; <span class="hljs-number">1_000_000</span><br><span class="hljs-number">1000000</span><br><br>julia&gt; typeof(<span class="hljs-number">1_000_000</span>)<br><span class="hljs-built_in">Int64</span><br></code></pre></td></tr></table></figure>
+<h3 id="형식-언어와-자연어">형식 언어와 자연어</h3>
+<p>자연어는 영어, 스페인어, 한국어와 같이 사람들이 사용하는 언어를 말한다. 이런 언어들은 특정 사람들로부터 인위적으로 발명된 것이 아니라 자연스럽게 진화된 형태이다.</p>
+<p>형식 언어는 특정 필요에 의해서 사람들이 고안한 언어들을 의미한다. 예를 들어, 수학자들이 사용하는 표기법은 숫자와 기호 사이의 관계를 나타내는 데 적합한 형식 언어이며, 화학자들은 형식 언어를 사용하여 분자의 화학구조를 나타낸다. 이와 같이 프로그래밍 언어 또한 계산을 표현하도록 설계된 형식 언어이다.</p>
+<p>형식 언어는 엄격한 문법을 가진다. 예를 들어서 3+3=6은 올바른 구문이지만, 3+=3$6은 올바르지 않다. 또한</p>
+<p>문법은 크게 토큰과 구조로 구성되어 있는데, 토큰은 단어나 숫자, 화학 원소와 같은 언어의 기본 요소이며 구조는 토큰 간의 올바른 연결이 전제된 문장을 의미한다.</p>
+<p>즉, 올바른 문법을 사용했는지 확인하려면,</p>
+<p>적절한 토큰을 사용하였는가?</p>
+<p>올바른 연결로 적절한 구조를 설정였는가?</p>
+<p>위의 두 질문을 잊지 말자.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>프로그래머들은 실수를 하며, 각가지의 이유로 인해 버그(bug)라고 불리는 프로그래밍 에러가 발생한다. 이런 버그들을 추적하는 과정을 디버깅이라고 한다.</p>
+<p>디버깅을 할 때 어려운 버그를 만난다면, 컴퓨터에 대한 분노로 인해 개발자를 그만두고 싶을 수 있다. 하지만 디버깅을 배우는 것은 어렵지만 프로그래밍 이외의 많은 활동에도 유용한 기술이기에 포기하지 않기를 바란다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>0. Why Julia?</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 2월 27일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/AboutHexo/about-hexo-0/" title="Github Page와 Hexo를 이용하여 블로그 만들기">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Github Page와 Hexo를 이용하여 블로그 만들기</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

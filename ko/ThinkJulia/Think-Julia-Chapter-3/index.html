@@ -1,0 +1,850 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Case Study: Interface Design를 한글로 요약 정리한 글입니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3. 사례 연구 - 인터페이스 디자인">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-3/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.  이 포스트는 Case Study: Interface Design를 한글로 요약 정리한 글입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2020-03-02T13:11:41.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:41:51.895Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="Think Julia">
+<meta property="article:tag" content="기초 강의">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>3. 사례 연구 - 인터페이스 디자인 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="3. 사례 연구 - 인터페이스 디자인"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-03-02 22:11" pubdate>
+          2020년 3월 2일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          704 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">3. 사례 연구 - 인터페이스 디자인</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
+</blockquote>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap04">Case Study: Interface Design</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="사례-연구-인터페이스-디자인">사례 연구: 인터페이스 디자인</h2>
+<p>이번 장에서는 함수들을 설계하는 과정들을 볼 수 있는 사례 연구를 살펴볼 것이다.</p>
+<p>이를 진행하기 위해서는 그림을 생성하는 거북이 그래픽(turtle graphics)을 사용해야 한다. 거북이 그래픽은 표준 라이브러리에 포함되어 있지 않기 때문에 해당 모듈을 줄리아 설정에 추가해야 한다.</p>
+<h3 id="거북이">거북이</h3>
+<p>모듈(module)은 관련 함수들을 모아 놓은 파일이다. 줄리아는 표준 라이브러리에서 몇 가지 모듈을 제공하고 있으며, 다른 패키지들도 모듈로 추가할 수 있다.</p>
+<p>패키지를 추가하는 방법은 다음과 같다. 먼저 REPL 창에 엔터 키를 눌러서 시작한다. 이후 REPL에서 <code>]</code>를 입력하면 패키지 설정 모드로 변환된다. 거북이 그래픽을 사용하기 위해서는 아래의 코드를 입력한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">(v1<span class="hljs-number">.0</span>) pkg&gt; add https://github.com/BenLauwens/ThinkJulia.jl<br></code></pre></td></tr></table></figure>
+<p>모듈에 포함되어 있는 함수를 사용하려면, 먼저 <code>using</code>이라는 명령어를 사용하여 모듈을 가져와야 한다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">using</span> ThinkJulia<br>julia&gt; 🐢 = Turtle()<br>Luxor.Turtle(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-literal">true</span>, <span class="hljs-number">0.0</span>, (<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>))<br></code></pre></td></tr></table></figure>
+<p><code>ThinkJulia</code> 모듈은 <code>Luxor.Turtle</code>이라는 객체를 생성하는 <code>Turtle</code> 함수를 제공하며, 해당 객체는 <code>🐢</code>라는 변수에 할당된다.</p>
+<p>거북이를 만든 후에는 함수를 호출하여 거북이를 이동할 수 있다. 예를 들어 거북이를 앞으로 움직이려면 다음과 같은 코드를 입력하면 된다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    forward(🐢, <span class="hljs-number">100</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>@svg</code> 키워드는 SVG그림을 그리는 매크로를 실행한다. 매크로는 줄리아의 고급 기능 중 하나이다. <code>forword</code>의 인수는 🐢와 픽셀 단위의 거리이므로 실제 크기는 각자 디스플레이에 따라 결정된다. 거북이와 함께 호출할 수 있는 다른 함수로는 거북이를 회전시키는 <code>turn</code>이 있으며, 해당 함수의 첫 번째 인수는 🐢가, 두 번째 인수에는 회전 각도가 들어간다.</p>
+<p>또한 각각의 거북이들은 내리거나 올릴 수 있는 펜을 잡고 있다. 펜을 내린다면 거북이가 움직였던 경로들을 남기며, 반대로 펜을 올리면 경로들을 남기지 않는다. 즉, 펜이 내려간 상태에서 거북이가 앞으로 움직이면 거북이가 앞으로 간 경로가 남겨지는 것이다. 이런 함수를 <code>penup</code>, <code>pendown</code>이라고 부른다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">🐢 = Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    forward(🐢, <span class="hljs-number">100</span>)<br>    turn(🐢, -<span class="hljs-number">90</span>)<br>    forward(🐢, <span class="hljs-number">100</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h3 id="간단한-반복">간단한 반복</h3>
+<p>다음과 같이 한번 써보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia">🐢 = Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    forward(🐢, <span class="hljs-number">100</span>)<br>    turn(🐢, -<span class="hljs-number">90</span>)<br>    forward(🐢, <span class="hljs-number">100</span>)<br>    turn(🐢, -<span class="hljs-number">90</span>)<br>    forward(🐢, <span class="hljs-number">100</span>)<br>    turn(🐢, -<span class="hljs-number">90</span>)<br>    forward(🐢, <span class="hljs-number">100</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 예시는 사각형을 그리는 코드이다. 우리는 <code>for</code>문을 사용하여 위의 예시와 같은 똑같은 작업을 더 간단하게 수행할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">4</span><br>          println(<span class="hljs-string">&quot;Hello!&quot;</span>)<br>       <span class="hljs-keyword">end</span><br>Hello!<br>Hello!<br>Hello!<br>Hello!<br></code></pre></td></tr></table></figure>
+<p>해당 예시는 <code>for</code>문의 가장 간단한 예시이다. <code>for</code>문에 대한 자세한 내용은 다른 장에서 더 살펴볼 예정이다. 지금부터 위의 간단한 <code>for</code>문을 이용해서 사각형을 그려보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia">🐢 = Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">4</span><br>        forward(🐢, <span class="hljs-number">100</span>)<br>        turn(🐢, -<span class="hljs-number">90</span>)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>for</code>문의 문법은 함수를 정의하는 것과 비슷하다. 헤더(header)와 본문이 있으며, 마지막에는 키워드 <code>end</code>를 사용한다.</p>
+<p>또한 <code>for</code>문은 본문을 헤더에 지정된 수만큼 반복하므로 루프(loop)라고도 부른다. 위의 예시의 경우는 (<code>i in 1:4</code>처럼 4번이라고 지정했음) 4번 반복 실행한다.</p>
+<h3 id="예시-풀어보기">예시 풀어보기</h3>
+<p>이번 장에서는 거북이를 사용하여 여러 가지 연습을 해볼 것이다.</p>
+<ul>
+<li>거북이를 <code>t</code> 매개 변수로 사용하는 <code>square()</code>를 작성하시오.</li>
+</ul>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> square()<br>       t=Turtle()<br>       <span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>           <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">4</span><br>               forward(t,<span class="hljs-number">100</span>)<br>               turn(t,-<span class="hljs-number">90</span>)<br>           <span class="hljs-keyword">end</span><br>       <span class="hljs-keyword">end</span><br>       <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>t</code>를 <code>sqaure()</code>의 인수로 전달하는 함수를 작성한 후, 매크로를 실행하시오.</li>
+</ul>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> square(t)<br>           <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">4</span><br>               forward(t,<span class="hljs-number">100</span>)<br>               turn(t,-<span class="hljs-number">90</span>)<br>           <span class="hljs-keyword">end</span><br>       <span class="hljs-keyword">end</span><br>🐢=Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>           square(🐢)<br>       <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>변의 길이가 <code>len</code>이 되도록 본문을 수정한 후, <code>len</code>이라는 다른 매개 변수를 <code>square()</code>에 추가하시오.</li>
+</ul>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> square(t, len)<br>           <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">4</span><br>               forward(t, len)<br>               turn(t, -<span class="hljs-number">90</span>)<br>           <span class="hljs-keyword">end</span><br>       <span class="hljs-keyword">end</span><br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>           square(🐢,<span class="hljs-number">200</span>)<br>       <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>square()</code>의 복사본을 만들고 이름을 <code>polygon()</code>으로 변경하시오. 그 후 새로운 매개변수 <code>n</code>을 추가하고 본문을 수정하시오. (n의 외부각도는 360/n 으로 수정하면 된다.)</li>
+</ul>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> polygon(t,len,n)<br>           <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:n<br>               forward(t,len)<br>               turn(t,-<span class="hljs-number">360</span>/n)<br>           <span class="hljs-keyword">end</span><br>       <span class="hljs-keyword">end</span><br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>           polygon(🐢,<span class="hljs-number">100</span>,<span class="hljs-number">5</span>)<br>       <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>t</code> 와 반지름 <code>r</code>를 매개 변수로 하는 <code>circle()</code>를 작성하시오.</li>
+</ul>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circle(t, r)<br>    circum = <span class="hljs-number">2</span>* <span class="hljs-literal">π</span> *r<br>    n=<span class="hljs-number">20</span><br>    len=circum/n<br>    polygon(t, len, n)<br><span class="hljs-keyword">end</span><br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>           circle(🐢,<span class="hljs-number">50</span>)<br>       <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h3 id="캡슐화">캡슐화</h3>
+<p>첫 번째 연습에서는 사각형 그리기 코드를 함수 정의에 넣은 후 거북이를 매개 변수를 전달하여 함수를 호출하도록 요청한다. 해당 코드는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> square(t)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">4</span><br>        forward(t, <span class="hljs-number">100</span>)<br>        turn(t, -<span class="hljs-number">90</span>)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br>🐢 = Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    square(🐢)<br><span class="hljs-keyword">end</span><br>       <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><code>square()</code> 가장 안쪽에 있는 명령문 <code>forward</code>와 <code>turn</code>은 <code>for</code>문에 속해있다는 것을 나타내기 위해 두 번 들여쓰기로 작성한다.</p>
+<p>위의 예시와 같이 코드 조각들을 함수로 감싸는 것을 캡슐화(Encapsulation)라고 한다. 캡슐화의 이점 중 하나는 코드에 이름을 첨부하여 프로그램 과정을 명확하게 정리할 수 있다는 것이다. 또한 한 번 캡슐화를 진행한 이후에는 코드를 재사용할 때 함수 하나만 호출하면 되기 때문에 간편하다.</p>
+<h3 id="일반화">일반화</h3>
+<p>다음으로는 <code>len</code>이라는 매개 변수를 추가하는 것이다. 코드는 아래와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> square(t, len)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">4</span><br>        forward(t, len)<br>        turn(t, -<span class="hljs-number">90</span>)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br>🐢 = Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    square(🐢, <span class="hljs-number">100</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>함수에 매개 변수를 추가하는 것은 해당 함수를 보다 다양한 환경에서 일반적으로 사용할 수 있게 만들어주기 때문에 일반화(Generalization)라고 한다. 매개 변수 <code>len</code>을 추가함으로써 <code>square()</code>는 이제 사각형의 길이를 조정할 수 있게 되었다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> polygon(t, n, len)<br>    angle = <span class="hljs-number">360</span> / n<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:n<br>        forward(t, len)<br>        turn(t, -angle)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br>🐢 = Turtle()<br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    polygon(🐢, <span class="hljs-number">7</span>, <span class="hljs-number">70</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 칠각형을 그리는 코드 예시이다.</p>
+<h3 id="인터페이스-디자인">인터페이스 디자인</h3>
+<p>다음 단계는 반지름 <code>r</code>를 매개 변수로 하는 <code>circle()</code>를 작성하는 것이다. 다음은 다각형 함수인 <code>polygon()</code>을 사용하여 20면 다각형을 그리는 코드이다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circle(t, r)<br>    circumference = <span class="hljs-number">2</span> * <span class="hljs-literal">π</span> * r<br>    n = <span class="hljs-number">20</span><br>    len = circumference / n<br>    polygon(t, n, len)<br><span class="hljs-keyword">end</span><br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    circle(t, r)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>첫 번째 줄은 반지름이 <code>r</code>인 원의 둘레를 계산한다. <code>n</code>은 각도가 변형되는 수이며, <code>len</code>은 선분의 길이이기 때문에 둘레를 <code>n</code>으로 나눠 정의한다. 그러면 20면 다각형을 그릴 수 있다.</p>
+<p>위의 해결안은 문제는 <code>n</code>이 상수라는 것이다. 즉, 매우 큰 원의 경우 선분이 너무 길고 작은 원의 경우는 작은 선분을 그리는데 시간이 낭비된다. 따라서 <code>n</code>을 매개 변수로 사용하여 일반화한다면, 이 문제를 해결할 수 있다. 하지만 이런 일반화는 사용자에게 더 많은 제어권을 부여하지만 인터페이스는 덜 깨끗해진다.</p>
+<p>함수의 인터페이스(interface)는 어떻게 사용되는지에 대한 요약이다. 구체적으로 인터페이스는 매개 변수는 무엇인지, 반환 값은 무엇인지 등의 내용들을 포함하고 있다고 보면 된다. 보통 사용자가 불필요한 세부 사항을 처리할 필요 없이 작업이 수행되는 함수들을 인터페이스가 깨끗하다고 말한다.</p>
+<p>예를 들어, 위의 예제에서 <code>r</code>은 그릴 원을 지정하므로 인터페이스에 속한다. 하지만 <code>n</code>은 원을 그리는 방법에 대한 세부 사항과 관련이 있기 때문에 인터페이스에 속하지 않는다. 따라서 인터페이스를 어지럽히지 말고 둘레에 따라 적절한 <code>n</code>값을 선택하는게 좋다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circle(t, r)<br>    circumference = <span class="hljs-number">2</span> * <span class="hljs-literal">π</span> * r<br>    n = trunc(circumference / <span class="hljs-number">3</span>) + <span class="hljs-number">3</span><br>    len = circumference / n<br>    polygon(t, n, len)<br><span class="hljs-keyword">end</span><br><span class="hljs-meta">@svg</span> <span class="hljs-keyword">begin</span><br>    circle(t, r)<br><span class="hljs-keyword">end</span><br><br></code></pre></td></tr></table></figure>
+<p>위의 코드는 <code>len</code>의 값이 3에 가까울 수 있도록 <code>n</code>을 자동 설정한 코드다. <code>len</code>의 값은 호선의 길이로서 3정도가 원 크기와 상관없이 가장 적합하기에 3으로 결정하였다.</p>
+<p><code>n</code>값에 3을 더해준 것은 다각형의 선분이 적어도 3 이상이라는 것을 보장한다.</p>
+<h3 id="리팩토링">리팩토링</h3>
+<p>이전 장에서 <code>circle()</code>를 설계할 때는 <code>polygon()</code>를 재사용할 수 있었다. 하지만 <code>arc()</code>는 지금까지 만들었던 함수들을 이용할 수 없다. 한가지 대안으로는 다각형의 사본을 만들고, 호선으로 변환하는 것이다. 결과는 다음 코드와 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> arc(t, r, angle)<br>    arc_len = <span class="hljs-number">2</span> * <span class="hljs-literal">π</span> * r * angle / <span class="hljs-number">360</span><br>    n = trunc(arc_len / <span class="hljs-number">3</span>) + <span class="hljs-number">1</span><br>    step_len = arc_len / n<br>    step_angle = angle / n<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:n<br>        forward(t, step_len)<br>        turn(t, -step_angle)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>이 함수의 후반부는 <code>polygon()</code>와 유사해보이지만 핵심요소인 인터페이스를 변경했기 때문에 재사용한 것이라고 볼 수는 없다. 따라서 위의 예시는 <code>angle</code>이라는 변수를 추가하여 <code>polygon()</code>을 일반화하였기 때문에 해당 함수는 더 이상 <code>다각형(polygon)</code>라는 이름을 가질 수 없다.</p>
+<p>지금부터는 더 일반적으로 사용할 수 있는 <code>polyline()</code>을 만들어보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> polyline(t, n, len, angle)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:n<br>        forward(t, len)<br>        turn(t, -angle)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 <code>polyline()</code>을 이용하여 <code>polygon()</code>과 <code>arc()</code>을 더 간단하게 캡슐화할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> polygon(t, n, len)<br>    angle = <span class="hljs-number">360</span> / n<br>    polyline(t, n, len, angle)<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> arc(t, r, angle)<br>    arc_len = <span class="hljs-number">2</span> * <span class="hljs-literal">π</span> * r * angle / <span class="hljs-number">360</span><br>    n = trunc(arc_len / <span class="hljs-number">3</span>) + <span class="hljs-number">1</span><br>    step_len = arc_len / n<br>    step_angle = angle / n<br>    polyline(t, n, step_len, step_angle)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>마지막으로 <code>arc()</code>을 이용하여 <code>circle()</code>를 간단하게 표현할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circle(t, r)<br>    arc(t, r, <span class="hljs-number">360</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>지금까지 복잡했던 코드들을 일반화하고 캡슐화하여 정리하였다. 이와같이 인터페이스를 개선하고 코드 재사용을 위해 프로그램을 정리하는 과정을 리팩토링이라고 한다. 이 경우는 호를 구하는 <code>arc()</code>과 다각형을 구하는 <code>polygon()</code>의 유사점을 발견하여 <code>polyline()</code>으로 정리하였다.</p>
+<p>프로그램을 미리 계획한 경우에는 먼저 <code>polyline()</code>을 작성하여 리팩토링을 생략했겠지만, 대부분 프로젝트 시작시에 모든 인터페이스를 설계하지 못한다. 따라서 리팩토링을 하는 법을 알아두는 것도 중요하다.</p>
+<h3 id="개발-계획">개발 계획</h3>
+<p>개발 계획은 프로그램을 만드는 프로세스이다. 이 사례 연구에서 사용한 프로세스는 “캡슐화 및 일반화”이며, 이 프로세스의 단계는 다음과 같다.</p>
+<ol type="1">
+<li>함수 정의 없이 작은 프로그램을 작성하기.</li>
+<li>일단 프로그램이 작동하면, 일관된 부분을 찾아서 함수로 캡슐화하고 이름을 지정하기</li>
+<li>함수에 적절한 매개 변수를 추가하여 함수를 일반화하기</li>
+<li>프로그램 기능이 원하는만큼 나올 때까지 1-3단계를 반복하기</li>
+<li>리팩토링을 통해 프로그램을 개선하기 (캡슐화와 일반화 다시 점검)</li>
+</ol>
+<p>이 프로세스에는 몇 가지 단점이 있기 때문에, 이후 단점에 대해 알아보고 대안을 논의할 것이다. 하지만 프로그램을 함수로 설정하는 방법을 모르는 경우에는 유용하게 사용할 수 있는 방법이다.</p>
+<h3 id="독스트링docstring">독스트링(Docstring)</h3>
+<p>독스트링(Docstring)의 ‘Doc’은 ‘documentation’의 줄임말이며, 이는 함수 앞에 인터페이스를 설명하는 설명을 의미한다. 아래 예시를 보자.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">polyline(t, n, len, angle)</span><br><span class="hljs-string"></span><br><span class="hljs-string">Draws n line segments with the given length and</span><br><span class="hljs-string">angle (in degrees) between them.  t is a turtle.</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">function</span> polyline(t, n, len, angle)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:n<br>        forward(t, len)<br>        turn(t, -angle)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위의 예시와 같은 문법(<code>“””</code>)을 사용하여 함수 앞에 작성하며, 이후 REPL에서 <code>?</code>를 입력하고 함수의 이름을 치면 문서를 확인할 수 있다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">help?&gt; polyline<br>search:<br><br>  polyline(t, n, len, angle)<br><br>  Draws n line segments with the given length and angle (<span class="hljs-keyword">in</span> degrees) between them. t is a turtle.<br></code></pre></td></tr></table></figure>
+<p>독스트링에는 해당 함수를 사용하기 위한 필수적인 정보가 포함되어 있다. 따라서 팀 단위로 개발을 하는 경우에는 만든 함수에 독스트링을 붙여 다른 사람들도 쉽게 사용할 수 있도록 하는 것이 좋다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>인터페이스는 함수와 사용자 사이의 계약과 같다. 사용자는 특정 매개 변수를 제공하고 함수는 특정 작업을 수행한다. 예를 들어 <code>polyline()</code>에서는 4개의 인수가 필요하다. t는 <code>Turtle()</code>이어야 하며 <code>n</code>은 정수여야 하고, <code>len</code>은 양수여야 한다. <code>angle</code>은 각도로 인식되어야 하며, 도 단위로 설정되어 있다.</p>
+<p>이런 요구사항들은 함수가 실행되기 전에 <code>true</code>로 간주되기 때문에 전제조건(preconditions)이라고 한다. 반대로 함수 작동 끝에 생성되는 결과 등을 사후 조건(postconditions)라고 한다.</p>
+<p>전제 조건의 오류는 사용자의 책임이다. 사용자들이 전제 조건을 어겨서 함수가 제대로 작동하지 않는다면 이는 사용자측에 버그가 있는 것이다. (함수에는 버그가 없다.)</p>
+<p>하지만 만약 전제 조건은 알맞게 작성했는데 사후 조건이 이상하다면, 이것은 함수에 버그가 있는 것이다. 따라서 해당 함수의 전제 조건과 사후 조건을 명확하게 아는 것은 디버깅에 많은 도움을 준다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/language/" class="category-chain-item">Language</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/language/julia/" class="category-chain-item">julia</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/think-julia/" class="print-no-link">#Think Julia</a>
+      
+        <a href="/tags/%EA%B8%B0%EC%B4%88-%EA%B0%95%EC%9D%98/" class="print-no-link">#기초 강의</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>3. 사례 연구 - 인터페이스 디자인</div>
+      <div>https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 3월 2일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-4/" title="4. 조건문과 재귀">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">4. 조건문과 재귀</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-2/" title="2. 함수">
+                        <span class="hidden-mobile">2. 함수</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

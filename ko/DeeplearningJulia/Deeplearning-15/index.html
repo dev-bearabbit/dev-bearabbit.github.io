@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15. im2col의 원리">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-15/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/69.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/70.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/71.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/72.png">
+<meta property="article:published_time" content="2020-06-26T09:55:21.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:35:01.910Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="CNN">
+<meta property="article:tag" content="합성곱">
+<meta property="article:tag" content="이미지신경망">
+<meta property="article:tag" content="풀링">
+<meta property="article:tag" content="Julia">
+<meta property="article:tag" content="모델">
+<meta property="article:tag" content="im2col">
+<meta property="article:tag" content="col2im">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/69.png">
+  
+  
+  
+  <title>15. im2col의 원리 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="15. im2col의 원리"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-06-26 18:55" pubdate>
+          2020년 6월 26일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          440 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">15. im2col의 원리</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<p>이전 글에서 CNN의 원리를 살펴보고 줄리아로 구현하였다. CNN은 4차원 데이터를 다루기 때문에 시간이 매우 오래걸린다. 지난 글에서 학습했던 모델은 그나마 간단한 형태라서 학습을 진행했지만, 더 복잡하고 깊은 신경망에서는 1에폭 학습하는 데 하루 종일 학습해야 할 것이다. 이런 문제로 인해 우리는 좀 더 빠르게 연산처리를 할 수 있는 방법을 구상해야 했고, 그 결과가 <code>im2col()</code>과 <code>col2im()</code>이다. 이번 글에서는 CNN 모델의 학습 속도를 높여줄 <code>im2col()</code>의 원리를 살펴보고 줄리아로 구현할 것이다.</p>
+<h2 id="im2col-의-원리">im2col 의 원리</h2>
+<p><code>im2col()</code>은 4차원의 데이터를 2차원의 데이터로 변경해준다. 해당 설명이 <code>im2col()</code>의 역할 전부이지만, 차원에 익숙하지 않은 사람은 데이터가 어떻게 변화하는지 이해하기 어려울 수 있다. <code>im2col()</code>의 원리를 그림으로 살펴보자.</p>
+<figure>
+<img src="../images/69.png" srcset="/img/loading.gif" lazyload alt="im2col" /><figcaption aria-hidden="true">im2col</figcaption>
+</figure>
+<p><code>im2col()</code>은 합성곱하기 하기 위해 입력 데이터의 형태를 살짝 변형한다. 위 그림을 보면 <span class="math inline">\(5 \times 5 \times 3\)</span> 입력 데이터 2개가 있으며, 이를 <span class="math inline">\(3 \times 3 \times 3 \times 1\)</span> 필터로 합성곱을 진행하기 위해 데이터의 차원을 변경해준다. 즉, <code>im2col()</code>은 입력 데이터가 사칙연산되는 것이 아니라 그냥 데이터의 형태만 바꿔주는 것이다.</p>
+<p>위 그림을 살펴보면 입력 데이터의 차원은 옆으로 추가되며, 배치 데이터의 개수는 밑으로 추가되는 것을 확인할 수 있다. 그렇다면 이런 im2col을 어떻게 코드로 구현할 수 있을까? <code>im2col()</code> 코드는 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> im2col(input, filter_r,filter_c, stride, pad)<br><br>    input_r, input_c,input_d,input_num = size(input)<br><br>    out_r = <span class="hljs-built_in">Int</span>(((input_r + <span class="hljs-number">2</span>*pad - filter_r) ÷ stride) + <span class="hljs-number">1</span>)<br>    out_c = <span class="hljs-built_in">Int</span>(((input_c + <span class="hljs-number">2</span>*pad - filter_c) ÷ stride) + <span class="hljs-number">1</span>)<br><br>    img = padding(input, pad)<br>    col = zeros(out_r, out_c,filter_r,filter_c,input_d,input_num)<br><br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:filter_r<br>        r_max = (i + stride *out_r) -<span class="hljs-number">1</span><br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:filter_c<br>            c_max = (j + stride *out_c) -<span class="hljs-number">1</span><br><br>            col[:, :, j, i, :, :] = img[i:stride:r_max, j:stride:c_max,:,:]<br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>위 코드에서 이해하기 어려운 개념이 등장한다. 바로 6차원 배열이다. <code>col</code>이라는 배열은 6차원이며, 이는 합성곱을 진행할 때 필요한 데이터들을 모두 저장한다. 참고로 6차원은 인간이 이미지화할 수 없다. 따라서 데이터가 어떻게 저장되는지 완벽하게 표현할 수는 없지만, 최선을 다하여 그림으로 표현하였다. 아래의 그림을 참고하자.</p>
+<figure>
+<img src="../images/70.png" srcset="/img/loading.gif" lazyload alt="6-D array" /><figcaption aria-hidden="true">6-D array</figcaption>
+</figure>
+<p>위 그림은 <code>im2col()</code> 그림에서 사용했던 예시를 그대로 가져왔다. 6차원 배열에서 <code>out_r, out_c</code>은 결과값이다. 위 예시에서는 <span class="math inline">\(3 \times 3\)</span>이며, 요소는 총 9개이다. 각 요소는 필터와 입력데이터 해당 위치의 곱들의 합이다. 이를 좀 더 편하게 계산하기 위해서 필터의 크기에 맞춰서 입력데이터들을 쪼개어 저장해두는 것이다. 즉, <code>filter_r,filter_c</code>는 필터의 요소에 따라서 곱해져야 하는 입력데이터들을 저장한다. 해당 배열에 데이터를 다 쪼갠 후에는 차원 변경을 통해 첫 번째 배치데이터의 첫 번째 합성곱 대상이 나올 수 있도록 수정한다. 그리고 <code>reshape()</code>을 사용하여 이를 <span class="math inline">\(1 \times n\)</span> 의 형태로 변환하여 반환한다.</p>
+<p><strong>WARNING</strong> 참고로 위 코드를 파이썬에서 구현한 것과 줄리아에서 구현한 것은 차이가 있다. 그 이유는 배열의 인덱스 순서 때문이다. 파이썬의 경우 인덱스를 가로방향을 기준으로 잡아 모양을 변형하지만, 줄리아는 인덱스를 세로로 잡는다. 다만 이는 기술적인 문제라서 계층의 결과값을 다르게 도출하지는 않는다.</p>
+<h2 id="im2col을-사용한-layers">im2col을 사용한 layers</h2>
+<p>CNN에서 <code>im2col()</code>을 사용하는 계층은 합성곱층과 풀링층이다. 사실 이전 글에서 사용했던 합성곱층과 풀링층은 사람이 이해하는 방식과 같이 인덱스를 잡아 일일이 곱하고 합한 후 할당하는 방식이었다. 이 방식은 컴퓨터가 인덱스에 따른 데이터를 계속 호출해야 하기에 느려질 수밖에 없다. 하지만 <code>im2col()</code>을 사용하면 한번에 데이터를 호출하여 연산을 끝낼 수 있다.</p>
+<h3 id="합성곱-convolution">합성곱 (Convolution)</h3>
+<p><code>im2col()</code>이 사용된 합성곱의 원리는 다음과 같다.</p>
+<figure>
+<img src="../images/71.png" srcset="/img/loading.gif" lazyload alt="conv" /><figcaption aria-hidden="true">conv</figcaption>
+</figure>
+<p>먼저 입력 데이터를 im2col 연산을 통해 2차원으로 만들어준 후, 필터 또한 <span class="math inline">\(1 \times n\)</span> 형태로 펴준다. 그 다음 두 개를 행렬곱 한다. 그러면 2차원 입력데이터의 가로줄과 필터의 곱의 합이 결과값으로 도출된다. 이것이 합성곱이 완료된 결과의 요소이다. 행렬곱이 끝난 후에는 다시 4차원으로 reshape 하면 합성곱은 끝난다.</p>
+<p>이제 위의 원리를 코드로 구현해보자</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> convolution2D_forward(dense ,input, filter, bias, stride, pad)<br><br>    input_r, input_c,input_d,input_num = size(input)<br>    filter_r, filter_c, filter_d, filter_num = size(filter)<br><br>    out_r = <span class="hljs-built_in">Int</span>(((input_r + <span class="hljs-number">2</span>*pad - filter_r) ÷ stride) + <span class="hljs-number">1</span>)<br>    out_c = <span class="hljs-built_in">Int</span>(((input_c + <span class="hljs-number">2</span>*pad - filter_c) ÷ stride) + <span class="hljs-number">1</span>)<br><br>    col = im2col(input, filter_r, filter_c, stride, pad)<br>    col_w = reshape(filter,filter_r*filter_c*filter_d,filter_num)<br><br>    out = col * col_w .+ bias<br>    temp = <span class="hljs-built_in">Array</span>(out&#x27;)<br>    temp2 = reshape(temp,filter_num,out_r,out_c,input_num)<br>    result = permutedims(temp2,(<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>))<br><br>    dense.x = input<br>    dense.w = filter<br>    dense.col = col<br>    dense.col_w = col_w<br><br>    <span class="hljs-keyword">return</span> result<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h3 id="최대값-풀링-max-pooling">최대값 풀링 (Max Pooling)</h3>
+<p>풀링은 입력 데이터를 축소하기 위해서 사용한다. 풀링 중에서도 최대값 풀링은 해당 범위 내에서 가장 큰 수를 결과값으로 도출한다. 이를 im2col 연산을 사용하여 계산하는 과정은 다음과 같다.</p>
+<figure>
+<img src="../images/72.png" srcset="/img/loading.gif" lazyload alt="pool" /><figcaption aria-hidden="true">pool</figcaption>
+</figure>
+<p>풀링도 마찬가지로 먼저 입력 데이터를 im2col 연산을 통해 2차원으로 만들어준 후, 아래의 있는 다른 데이터의 행렬도 옆으로 붙여준다. 이후 역전파에서 사용하기 위해 최대값 인덱스를 뽑아 <code>mask</code>로 저장하고, 뽑은 최대값은 결과로 반환한다.</p>
+<p>최대값 풀링을 줄리아로 구현하면 다음과 같다.</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> Maxpooling_forward(pool, input, pool_h, pool_w, stride, pad)<br><br>    input_r, input_c,input_d,input_num = size(input)<br><br>    out_r = <span class="hljs-built_in">Int</span>(<span class="hljs-number">1</span> + (input_r +<span class="hljs-number">2</span>*pad - pool_h) ÷ stride)<br>    out_c = <span class="hljs-built_in">Int</span>(<span class="hljs-number">1</span> + (input_c +<span class="hljs-number">2</span>*pad - pool_w) ÷ stride)<br><br>    <span class="hljs-comment">## 1234 순서로 인덱스를 뽑아야 한다.</span><br>    col_ex = im2col(input, pool_h, pool_w, stride, pad)<br>    col= zeros(size(col_ex));<br>    order = reshape(<span class="hljs-built_in">Vector</span>(<span class="hljs-number">1</span>:size(col_ex)[<span class="hljs-number">2</span>]),pool_w,pool_h,input_d)<br>    count = []<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:size(order)[<span class="hljs-number">3</span>]<br>        temp = reshape(<span class="hljs-built_in">Array</span>(order[:,:,i]&#x27;),<span class="hljs-number">1</span>,:)<br>        append!(count, temp)<br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:size(col_ex)[<span class="hljs-number">2</span>]<br>        col[:,count[i]] = col_ex[:,i]<br>    <span class="hljs-keyword">end</span><br><br>    col = <span class="hljs-built_in">Array</span>(col&#x27;) <span class="hljs-comment">#1234</span><br>    coll = reshape(col, pool_h * pool_w, out_r*out_c*input_num*input_d)<br>    arg_max = argmax(coll, dims = <span class="hljs-number">1</span>)<br>    result = maximum(coll,dims = <span class="hljs-number">1</span>)<br>    out = reshape(result,input_d,out_c,out_r,input_num)<br>    out = permutedims(out,(<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>))<br><br>    pool.x = input<br>    pool.count = count<br>    pool.mask = arg_max<br><br>    <span class="hljs-keyword">return</span> out<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>지금까지 <code>im2col()</code>을 사용하여 구성한 계층들을 살펴보았다. 다음 글에서는 CNN의 역전파와 그때 사용되는 <code>col2im</code>에 대해서 알아보자.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/cnn/" class="print-no-link">#CNN</a>
+      
+        <a href="/tags/%ED%95%A9%EC%84%B1%EA%B3%B1/" class="print-no-link">#합성곱</a>
+      
+        <a href="/tags/%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%8B%A0%EA%B2%BD%EB%A7%9D/" class="print-no-link">#이미지신경망</a>
+      
+        <a href="/tags/%ED%92%80%EB%A7%81/" class="print-no-link">#풀링</a>
+      
+        <a href="/tags/julia/" class="print-no-link">#Julia</a>
+      
+        <a href="/tags/%EB%AA%A8%EB%8D%B8/" class="print-no-link">#모델</a>
+      
+        <a href="/tags/im2col/" class="print-no-link">#im2col</a>
+      
+        <a href="/tags/col2im/" class="print-no-link">#col2im</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>15. im2col의 원리</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-15/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 6월 26일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-16/" title="16. col2im의 원리">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">16. col2im의 원리</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-14/" title="14. CNN 시작하기">
+                        <span class="hidden-mobile">14. CNN 시작하기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

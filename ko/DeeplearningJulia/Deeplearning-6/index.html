@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6. 인공신경망 구현 - 모델 학습">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-6/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/31.png">
+<meta property="article:published_time" content="2020-04-02T00:53:05.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:34:35.306Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="딥러닝">
+<meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
+<meta property="article:tag" content="줄리아">
+<meta property="article:tag" content="가중치">
+<meta property="article:tag" content="네트워크">
+<meta property="article:tag" content="편향">
+<meta property="article:tag" content="딥러닝학습">
+<meta property="article:tag" content="학습">
+<meta property="article:tag" content="신경망모델">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/31.png">
+  
+  
+  
+  <title>6. 인공신경망 구현 - 모델 학습 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="6. 인공신경망 구현 - 모델 학습"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-04-02 09:53" pubdate>
+          2020년 4월 2일 오전
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          201 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">6. 인공신경망 구현 - 모델 학습</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
+<p>이전 글에서는 신경망이 작동하는 과정을 수학식을 사용하여 살펴보았다. 신경망은 입력값에 가중치를 곱하고 편향을 더한 후 활성화 함수를 거쳐 예측값을 도출한다. 즉, 가중치와 편향은 입력값에서 올바른 예측값을 제공하는데 중요한 변수라는 것이다. 그렇다면 해당 입력 데이터에 알맞는 가중치와 편향은 어떻게 찾을까? 이번 글에서는 가중치와 편향이 가지는 의미는 정확히 무엇이며, 적절한 가중치와 편향을 찾는 방법은 무엇인지를 살펴볼 것이다.</p>
+<h2 id="적절한-가중치와-편향">적절한 가중치와 편향</h2>
+<p>실제 신경망은 우리가 태어난 이후 경험한 데이터를 바탕으로 신경세포 안에 적절한 가중치와 편향을 셋팅한다. 그에 따라 입력값을 받으면 세포체에서 변환되어 신호를 다른 신경세포로 전달할지를 결정한다. 하지만 우리가 만든 인공신경망은 적절한 가중치와 편향이 존재하지 않는다. 그렇기에 인공신경망 모델을 구성할 때 가중치와 편향의 초기값을 랜덤으로 설정한다. 물론 그 랜덤 값은 대부분 적절한 가중치와 편향은 아니다. 결국 우리는 '인간'이 학습하는 것처럼 인공신경망도 학습해야 한다. <strong>즉, 인공신경망은 매개 변수인 가중치와 편향의 적절한 값을 찾기 위해 학습해야 한다.</strong></p>
+<h2 id="인공신경망-학습이란">인공신경망 학습이란</h2>
+<p>처음 만들어진 인공신경망은 매개 변수인 가중치와 편향을 랜덤으로 설정했기 때문에 엉망이다. 즉, 바보와 같아서 예측을 제대로 하지 못한다. 따라서 적절한 가중치와 편향을 찾아주어야 한다. 이 과정을 신경망 학습이라고 한다. 신경망 학습은 학습데이터를 기반으로 진행된다. 학습데이터에는 입력값과 정답이 있다. 입력값을 투입했을 때, 가중치와 편향을 계산한 후 나온 예측값을 정답과 비교하여 신경망의 오류 정도를 파악한다. 지금까지 배웠던 블럭들을 조합해보면 다음과 같다.</p>
+<ul>
+<li><p>활성화 함수: 가중치와 편향을 추가한 입력값을 받아 신호를 전달할지 결정한다.</p></li>
+<li><p>손실 함수: 예측값과 정답의 오차를 나타낸다.</p></li>
+<li><p>편미분: 가중치와 편향을 기준으로 각각의 순간변화량(기울기)을 측정한다.</p></li>
+<li><p>경사하강법: 신경망 모델을 학습시키는 알고리즘으로서 가중치와 편향 갱신을 반복하는 과정을 거쳐 적절한 가중치와 편향을 찾는다.</p></li>
+</ul>
+<h2 id="인공신경망-학습-과정">인공신경망 학습 과정</h2>
+<p>인공신경망은 네트워크 그래프의 형식을 취한다. 네트워크 그래프란 요소인 노드(node)와 노드들의 관계를 나타내는 엣지(edge)로 구성하여 만든 그래프이다. 여기서 노드는 변화하는 주체를 의미하며, 엣지는 그 변화의 정도를 나타낸다. 인공신경망을 네트워크 그래프 관점에서 설명한다면 입력데이터와 은닉층의 중간값, 출력값은 모두 노드이며 데이터에 변화를 야기하는 가중치와 편향은 엣지이다. 네트워크 그래프로 도식화한 신경망은 아래와 같다.</p>
+<figure>
+<img src="/images/31.png" srcset="/img/loading.gif" lazyload alt="신경망 구조" /><figcaption aria-hidden="true">신경망 구조</figcaption>
+</figure>
+<p>결국 우리가 학습을 통해 찾아야 하는 것은 엣지(edge)인 가중치와 편향의 값인 것을 확인할 수 있다. 지금부터 진행되는 학습 과정에 대한 설명은 경사하강법을 기반으로 한다.</p>
+<p>학습 과정을 세분화하여 설명하기 위해 위의 인공신경망 도식을 바탕으로 설명하고자 한다. 먼저 위의 인공신경망은 2층 구조이며, 입력값은 <span class="math inline">\([x_1, x_2, x_3, x_4]\)</span>로 총 4개이다. 또한 은닉층 <span class="math inline">\([h_1, h_2]\)</span>을 거쳐 예측값 <span class="math inline">\([y_1, y_2, y_3]\)</span>을 출력한다.</p>
+<ol type="1">
+<li>인공신경망 매개 변수 셋팅</li>
+</ol>
+<p>위의 도식만 설정되면 가중치와 편향의 크기는 자동으로 결정된다. 먼저 입력층에서 은닉층으로 가는 1층 구간의 W1은 <span class="math inline">\(1 \times 4\)</span>행렬인 입력값과 곱해서 <span class="math inline">\(1 \times 2\)</span>행렬이 결과로 나와야 하기에 <span class="math inline">\(4 \times 2\)</span>의 행렬이며, 편향은 <span class="math inline">\(1 \times 2\)</span> 행렬이다. 은닉층과 출력층 사이의 2층 구간 W2 또한 이와 같은 원리로 자동 설정된다.</p>
+<p><span class="math display">\[ X(1 \times 4) \cdot W1(4 \times 2) + B(1 \times 2) = H(1 \times 2)\]</span></p>
+<ol start="2" type="1">
+<li>인공신경망 계산</li>
+</ol>
+<p>위 식의 결과를 활성화 값이라고 한다. 이 값을 활성화 함수의 입력값으로 투입하여 다음 층으로의 전달 여부를 결정한다. 위의 계산들을 층(layer)이라고 표현한다. 도식에 나타난 신경망 구조는 층 단위 계산이 2번 반복되기에 2층 신경망인 것이다. 이런 층 단위 계산을 반복할수록 더 깊은 신경망을 구축할 수 있다.</p>
+<ol start="3" type="1">
+<li>손실 함수 값 계산</li>
+</ol>
+<p>위의 신겸망 계산을 가중치와 편향을 갱신하면서 반복하여 손실 함수 값을 줄인다. 손실 함수는 예측값 <span class="math inline">\(\hat{y}\)</span>와 정답 <span class="math inline">\(t\)</span>의 오차를 계산한다. 보통 평균 제곱 오차와 교차 엔트로피 오차를 이용한다.</p>
+<ol start="4" type="1">
+<li>매개 변수의 편미분 구하기</li>
+</ol>
+<p>그렇다면 손실 함수의 값을 어떻게 줄이는가? 이때 사용되는 것이 편미분이다. 편미분은 분자의 <span class="math inline">\(f(x)\)</span>를 분모의 변수를 기준으로 미분한 것이며, 함수 <span class="math inline">\(f(x)\)</span>에서 변수가 순간적으로 얼마나 변하는가를 나타낸다. 즉, 기울기를 나타내는 것이다. 편미분 값을 통해서 가중치와 편향이 어느 방향으로 변해야 하는지를 파악할 수 있다. 이 파트에서 순전파나 역전파 알고리즘을 사용한다.</p>
+<ol start="5" type="1">
+<li>편미분 값에 학습률 곱하여 매개 변수 갱신</li>
+</ol>
+<p>편미분 값을 저장한 후 학습률을 곱해준다. 학습률은 기존 가중치에 얼만큼 영향을 줄 것인가를 나타낸다. 학습률은 보통 0.1이나 0.01을 사용한다. 학습률이 너무 크면 학습폭이 커서 최솟값을 못찾을 수도 있다. 즉, 신경망이 도착지까지 가는데 너무 큰 걸음으로 걷는 것이다. 멀리 있을 때는 좋을 수 있지만 가까워지면 도착지에 딱 맞게 가는 것은 어려워진다. 학습률을 곱한 편미분 값을 기존 가중치와 편향에서 뺀 후, 그 결과를 다시 가중치와 편향으로 갱신한다.</p>
+<ol start="6" type="1">
+<li>손실 함수 값 계산</li>
+</ol>
+<p>갱신된 가중치와 편향을 가지고 손실 함수를 다시 계산한 후, 나온 결과를 바탕으로 모델의 성능이 더 좋아졌는지 판단할 수 있다. 손실 함수 값이 이전의 결과보다 0에 가까워졌다면 학습이 잘 되고 있다고 평가할 수 있다.</p>
+<ol start="7" type="1">
+<li>4 ~ 6 지정된 횟수만큼 반복하기</li>
+</ol>
+<p>위의 과정을 반복하면 손실 함수 값은 0에 가까워지고 인공신경망의 예측 정확도가 올라간다. 보통 사용하는 학습 알고리즘마다 적절한 횟수는 다르지만 '에폭(epoch)'을 기준으로 삼는다. 에폭은 학습데이터의 갯수를 나타낸다. 만약 사용하는 학습 입력데이터가 500개라면 해당 신경망의 1에폭은 500번이다. 만약 한번 학습을 시킬 때 10개 단위의 배치데이터를 사용한다면 1에폭의 수는 50번이 된다.</p>
+<ol start="8" type="1">
+<li>학습된 모델의 정확도 확인하기</li>
+</ol>
+<p>정확도는 학습된 모델이 실제 데이터를 얼만큼 맞추는가로 평가된다. 학습된 인공신경망은 97%~98%의 정확도까지도 보인다.</p>
+<h2 id="결론">결론</h2>
+<p>지금까지 인공신경망이 어떻게 학습되는지 그 과정을 살펴보았다. 신경망 학습은 인공신경망 구현에 있어 매우 중요한 부분이다. 신경망이 어떤 방식으로 학습되는지에 따라서 성능이 제각각이기 때문이다. 학습에 있어 다양한 기술적인 튜닝이 있지만 핵심 원리는 이 글을 벗어나지 않는다. 다음 글에서 순전파 알고리즘 기반의 경사하강법을 구현해보고, 이후 역전파에 대해서 살펴볼 것이다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/machinelearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/machinelearning/deeplearning/" class="category-chain-item">deeplearning</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
+      
+        <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
+      
+        <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
+      
+        <a href="/tags/%EA%B0%80%EC%A4%91%EC%B9%98/" class="print-no-link">#가중치</a>
+      
+        <a href="/tags/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" class="print-no-link">#네트워크</a>
+      
+        <a href="/tags/%ED%8E%B8%ED%96%A5/" class="print-no-link">#편향</a>
+      
+        <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D%ED%95%99%EC%8A%B5/" class="print-no-link">#딥러닝학습</a>
+      
+        <a href="/tags/%ED%95%99%EC%8A%B5/" class="print-no-link">#학습</a>
+      
+        <a href="/tags/%EC%8B%A0%EA%B2%BD%EB%A7%9D%EB%AA%A8%EB%8D%B8/" class="print-no-link">#신경망모델</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>6. 인공신경망 구현 - 모델 학습</div>
+      <div>https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2020년 4월 2일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-7/" title="7. 인공신경망 구현 - 순전파 알고리즘">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">7. 인공신경망 구현 - 순전파 알고리즘</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/DeeplearningJulia/Deeplearning-5/" title="5. 인공신경망 구현 - 수학식 풀이">
+                        <span class="hidden-mobile">5. 인공신경망 구현 - 수학식 풀이</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,819 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="오픈소스 프로젝트인 Polars에서 기여하는 과정을 정리합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1. Polars란">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/OpenSource/polars-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="오픈소스 프로젝트인 Polars에서 기여하는 과정을 정리합니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/172.png">
+<meta property="article:published_time" content="2023-03-23T07:15:58.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:36:52.946Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="dataframe">
+<meta property="article:tag" content="polars">
+<meta property="article:tag" content="pandas">
+<meta property="article:tag" content="numpy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/172.png">
+  
+  
+  
+  <title>1. Polars란 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="1. Polars란"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-23 16:15" pubdate>
+          2023년 3월 23일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          577 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">1. Polars란</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>오픈소스 프로젝트인 <a target="_blank" rel="noopener" href="https://github.com/pola-rs/polars">Polars</a>에서 기여하는 과정을 정리합니다.</p>
+<span id="more"></span>
+<h2 id="polar란">Polar란</h2>
+<p><code>polars</code>는 <a target="_blank" rel="noopener" href="https://arrow.apache.org/docs/format/Columnar.html">Apache Arrow Columnar Format</a> 메모리 모델을 바탕으로 개발된 DataFrames 라이브러리이며, Rust로 작성되었다. 데이터 분석 시에 사용되는 <code>pandas</code> 라이브러리와 많이 비교된다.</p>
+<h2 id="polars-장점">Polars 장점</h2>
+<ul>
+<li>매우 빠르다. 다른 라이브러리와의 벤치마킹 결과를 <a target="_blank" rel="noopener" href="https://www.pola.rs/benchmarks.html">이 페이지</a>에서 확인할 수 있다.</li>
+<li>가볍다. Dependency가 거의 없고 Import 속도도 매우 빠르다.</li>
+<li>RAM보다 큰 데이터도 핸들링할 수 있다. 메모리보다 큰 데이터가 있는 경우 쿼리를 스트리밍 방식으로 처리하여 메모리 요구량이 줄어든다.</li>
+</ul>
+<h2 id="사용-방법-예시">사용 방법 예시</h2>
+<p>자세한 사용 방법은 <a target="_blank" rel="noopener" href="https://pola-rs.github.io/polars-book/user-guide/index.html">유저 가이드</a> 에서 확인할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> polars <span class="hljs-keyword">as</span> pl<br><br><span class="hljs-comment"># 데이터프레임 생성</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>df = pl.DataFrame(<br><span class="hljs-meta">... </span>    &#123;<br><span class="hljs-meta">... </span>        <span class="hljs-string">&quot;A&quot;</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>],<br><span class="hljs-meta">... </span>        <span class="hljs-string">&quot;fruits&quot;</span>: [<span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>],<br><span class="hljs-meta">... </span>        <span class="hljs-string">&quot;B&quot;</span>: [<span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>],<br><span class="hljs-meta">... </span>        <span class="hljs-string">&quot;cars&quot;</span>: [<span class="hljs-string">&quot;beetle&quot;</span>, <span class="hljs-string">&quot;audi&quot;</span>, <span class="hljs-string">&quot;beetle&quot;</span>, <span class="hljs-string">&quot;beetle&quot;</span>, <span class="hljs-string">&quot;beetle&quot;</span>],<br><span class="hljs-meta">... </span>    &#125;<br><span class="hljs-meta">... </span>)<br><br><span class="hljs-meta">&gt;&gt;&gt; </span>df<br>shape: (<span class="hljs-number">5</span>, <span class="hljs-number">4</span>)<br>┌─────┬────────┬─────┬────────┐<br>│ A   ┆ fruits ┆ B   ┆ cars   │<br>│ --- ┆ ---    ┆ --- ┆ ---    │<br>│ i64 ┆ <span class="hljs-built_in">str</span>    ┆ i64 ┆ <span class="hljs-built_in">str</span>    │<br>╞═════╪════════╪═════╪════════╡<br>│ <span class="hljs-number">1</span>   ┆ banana ┆ <span class="hljs-number">5</span>   ┆ beetle │<br>│ <span class="hljs-number">2</span>   ┆ banana ┆ <span class="hljs-number">4</span>   ┆ audi   │<br>│ <span class="hljs-number">3</span>   ┆ apple  ┆ <span class="hljs-number">3</span>   ┆ beetle │<br>│ <span class="hljs-number">4</span>   ┆ apple  ┆ <span class="hljs-number">2</span>   ┆ beetle │<br>│ <span class="hljs-number">5</span>   ┆ banana ┆ <span class="hljs-number">1</span>   ┆ beetle │<br>└─────┴────────┴─────┴────────┘<br><br>    <span class="hljs-comment"># &quot;fruits&quot;기준으로 정렬</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>df.sort(<span class="hljs-string">&quot;fruits&quot;</span>).select(<br><span class="hljs-meta">... </span>    <span class="hljs-string">&quot;fruits&quot;</span>,  <span class="hljs-comment"># &quot;fruits&quot; 컬럼</span><br><span class="hljs-meta">... </span>    <span class="hljs-string">&quot;cars&quot;</span>,  <span class="hljs-comment"># &quot;cars&quot; 컬럼</span><br><span class="hljs-meta">... </span>    pl.lit(<span class="hljs-string">&quot;fruits&quot;</span>).alias(<span class="hljs-string">&quot;literal_string_fruits&quot;</span>),<br><span class="hljs-meta">... </span>    pl.col(<span class="hljs-string">&quot;B&quot;</span>).<span class="hljs-built_in">filter</span>(pl.col(<span class="hljs-string">&quot;cars&quot;</span>) == <span class="hljs-string">&quot;beetle&quot;</span>).<span class="hljs-built_in">sum</span>(),<br><span class="hljs-meta">... </span>    pl.col(<span class="hljs-string">&quot;A&quot;</span>).<span class="hljs-built_in">filter</span>(pl.col(<span class="hljs-string">&quot;B&quot;</span>) &gt; <span class="hljs-number">2</span>).<span class="hljs-built_in">sum</span>().over(<span class="hljs-string">&quot;cars&quot;</span>).alias(<span class="hljs-string">&quot;sum_A_by_cars&quot;</span>),<br><span class="hljs-meta">... </span>    pl.col(<span class="hljs-string">&quot;A&quot;</span>).<span class="hljs-built_in">sum</span>().over(<span class="hljs-string">&quot;fruits&quot;</span>).alias(<span class="hljs-string">&quot;sum_A_by_fruits&quot;</span>),<br><span class="hljs-meta">... </span>    pl.col(<span class="hljs-string">&quot;A&quot;</span>).reverse().over(<span class="hljs-string">&quot;fruits&quot;</span>).alias(<span class="hljs-string">&quot;rev_A_by_fruits&quot;</span>),<br><span class="hljs-meta">... </span>    pl.col(<span class="hljs-string">&quot;A&quot;</span>).sort_by(<span class="hljs-string">&quot;B&quot;</span>).over(<span class="hljs-string">&quot;fruits&quot;</span>).alias(<span class="hljs-string">&quot;sort_A_by_B_by_fruits&quot;</span>),<br><span class="hljs-meta">... </span>)<br>shape: (<span class="hljs-number">5</span>, <span class="hljs-number">8</span>)<br>┌──────────┬──────────┬──────────────┬─────┬─────────────┬─────────────┬─────────────┬─────────────┐<br>│ fruits   ┆ cars     ┆ literal_stri ┆ B   ┆ sum_A_by_ca ┆ sum_A_by_fr ┆ rev_A_by_fr ┆ sort_A_by_B │<br>│ ---      ┆ ---      ┆ ng_fruits    ┆ --- ┆ rs          ┆ uits        ┆ uits        ┆ _by_fruits  │<br>│ <span class="hljs-built_in">str</span>      ┆ <span class="hljs-built_in">str</span>      ┆ ---          ┆ i64 ┆ ---         ┆ ---         ┆ ---         ┆ ---         │<br>│          ┆          ┆ <span class="hljs-built_in">str</span>          ┆     ┆ i64         ┆ i64         ┆ i64         ┆ i64         │<br>╞══════════╪══════════╪══════════════╪═════╪═════════════╪═════════════╪═════════════╪═════════════╡<br>│ <span class="hljs-string">&quot;apple&quot;</span>  ┆ <span class="hljs-string">&quot;beetle&quot;</span> ┆ <span class="hljs-string">&quot;fruits&quot;</span>     ┆ <span class="hljs-number">11</span>  ┆ <span class="hljs-number">4</span>           ┆ <span class="hljs-number">7</span>           ┆ <span class="hljs-number">4</span>           ┆ <span class="hljs-number">4</span>           │<br>│ <span class="hljs-string">&quot;apple&quot;</span>  ┆ <span class="hljs-string">&quot;beetle&quot;</span> ┆ <span class="hljs-string">&quot;fruits&quot;</span>     ┆ <span class="hljs-number">11</span>  ┆ <span class="hljs-number">4</span>           ┆ <span class="hljs-number">7</span>           ┆ <span class="hljs-number">3</span>           ┆ <span class="hljs-number">3</span>           │<br>│ <span class="hljs-string">&quot;banana&quot;</span> ┆ <span class="hljs-string">&quot;beetle&quot;</span> ┆ <span class="hljs-string">&quot;fruits&quot;</span>     ┆ <span class="hljs-number">11</span>  ┆ <span class="hljs-number">4</span>           ┆ <span class="hljs-number">8</span>           ┆ <span class="hljs-number">5</span>           ┆ <span class="hljs-number">5</span>           │<br>│ <span class="hljs-string">&quot;banana&quot;</span> ┆ <span class="hljs-string">&quot;audi&quot;</span>   ┆ <span class="hljs-string">&quot;fruits&quot;</span>     ┆ <span class="hljs-number">11</span>  ┆ <span class="hljs-number">2</span>           ┆ <span class="hljs-number">8</span>           ┆ <span class="hljs-number">2</span>           ┆ <span class="hljs-number">2</span>           │<br>│ <span class="hljs-string">&quot;banana&quot;</span> ┆ <span class="hljs-string">&quot;beetle&quot;</span> ┆ <span class="hljs-string">&quot;fruits&quot;</span>     ┆ <span class="hljs-number">11</span>  ┆ <span class="hljs-number">4</span>           ┆ <span class="hljs-number">8</span>           ┆ <span class="hljs-number">1</span>           ┆ <span class="hljs-number">1</span>           │<br>└──────────┴──────────┴──────────────┴─────┴─────────────┴─────────────┴─────────────┴─────────────┘<br></code></pre></td></tr></table></figure>
+<p>위 예시 중에서 몇 가지 문법을 간단하게 해석해보자.</p>
+<ul>
+<li><code>pl.lit("fruits").alias("literal_string_fruits")</code>: fruits라는 문자열을 데이터로 literal_string_fruits 컬럼 생성</li>
+<li><code>pl.col("B").filter(pl.col("cars") == "beetle").sum()</code>: cars 컬럼이 beetle인 B 요소만 더한 값</li>
+<li><code>pl.col("A").filter(pl.col("B") &gt; 2).sum().over("cars").alias("sum_A_by_cars")</code>: B 컬럼 값이 2보다 큰 A 컬럼을 cars 기준으로 더한 값</li>
+<li><code>pl.col("A").sum().over("fruits").alias("sum_A_by_fruits")</code>: A 컬럼을 fruits 기준으로 더한 값</li>
+<li><code>pl.col("A").reverse().over("fruits").alias("rev_A_by_fruits")</code>: fruits 기준으로 A 컬럼 값을 반전</li>
+<li><code>pl.col("A").sort_by("B").over("fruits").alias("sort_A_by_B_by_fruits")</code>: fruits 기준으로 A 컬럼을 B 값으로 정렬</li>
+</ul>
+<h2 id="컨트리뷰션-가이드">컨트리뷰션 가이드</h2>
+<p>오픈소스에 기여하기 위해서는 <a target="_blank" rel="noopener" href="https://github.com/pola-rs/polars/blob/master/CONTRIBUTING.md">컨트리뷰션 가이드</a>를 먼저 읽어보는 것이 좋다. 만약 다른 컨트리뷰터와 소통하고 싶다면 <a target="_blank" rel="noopener" href="https://discord.com/invite/4UfP5cfBE7">디스코드</a>에서 만날 수 있다.</p>
+<h3 id="해결하고-싶은-이슈-고르기">1. 해결하고 싶은 이슈 고르기</h3>
+<p>먼저 해결하고 싶은 이슈를 골라야 한다. open된 이슈 목록은 <a target="_blank" rel="noopener" href="https://github.com/pola-rs/polars/issues">이슈 페이지</a>에서 확인할 수 있으며, 처음 도전하는 경우 <code>label</code>에서 <code>good first issue</code>로 필터링해서 골라도 된다.</p>
+<figure>
+<img src="/images/172.png" srcset="/img/loading.gif" lazyload alt="issue" /><figcaption aria-hidden="true">issue</figcaption>
+</figure>
+<p>만약 좀 더 주요한 이슈를 고르고 싶다면 <code>label</code>에서 <code>help wanted</code>로 필터링하면 목록을 볼 수 있다.</p>
+<h3 id="로컬-환경-구성하기">2. 로컬 환경 구성하기</h3>
+<p>polars는 크게 Rust, Python, Node.js로 구성되어 있다. <a target="_blank" rel="noopener" href="https://github.com/pola-rs/polars">polars</a>의 경우 Rust와 Python 환경이 필요하며, Node.js에 기여를 하고 싶다면 [nodejs-polars]](https://github.com/pola-rs/nodejs-polars)를 살펴보자. 이 글에서는 <a target="_blank" rel="noopener" href="https://github.com/pola-rs/polars">polars</a> 저장소를 기준으로 한다.</p>
+<p>개발을 위한 로컬 환경을 구성해야 한다. 먼저 polars repo를 내 계정으로 fork 한다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs git">git clone git@github.com:&lt;username&gt;/polars.git<br>cd polars<br></code></pre></td></tr></table></figure>
+<p>그 다음 Rust와 python을 설치한다. Rust의 경우 <a target="_blank" rel="noopener" href="https://www.rust-lang.org/tools/install">rustup</a>을 사용하여 다운로드 받기를 추천한다. 설치가 끝났다면 아래 명령어를 입력하여 <code>toolchain</code>도 설치한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rustup toolchain install nightly --component miri<br></code></pre></td></tr></table></figure>
+<p>마지막으로 python은 <code>pyenv</code> 환경을 구성한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> py-polars<br><span class="hljs-built_in">source</span> .venv/bin/activate<br>make <span class="hljs-built_in">test</span><br></code></pre></td></tr></table></figure>
+<p>테스트가 정상적으로 완료되었다면 아래 코드를 사용하여 린트 도구도 정상 작동하는지 확인한다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">make pre-commit<br></code></pre></td></tr></table></figure>
+<p>모든 것이 완료되었다면 커밋할 준비가 된 것이다.</p>
+<h3 id="이슈-해결하기">3. 이슈 해결하기</h3>
+<p>로컬 레파지토리에서 새로운 브랜치를 하나 생성해서 코딩을 시작한다. 코어 코드들은 <code>polars</code> 디렉토리에 있고, Python 코드들은 <code>py-polars</code> 디렉토리에 있다. 두 디렉토리에 모두 유용한 명령어가 포함된 <code>Makefile</code>이 포함되어 있다.</p>
+<ul>
+<li><code>make test</code>: <a target="_blank" rel="noopener" href="https://github.com/pola-rs/polars/blob/main/py-polars/tests/README.md">다양한 테스트</a>를 실행.</li>
+<li><code>make pre-commit</code>: 포메팅과 린트 이슈를 확인.</li>
+</ul>
+<p>이슈 해결을 진행할 때 아래 사항들을 유의해야 한다.</p>
+<ul>
+<li>위 두 개의 <code>make</code> 명령어가 실패하면 작업한 내용을 병합할 수 없다.</li>
+<li>테스트가 필요한 코드를 추가했다면 꼭 테스트도 추가해주어야 한다.</li>
+<li>Public API를 변경하는 경우 문서를 업데이트 해야 한다.</li>
+</ul>
+<h3 id="pr-올리기">4. PR 올리기</h3>
+<p>문제를 해결했다면 PR(Pull Request)을 올릴 수 있다. PR은 아래 가이드라인을 준수해야 한다.</p>
+<ul>
+<li>PR 제목은 <a target="_blank" rel="noopener" href="https://www.conventionalcommits.org/en/v1.0.0/">커밋 컨벤션</a>에 맞춰 작성해야 한다. 올바르게 작성된 제목은 변경이력에 기여내용을 남기는 데 도움이 된다. 범위는 기여도에 따라 Rust 또는 Python이 될 수 있다.</li>
+<li>제목에 변경에 대한 설명을 포함해야 한다. 이 텍스트는 변령이력에 포함된다.</li>
+<li>PR 설명에 작업 중인 이슈에 대한 링크를 추가해야 한다.</li>
+<li>설명에 메인테이너가 코드를 검토하는 데 도움이 될 수 있는 관련 정보를 추가해야 한다.</li>
+<li>지금 브랜치가 최신 버전에 대해 rebase가 되어 있는지 확인해야 한다.</li>
+<li>모든 Github 작업 확인을 통과했는지 확인해야 한다.</li>
+</ul>
+<p>PR을 열면 메인테이너가 이를 검토하고 몇 가지 의견을 남길 수 있다. 모든 문제가 해결되면 메인테이너가 PR을 병합하고 기여한 내용이 다음 polars 릴리즈에 포함될 것이다.</p>
+<p>해결이 막히거나 확실하지 않은 경우 PR 드래프트를 열어 도움을 요청할 수도 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/opensource/" class="category-chain-item">OpenSource</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/opensource/polars/" class="category-chain-item">polars</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/" class="print-no-link">#python</a>
+      
+        <a href="/tags/rust/" class="print-no-link">#rust</a>
+      
+        <a href="/tags/dataframe/" class="print-no-link">#dataframe</a>
+      
+        <a href="/tags/polars/" class="print-no-link">#polars</a>
+      
+        <a href="/tags/pandas/" class="print-no-link">#pandas</a>
+      
+        <a href="/tags/numpy/" class="print-no-link">#numpy</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>1. Polars란</div>
+      <div>https://dev-bearabbit.github.io/ko/OpenSource/polars-0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2023년 3월 23일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Hadoop/hadoop-11/" title="Apache Ranger 설치 in Docker (1)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Apache Ranger 설치 in Docker (1)</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Reviews/sesson-0/" title="If(kakao)dev2022 세션 리뷰">
+                        <span class="hidden-mobile">If(kakao)dev2022 세션 리뷰</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

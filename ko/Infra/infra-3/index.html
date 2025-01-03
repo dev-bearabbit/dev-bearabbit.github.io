@@ -1,0 +1,776 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="글을 시작하기에 앞서 해당 글은 이토 나오야, 다나카 신지의 저서인 『웹 개발자를 위한 대규모 서비스를 지탱하는 기술』 를 바탕으로 요약 및 정리한 글임을 알려드립니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 캐시와 분산">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Infra/infra-3/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="글을 시작하기에 앞서 해당 글은 이토 나오야, 다나카 신지의 저서인 『웹 개발자를 위한 대규모 서비스를 지탱하는 기술』 를 바탕으로 요약 및 정리한 글임을 알려드립니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2022-11-02T05:48:54.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:36:18.647Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="데이터">
+<meta property="article:tag" content="인프라">
+<meta property="article:tag" content="분산처리">
+<meta property="article:tag" content="대규모데이터">
+<meta property="article:tag" content="데이터구조">
+<meta property="article:tag" content="서버">
+<meta property="article:tag" content="OS">
+<meta property="article:tag" content="운영체제">
+<meta property="article:tag" content="캐시">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>OS 캐시와 분산 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner">
+  <canvas id="canvas"></canvas>
+  <div class="mask flex-center">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        
+          <span id="subtitle" data-typed-text="OS 캐시와 분산"></span>
+        
+      </div>
+ 
+      
+        
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-02 14:48" pubdate>
+          2022년 11월 2일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          130 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+      
+    </div>
+
+    
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('banner');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 강제로 배너 높이를 설정
+    banner.style.height = '500px';
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    function matrix() {
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+        else ypos[index] = y + 20;
+      });
+    }
+
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS 캐시와 분산</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>글을 시작하기에 앞서 해당 글은 이토 나오야, 다나카 신지의 저서인 『웹 개발자를 위한 대규모 서비스를 지탱하는 기술』 를 바탕으로 요약 및 정리한 글임을 알려드립니다. <span id="more"></span></p>
+<p>OS 캐시를 사용하면 대규모의 데이터도 효율적으로 처리할 수 있다. 이번 글에서는 OS 캐시 작동원리에 대해서 간단하게 살펴보고 어떻게 구성해야 효율적인지 방법들을 이야기하고자 한다.</p>
+<h2 id="os-캐시란">OS 캐시란</h2>
+<p>리눅스에서는 페이지 캐시라고 하는 캐시 구조를 가지고 있다. 이를 설명하기 위해서는 리눅스의 가상메모리 원리에 대해서 이해해야 한다.</p>
+<p>가상 메모리란 하드웨어 물리 메모리 어드레스를 OS에서 추상화한 구조를 의미한다. 만약 K 프로세스가 A라는 파일을 읽어야 한다고 요청하면 OS는 A 파일을 메모리에 올린 후 해당 메모리 어드레스를 직접 프로세스에게 넘기는 것이 아니라 일단 커널 내에서 추상화하여 전달한다. 이렇게 하는 이유는 여러가지가 있지만 일단 페이지 캐시 또한 이유에 포함된다. OS는 K 프로세스가 A 파일을 다 읽어서 더이상 필요 없어도 물리 메모리 할당을 해제하지 않는다. 그렇게 메모리에 올려두면 또 다른 프로세스가 A 파일을 요청할 때 디스크 I/O 없이 바로 전달할 수 있기 때문이다. 이것이 OS캐시의 기본원리이다.</p>
+<p>가상 메모리는 메모리 영역을 4KB 블록 단위로 관리하며, 이 블록을 <code>페이지</code>라고 한다. 그렇기에 4GB 메모리를 가진 서버도 8GB의 파일을 일부 캐싱할 수 있다. 캐싱은 파일단위로 이루어지는 것이 아니며, 해당 파일의 i노드 번호와 위치를 나타내는 오프셋 값을 키로 캐싱하기 때문이다.<br />
+또한 리눅스는 비어있는 메모리에 모두 캐싱을 진행하며, 프로세스 요청으로 메모리가 필요한 경우에는 가장 오래된 캐싱을 제거(LRU)하여 메모리를 확보해준다.</p>
+<h2 id="캐시를-사용하여-io-부하-줄이는-법">캐시를 사용하여 I/O 부하 줄이는 법</h2>
+<p>그렇기에 OS 캐시를 사용하면 OS가 더이상 디스크로 접근할 필요성이 낮아지기에 I/O 부하는 줄어들 수 있다. 그래서 데이터가 많아졌을 때 부하를 줄이는 가장 빠른 방법은 메모리를 추가하여 OS캐시가 더 많이 일어나도록 환경을 만들어주는 것이다. 특히 서버에 존재하는 데이터를 모두 캐싱할 수 있다면 이는 모든 데이터를 메모리에 올려두고 사용하는 것과 동일하다. 따라서 데이터 파일들을 적절하게 압축하여 저장한다면 더 많은 데이터들을 캐싱하여 사용할 수 있을 것이다.</p>
+<p>하지만 메모리를 추가하는 것은 여러가지 이유로 한계가 있다. 실제 물리 서버에 추가할 수 있는 메모리 슬롯이 제한되어 있다는 점, 서비스 규모가 커질수록 스케일 업이 어렵다는 점 등이다. 따라서 하나의 서버 캐싱으로 해결할 수 없는 경우에는 스케일 아웃을 진행해야 한다.</p>
+<h2 id="locality를-살리는-분산">locality를 살리는 분산</h2>
+<p>스케일 아웃을 진행할 때는 물리적인 서버 수만 늘리는 것이 아니라 데이터에 대한 액세스 패턴을 고려해서 분산시켜야 한다. 그렇게 설계하면 특정 엑세스마다 필요한 데이터가 모든 서버에 캐싱된 형태로 실행될 수 있다. 이런 분산 처리를 locality 방법이라고 한다.</p>
+<p>locality 방법은 크게 파티셔닝과 요청 패턴에 따른 분할 두 가지가 있다. 파티셔닝 중 대표적인 방법은 테이블에 따른 분할이다. 이는 엑세스가 같이 발생하는 테이블들을 묶어서 같은 DB 서버에 저장해두는 방식이다. 이렇게 분할하면 각 DB 서버마다 모든 데이터가 캐싱되면서 데이터 요청 시 하나의 DB 서버에서 처리할 수 있다.<br />
+그 외에도 테이블 데이터에 따른 파티셔닝도 있다. 이 방법은 특정 테이블 하나를 여러 개의 작은 테이블로 분할하여 각각의 DB 서버로 나눠 저장하는 것이다. 에를 들어 회원정보 테이블이라면 ID a~c 범위는 1번 DB 서버에 저장하고 d~f 범위는 2번 DB서버에 저장해서 엑세스 요청이 들어올 때마다 ID를 확인해서 해당하는 DB서버로 요청을 전달하는 방식이다.</p>
+<p>마지막으로 볼 방법은 요청 패턴에 따른 분할이다. 보통 웹서비스를 운영하다보면 일단 사용자 요청, API 요청, 봇 크롤링 요청 등 다양한 트래픽을 볼 수 있다. 이런 트래픽에 따라서 DB서버를 분할하여 처리하는 방법이다. 봇 크롤링 같은 경우에는 특성 상 매우 오래된 페이지에도 엑세스하며, 범위도 광범위하다. 그래서 캐싱데이터를 관리하기 어렵지만 봇에게는 빠르게 응답 처리를 진행할 필요가 없다. 반면 사용자 요청의 경우에는 최신 업데이트된 페이지로의 엑세스 요청이 대부분이며 이런 경우에는 최신 데이터들을 캐싱해두면 된다. 이런 식으로 요청자 분류에 따라서 다르게 대처할 수 있도록 분할할 수 있다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/computerscience/" class="category-chain-item">ComputerScience</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/computerscience/infrastructure/" class="category-chain-item">infrastructure</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0/" class="print-no-link">#데이터</a>
+      
+        <a href="/tags/%EC%9D%B8%ED%94%84%EB%9D%BC/" class="print-no-link">#인프라</a>
+      
+        <a href="/tags/%EB%B6%84%EC%82%B0%EC%B2%98%EB%A6%AC/" class="print-no-link">#분산처리</a>
+      
+        <a href="/tags/%EB%8C%80%EA%B7%9C%EB%AA%A8%EB%8D%B0%EC%9D%B4%ED%84%B0/" class="print-no-link">#대규모데이터</a>
+      
+        <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%EA%B5%AC%EC%A1%B0/" class="print-no-link">#데이터구조</a>
+      
+        <a href="/tags/%EC%84%9C%EB%B2%84/" class="print-no-link">#서버</a>
+      
+        <a href="/tags/os/" class="print-no-link">#OS</a>
+      
+        <a href="/tags/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C/" class="print-no-link">#운영체제</a>
+      
+        <a href="/tags/%EC%BA%90%EC%8B%9C/" class="print-no-link">#캐시</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS 캐시와 분산</div>
+      <div>https://dev-bearabbit.github.io/ko/Infra/infra-3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2022년 11월 2일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ko/Reviews/sesson-0/" title="If(kakao)dev2022 세션 리뷰">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">If(kakao)dev2022 세션 리뷰</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Infra/infra-2/" title="대규모 데이터 처리 입문">
+                        <span class="hidden-mobile">대규모 데이터 처리 입문</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
