@@ -85,7 +85,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 70vh;">
+<div class="header-inner" style="height: 60vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -181,35 +181,33 @@
 
   
 
-<div id="banner" class="banner">
-  <canvas id="canvas"></canvas>
-  <div class="mask flex-center">
-    <div class="banner-text text-center fade-in-up">
-      <div class="h2">
-        
-          <span id="subtitle" data-typed-text="Tags - 학위"></span>
+<div id="banner" class="banner" parallax=true
+  style="background: url('/img/background.gif') no-repeat center center; background-size: cover;">
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Tags - 학위"></span>
+          
+        </div>
+
         
       </div>
- 
+
       
     </div>
-
-    
-      <div class="scroll-down-bar">
-        <i class="iconfont icon-arrowdown"></i>
-      </div>
-    
   </div>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const banner = document.getElementById('banner');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
-    // 강제로 배너 높이를 설정
-    banner.style.height = '500px';
+    // 캔버스 크기를 배너 크기와 동기화
+    const banner = document.getElementById('banner');
     canvas.width = banner.offsetWidth;
     canvas.height = banner.offsetHeight;
 
@@ -234,6 +232,12 @@
     }
 
     setInterval(matrix, 60);
+
+    // 창 크기 조정 시 캔버스 크기 업데이트
+    window.addEventListener('resize', () => {
+      canvas.width = banner.offsetWidth;
+      canvas.height = banner.offsetHeight;
+    });
   });
 </script>
 

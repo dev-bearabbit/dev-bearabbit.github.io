@@ -85,7 +85,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 70vh;">
+<div class="header-inner" style="height: 100vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -181,35 +181,37 @@
 
   
 
-<div id="banner" class="banner">
-  <canvas id="canvas"></canvas>
-  <div class="mask flex-center">
-    <div class="banner-text text-center fade-in-up">
-      <div class="h2">
-        
-          <span id="subtitle" data-typed-text="fn main() { println!(&#34;Hello,  World!&#34;); }"></span>
+<div id="banner" class="banner" parallax=true
+  style="background: url('/img/background.gif') no-repeat center center; background-size: cover;">
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="fn main() { println!(&#34;Hello,  World!&#34;); }"></span>
+          
+        </div>
+
         
       </div>
- 
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
       
     </div>
-
-    
-      <div class="scroll-down-bar">
-        <i class="iconfont icon-arrowdown"></i>
-      </div>
-    
   </div>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const banner = document.getElementById('banner');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
-    // 강제로 배너 높이를 설정
-    banner.style.height = '500px';
+    // 캔버스 크기를 배너 크기와 동기화
+    const banner = document.getElementById('banner');
     canvas.width = banner.offsetWidth;
     canvas.height = banner.offsetHeight;
 
@@ -234,6 +236,12 @@
     }
 
     setInterval(matrix, 60);
+
+    // 창 크기 조정 시 캔버스 크기 업데이트
+    window.addEventListener('resize', () => {
+      canvas.width = banner.offsetWidth;
+      canvas.height = banner.offsetHeight;
+    });
   });
 </script>
 
@@ -245,7 +253,7 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          >
+          style="margin-top: 0">
           
           <div class="container">
             <div class="row">
@@ -393,8 +401,6 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/docker/">#docker</a>
-            
               <a href="/tags/aws/">#AWS</a>
             
               <a href="/tags/db/">#DB</a>
@@ -404,6 +410,8 @@
               <a href="/tags/analysis/">#analysis</a>
             
               <a href="/tags/dashborad/">#dashborad</a>
+            
+              <a href="/tags/docker/">#docker</a>
             
               <a href="/tags/mariadb/">#mariaDB</a>
             
@@ -483,6 +491,10 @@
             
               <a href="/tags/docker/">#Docker</a>
             
+              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/">#빅데이터</a>
+            
+              <a href="/tags/bigdata/">#bigdata</a>
+            
               <a href="/tags/raspberrypi/">#raspberrypi</a>
             
               <a href="/tags/cluster/">#cluster</a>
@@ -490,10 +502,6 @@
               <a href="/tags/%ED%95%98%EB%91%A1/">#하둡</a>
             
               <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/">#스파크</a>
-            
-              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/">#빅데이터</a>
-            
-              <a href="/tags/bigdata/">#bigdata</a>
             
           </div>
         
@@ -563,6 +571,10 @@
             
               <a href="/tags/docker/">#Docker</a>
             
+              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/">#빅데이터</a>
+            
+              <a href="/tags/bigdata/">#bigdata</a>
+            
               <a href="/tags/raspberrypi/">#raspberrypi</a>
             
               <a href="/tags/cluster/">#cluster</a>
@@ -570,10 +582,6 @@
               <a href="/tags/%ED%95%98%EB%91%A1/">#하둡</a>
             
               <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/">#스파크</a>
-            
-              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/">#빅데이터</a>
-            
-              <a href="/tags/bigdata/">#bigdata</a>
             
           </div>
         
@@ -643,6 +651,10 @@
             
               <a href="/tags/docker/">#Docker</a>
             
+              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/">#빅데이터</a>
+            
+              <a href="/tags/bigdata/">#bigdata</a>
+            
               <a href="/tags/raspberrypi/">#raspberrypi</a>
             
               <a href="/tags/cluster/">#cluster</a>
@@ -650,10 +662,6 @@
               <a href="/tags/%ED%95%98%EB%91%A1/">#하둡</a>
             
               <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/">#스파크</a>
-            
-              <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/">#빅데이터</a>
-            
-              <a href="/tags/bigdata/">#bigdata</a>
             
           </div>
         

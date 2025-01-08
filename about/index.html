@@ -20,13 +20,15 @@
   <meta name="author" content="Jess">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="website">
+    <meta name="description" content="Hi, there        류현지 | 데이터 엔지니어     서울, 대한민국     dev.bearabbit@gmail.com   현재 4년차 데이터 엔지니어로 일하고 있으며, 분산처리시스템에 관심이 많습니다. 업무에서 Python, SQL, Shell script을 주로 사용하며, 현재 Rust를 공부하고 있습니다. 문제 해결을 위해서는 협업이 중요하">
+<meta property="og:type" content="website">
 <meta property="og:title" content="About">
 <meta property="og:url" content="https://dev-bearabbit.github.io/about/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="Hi, there        류현지 | 데이터 엔지니어     서울, 대한민국     dev.bearabbit@gmail.com   현재 4년차 데이터 엔지니어로 일하고 있으며, 분산처리시스템에 관심이 많습니다. 업무에서 Python, SQL, Shell script을 주로 사용하며, 현재 Rust를 공부하고 있습니다. 문제 해결을 위해서는 협업이 중요하">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2020-03-02T05:27:14.000Z">
-<meta property="article:modified_time" content="2025-01-01T13:13:22.749Z">
+<meta property="article:modified_time" content="2025-01-08T13:58:57.225Z">
 <meta property="article:author" content="Jess">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -37,6 +39,12 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
 
@@ -85,7 +93,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 70vh;">
+<div class="header-inner" style="height: 60vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -181,35 +189,33 @@
 
   
 
-<div id="banner" class="banner">
-  <canvas id="canvas"></canvas>
-  <div class="mask flex-center">
-    <div class="banner-text text-center fade-in-up">
-      <div class="h2">
-        
-          <span id="subtitle" data-typed-text="About"></span>
+<div id="banner" class="banner" parallax=true
+  style="background: url('/img/background.gif') no-repeat center center; background-size: cover;">
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="About"></span>
+          
+        </div>
+
         
       </div>
- 
+
       
     </div>
-
-    
-      <div class="scroll-down-bar">
-        <i class="iconfont icon-arrowdown"></i>
-      </div>
-    
   </div>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const banner = document.getElementById('banner');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
-    // 강제로 배너 높이를 설정
-    banner.style.height = '500px';
+    // 캔버스 크기를 배너 크기와 동기화
+    const banner = document.getElementById('banner');
     canvas.width = banner.offsetWidth;
     canvas.height = banner.offsetHeight;
 
@@ -234,6 +240,12 @@
     }
 
     setInterval(matrix, 60);
+
+    // 창 크기 조정 시 캔버스 크기 업데이트
+    window.addEventListener('resize', () => {
+      canvas.width = banner.offsetWidth;
+      canvas.height = banner.offsetHeight;
+    });
   });
 </script>
 
@@ -247,18 +259,112 @@
         <div id="board"
           >
           
+            <div class="about-avatar">
+              <img src="/img/me.png" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
+            </div>
+          
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<article class="page-content">
+<div class="text-center">
+  <div class="about-info">
+    <div class="about-name">dev-bearabbit</div>
+    <div class="about-intro">DEV AnythinG</div>
+    <div class="about-icons">
+      
+        
+        
+        
+        <a href=https://github.com/dev-bearabbit class="
+           hint--bottom hint--rounded"
+           aria-label="GitHub"
+           target="_blank"
+        >
+          <i class="iconfont icon-github-fill" aria-hidden="true"></i>
+          
+        </a>
+      
+        
+        
+        
+        <a href=https://dev-bearabbit.github.io/resume/ class="
+           hint--bottom hint--rounded"
+           aria-label="Resume"
+           target="_blank"
+        >
+          <i class="iconfont icon-addrcard" aria-hidden="true"></i>
+          
+        </a>
+      
+        
+        
+        
+        <a href=https://www.linkedin.com/in/jess-ryu-0051b82b1/ class="
+           hint--bottom hint--rounded"
+           aria-label="Linkedin"
+           target="_blank"
+        >
+          <i class="iconfont icon-linkedin-fill" aria-hidden="true"></i>
+          
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+<article class="about-content page-content mt-5">
+  <div class="markdown-body">
+    <h2 id="hi-there">Hi, there</h2>
+<P>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16" style="margin-bottom: 4px;">
+<path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/> <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2H2Z"/>
+</svg>
+  <b>류현지 | 데이터 엔지니어</b> <Br><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16" style="margin-bottom: 4px;"> <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/> </svg>  <b>서울, 대한민국</b> <Br><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16" style="margin-bottom: 3px;"> <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/> </svg>  <b>dev.bearabbit@gmail.com</b>
+</P>
+<ul>
+<li>현재 4년차 데이터 엔지니어로 일하고 있으며, 분산처리시스템에 관심이 많습니다.</li>
+<li>업무에서 Python, SQL, Shell script을 주로 사용하며, 현재 Rust를 공부하고 있습니다.</li>
+<li>문제 해결을 위해서는 협업이 중요하다고 생각합니다.</li>
+<li>반복적인 업무를 자동화하고 비효율적인 프로세스를 개선하는 것을 추구합니다.</li>
+<li>다양한 사람들과 이야기하는 것을 좋아합니다. 편하게 커피챗 요청해주세요 :)</li>
+</ul>
+
+  </div>
+
   
-
-
-  
-
 </article>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
 
 
 
@@ -359,6 +465,102 @@
 
 
 
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 

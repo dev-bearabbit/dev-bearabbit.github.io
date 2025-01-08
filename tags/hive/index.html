@@ -22,7 +22,7 @@
   
     <meta name="description" content="I love to learn, and try to be better than yesterday.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Tags - Hive">
+<meta property="og:title" content="Tags - hive">
 <meta property="og:url" content="https://dev-bearabbit.github.io/tags/hive/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="I love to learn, and try to be better than yesterday.">
@@ -32,7 +32,7 @@
   
   
   
-  <title>Tags - Hive - DEV AnythinG</title>
+  <title>Tags - hive - DEV AnythinG</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -85,7 +85,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 70vh;">
+<div class="header-inner" style="height: 60vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -181,35 +181,33 @@
 
   
 
-<div id="banner" class="banner">
-  <canvas id="canvas"></canvas>
-  <div class="mask flex-center">
-    <div class="banner-text text-center fade-in-up">
-      <div class="h2">
-        
-          <span id="subtitle" data-typed-text="Tags - Hive"></span>
+<div id="banner" class="banner" parallax=true
+  style="background: url('/img/background.gif') no-repeat center center; background-size: cover;">
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Tags - hive"></span>
+          
+        </div>
+
         
       </div>
- 
+
       
     </div>
-
-    
-      <div class="scroll-down-bar">
-        <i class="iconfont icon-arrowdown"></i>
-      </div>
-    
   </div>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const banner = document.getElementById('banner');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
-    // 강제로 배너 높이를 설정
-    banner.style.height = '500px';
+    // 캔버스 크기를 배너 크기와 동기화
+    const banner = document.getElementById('banner');
     canvas.width = banner.offsetWidth;
     canvas.height = banner.offsetHeight;
 
@@ -234,6 +232,12 @@
     }
 
     setInterval(matrix, 60);
+
+    // 창 크기 조정 시 캔버스 크기 업데이트
+    window.addEventListener('resize', () => {
+      canvas.width = banner.offsetWidth;
+      canvas.height = banner.offsetHeight;
+    });
   });
 </script>
 
@@ -253,26 +257,17 @@
                 
 
 <div class="list-group">
-  <p class="h4">2 posts in total</p>
+  <p class="h4">1 posts in total</p>
   <hr>
   
   
     
       
-      <p class="h5">2022</p>
-    
-    <a href="/ko/Engineering/engineering-1/" class="list-group-item list-group-item-action">
-      <time>04-05</time>
-      <div class="list-group-item-title">Schema on Read란</div>
-    </a>
-  
-    
-      
       <p class="h5">2021</p>
     
-    <a href="/ko/Hadoop/hadoop-9/" class="list-group-item list-group-item-action">
-      <time>12-30</time>
-      <div class="list-group-item-title">Hive 아키텍쳐</div>
+    <a href="/ko/Hadoop/hadoop-6/" class="list-group-item list-group-item-action">
+      <time>11-21</time>
+      <div class="list-group-item-title">빅데이터 플랫폼</div>
     </a>
   
 </div>
