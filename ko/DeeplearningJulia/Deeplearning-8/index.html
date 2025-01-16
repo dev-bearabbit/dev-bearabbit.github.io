@@ -27,11 +27,11 @@
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/43.png">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/44.png">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/51.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/43.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/44.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/51.png">
 <meta property="article:published_time" content="2020-04-15T13:56:01.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:34:42.641Z">
+<meta property="article:modified_time" content="2025-01-16T15:14:07.701Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
@@ -40,7 +40,7 @@
 <meta property="article:tag" content="신경망">
 <meta property="article:tag" content="역전파">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/43.png">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/43.png">
   
   
   
@@ -329,11 +329,11 @@
 <h2 id="역전파란">역전파란</h2>
 <p>역전파(backward propagation)는 순전파와 다르게 미분을 반대로 하는 것을 의미한다. 즉, 순전파는 왼쪽에서 오른쪽 방향으로 미분이 이루어진다면, 역전파는 오른쪽에서 왼쪽 방향으로 미분이 이루어진다. 도식에서 확인하자면 아래와 같다.</p>
 <figure>
-<img src="../images/43.png" srcset="/img/loading.gif" lazyload alt="신경망 계산 방향" /><figcaption aria-hidden="true">신경망 계산 방향</figcaption>
+<img src="/images/43.png" srcset="/img/loading.gif" lazyload alt="신경망 계산 방향" /><figcaption aria-hidden="true">신경망 계산 방향</figcaption>
 </figure>
 <p>또한 순전파와 역전파는 신경망 계산이 이루어지는 과정도 약간 다르다. 우리가 만든 2층 신경망 모델의 순전파 알고리즘은 각각 가중치와 편향의 편미분 값을 구하기 위해서 신경망 계산이 8번 이루어지지만, 역전파 알고리즘은 한번 진행될 때 가중치와 편향의 편미분 값을 바로 구할 수 있다. 이것이 역전파가 순전파보다 훨씬 빠르게 진행되는 이유이다. 신경망 계산은 행렬 계산으로 이루어지기 때문에 매우 복잡하고 계산량이 많다. 따라서 계산을 여러 번 할수록 훨씬 많은 시간이 소요된다. 따라서 시간의 관점에서 역전파는 순전파보다 훨씬 더 효율적인 알고리즘이라고 볼 수 있다. 순전파와 역전파의 차이를 정리하면 다음과 같다.</p>
 <figure>
-<img src="../images/44.png" srcset="/img/loading.gif" lazyload alt="미분 알고리즘 비교" /><figcaption aria-hidden="true">미분 알고리즘 비교</figcaption>
+<img src="/images/44.png" srcset="/img/loading.gif" lazyload alt="미분 알고리즘 비교" /><figcaption aria-hidden="true">미분 알고리즘 비교</figcaption>
 </figure>
 <h2 id="역전파의-원리-합성함수의-미분">역전파의 원리: 합성함수의 미분</h2>
 <p>역전파가 한번에 편미분을 구할 수 있는 원리는 합성함수의 미분을 이용한 것이다. 먼저 우리가 만들었던 2층 신경망 모델의 수식을 확인해보자.</p>
@@ -374,7 +374,7 @@ Z2=A1W2+B2\\
 <p>위의 공식을 비교해보면 각각 매개 변수에 동일하게 적용되는 미분이 있을 것이다. 이를 알고리즘으로 구현하여 좀 더 빠르게 미분값을 구할 수 있도록 고안한 것이 역전파 알고리즘이다.</p>
 <h2 id="역전파-알고리즘-미분-과정">역전파 알고리즘 미분 과정</h2>
 <figure>
-<img src="../images/51.png" srcset="/img/loading.gif" lazyload alt="역전파 알고리즘" /><figcaption aria-hidden="true">역전파 알고리즘</figcaption>
+<img src="/images/51.png" srcset="/img/loading.gif" lazyload alt="역전파 알고리즘" /><figcaption aria-hidden="true">역전파 알고리즘</figcaption>
 </figure>
 <p>2층 신경망 역전파 알고리즘은 위와 같은 구조로 이루어져 있다. 우리는 위의 역전파 알고리즘에서 각 층을 함수로 구현할 것이다. 참고로 아래의 수식에서 사용되는 대문자는 행렬이며, 소문자는 스칼라이다. 특히 <span class="math inline">\(Z_n\)</span>과 같은 기호는 행렬 <span class="math inline">\(Z\)</span>의 <span class="math inline">\(n\)</span>(인덱스)위치에 속해있는 요소를 가리킨다.</p>
 <h3 id="softmax-with-loss-layer">Softmax with Loss Layer</h3>

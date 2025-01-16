@@ -27,12 +27,12 @@
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/47.png">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/48.png">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/49.png">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/50.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/47.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/48.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/49.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/50.png">
 <meta property="article:published_time" content="2020-04-20T13:56:01.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:34:44.891Z">
+<meta property="article:modified_time" content="2025-01-16T15:14:07.678Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
@@ -41,7 +41,7 @@
 <meta property="article:tag" content="신경망">
 <meta property="article:tag" content="역전파">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/47.png">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/47.png">
   
   
   
@@ -379,23 +379,23 @@
 <p>역전파 알고리즘에서 저장했던 <code>train_loss_list</code>와 <code>accuracy</code>를 그래프로 나타내보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">using</span> Plots<br>x = range(<span class="hljs-number">1</span>,length(train_loss_list),step=<span class="hljs-number">1</span>)<br>y = train_loss_list<br></code></pre></td></tr></table></figure>
 <figure>
-<img src="../images/47.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
+<img src="/images/47.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
 </figure>
 <p>저장된 손실 함수 값을 그래프로 그려본 결과, 지속적으로 감소하는 양상을 확인할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x = range(<span class="hljs-number">1</span>,length(accuracy),step=<span class="hljs-number">1</span>)<br>y = accuracy<br><br>plot(x,y)<br></code></pre></td></tr></table></figure>
 <figure>
-<img src="../images/48.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
+<img src="/images/48.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
 </figure>
 <p>저장된 정확도 또한 계속 상승하는 것을 볼 수 있다. 가장 높은 정확도는 아래의 코드를 통해 확인하자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">argmax(accuracy)   <span class="hljs-comment"># 최대값 인덱스 반환</span><br><span class="hljs-number">599</span><br>accuracy[<span class="hljs-number">598</span>]<br><span class="hljs-number">80.14</span><br></code></pre></td></tr></table></figure>
 <p>정확도는 80%를 웃돈다. 역전파 알고리즘은 1에폭 당 20초 정도 소요되기 때문에 3에폭도 1분 내외로 소요된다. 3에폭 정도 학습하면 손실 함수는 더 떨어지고 정확도는 더 오른다.</p>
 <p>3에폭의 결과는 다음과 같다.</p>
 <figure>
-<img src="../images/49.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
+<img src="/images/49.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
 </figure>
 <p>손실 함수가 0.5 이하로 떨어진 것을 확인할 수 있다.</p>
 <figure>
-<img src="../images/50.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
+<img src="/images/50.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
 </figure>
 <p>정확도 또한 80%를 훨씬 넘었다. 정확도를 직접 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">argmax(accuracy)   <span class="hljs-comment"># 최대값 인덱스 반환</span><br><span class="hljs-number">1789</span><br>accuracy[<span class="hljs-number">598</span>]<br><span class="hljs-number">90.38000000000001</span><br></code></pre></td></tr></table></figure>

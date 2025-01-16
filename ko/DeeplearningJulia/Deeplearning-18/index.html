@@ -27,10 +27,10 @@
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/81.png">
-<meta property="og:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/82.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/81.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/82.png">
 <meta property="article:published_time" content="2020-08-01T03:06:31.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:35:09.524Z">
+<meta property="article:modified_time" content="2025-01-16T15:13:35.943Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
@@ -44,7 +44,7 @@
 <meta property="article:tag" content="im2col">
 <meta property="article:tag" content="col2im">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dev-bearabbit.github.io/ko/DeeplearningJulia/images/81.png">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/81.png">
   
   
   
@@ -345,7 +345,7 @@
 <h3 id="cnn-모델-설계">CNN 모델 설계</h3>
 <p><code>MNIST</code> 데이터는 간단하게 손글씨로 쓴 숫자이기에 비교적 얕은 모델로도 높은 성능의 분류기를 만들 수 있다. 아래의 그림을 참고해보자.</p>
 <figure>
-<img src="../images/81.png" srcset="/img/loading.gif" lazyload alt="model" /><figcaption aria-hidden="true">model</figcaption>
+<img src="/images/81.png" srcset="/img/loading.gif" lazyload alt="model" /><figcaption aria-hidden="true">model</figcaption>
 </figure>
 <p>위의 각 계층들에 대한 세부적인 정보는 아래와 같다.</p>
 <ul>
@@ -389,7 +389,7 @@
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 1에폭: 96.37</span><br><span class="hljs-comment"># 2에폭: 97.22</span><br><span class="hljs-comment"># 3에폭: 98.1</span><br><span class="hljs-comment"># 4에폭: 98.46000000000001</span><br><span class="hljs-comment"># 5에폭: 98.57000000000001</span><br></code></pre></td></tr></table></figure>
 <p><code>im2col()</code>, <code>col2im()</code>을 적용하지 않았던 모델과 비교해봤을 때 초기값의 랜덤 설정을 고려한다면 같은 결과를 얻었다고 볼 수 있다. 손실값의 그래프를 확인해도 잘 학습되는 것을 확인할 수 있다.</p>
 <figure>
-<img src="../images/82.png" srcset="/img/loading.gif" lazyload alt="loss" /><figcaption aria-hidden="true">loss</figcaption>
+<img src="/images/82.png" srcset="/img/loading.gif" lazyload alt="loss" /><figcaption aria-hidden="true">loss</figcaption>
 </figure>
 <p>하지만 5에폭을 진행하는데 걸린 시간은 고작 약 25분 정도이다. 기존의 <code>simpleNet</code>은 1에폭에 1시간이었다는 것을 떠올려보면 엄청난 발전이라고 볼 수 있다. 하지만 <code>simpleNet</code>은 테스트셋의 정확도 99%를 넘기지는 못한다. 따라서 다음 시간에는 tensorflow에서 MNIST의 예제로 제공하는 <code>convNet</code>을 살펴보고 이와 동일하게 모델을 설계하여 테스트셋의 정확도 99%를 달성해볼 것이다.</p>
 
