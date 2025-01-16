@@ -2011,13 +2011,13 @@
     
     <tags>
       
-      <tag>sql</tag>
-      
       <tag>자격증</tag>
       
       <tag>SQLD</tag>
       
       <tag>sqld</tag>
+      
+      <tag>sql</tag>
       
     </tags>
     
@@ -2114,9 +2114,9 @@
     
     <tags>
       
-      <tag>docker</tag>
-      
       <tag>sshpass</tag>
+      
+      <tag>docker</tag>
       
       <tag>script</tag>
       
@@ -2383,9 +2383,9 @@
     
     <tags>
       
-      <tag>docker</tag>
-      
       <tag>sshpass</tag>
+      
+      <tag>docker</tag>
       
       <tag>script</tag>
       
@@ -2418,9 +2418,9 @@
     
     <tags>
       
-      <tag>docker</tag>
-      
       <tag>sshpass</tag>
+      
+      <tag>docker</tag>
       
       <tag>script</tag>
       
@@ -3075,9 +3075,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3118,9 +3118,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3276,9 +3276,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3315,9 +3315,9 @@
     
     <tags>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>명령어</tag>
       
@@ -3352,9 +3352,9 @@
     
     <tags>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3389,11 +3389,11 @@
       
       <tag>mariadb</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
       
       <tag>docker</tag>
+      
+      <tag>database</tag>
       
       <tag>vi</tag>
       
