@@ -297,11 +297,11 @@
     
     <tags>
       
-      <tag>데이터웨어하우스</tag>
-      
       <tag>빅데이터</tag>
       
       <tag>bigdata</tag>
+      
+      <tag>데이터웨어하우스</tag>
       
       <tag>데이터마트</tag>
       
@@ -344,9 +344,9 @@
       
       <tag>bigdata</tag>
       
-      <tag>basic</tag>
-      
       <tag>hadoop</tag>
+      
+      <tag>basic</tag>
       
     </tags>
     
@@ -1411,13 +1411,13 @@
     
     <tags>
       
-      <tag>Hive</tag>
-      
       <tag>빅데이터</tag>
       
       <tag>hadoop</tag>
       
       <tag>ecosystem</tag>
+      
+      <tag>Hive</tag>
       
       <tag>SQL</tag>
       
@@ -2011,13 +2011,13 @@
     
     <tags>
       
+      <tag>sql</tag>
+      
       <tag>자격증</tag>
       
       <tag>SQLD</tag>
       
       <tag>sqld</tag>
-      
-      <tag>sql</tag>
       
     </tags>
     
@@ -2114,9 +2114,9 @@
     
     <tags>
       
-      <tag>sshpass</tag>
-      
       <tag>docker</tag>
+      
+      <tag>sshpass</tag>
       
       <tag>script</tag>
       
@@ -2383,9 +2383,9 @@
     
     <tags>
       
-      <tag>sshpass</tag>
-      
       <tag>docker</tag>
+      
+      <tag>sshpass</tag>
       
       <tag>script</tag>
       
@@ -2418,9 +2418,9 @@
     
     <tags>
       
-      <tag>sshpass</tag>
-      
       <tag>docker</tag>
+      
+      <tag>sshpass</tag>
       
       <tag>script</tag>
       
@@ -2919,10 +2919,6 @@
       
       <tag>Docker</tag>
       
-      <tag>빅데이터</tag>
-      
-      <tag>bigdata</tag>
-      
       <tag>raspberrypi</tag>
       
       <tag>cluster</tag>
@@ -2930,6 +2926,10 @@
       <tag>하둡</tag>
       
       <tag>스파크</tag>
+      
+      <tag>빅데이터</tag>
+      
+      <tag>bigdata</tag>
       
     </tags>
     
@@ -2958,10 +2958,6 @@
       
       <tag>Docker</tag>
       
-      <tag>빅데이터</tag>
-      
-      <tag>bigdata</tag>
-      
       <tag>raspberrypi</tag>
       
       <tag>cluster</tag>
@@ -2969,6 +2965,10 @@
       <tag>하둡</tag>
       
       <tag>스파크</tag>
+      
+      <tag>빅데이터</tag>
+      
+      <tag>bigdata</tag>
       
     </tags>
     
@@ -2997,10 +2997,6 @@
       
       <tag>Docker</tag>
       
-      <tag>빅데이터</tag>
-      
-      <tag>bigdata</tag>
-      
       <tag>raspberrypi</tag>
       
       <tag>cluster</tag>
@@ -3008,6 +3004,10 @@
       <tag>하둡</tag>
       
       <tag>스파크</tag>
+      
+      <tag>빅데이터</tag>
+      
+      <tag>bigdata</tag>
       
     </tags>
     
@@ -3036,10 +3036,6 @@
       
       <tag>Docker</tag>
       
-      <tag>빅데이터</tag>
-      
-      <tag>bigdata</tag>
-      
       <tag>raspberrypi</tag>
       
       <tag>cluster</tag>
@@ -3047,6 +3043,10 @@
       <tag>하둡</tag>
       
       <tag>스파크</tag>
+      
+      <tag>빅데이터</tag>
+      
+      <tag>bigdata</tag>
       
     </tags>
     
@@ -3075,9 +3075,9 @@
       
       <tag>DB</tag>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3118,9 +3118,9 @@
       
       <tag>DB</tag>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3155,10 +3155,6 @@
       
       <tag>Docker</tag>
       
-      <tag>빅데이터</tag>
-      
-      <tag>bigdata</tag>
-      
       <tag>raspberrypi</tag>
       
       <tag>cluster</tag>
@@ -3166,6 +3162,10 @@
       <tag>하둡</tag>
       
       <tag>스파크</tag>
+      
+      <tag>빅데이터</tag>
+      
+      <tag>bigdata</tag>
       
     </tags>
     
@@ -3194,10 +3194,6 @@
       
       <tag>Docker</tag>
       
-      <tag>빅데이터</tag>
-      
-      <tag>bigdata</tag>
-      
       <tag>raspberrypi</tag>
       
       <tag>cluster</tag>
@@ -3205,6 +3201,10 @@
       <tag>하둡</tag>
       
       <tag>스파크</tag>
+      
+      <tag>빅데이터</tag>
+      
+      <tag>bigdata</tag>
       
     </tags>
     
@@ -3276,9 +3276,9 @@
       
       <tag>DB</tag>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3315,9 +3315,9 @@
     
     <tags>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>명령어</tag>
       
@@ -3352,9 +3352,9 @@
     
     <tags>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3389,11 +3389,11 @@
       
       <tag>mariadb</tag>
       
-      <tag>docker</tag>
+      <tag>database</tag>
       
       <tag>sql</tag>
       
-      <tag>database</tag>
+      <tag>docker</tag>
       
       <tag>vi</tag>
       
