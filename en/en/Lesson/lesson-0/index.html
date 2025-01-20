@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/1.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/2.png">
 <meta property="article:published_time" content="2025-01-20T13:52:40.000Z">
-<meta property="article:modified_time" content="2025-01-20T15:30:40.315Z">
+<meta property="article:modified_time" content="2025-01-20T15:39:54.463Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="aws">
 <meta property="article:tag" content="personalize">
@@ -364,7 +364,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">Tier_1 = <span class="hljs-number">100000</span>/<span class="hljs-number">1000</span> * <span class="hljs-number">0.016</span> * <span class="hljs-number">10</span><br>Tier_2 = <span class="hljs-number">500000</span>/<span class="hljs-number">1000</span> * <span class="hljs-number">0.008</span> * <span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
 
 <p>In my initial understanding, the cost would have been just $1.6, but the actual cost came to $56. This was entirely my mistake for not double-checking the details. Looking back, I should have questioned why the costs seemed so low and revisited the documentation for clarity. At the same time, I can’t help but feel like AWS’s pricing table is designed to be confusing—it never crossed my mind that the requested number of users wouldn’t factor into the calculation at all.</p>
-<p><img src="/en/images/2.png" srcset="/en/img/loading.gif" lazyload alt="shit"></p>
+<p><img src="/en/images/2.png" srcset="/en/img/loading.gif" lazyload alt="Plz undo everything"></p>
 <p>To prevent others from making the same mistake, I’m documenting this embarrassing experience here.<br>In the world of cloud computing, miscalculating SaaS costs can lead to hefty “dumb fees,” even when your application runs perfectly. For the first time as a developer, I had to write a postmortem report due to unexpected costs. This rare mistake left me feeling rather unsettled.</p>
 <h2 id="Lessons-Learned"><a href="#Lessons-Learned" class="headerlink" title="Lessons Learned"></a>Lessons Learned</h2><ul>
 <li>Cloud costs are seriously scary. Sometimes, I wonder if server crashes would be less stressful… No, that’s a nightmare too.</li>
