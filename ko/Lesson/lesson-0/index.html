@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/189.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/190.png">
 <meta property="article:published_time" content="2025-01-20T13:52:40.000Z">
-<meta property="article:modified_time" content="2025-01-20T15:03:41.315Z">
+<meta property="article:modified_time" content="2025-01-20T15:25:37.021Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="aws">
 <meta property="article:tag" content="personalize">
@@ -254,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          123 words
+          120 words
         
       </span>
     
@@ -354,13 +354,13 @@
 <p>나는 CRM 발송 모수를 추출하는 도구를 개발하고 테스트하고 있다. 이 과정에서 당연히 personalize 가격을 비교해보고 예상 소요 비용까지 컨플루언스 문서로 정리하여 리드께 보고드렸으며, 비용 확인 후 기존 방식과 모델 모수와의 A/B 테스트를 진행하고 있었다. 참고로 내가 사용한 레시피는 아이템-유저 세그멘테이션을 위한 <code>aws-item-affinity</code> 였다.</p>
 <p>하지만 오늘 아침에 갑자기 personalize 비용이 확 증가했다는 알림을 받았다. 분명 내가 계산한 대로라면 미미한 금액인데 어떻게 비용 폭탄을 맞게 되었을까..? 등골이 너무 서늘했다. 아직 원인은 전혀 모르지만 무언가 단단히 잘못된 느낌...급격히 불안해진 나는 빠르게 상황을 분석하기 시작했다.</p>
 <figure>
-<img src="/images/188.png" srcset="/img/loading.gif" lazyload alt="omg" /><figcaption aria-hidden="true">omg</figcaption>
+<img src="/images/188.png" srcset="/img/loading.gif" lazyload alt="이게무슨일이야" /><figcaption aria-hidden="true">이게무슨일이야</figcaption>
 </figure>
 <p>그렇게 오전 근무 시간 내내 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/personalize/pricing/">aws personalize 요금 페이지</a>만 보면서 사용량에 따른 비용만 계속 계산해보았다. 그렇다가 마침내 원인으로 파악되는 부분을 찾았다.</p>
 <h2 id="원인-파악">원인 파악</h2>
 <p>원인은 바로 배치 추론 job에 있었다. 사실 데이터셋 비용과 훈련 비용은 단일 건수이기도 하고 그렇게까지 부담스러운 비용이 아니었는데 배치 추론 비용에서 폭탄을 맞게 된 것이었다. 그렇다면 일단 AWS 공식 홈페이지에 있는 요금 설명을 확인해보자.</p>
 <figure>
-<img src="/images/189.png" srcset="/img/loading.gif" lazyload alt="pricing" /><figcaption aria-hidden="true">pricing</figcaption>
+<img src="/images/189.png" srcset="/img/loading.gif" lazyload alt="배치추론가격표" /><figcaption aria-hidden="true">배치추론가격표</figcaption>
 </figure>
 <p>위 사진에 있는 표가 배치 추론 생성 시 발생하는 비용을 계산하는 기준이다. 여기서 나는 <code>Users in dataset</code>의 개념을 요청하는 사용자 수라고 이해했다. 즉, 10만명의 요청까지는 세그먼트 요청 당 $0.016이며 10만명부터 90만명 요청까지는 $0.008이라고 이해한 것이다. 그래서 만약 내가 총 10개의 아이템에 대한 유저를 각각 1만명씩 추출해달라고 요청한다면 비용은 아래와 같이 계산된다고 생각했다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-number">10000</span>/<span class="hljs-number">1000</span> * <span class="hljs-number">0.016</span> * <span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
@@ -368,7 +368,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">Tier_1 = <span class="hljs-number">100000</span>/<span class="hljs-number">1000</span> * <span class="hljs-number">0.016</span> * <span class="hljs-number">10</span><br>Tier_2 = <span class="hljs-number">500000</span>/<span class="hljs-number">1000</span> * <span class="hljs-number">0.008</span> * <span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
 <p>내가 처음 이해했던 계산식에서는 $1.6 였는데 실제 청구되는 비용은 $56 였던 것이다. 물론 제대로 확인하지 않은 100% 내 잘못이다. 지금 생각해보면 너무 저렴했던 것도 이상하고 다시 한번 확인해봤으면 좋았을 걸 싶다. 하지만 동시에 저 계산표 일부러 헷갈리게 만든 것인가 싶고 괜스레 AWS에 뒤통수 맞은 기분이었다. 추론 시에 요청하는 사용자 수가 아예 비용 계산식에 안들어갈꺼라고는 생각도 못했다.</p>
 <figure>
-<img src="/images/190.png" srcset="/img/loading.gif" lazyload alt="shit" /><figcaption aria-hidden="true">shit</figcaption>
+<img src="/images/190.png" srcset="/img/loading.gif" lazyload alt="이전으로돌아갈래" /><figcaption aria-hidden="true">이전으로돌아갈래</figcaption>
 </figure>
 <p>혹시나 비용계산 시 나같이 헷갈리는 사람이 있을까봐 수치스럽지만 블로그에 남겨둔다. 그렇다. 클라우드 생태계에서 SaaS 사용 시 비용계산을 잘못한다면 앱은 정상작동할지라도 엄청난 멍청비용을 지불하게 될 것이다. 개발자로 일하면서 비용으로 인해 처음 포스트모뎀 문서를 작성했다. 오랜만에 실수해서 그런지 조금 많이 착잡했다.</p>
 <h2 id="배운-점">배운 점</h2>
