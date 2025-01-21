@@ -343,32 +343,26 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 SQL 개발자(SQLD) 자격증 공부 내용을 정리합니다. <span id="more"></span></p>
-<h2 id="데이터-모델링">데이터 모델링</h2>
-<p>데이터 모델링이란 복잡한 현실 세계를 데이터베이스로 표현하기 위해서 추상화, 단순화, 명화학하는 과정을 의미한다.</p>
-<h3 id="데이터-모델링-특징">데이터 모델링 특징</h3>
-<ul>
+                <p>해당 시리즈는 SQL 개발자(SQLD) 자격증 공부 내용을 정리합니다.<br><span id="more"></span></p>
+<h2 id="데이터-모델링"><a href="#데이터-모델링" class="headerlink" title="데이터 모델링"></a>데이터 모델링</h2><p>데이터 모델링이란 복잡한 현실 세계를 데이터베이스로 표현하기 위해서 추상화, 단순화, 명화학하는 과정을 의미한다.</p>
+<h3 id="데이터-모델링-특징"><a href="#데이터-모델링-특징" class="headerlink" title="데이터 모델링 특징"></a>데이터 모델링 특징</h3><ul>
 <li>추상화: 현실세계를 간략하게 표현</li>
 <li>단순화: 누구나 이해할 수 있게 표현</li>
 <li>명확화: 애매한 의미 제거</li>
 </ul>
-<h3 id="데이터-모델링-단계">데이터 모델링 단계</h3>
-<ul>
+<h3 id="데이터-모델링-단계"><a href="#데이터-모델링-단계" class="headerlink" title="데이터 모델링 단계"></a>데이터 모델링 단계</h3><ul>
 <li>개념적 모델링: 전사관점, 업무측면에서 모델링, 추상화 진행</li>
 <li>논리적 모델링: 식별자 정의, 관계, 속성 표현, 재사용성을 위한 정규화 진행</li>
 <li>물리적 모델링: DBMS에 실제 데이터 생성</li>
 </ul>
-<h3 id="데이터-모델링-관점">데이터 모델링 관점</h3>
-<ul>
+<h3 id="데이터-모델링-관점"><a href="#데이터-모델링-관점" class="headerlink" title="데이터 모델링 관점"></a>데이터 모델링 관점</h3><ul>
 <li>데이터: 사용되는 데이터 구조분석, 정적분석</li>
-<li>프로세스: 수행하는 작업 시나리오 분석, 동적 분석</li>
+<li>프로세스: 수행하는 작업 시나리오 분석,  동적 분석</li>
 <li>데이터+프로세스: CRUD(Create, Read, Update, Delete) 분석</li>
 </ul>
-<h3 id="erdentity-relationship-diagram">ERD(Entity Relationship Diagram)</h3>
-<p>엔터티 간의 관계 표기법</p>
-<p><strong>엔터티란?</strong> 업무에서 관리해야 하는 데이터 집합. 보통 고객의 비즈니스 프로세스에서 추출</p>
-<h3 id="erd-작성-절차">ERD 작성 절차</h3>
-<ol type="1">
+<h3 id="ERD-Entity-Relationship-Diagram"><a href="#ERD-Entity-Relationship-Diagram" class="headerlink" title="ERD(Entity Relationship Diagram)"></a>ERD(Entity Relationship Diagram)</h3><p>엔터티 간의 관계 표기법</p>
+<p><strong>엔터티란?</strong><br>업무에서 관리해야 하는 데이터 집합. 보통 고객의 비즈니스 프로세스에서 추출</p>
+<h3 id="ERD-작성-절차"><a href="#ERD-작성-절차" class="headerlink" title="ERD 작성 절차"></a>ERD 작성 절차</h3><ol>
 <li>엔터티 도출</li>
 <li>엔터티 배치</li>
 <li>엔터티 간의 관계 설정</li>
@@ -376,390 +370,402 @@
 <li>엔터티 간의 관계 참여도 표현</li>
 <li>엔터티 간의 관계 필수 여부를 표현</li>
 </ol>
-<h2 id="층-스키마">3층 스키마</h2>
-<p>데이터 독립성을 위해 사용자, 설계자, 개발자가 바라보는 관점에 따라 데이터베이스를 기술하는 방법.</p>
+<h2 id="3층-스키마"><a href="#3층-스키마" class="headerlink" title="3층 스키마"></a>3층 스키마</h2><p>데이터 독립성을 위해 사용자, 설계자, 개발자가 바라보는 관점에 따라 데이터베이스를 기술하는 방법.</p>
 <ul>
 <li>사용자: 외부스키마(업무살 관련 데이터 접근. 응용 프로그램 -&gt; 데이터)</li>
 <li>설계자: 개념스키마(전체 DB 내 구조 설계. 통합 DB 구조 설계)</li>
 <li>개발자: 내부스키마(DB 물리적 저장구조. 레코드, 칼럼, 인덱스 정리)</li>
 </ul>
-<h3 id="데이터-독립성">데이터 독립성</h3>
-<ul>
+<h3 id="데이터-독립성"><a href="#데이터-독립성" class="headerlink" title="데이터 독립성"></a>데이터 독립성</h3><ul>
 <li>논리적 독립성: 개념스키마 변경이 외부 스키마에 영향을 주지 않는 것</li>
 <li>물리적 독립성: 내부스키마 변경이 개념 스키마에 영향을 주지 않는 것</li>
 </ul>
-<h3 id="데이터-독립의-장점">데이터 독립의 장점</h3>
-<ol type="1">
+<h3 id="데이터-독립의-장점"><a href="#데이터-독립의-장점" class="headerlink" title="데이터 독립의 장점"></a>데이터 독립의 장점</h3><ol>
 <li>복잡도 축소</li>
 <li>중복제거 가능</li>
 <li>사용자 요구사항 변경에 따른 대응 가능</li>
 <li>관리 및 유지보수 비용 축소</li>
 </ol>
-<h2 id="엔터티">엔터티</h2>
-<p>고객의 비즈니스 프로세스에서 관리되어야 하는 정보를 추출</p>
-<h3 id="엔터티-특징">엔터티 특징</h3>
+<h2 id="엔터티"><a href="#엔터티" class="headerlink" title="엔터티"></a>엔터티</h2><p>고객의 비즈니스 프로세스에서 관리되어야 하는 정보를 추출</p>
+<h3 id="엔터티-특징"><a href="#엔터티-특징" class="headerlink" title="엔터티 특징"></a>엔터티 특징</h3><div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>특징</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>식별자</td>
 <td>고유값 칼럼 필요</td>
 </tr>
-<tr class="even">
+<tr>
 <td>인스턴스 집합</td>
 <td>인스턴스는 2개 이상</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>속성</td>
 <td>반드시 속성 보유</td>
 </tr>
-<tr class="even">
+<tr>
 <td>관계</td>
 <td>다른 엔터티와 최소 1개 이상의 관계 필요</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>업무</td>
 <td>관리되어야 하는 집합</td>
 </tr>
 </tbody>
 </table>
-<h3 id="엔터티-종류">엔터티 종류</h3>
-<ul>
+</div>
+<h3 id="엔터티-종류"><a href="#엔터티-종류" class="headerlink" title="엔터티 종류"></a>엔터티 종류</h3><ul>
 <li>유형/무형</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>유형 엔터티</td>
 <td>물리적 형태 존재. 업무에서 사용되는 엔터티</td>
 <td>고객, 사원</td>
 </tr>
-<tr class="even">
+<tr>
 <td>개념 엔터티</td>
 <td>물리적 형태 미존재</td>
 <td>거래소 종목, 코스닥 종목</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>사건 엔터니</td>
 <td>비즈니스 상에서 생성</td>
 <td>주문, 취소, 수수료 청구</td>
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>발생시점</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>기본 엔터티</td>
 <td>키 엔터티. 독립적으로 생성됨</td>
 <td>고객, 사원</td>
 </tr>
-<tr class="even">
+<tr>
 <td>중심 엔터티</td>
 <td>기본과 행위 중간에 위치</td>
 <td>주문, 로그인</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>행위 엔터티</td>
 <td>2개 이상의 엔터티로부터 발생</td>
 <td>주문이력, 로그인이력</td>
 </tr>
 </tbody>
 </table>
-<h2 id="속성attribute">속성(Attribute)</h2>
-<p>엔터티의 요건 중 하나.</p>
-<h3 id="속성의-특징">속성의 특징</h3>
-<ul>
+</div>
+<h2 id="속성-Attribute"><a href="#속성-Attribute" class="headerlink" title="속성(Attribute)"></a>속성(Attribute)</h2><p>엔터티의 요건 중 하나.</p>
+<h3 id="속성의-특징"><a href="#속성의-특징" class="headerlink" title="속성의 특징"></a>속성의 특징</h3><ul>
 <li>하나의 값만 보유</li>
 <li>업무에서 관리되는 정보</li>
 <li>기본키가 변경되면 속성의 값도 변경(주식별자에게 함수적으로 종속)</li>
 </ul>
-<h3 id="속성의-종류">속성의 종류</h3>
-<ul>
+<h3 id="속성의-종류"><a href="#속성의-종류" class="headerlink" title="속성의 종류"></a>속성의 종류</h3><ul>
 <li>분해여부</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>단일속성</td>
 <td>하나의 의미로 구성된 것(1값:1의미)</td>
 <td>회원ID,이름</td>
 </tr>
-<tr class="even">
+<tr>
 <td>복합속성</td>
 <td>여러개의 의미를 보유(1값:N의미)</td>
 <td>주소(시군동)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>다중값속성</td>
 <td>여러개의 값, 의미를 보유(N값:N의미)</td>
 <td>상품리스트</td>
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>특성</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>기본속성</td>
 <td>비즈니스 프로세스에서 도출되는 본래의 속성</td>
 <td>회원ID</td>
 </tr>
-<tr class="even">
+<tr>
 <td>설계속성</td>
 <td>데이터 모델링 관점에서 발생하는 속성</td>
 <td>상품코드</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>파생속성</td>
 <td>다른 속성에 의해 생성되는 속성</td>
 <td>합계, 평균</td>
 </tr>
 </tbody>
 </table>
-<h3 id="도메인">도메인</h3>
-<p>속성이 가질 수 있는 값의 범위. 예로 성별이라는 속성이 가질 수 있는 도메인은 남성/여성이다.</p>
-<h2 id="관계relationship">관계(Relationship)</h2>
-<p>엔터티 간의 관련성을 의미</p>
+</div>
+<h3 id="도메인"><a href="#도메인" class="headerlink" title="도메인"></a>도메인</h3><p>속성이 가질 수 있는 값의 범위. 예로 성별이라는 속성이 가질 수 있는 도메인은 남성/여성이다.</p>
+<h2 id="관계-Relationship"><a href="#관계-Relationship" class="headerlink" title="관계(Relationship)"></a>관계(Relationship)</h2><p>엔터티 간의 관련성을 의미</p>
 <ul>
 <li>분류</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>존재관계</td>
 <td>엔터티 간 상태를 표현</td>
 <td>회원가입 -&gt; 관리점 할당 -&gt; 관리점에서 고객관리</td>
 </tr>
-<tr class="even">
+<tr>
 <td>행위관계</td>
 <td>엔터티 간 행위에 대한 관련성 표현</td>
-<td>계좌개설 -&gt; 주문 발주</td>
+<td>계좌개설 -&gt;  주문 발주</td>
 </tr>
 </tbody>
 </table>
-<h3 id="관계-차수cardinality">관계 차수(Cardinality)</h3>
-<p>두 엔터티 간에 관계에 참여하는 수를 의미.</p>
-<h3 id="관계-차수-종류">관계 차수 종류</h3>
+</div>
+<h3 id="관계-차수-Cardinality"><a href="#관계-차수-Cardinality" class="headerlink" title="관계 차수(Cardinality)"></a>관계 차수(Cardinality)</h3><p>두 엔터티 간에 관계에 참여하는 수를 의미.</p>
+<h3 id="관계-차수-종류"><a href="#관계-차수-종류" class="headerlink" title="관계 차수 종류"></a>관계 차수 종류</h3><div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>1대1 관계</td>
 <td>완전 1대1 관계와 선택적 1대1 관계로 나눠진다.</td>
 <td>고객:고객등급</td>
 </tr>
-<tr class="even">
+<tr>
 <td>1대N 관계</td>
 <td>엔터티 1행에 여러개의 값이 있는 관계</td>
 <td>고객:계좌</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>M대N 관계</td>
 <td>2개의 엔터티가 서로 여러개의 값을 가진 관계</td>
 <td>학생:수업</td>
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
-<li><p>M대N 관계의 조인은 카테시안 곱이 발생하기에 1대1 관계, 1대N 관계로 변경해야 한다. 예로 학생은 여러 개의 수업을 들을 수 있고, 수업 또한 여러 명의 학생이 신청할 수 있다. 이런 관계에서는 학생, 수업 2개의 엔터티를 생성하는 것보다 학생, 수강, 수업이라는 3개의 엔터티를 생성하는 것이 좋다.</p></li>
-<li><p>필수적 관계는 O로 표현되고, 선택적 관계는 |로 표현된다.</p></li>
+<li><p>M대N 관계의 조인은 카테시안 곱이 발생하기에 1대1 관계, 1대N 관계로 변경해야 한다. 예로 학생은 여러 개의 수업을 들을 수 있고, 수업 또한 여러 명의 학생이 신청할 수 있다. 이런 관계에서는 학생, 수업 2개의 엔터티를 생성하는 것보다 학생, 수강, 수업이라는 3개의 엔터티를 생성하는 것이 좋다.</p>
+</li>
+<li><p>필수적 관계는 O로 표현되고, 선택적 관계는 |로 표현된다.</p>
+</li>
 </ul>
-<h2 id="식별-관계와-비식별-관계">식별 관계와 비식별 관계</h2>
+<h2 id="식별-관계와-비식별-관계"><a href="#식별-관계와-비식별-관계" class="headerlink" title="식별 관계와 비식별 관계"></a>식별 관계와 비식별 관계</h2><div class="table-container">
 <table>
-
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>식별 관계</td>
 <td>- 독립적으로 존재할 수 있는 강한 개체 (다른 엔터티에 의존X) <br>- 다른 엔터티와 관계를 가질 때 기본키를 공유 <br>- 식별 관계로 표현 <br>- 강한 개체의 값이 변경되면 식별관계에 있는 엔터티의 값도 변경된다.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>비식별 관계</td>
 <td>강한 개체의 기본키를 일반 칼럼으로 관계를 받는 가지는 것</td>
 </tr>
 </tbody>
 </table>
-<h2 id="엔터티-식별자">엔터티 식별자</h2>
-<p>엔터티를 대표할 수 있는 유일성을 만족하는 속성.</p>
-<h3 id="주식별자기본키">주식별자(기본키)</h3>
-<ul>
-<li><p>요건: 최소성, 대표성, 유일성, 불변성</p></li>
-<li><p>키의 종류</p></li>
+</div>
+<h2 id="엔터티-식별자"><a href="#엔터티-식별자" class="headerlink" title="엔터티 식별자"></a>엔터티 식별자</h2><p>엔터티를 대표할 수 있는 유일성을 만족하는 속성.</p>
+<h3 id="주식별자-기본키"><a href="#주식별자-기본키" class="headerlink" title="주식별자(기본키)"></a>주식별자(기본키)</h3><ul>
+<li><p>요건: 최소성, 대표성, 유일성, 불변성</p>
+</li>
+<li><p>키의 종류</p>
+</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>기본키</td>
 <td>후보키 중 엔터티를 대표하는 키</td>
 </tr>
-<tr class="even">
+<tr>
 <td>후보키</td>
 <td>유일성과 최소성을 만족하는 키</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>슈퍼키</td>
 <td>유일성은 만족하지만 최소성을 만족하지 않는 키</td>
 </tr>
-<tr class="even">
+<tr>
 <td>대체키</td>
-<td>여러 개의 후보키 중에서 기본키를 제외한 남은 키</td>
+<td>여러 개의  후보키 중에서 기본키를 제외한 남은 키</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>외래키</td>
 <td>키본키 필드를 가리키는 것으로 참조무결성을 확인하기 위해 사용</td>
 </tr>
 </tbody>
 </table>
-<h3 id="식별자의-종류">식별자의 종류</h3>
-<ul>
+</div>
+<h3 id="식별자의-종류"><a href="#식별자의-종류" class="headerlink" title="식별자의 종류"></a>식별자의 종류</h3><ul>
 <li>대표성 여부</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>주식별자</td>
 <td>엔터티를 대표하는 식별자, 참조관계로 연결</td>
 </tr>
-<tr class="even">
+<tr>
 <td>보조 식별자</td>
 <td>유일성과 최소성은 만족하지만 대표성을 만족하지 못하는 식별자</td>
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>생성 여부</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>내부 식별자</td>
 <td>엔터티 내부에서 스스로 생성하는 식별자</td>
 <td>부서코드, 주문번호 등</td>
 </tr>
-<tr class="even">
+<tr>
 <td>외부 식별자</td>
 <td>다른 엔터티와의 관계로 인해 생성되는 식별자</td>
 <td>계좌엔터티의 회원 ID</td>
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>속성의 수</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>단일 식별자</td>
 <td>하나의 속성으로 구성</td>
 </tr>
-<tr class="even">
+<tr>
 <td>복합 식별자</td>
 <td>두 개 이상의 속성으로 구성</td>
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>대체 여부</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>종류</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>본질 식별자</td>
 <td>비즈니스 프로세스에서 만들어지는 식별자</td>
 </tr>
-<tr class="even">
+<tr>
 <td>인조 식별자</td>
 <td>인위적으로 만들어지는 식별자</td>
 </tr>
 </tbody>
 </table>
+</div>
 
                 
               </div>

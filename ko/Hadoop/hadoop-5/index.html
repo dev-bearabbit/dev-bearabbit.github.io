@@ -345,10 +345,9 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다. <span id="more"></span></p>
-<hr />
-<h2 id="hadoop-wordcount-test">Hadoop WordCount Test</h2>
-<p>하둡에서 기본적으로 제공해주는 단어 개수 세는 맵리듀스 잡 예시가 있다. 이를 사용하여 우리가 구축한 하둡 분산시스템이 잘 작동하는지 확인해보자. 먼저 테스트에 사용할 데이터들을 가져오자.</p>
+                <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="Hadoop-WordCount-Test"><a href="#Hadoop-WordCount-Test" class="headerlink" title="Hadoop WordCount Test"></a>Hadoop WordCount Test</h2><p>하둡에서 기본적으로 제공해주는 단어 개수 세는 맵리듀스 잡 예시가 있다. 이를 사용하여 우리가 구축한 하둡 분산시스템이 잘 작동하는지 확인해보자.<br>먼저 테스트에 사용할 데이터들을 가져오자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget -O alice.txt https://www.gutenberg.org/files/11/11-0.txt<br>wget -O holmes.txt https://www.gutenberg.org/files/1661/1661-0.txt<br>wget -O frankenstein.txt https://www.gutenberg.org/files/84/84-0.txt<br></code></pre></td></tr></table></figure>
 <p>그다음 HDFS 내에 위에서 받아온 데이터들을 저장할 디렉토리를 생성해주자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">hdfs dfs -<span class="hljs-built_in">mkdir</span> -p /user/pi<br>hdfs dfs -<span class="hljs-built_in">mkdir</span> books<br></code></pre></td></tr></table></figure>
@@ -360,8 +359,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">yarn jar /opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.2.1.jar wordcount <span class="hljs-string">&quot;books/*&quot;</span> output<br></code></pre></td></tr></table></figure>
 <p>잡이 완료되면 <code>output</code> 폴더에 들어간 결과를 확인한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">hdfs dfs -<span class="hljs-built_in">ls</span> output<br>hdfs dfs -<span class="hljs-built_in">cat</span> output/part-r-00000 | less<br></code></pre></td></tr></table></figure>
-<h2 id="spark-piπ-value-test">Spark Pi(π) value Test</h2>
-<p>스파크에서는 기본적으로 파이 값(3.14..)을 찾는 예제를 제공한다. 아래의 코드를 입력하여 예제를 실행해보자.</p>
+<h2 id="Spark-Pi-π-value-Test"><a href="#Spark-Pi-π-value-Test" class="headerlink" title="Spark Pi(π) value Test"></a>Spark Pi(π) value Test</h2><p>스파크에서는 기본적으로 파이 값(3.14..)을 찾는 예제를 제공한다. 아래의 코드를 입력하여 예제를 실행해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">spark-submit --master yarn --deploy-mode cluster --class org.apache.spark.examples.SparkPi <span class="hljs-variable">$SPARK_HOME</span>/examples/jars/spark-examples_2.11-2.4.7.jar<br></code></pre></td></tr></table></figure>
 <p>위 코드는 하둡의 yarn에서 리소스를 받아 실행하는 것이기 때문에 결과값 또한 하둡 웹 UI에서 찾아볼 수 있다. 따라서 <code>pi-master.local:8088</code>로 접속하여 실행된 잡(어플리케이션)의 로그를 클릭하면 결과값을 확인할 수 있다.</p>
 

@@ -260,7 +260,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          125 words
+          117 words
         
       </span>
     
@@ -271,7 +271,7 @@
         
         
         
-          2 mins
+          1 mins
         
       </span>
     
@@ -353,52 +353,36 @@
             
               <div class="markdown-body">
                 
-                <p>AWS에서 계정을 만드는 방법을 정리합니다. <span id="more"></span></p>
-<hr />
-<h2 id="aws-계정의-종류">AWS 계정의 종류</h2>
-<p>AWS 사이트에 들어가 로그인을 눌러보면 아래의 그림과 같이 루트 사용자와 IAM 사용자라는 2가지의 로그인 방식이 나온다.</p>
-<figure>
-<img src="/images/83.png" srcset="/img/loading.gif" lazyload alt="AWS1" /><figcaption aria-hidden="true">AWS1</figcaption>
-</figure>
+                <p>AWS에서 계정을 만드는 방법을 정리합니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="AWS-계정의-종류"><a href="#AWS-계정의-종류" class="headerlink" title="AWS 계정의 종류"></a>AWS 계정의 종류</h2><p>AWS 사이트에 들어가 로그인을 눌러보면 아래의 그림과 같이 루트 사용자와 IAM 사용자라는 2가지의 로그인 방식이 나온다.</p>
+<p><img src="/images/83.png" srcset="/img/loading.gif" lazyload alt="AWS1"></p>
 <p>그렇다면 이 두 사용자의 차이는 무엇일까? 이에 대해서 하나씩 살펴보자.</p>
 <ul>
-<li><p>루트 사용자 루트 사용자(root user)는 이름에서도 알 수 있듯이 AWS의 모든 서비스를 통제할 수 있는 가장 근본적인 계정이다. 가상 서버나 데이터 스토리지를 활성화하는 등의 AWS의 기초적인 서비스들을 활성화할 수 있으며, IAM 사용자 계정에 특정 권한을 부여할 수도 있다. 만약 작은 회사가 AWS를 사용한다면 루트 사용자 계정은 인사 관리자나 업무를 할당해주는 담당자가 맡아서 관리할 것이다.</p></li>
-<li><p>IAM 사용자 IAM 사용자는 루트 사용자가 위임해준 권한만을 사용할 수 있는 계정이다. 예를 들어 DB 관리자에게 데이터베이스에 접근할 수 있는 권한을 줄 때, 루트 계정에 IAM 사용자를 추가하여 데이터베이스 접근 권한만을 위임하면 된다. IAM 사용자를 사용하는 이유는 권한을 나눔으로써 데이터 유실 등 예상치 못한 피해를 막기 위함이다.</p></li>
+<li><p>루트 사용자<br>루트 사용자(root user)는 이름에서도 알 수 있듯이 AWS의 모든 서비스를 통제할 수 있는 가장 근본적인 계정이다. 가상 서버나 데이터 스토리지를 활성화하는 등의 AWS의 기초적인 서비스들을 활성화할 수 있으며, IAM 사용자 계정에 특정 권한을 부여할 수도 있다. 만약 작은 회사가 AWS를 사용한다면 루트 사용자 계정은 인사 관리자나 업무를 할당해주는 담당자가 맡아서 관리할 것이다.</p>
+</li>
+<li><p>IAM 사용자<br>IAM 사용자는 루트 사용자가 위임해준 권한만을 사용할 수 있는 계정이다. 예를 들어 DB 관리자에게 데이터베이스에 접근할 수 있는 권한을 줄 때, 루트 계정에 IAM 사용자를 추가하여 데이터베이스 접근 권한만을 위임하면 된다. IAM 사용자를 사용하는 이유는 권한을 나눔으로써 데이터 유실 등 예상치 못한 피해를 막기 위함이다.</p>
+</li>
 </ul>
-<h2 id="aws-계정-생성하기">AWS 계정 생성하기</h2>
-<p>이제 위에서 살펴봤던 계정들을 직접 생성해보자. 먼저 루트 사용자 계정을 만들 것이다. 계정 로그인 하단에 보면 <code>AWS 계정 새로 만들기</code>라는 버튼이 있다. 이 버튼을 누르면 아래와 같은 페이지가 나타난다.</p>
-<figure>
-<img src="/images/84.png" srcset="/img/loading.gif" lazyload alt="AWS2" /><figcaption aria-hidden="true">AWS2</figcaption>
-</figure>
+<h2 id="AWS-계정-생성하기"><a href="#AWS-계정-생성하기" class="headerlink" title="AWS 계정 생성하기"></a>AWS 계정 생성하기</h2><p>이제 위에서 살펴봤던 계정들을 직접 생성해보자. 먼저 루트 사용자 계정을 만들 것이다. 계정 로그인 하단에 보면 <code>AWS 계정 새로 만들기</code>라는 버튼이 있다. 이 버튼을 누르면 아래와 같은 페이지가 나타난다.</p>
+<p><img src="/images/84.png" srcset="/img/loading.gif" lazyload alt="AWS2"></p>
 <p>빈칸에 알맞은 개인 정보를 입력하고 아래의 <code>계정 만들기</code>를 누르면 새로운 계정을 만들 수 있다. 여기서 생성되는 계정은 <strong>루트 사용자 계정</strong>이다. 위 이미지 왼쪽에 보면 <code>프리 티어 엑세스 포함</code>이라는 문구를 확인할 수 있다. 프리 티어(free tier)란 아마존에서 제공하는 서비스 중 일부를 무료로 체험해볼 수 있는 서비스이다. 보통 계정을 새로 만들 때 해당 서비스가 자동으로 포함된다. 만약 프리 티어에 대해 자세히 알고 싶다면 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/free/?all-free-tier.sort-by=item.additionalFields.SortRank&amp;all-free-tier.sort-order=asc">해당 페이지</a>를 확인해보자.</p>
 <p>루트 사용자 계정을 생성했다면 다음으로 IAM 사용자 계정을 추가해보자. IAM 계정을 추가하는 방법은 다음과 같다.</p>
 <p><strong>(1) 루트 계정 로그인한 후, 오른족 상단의 내 계정에서 보안 자격 증명으로 들어간다.</strong></p>
-<figure>
-<img src="/images/85.png" srcset="/img/loading.gif" lazyload alt="AWS3" /><figcaption aria-hidden="true">AWS3</figcaption>
-</figure>
-<p><strong>(2) 아래의 사진과 같은 페이지가 나오면 대시보드의 '그룹'을 클릭하여 들어간다.</strong></p>
-<figure>
-<img src="/images/86.png" srcset="/img/loading.gif" lazyload alt="AWS4" /><figcaption aria-hidden="true">AWS4</figcaption>
-</figure>
+<p><img src="/images/85.png" srcset="/img/loading.gif" lazyload alt="AWS3"></p>
+<p><strong>(2) 아래의 사진과 같은 페이지가 나오면 대시보드의 ‘그룹’을 클릭하여 들어간다.</strong></p>
+<p><img src="/images/86.png" srcset="/img/loading.gif" lazyload alt="AWS4"></p>
 <p><strong>(3) 그룹에서 새로운 그룹 생성을 누른 후, 해당 그룹의 이름을 입력하고 다음 단계로 넘어간다. 보통 그룹 이름으로는 직군을 사용한다.</strong></p>
-<figure>
-<img src="/images/87.png" srcset="/img/loading.gif" lazyload alt="AWS5" /><figcaption aria-hidden="true">AWS5</figcaption>
-</figure>
+<p><img src="/images/87.png" srcset="/img/loading.gif" lazyload alt="AWS5"></p>
 <p><strong>(4) 헤당 그룹에 부여할 권한을 선택한다. 해당 프로젝트에서는 가상 서버를 돌리고 훈련 데이터를 저장해야 하기 때문에 <code>AmazonEC2FullAccess</code>와 <code>AmazonS3FullAccess</code>, <code>AdministratorAccess</code> 권한을 얻을 것이다. 이것들을 찾아서 체크한 후 다음 단계로 넘어간다.</strong></p>
-<figure>
-<img src="/images/88.png" srcset="/img/loading.gif" lazyload alt="AWS6" /><figcaption aria-hidden="true">AWS6</figcaption>
-</figure>
+<p><img src="/images/88.png" srcset="/img/loading.gif" lazyload alt="AWS6"></p>
 <p><strong>(5) 검토에서 최종적으로 확인한 후 그룹을 생성한다. 이제 IAM 사용자 계정을 만들 수 있는 그룹이 생겼다. 해당 그룹 안에 IAM 사용자를 추가해보자.</strong></p>
-<p><strong>(6) 대시보드에 '사용자' 파트로 들어가서 사용자 추가를 클릭한 후, 이름을 입력하고 프로그래밍 방식 엑세스를 선택한다. 우리는 커맨드라인에서 바로 AWS을 연결하기 때문에 콘솔 로그인은 제외하였다. 만약 콘솔로도 해당 계정을 사용하고 싶다면 아래의 엑세스 방식도 추가로 선택할 수 있다.</strong></p>
-<figure>
-<img src="/images/89.png" srcset="/img/loading.gif" lazyload alt="AWS7" /><figcaption aria-hidden="true">AWS7</figcaption>
-</figure>
+<p><strong>(6) 대시보드에 ‘사용자’ 파트로 들어가서 사용자 추가를 클릭한 후, 이름을 입력하고 프로그래밍 방식 엑세스를 선택한다. 우리는 커맨드라인에서 바로 AWS을 연결하기 때문에 콘솔 로그인은 제외하였다. 만약 콘솔로도 해당 계정을 사용하고 싶다면 아래의 엑세스 방식도 추가로 선택할 수 있다.</strong></p>
+<p><img src="/images/89.png" srcset="/img/loading.gif" lazyload alt="AWS7"></p>
 <p><strong>(7) 아까 만들었던 그룹에 해당 사용자를 추가한다. 아래에 나타나는 그룹을 클릭한 뒤, 다음 단계로 넘어가면 된다.</strong></p>
-<figure>
-<img src="/images/90.png" srcset="/img/loading.gif" lazyload alt="AWS8" /><figcaption aria-hidden="true">AWS8</figcaption>
-</figure>
+<p><img src="/images/90.png" srcset="/img/loading.gif" lazyload alt="AWS8"></p>
 <p><strong>(8) 다음으로는 태그 설정이다. 보통 회사에서는 직위와 이메일, 사내 번호 등을 추가하여 사용자의 정보를 추가한다. 하지만 우리는 개인 계정이기 때문에 그냥 다음 단계로 바로 넘어간다. 이후 한번 더 검토를 한 후 <code>사용자 만들기</code>를 누르면 IAM 사용자 추가가 완료된다.</strong></p>
-<p><strong>Warning</strong> IAM 사용자를 생성하면 엑세스 키와 엑세스 시크릿 키가 제공된다. 사용자를 생성할 때만 볼 수 있기 때문에 잊지 말고 다른 곳에 옮겨 적어두어야 한다.</p>
+<p><strong>Warning</strong><br> IAM 사용자를 생성하면 엑세스 키와 엑세스 시크릿 키가 제공된다. 사용자를 생성할 때만 볼 수 있기 때문에 잊지 말고 다른 곳에 옮겨 적어두어야 한다.</p>
 <p>지금까지 AWS 계정의 종류와 생성 방법에 대해서 알아보았다. 다음 글에서는 생성한 IAM 계정을 통해 커맨드라인에서 AWS을 연결하는 방법에 대해서 알아볼 것이다.</p>
 
                 

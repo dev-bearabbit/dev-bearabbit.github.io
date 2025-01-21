@@ -40,10 +40,10 @@
 <meta property="article:tag" content="합성곱">
 <meta property="article:tag" content="이미지신경망">
 <meta property="article:tag" content="풀링">
-<meta property="article:tag" content="im2col">
-<meta property="article:tag" content="col2im">
 <meta property="article:tag" content="Julia">
 <meta property="article:tag" content="모델">
+<meta property="article:tag" content="im2col">
+<meta property="article:tag" content="col2im">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dev-bearabbit.github.io/images/78.png">
   
@@ -260,7 +260,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          263 words
+          260 words
         
       </span>
     
@@ -353,28 +353,20 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
-<hr />
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.<br><span id="more"></span></p>
+<hr>
 <p>이전 글에서는 합성곱과 풀링의 역전파 계산과 그에 사용되는 <code>col2im()</code>에 대해서 알아보았다. 이번 글에서는 <code>col2im()</code>을 사용한 합성곱과 풀링 역전파를 직접 코드로 구현할 것이다.</p>
-<h2 id="합성곱-with-col2im">합성곱 with col2im</h2>
-<p>합성곱이 역전파 알고리즘에서 어떻게 미분되는지에 관해서는 <a href="https://dev-bearabbit.github.io/2020/07/01/DeeplearningJulia/Deeplearning-16/">이전 글</a>에서 다뤘기 때문에 이번 글에서는 기술적으로 합성곱이 작동되는 방식에 대해서 논의하고자 한다. 이를 위해 먼저 합성곱 역전파를 구현한 코드를 확인해보자.</p>
+<h2 id="합성곱-with-col2im"><a href="#합성곱-with-col2im" class="headerlink" title="합성곱 with col2im"></a>합성곱 with col2im</h2><p>합성곱이 역전파 알고리즘에서 어떻게 미분되는지에 관해서는 <a href="https://dev-bearabbit.github.io/2020/07/01/DeeplearningJulia/Deeplearning-16/">이전 글</a>에서 다뤘기 때문에 이번 글에서는 기술적으로 합성곱이 작동되는 방식에 대해서 논의하고자 한다. 이를 위해 먼저 합성곱 역전파를 구현한 코드를 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> convolution2D_backward(dense ,input, stride, pad)<br><br>    input_r, input_c,input_d,input_num = size(dense.x)<br>    filter_r, filter_c, filter_d, filter_num = size(dense.w)<br><br>    result = permutedims(input,(<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>))<br>    dout = <span class="hljs-built_in">Array</span>(reshape(result,filter_num,:)&#x27;)<br><br>    dense.db = sum(dout,dims=<span class="hljs-number">1</span>)<br>    weight = <span class="hljs-built_in">Array</span>(dense.col&#x27;) * dout<br>    dense.dw = reshape(weight,size(dense.w))<br><br>    <span class="hljs-comment"># 1324 순서</span><br>    dcol = dout * <span class="hljs-built_in">Array</span>(dense.col_w&#x27;)<br>    dx = col2im(dense, dcol, filter_r, filter_c, stride, pad)<br><br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>이제 위 코드의 작동 과정을 하나씩 살펴보자. 먼저 순전파 계산 과정에서 저장해둔 입력데이터의 크기와 필터의 크기를 불러온다. 코드에서 사용된 <code>dense</code>는 순전파 계산에서 각 데이터들을 저장해둔 구조체이다. 구조체에 대해 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/15/ThinkJulia/Think-Julia-Chapter-15/">이 페이지</a>을 읽어보면 좋다. 그 다음으로는 미분값의 차원을 변경하고, 2차원의 배열의 형상으로 바꾼다. 여기서 그 2차원의 형상은 아래의 그림과 같다.</p>
-<figure>
-<img src="/images/78.png" srcset="/img/loading.gif" lazyload alt="dout" /><figcaption aria-hidden="true">dout</figcaption>
-</figure>
+<p><img src="/images/78.png" srcset="/img/loading.gif" lazyload alt="dout"></p>
 <p>위 그림과 같이 미분값은 행은 데이터의 개수, 열은 차원의 개수를 기준으로 2차원 배열로 변경된다. 이를 열을 기준으로 합산하면 편향의 미분값인 <code>db</code>가 완성된다. 또한 순전파 계산에서 사용되었던 입력데이터에 <code>im2col()</code>을 적용한 <code>col</code> 변수를 <code>dense</code>에 저장해두었다가 <code>dw</code>를 구할 때 불러와 사용한다. <code>dw</code>는 <code>col</code>과 <code>dout</code>을 곱한 후, <code>dense.w</code>의 형상으로 변경한다. 마지막으로 남은 것은 <code>dx</code>이다. <code>grads</code>로 저장되어 이후 가중치와 편향을 갱신할 때 사용되는 <code>dw</code>, <code>db</code>와 달리 <code>dx</code>는 다음 층으로 넘어갈 미분값을 구하는 것이다. 다르게 말하자면, <code>dx</code>는 다음 계층의 <code>dout</code>이 되는 것이다. <code>dx</code>를 구하는 과정에서 <code>col2im()</code>이 사용된다. 이 모든 과정을 그림으로 나타내면 아래와 같다.</p>
-<figure>
-<img src="/images/79.png" srcset="/img/loading.gif" lazyload alt="dwdb" /><figcaption aria-hidden="true">dwdb</figcaption>
-</figure>
+<p><img src="/images/79.png" srcset="/img/loading.gif" lazyload alt="dwdb"></p>
 <p>만약 <code>col2im()</code>이 어떻게 계산되는지 궁금하다면, 이전 글에서 해당 정보를 찾을 수 있다. 합성곱 역전파 계산에 대해서는 이게 전부이다. 이제는 풀링의 역전파에 대해 살펴보자.</p>
-<h2 id="최대값-풀링-with-col2im">최대값 풀링 with col2im</h2>
-<p>최대값 풀링은 어떠한 사칙연산도 사용되지 않는다. 단순히 지정된 범위에서 최대값을 뽑아 더 작은 크기의 결과값을 도출한다. 그렇다면 이를 되돌린다는 것은 어떤 의미인가? 바로 미분값을 입력 데이터에서의 최대값 위치로 보내주는 것이다. 최대값 풀링의 역전파는 이것이 전부이다. 이 과정을 구현한 코드를 확인해보자.</p>
+<h2 id="최대값-풀링-with-col2im"><a href="#최대값-풀링-with-col2im" class="headerlink" title="최대값 풀링 with col2im"></a>최대값 풀링 with col2im</h2><p>최대값 풀링은 어떠한 사칙연산도 사용되지 않는다. 단순히 지정된 범위에서 최대값을 뽑아 더 작은 크기의 결과값을 도출한다. 그렇다면 이를 되돌린다는 것은 어떤 의미인가? 바로 미분값을 입력 데이터에서의 최대값 위치로 보내주는 것이다. 최대값 풀링의 역전파는 이것이 전부이다. 이 과정을 구현한 코드를 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> Maxpooling_backward(pool,dout,pool_h,pool_w,stride,pad)<br><br>    dout = permutedims(dout,(<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>))<br>    pool_size = pool_h * pool_w<br><br>    dmax = zeros(pool_size,length(dout))<br>    dmax_ex = zeros(pool_size,length(dout))<br>    dmax[reshape(pool.mask,length(dout),<span class="hljs-number">1</span>)] = reshape(dout,length(dout),<span class="hljs-number">1</span>)<br><br>    <span class="hljs-comment"># 1234에서 1324순으로 변환</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:size(dmax)[<span class="hljs-number">1</span>]<br>        dmax_ex[i,:] = dmax[pool.count[i],:]<br>    <span class="hljs-keyword">end</span><br><br>    dmax_ex = <span class="hljs-built_in">Array</span>(dmax_ex&#x27;)<br>    dx = col2im(pool, dmax_ex, pool_h, pool_w, stride, pad)<br><br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>이제 위 코드의 작동 과정을 하나씩 살펴보자. 먼저 <code>dout</code>을 차원변경한 후, 이 길이에 맞는 <code>dmax</code> 행렬을 생성한다. <code>dmax</code> 최대값을 원래 위치에 할당할 때 사용된다. 위 코드에서 <code>pool</code> 또한 순전파 과정에서 최대값 풀링의 최대값 위치를 표현한 인덱스 모음이다. 이를 사용하여 <code>dout</code>에 있는 미분값들을 최대값 위치에 할당하는 것이다. 그 후에 <code>col2im</code>을 사용하여 원래 형태로 변경해준다. for문의 경우에는 Julia의 인덱스 순서 특성으로 인해 추가된 것이다. Julia의 경우, 인덱스를 모두 세로를 기준으로 잡기 때문에 이를 가로로 변경해주어야 한다. 그 과정을 거치면 <code>dmax</code>가 가로정렬된 인덱스를 가진 <code>dmax_ex</code>로 변경된다. 이 모든 과정을 그림으로 나타내면 아래와 같다.</p>
-<figure>
-<img src="/images/80.png" srcset="/img/loading.gif" lazyload alt="max" /><figcaption aria-hidden="true">max</figcaption>
-</figure>
+<p><img src="/images/80.png" srcset="/img/loading.gif" lazyload alt="max"></p>
 <p>지금까지 <code>col2im()</code>을 사용하여 합성곱과 최대값 풀링의 역전파 과정을 구현하였다. 데이터 4차원을 유지한 채 이를 진행하면 매우 느리지만, <code>col2im()</code>을 사용하면 매우 빠른 속도로 계산이 가능하다. 다음 글에서는 지금까지 만든 CNN layers을 바탕으로 모델을 구현하고 학습시켜볼 것이다.</p>
 
                 
@@ -430,13 +422,13 @@
       
         <a href="/tags/%ED%92%80%EB%A7%81/" class="print-no-link">#풀링</a>
       
-        <a href="/tags/im2col/" class="print-no-link">#im2col</a>
-      
-        <a href="/tags/col2im/" class="print-no-link">#col2im</a>
-      
         <a href="/tags/julia/" class="print-no-link">#Julia</a>
       
         <a href="/tags/%EB%AA%A8%EB%8D%B8/" class="print-no-link">#모델</a>
+      
+        <a href="/tags/im2col/" class="print-no-link">#im2col</a>
+      
+        <a href="/tags/col2im/" class="print-no-link">#col2im</a>
       
     </div>
   

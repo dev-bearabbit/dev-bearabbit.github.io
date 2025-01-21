@@ -342,107 +342,100 @@
             
               <div class="markdown-body">
                 
-                <p>『파이썬과 비교하며 배우는 러스트 프로그래밍』을 읽으며 기억해두면 좋을 것 같은 러스트 지식들을 정리합니다. <span id="more"></span></p>
-<h2 id="파이썬-개발자-러스트를-배워야-하는-이유">파이썬 개발자 러스트를 배워야 하는 이유</h2>
-<ul>
+                <p>『파이썬과 비교하며 배우는 러스트 프로그래밍』을 읽으며 기억해두면 좋을 것 같은 러스트 지식들을 정리합니다.<br><span id="more"></span></p>
+<h2 id="파이썬-개발자-러스트를-배워야-하는-이유"><a href="#파이썬-개발자-러스트를-배워야-하는-이유" class="headerlink" title="파이썬 개발자 러스트를 배워야 하는 이유"></a>파이썬 개발자 러스트를 배워야 하는 이유</h2><ul>
 <li>파이썬의 연산 속도를 개선한다. pandas나 numpy는 이미 C++로 작성되어 있음.</li>
 <li>멀티스레딩 구현이 훨씬 쉽다. 파이썬은 GIL(Global Interpreter Lock)로 멀티스레딩 성능이 좋지 못함.</li>
 <li>개발도구가 매우 편리하다.</li>
 </ul>
-<p><strong>GIL(Global Interpreter Lock)란</strong><br />
-여러 스레드가 파이썬 코드를 동시에 싱행하지 못하도록 파이썬 객체들에 접근을 못하게 하는 뮤텍스.</p>
-<h2 id="러스트가-많이-사용되는-분야">러스트가 많이 사용되는 분야</h2>
-<ul>
+<p><strong>GIL(Global Interpreter Lock)란</strong><br> 여러 스레드가 파이썬 코드를 동시에 싱행하지 못하도록 파이썬 객체들에 접근을 못하게 하는 뮤텍스.</p>
+<h2 id="러스트가-많이-사용되는-분야"><a href="#러스트가-많이-사용되는-분야" class="headerlink" title="러스트가 많이 사용되는 분야"></a>러스트가 많이 사용되는 분야</h2><ul>
 <li>커맨드라인(CLI) 앱</li>
 <li>고성능 네트워크가 필요한 분야</li>
 <li>웹어셈블리</li>
 <li>임베디드</li>
 </ul>
-<p><strong>웹어셈블리란</strong><br />
-자바스크립트가 아닌 다른 다양한 프로그래밍 언어로 작성한 코드를 웹 브라우저에서 직접 실행할 수 있게 하는 기술.</p>
-<h2 id="러스트-기초-지식">러스트 기초 지식</h2>
-<h3 id="cargo-사용법">Cargo 사용법</h3>
-<ul>
+<p><strong>웹어셈블리란</strong><br> 자바스크립트가 아닌 다른 다양한 프로그래밍 언어로 작성한 코드를 웹 브라우저에서 직접 실행할 수 있게 하는 기술.</p>
+<h2 id="러스트-기초-지식"><a href="#러스트-기초-지식" class="headerlink" title="러스트 기초 지식"></a>러스트 기초 지식</h2><h3 id="Cargo-사용법"><a href="#Cargo-사용법" class="headerlink" title="Cargo 사용법"></a>Cargo 사용법</h3><ul>
 <li>rust에서 빌드는 기본적으로 디버그 모드이다. 만약 릴리즈 모드로 컴파일하고 싶다면 옵션 <code>--release</code>를 붙여야 한다.</li>
 <li><code>cargo fmt</code> 명령어를 사용하면 공백이나 줄바꿈 등 포맷을 한번에 정리할 수 있고, <code>cargo clippy</code> 명령어를 사용하면 린트를 확인할 수 있다.</li>
 </ul>
-<h3 id="코드-컨벤션">코드 컨벤션</h3>
-<p>코드를 개발할 때 변수와 함수는 스네이크 표기법, 구조체는 파스칼 표기법, 상수는 스트리밍 스네이크 표기법 사용한다.</p>
+<h3 id="코드-컨벤션"><a href="#코드-컨벤션" class="headerlink" title="코드 컨벤션"></a>코드 컨벤션</h3><p>코드를 개발할 때 변수와 함수는 스네이크 표기법, 구조체는 파스칼 표기법, 상수는 스트리밍 스네이크 표기법 사용한다.</p>
 <ul>
 <li>스네이크 표기법: 소문자 + 언더바(_) (my_function)</li>
 <li>파스칼 표기법: 첫글자 대문자 + 붙여쓰기 (MyStruct)</li>
 <li>스트리밍 스네이크 표기법: 대문자 + 언더바(_) (MY_CONST)</li>
 </ul>
-<h2 id="데이터-타입">데이터 타입</h2>
-<ul>
+<h2 id="데이터-타입"><a href="#데이터-타입" class="headerlink" title="데이터 타입"></a>데이터 타입</h2><ul>
 <li>러스트 자체 원시타입</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>이름</th>
 <th>타입</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>{n}비트 정수</td>
 <td>i8, i16, i32, i64, i128</td>
 </tr>
-<tr class="even">
+<tr>
 <td>부호없는 {n}비트 정수</td>
 <td>u8, u16, u32, u64, u128</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>아키텍처</td>
 <td>isize, usize</td>
 </tr>
-<tr class="even">
+<tr>
 <td>{n}비트 부동소수점 실수</td>
 <td>f32, f64</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>불리언</td>
 <td>bool</td>
 </tr>
-<tr class="even">
+<tr>
 <td>문자</td>
 <td>Char</td>
 </tr>
 </tbody>
 </table>
+</div>
 <p>isize, usize는 컴퓨터가 32비트인지 64비트인지에 따라 값이 결정되는 기본 포인터 크기이다.</p>
 <ul>
 <li>std 라이브러리에서 제공되는 타입</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>이름</th>
 <th>타입</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>문자열</td>
 <td>String</td>
 </tr>
-<tr class="even">
+<tr>
 <td>문자열 슬라이스</td>
 <td>str</td>
 </tr>
 </tbody>
 </table>
-<p><strong>개인적인 의견</strong><br />
-책에는 문자열 슬라이스인 str이 원시타입에 들어있고 char이 없었는데 이 부분은 의아하다. 내가 알기로는 str은 std 라이브러리에서 제공하는 타입이고 char이 원시타입이었는데 말이다. 해당 진위여부는 나중에 좀 더 찾아봐야겠다 (내가 잘못 알고 있는 것일 수도 있다)</p>
-<h2 id="익명함수-클로저">익명함수: 클로저</h2>
-<ul>
+</div>
+<p><strong>개인적인 의견</strong><br> 책에는 문자열 슬라이스인 str이 원시타입에 들어있고 char이 없었는데 이 부분은 의아하다.<br> 내가 알기로는 str은 std 라이브러리에서 제공하는 타입이고 char이 원시타입이었는데 말이다.<br> 해당 진위여부는 나중에 좀 더 찾아봐야겠다 (내가 잘못 알고 있는 것일 수도 있다)</p>
+<h2 id="익명함수-클로저"><a href="#익명함수-클로저" class="headerlink" title="익명함수: 클로저"></a>익명함수: 클로저</h2><ul>
 <li>파이썬의 람다함수와 동일한 역할.</li>
 <li>람다 함수는 반드시 한 줄로 작성해야 하지만 클로저는 중괄호로 묶으면 여러 줄 작성 가능함.</li>
 </ul>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//예시코드 1</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">my_func</span> = |x| x + <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">my_func</span>(<span class="hljs-number">3</span>));<br>&#125;<br><br><span class="hljs-comment">//예시코드 2</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">my_func</span> = |x:<span class="hljs-type">i32</span>| <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span> &#123; x + <span class="hljs-number">1</span> &#125;;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">my_func</span>(<span class="hljs-number">3</span>));<br>&#125;<br><br><span class="hljs-comment">//예시코드 3</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">my_func</span> = |x:<span class="hljs-type">i32</span>| <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span> &#123;<br>        x = x + <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>,x);<br>    &#125;;<br>    <span class="hljs-title function_ invoke__">my_func</span>(<span class="hljs-number">3</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="매크로">매크로</h2>
-<ul>
+<h2 id="매크로"><a href="#매크로" class="headerlink" title="매크로"></a>매크로</h2><ul>
 <li>파이썬의 매크로는 매개변수 개수가 가변적임.</li>
 <li>러스트에서는 token tree를 사용하여 받을 매개변수를 미리 정해두어야 함.</li>
 </ul>

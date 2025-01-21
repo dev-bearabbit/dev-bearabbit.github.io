@@ -31,8 +31,8 @@
 <meta property="article:modified_time" content="2024-12-29T18:38:14.462Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="DB">
-<meta property="article:tag" content="sql">
 <meta property="article:tag" content="database">
+<meta property="article:tag" content="sql">
 <meta property="article:tag" content="mariaDB">
 <meta property="article:tag" content="RDBMS">
 <meta property="article:tag" content="GROUPBY">
@@ -347,50 +347,42 @@
             
               <div class="markdown-body">
                 
-                <p>mariaDB에서 그룹핑을 하는 명령어 GROUP BY과 수학 연산을 처리해주는 다양한 명령어들의 사용법을 정리합니다. <span id="more"></span></p>
-<hr />
-<h2 id="부분-문자열-찾기">부분 문자열 찾기</h2>
-<p>만약 특정 열에서 값 일부만 얻고 싶을 때에는 어떻게 해야할까? 바로 <code>LEFT()</code>와 <code>RIGHT()</code>를 사용하면 된다. 두 함수는 특정 열에서 값 일부만을 반환해준다.</p>
+                <p>mariaDB에서 그룹핑을 하는 명령어 GROUP BY과 수학 연산을 처리해주는 다양한 명령어들의 사용법을 정리합니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="부분-문자열-찾기"><a href="#부분-문자열-찾기" class="headerlink" title="부분 문자열 찾기"></a>부분 문자열 찾기</h2><p>만약 특정 열에서 값 일부만 얻고 싶을 때에는 어떻게 해야할까? 바로 <code>LEFT()</code>와 <code>RIGHT()</code>를 사용하면 된다. 두 함수는 특정 열에서 값 일부만을 반환해준다.</p>
 <p>먼저 <code>LEFT()</code>는 왼쪽을 기준으로 작동한다. 아래의 코드를 확인해보자.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">LEFT</span>(<span class="hljs-string">&#x27;특정 열&#x27;</span>, <span class="hljs-string">&#x27;반환할 문자열 갯수&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>위 코드는 왼쪽을 기준으로 특정 열의 값들을 입력한 문자열 갯수만큼을 반환해준다. <code>RIGHT()</code>도 원리는 동일하지만 기준점이 오른쪽이다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">RIGHT</span>(<span class="hljs-string">&#x27;특정 열&#x27;</span>, <span class="hljs-string">&#x27;반환할 문자열 갯수&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="특정-패턴으로-문자열-찾기">특정 패턴으로 문자열 찾기</h2>
-<p>만약 특정 열의 값이 콤마로 나눠져 있는 등의 측정 패턴으로 분리가 가능하다면 함수 <code>SUBSTRING_INDEX()</code>를 사용하면 된다. 해당 함수의 사용법은 아래와 같다.</p>
+<h2 id="특정-패턴으로-문자열-찾기"><a href="#특정-패턴으로-문자열-찾기" class="headerlink" title="특정 패턴으로 문자열 찾기"></a>특정 패턴으로 문자열 찾기</h2><p>만약 특정 열의 값이 콤마로 나눠져 있는 등의 측정 패턴으로 분리가 가능하다면 함수 <code>SUBSTRING_INDEX()</code>를 사용하면 된다. 해당 함수의 사용법은 아래와 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> SUBSTRING_INDEX(<span class="hljs-string">&#x27;특정 열&#x27;</span>,<span class="hljs-string">&#x27;기준점&#x27;</span>, <span class="hljs-string">&#x27;반환할 데이터 갯수&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>위 코드는 특정 열의 값들을 기준점을 기준으로 나눈 후에 앞에서부터 입력한 갯수만큼을 반환한다.</p>
-<h2 id="기존의-열의-값을-변경하기">기존의 열의 값을 변경하기</h2>
-<p>기존에 있던 하나의 열을 2개로 분리한다고 가정해보자. 그러면 1. 새로운 열을 만들고 2. 기존의 열에 있던 값들 중 일부를 분리한 후에 3. 새로운 열에 넣으면 된다. 1,2 번 과정은 배웠기 때문에 3번을 살펴볼 것이다.</p>
+<h2 id="기존의-열의-값을-변경하기"><a href="#기존의-열의-값을-변경하기" class="headerlink" title="기존의 열의 값을 변경하기"></a>기존의 열의 값을 변경하기</h2><p>기존에 있던 하나의 열을 2개로 분리한다고 가정해보자. 그러면 1. 새로운 열을 만들고 2. 기존의 열에 있던 값들 중 일부를 분리한 후에 3. 새로운 열에 넣으면 된다.<br>1,2 번 과정은 배웠기 때문에 3번을 살펴볼 것이다.</p>
 <p>기존의 열값의 일부로 새로운 열을 채우는 방법은 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br><span class="hljs-keyword">SET</span> <span class="hljs-string">&#x27;새로운 열 이름&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">RIGHT</span>(<span class="hljs-string">&#x27;기존의 열 이름&#x27;</span>, <span class="hljs-number">2</span>);<br></code></pre></td></tr></table></figure>
 <p>위 코드는 새로운 열을 기존 열의 일부로 채운다. 여기서 말하는 기존 열의 일부는 오른쪽에서 2개의 문자열이다. 이렇게 하면 특정 열이 원자적 데이터로 구성되지 않은 경우라도 테이블을 삭제하지 않고 원자적 데이터 형태로 수정할 수 있다.</p>
-<h2 id="조건문-명령어-case">조건문 명령어 CASE</h2>
-<p>만약 특정 열을 다른 열의 값에 따라서 따라서 다르게 변경하고 싶다면 어떻게 해야할까? 그럴 때는 명령어 <code>CASE</code>를 사용하면 된다.</p>
+<h2 id="조건문-명령어-CASE"><a href="#조건문-명령어-CASE" class="headerlink" title="조건문 명령어 CASE"></a>조건문 명령어 CASE</h2><p>만약 특정 열을 다른 열의 값에 따라서 따라서 다르게 변경하고 싶다면 어떻게 해야할까? 그럴 때는 명령어 <code>CASE</code>를 사용하면 된다.</p>
 <p>명령어 <code>CASE</code>는 조건을 여러 개 설정하여 그에 따라 값을 변경할 수 있도록 해준다. 예를 들어 생각해보자.</p>
-<p>만약 '성별' 카테고리에 'M'의 값이 들어있다면 '한글' 카테고리의 값을 '남성'으로 변경하고, 'F'가 들어있다면 '여성'으로 변경해야 한다고 가정하자.</p>
+<p>만약 ‘성별’ 카테고리에 ‘M’의 값이 들어있다면 ‘한글’ 카테고리의 값을 ‘남성’으로 변경하고, ‘F’가 들어있다면 ‘여성’으로 변경해야 한다고 가정하자.</p>
 <p>그러면 명령어 <code>CASE</code>를 아래와 같이 사용할 수 있다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">SET</span> 한글 <span class="hljs-operator">=</span><br>        <span class="hljs-keyword">CASE</span><br>            <span class="hljs-keyword">WHEN</span> 성별 <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;M&#x27;</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;남성&#x27;</span><br>            <span class="hljs-keyword">WHEN</span> 성별 <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;F&#x27;</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;여성&#x27;</span><br>            <span class="hljs-keyword">ELSE</span> <span class="hljs-string">&#x27;알 수 없음&#x27;</span><br>        <span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 <p><code>ELSE</code>는 어떤 것에도 속하지 않는 경우에 뒤의 값을 넣어준다.</p>
 <p>참고로 조건문 명령어인 <code>CASE</code>는 <code>INSERT</code>, <code>DELETE</code>에서도 사용할 수 있다.</p>
-<h2 id="데이터-정렬하기">데이터 정렬하기</h2>
-<p>만약 특정 열의 값 알파벳 순서를 기준으로 정렬하고 싶다고 생각해보자. 보통 열의 순서는 입력된 시간 순으로 되어 있다. 이럴 때 명령어 <code>ORDER BY</code>를 사용한다. 사용법은 다음과 같다.</p>
+<h2 id="데이터-정렬하기"><a href="#데이터-정렬하기" class="headerlink" title="데이터 정렬하기"></a>데이터 정렬하기</h2><p>만약 특정 열의 값 알파벳 순서를 기준으로 정렬하고 싶다고 생각해보자. 보통 열의 순서는 입력된 시간 순으로 되어 있다. 이럴 때 명령어 <code>ORDER BY</code>를 사용한다. 사용법은 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;기준 열 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<p>위 코드에서 사용한 '기준 열'은 순서를 변경하는데 사용할 값들을 지정한 것이다. 따라서 해당 명령을 입력했을 시 다른 열들의 순서는 알파벳 순서가 아닐 수 있으며, 오로지 기준 열을 기준으로 정렬된다.</p>
+<p>위 코드에서 사용한 ‘기준 열’은 순서를 변경하는데 사용할 값들을 지정한 것이다. 따라서 해당 명령을 입력했을 시 다른 열들의 순서는 알파벳 순서가 아닐 수 있으며, 오로지 기준 열을 기준으로 정렬된다.</p>
 <p>그렇다면 명령어 <code>ORDER BY</code>는 어떤 순서로 정렬할까?</p>
 <p>실험 결과 명령어 <code>ORDER BY</code>의 순서는 기호 - 숫자 - 알파벳이고, 알파벳의 경우 대소문자 구분을 하지 않는다.</p>
-<h2 id="여러-열로-정렬하기">여러 열로 정렬하기</h2>
-<p>만약에 하나의 열이 아니라 여러 개의 열을 기준으로 정리하고 싶다면 어떻게 쿼리를 보내야할까? 예를 들어서 '카테고리 1'을 가장 큰 기준으로 정렬하고 이후 세부적으로는 '카테고리 2'의 알파벳 순으로 정렬하고 싶다고 가정해보자.</p>
+<h2 id="여러-열로-정렬하기"><a href="#여러-열로-정렬하기" class="headerlink" title="여러 열로 정렬하기"></a>여러 열로 정렬하기</h2><p>만약에 하나의 열이 아니라 여러 개의 열을 기준으로 정리하고 싶다면 어떻게 쿼리를 보내야할까? 예를 들어서 ‘카테고리 1’을 가장 큰 기준으로 정렬하고 이후 세부적으로는 ‘카테고리 2’의 알파벳 순으로 정렬하고 싶다고 가정해보자.</p>
 <p>그러면 아래와 같이 쿼리를 보내면 된다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;카테고리 1&#x27;</span>, <span class="hljs-string">&#x27;카테고리 2&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<p>위 코드는 첫 번째로 오는 열인 '카테고리 1'를 기준으로 레코드 순서를 정렬한다. 그 다음 '카테고리 1'순으로 정렬했을 때 겹치는 데이터들을 두 번째로 오는 '카테고리 2'을 기준으로 정렬한다.</p>
-<h2 id="역순으로-정렬하기">역순으로 정렬하기</h2>
-<p>오름차순이 아니라 내림차순으로 정렬하고 싶을 때는 명령어 <code>DESC</code>를 <code>ORDER BY</code>에 오든 열 이름 뒤에 붙여주면 된다. 쿼리를 확인해보자.</p>
+<p>위 코드는 첫 번째로 오는 열인 ‘카테고리 1’를 기준으로 레코드 순서를 정렬한다. 그 다음 ‘카테고리 1’순으로 정렬했을 때 겹치는 데이터들을 두 번째로 오는 ‘카테고리 2’을 기준으로 정렬한다.</p>
+<h2 id="역순으로-정렬하기"><a href="#역순으로-정렬하기" class="headerlink" title="역순으로 정렬하기"></a>역순으로 정렬하기</h2><p>오름차순이 아니라 내림차순으로 정렬하고 싶을 때는 명령어 <code>DESC</code>를 <code>ORDER BY</code>에 오든 열 이름 뒤에 붙여주면 된다. 쿼리를 확인해보자.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;카테고리 1&#x27;</span>, <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
-<p>위의 쿼리는 '카테고리 1'는 알파벳 순서대로 정렬하고 같은 '카테고리 1'안의 데이터들은 '카테고리 2' 역순으로 정렬하라고 명령한다. 그 결과는 다음과 같다.</p>
+<p>위의 쿼리는 ‘카테고리 1’는 알파벳 순서대로 정렬하고 같은 ‘카테고리 1’안의 데이터들은 ‘카테고리 2’ 역순으로 정렬하라고 명령한다. 그 결과는 다음과 같다.</p>
 <p>만약 정렬하는 모든 열들을 내림차순으로 하고싶다면 어떻게 해야할까? 아래의 쿼리를 참고하자.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-keyword">DESC</span>, <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="덧셈-명령어-sum">덧셈 명령어 SUM</h2>
-<p>먼저 더하는 방법이다. 코드는 다음과 같다.</p>
+<h2 id="덧셈-명령어-SUM"><a href="#덧셈-명령어-SUM" class="headerlink" title="덧셈 명령어 SUM"></a>덧셈 명령어 SUM</h2><p>먼저 더하는 방법이다. 코드는 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">SUM</span>(<span class="hljs-string">&#x27;더하는 열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>위 코드는 지정할 열의 모든 값을 더해서 반환한다. 만약 어떤 조건을 추가하고 싶다면 <code>WHERE</code>을 사용할 수 있다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">SUM</span>(<span class="hljs-string">&#x27;더하는 열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
@@ -400,25 +392,20 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span> ,<span class="hljs-built_in">SUM</span>(<span class="hljs-string">&#x27;더하는 열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span><span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>만약 그룹 단위로 조건을 걸고 싶다면 <code>WHERE</code> 대신에 <code>HAVING</code>을 사용하면 된다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span> ,<span class="hljs-built_in">SUM</span>(<span class="hljs-string">&#x27;더하는 열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span><span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span> <span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span>) <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="평균-명렁어-avg">평균 명렁어 AVG</h2>
-<p>명령어 <code>AVG</code>는 평균을 구해준다. 즉, <code>SUM</code>과 사용방법은 동일하지만 더하는 것이 아니라 평균을 구해주는 것이다. 사용법은 다음과 같다.</p>
+<h2 id="평균-명렁어-AVG"><a href="#평균-명렁어-AVG" class="headerlink" title="평균 명렁어 AVG"></a>평균 명렁어 AVG</h2><p>명령어 <code>AVG</code>는 평균을 구해준다. 즉, <code>SUM</code>과 사용방법은 동일하지만 더하는 것이 아니라 평균을 구해주는 것이다. 사용법은 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(<span class="hljs-string">&#x27;더하는 열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="min과-max">MIN과 MAX</h2>
-<p>최솟값을 구해주는 명령어 <code>MIN</code>과 최댓값을 구해주는 명령어인 <code>MAX</code>도 위의 연산 명령어들과 동일하다. 사용법은 다음과 같다.</p>
+<h2 id="MIN과-MAX"><a href="#MIN과-MAX" class="headerlink" title="MIN과 MAX"></a>MIN과 MAX</h2><p>최솟값을 구해주는 명령어 <code>MIN</code>과 최댓값을 구해주는 명령어인 <code>MAX</code>도 위의 연산 명령어들과 동일하다. 사용법은 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MIN</span>(<span class="hljs-string">&#x27;더하는 열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건&#x27;</span>;<br><br><br><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MAX</span>(<span class="hljs-string">&#x27;더하는 열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">WHERE</span> <span class="hljs-string">&#x27;조건에 사용할 카테고리&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;조건&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="개수를-세어주는-명령어-count">개수를 세어주는 명령어 COUNT</h2>
-<p>명령어 <code>COUNT</code>는 해당 테이블의 레코드 개수를 확인할 수 있다. 사용법은 다음과 같다.</p>
+<h2 id="개수를-세어주는-명령어-COUNT"><a href="#개수를-세어주는-명령어-COUNT" class="headerlink" title="개수를 세어주는 명령어 COUNT"></a>개수를 세어주는 명령어 COUNT</h2><p>명령어 <code>COUNT</code>는 해당 테이블의 레코드 개수를 확인할 수 있다. 사용법은 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-string">&#x27;열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<p>위 코드는 '열 이름'의 레코드 갯수를 반환한다 참고로 명령어 <code>COUNT</code>는 NULL값을 카운트하지 않는다.</p>
-<h2 id="중복-제거하는-명령어-distinct">중복 제거하는 명령어 DISTINCT</h2>
-<p>명령어 <code>DISTINCT</code>는 해당 데이터의 고유값들만 보여준다.</p>
+<p>위 코드는 ‘열 이름’의 레코드 갯수를 반환한다 참고로 명령어 <code>COUNT</code>는 NULL값을 카운트하지 않는다.</p>
+<h2 id="중복-제거하는-명령어-DISTINCT"><a href="#중복-제거하는-명령어-DISTINCT" class="headerlink" title="중복 제거하는 명령어 DISTINCT"></a>중복 제거하는 명령어 DISTINCT</h2><p>명령어 <code>DISTINCT</code>는 해당 데이터의 고유값들만 보여준다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> <span class="hljs-string">&#x27;열 이름&#x27;</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<p>위 코드에서는 '열 이름' 카테고리 값들 중에서 중복된 것을 제외한 고유값들만 반환한다. 참고로 명령어 <code>DISTINCT</code>는 NULL값도 포함해서 반환한다.</p>
+<p>위 코드에서는 ‘열 이름’ 카테고리 값들 중에서 중복된 것을 제외한 고유값들만 반환한다. 참고로 명령어 <code>DISTINCT</code>는 NULL값도 포함해서 반환한다.</p>
 <p>하지만 고유값 갯수를 세기 위해 <code>COUNT</code>를 추가한다면 <code>COUNT</code>는 NULL값을 세지 않는다. 즉, <code>DISTINCT</code>는 NULL값을 반환하지만 <code>COUNT</code>에서 무시하는 것이다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> <span class="hljs-string">&#x27;열 이름&#x27;</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<p>위 코드에서 만약 '열 이름'의 고유값이 NULL을 포함하여 6개였다면, 'COUNT'는 5개라고 반환할 것이다.</p>
-<h2 id="결과-개수를-제한하는-명령어-limit">결과 개수를 제한하는 명령어 LIMIT</h2>
-<p>만약 내게 학생들의 시험 점수 테이블이 있고 그 중 1,2등이 누군지 알고 싶다고 가정해보자. 그러면 아래와 같이 코드를 입력하면 된다.</p>
+<p>위 코드에서 만약 ‘열 이름’의 고유값이 NULL을 포함하여 6개였다면, ‘COUNT’는 5개라고 반환할 것이다.</p>
+<h2 id="결과-개수를-제한하는-명령어-LIMIT"><a href="#결과-개수를-제한하는-명령어-LIMIT" class="headerlink" title="결과 개수를 제한하는 명령어 LIMIT"></a>결과 개수를 제한하는 명령어 LIMIT</h2><p>만약 내게 학생들의 시험 점수 테이블이 있고 그 중 1,2등이 누군지 알고 싶다고 가정해보자. 그러면 아래와 같이 코드를 입력하면 된다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-string">&#x27;학생 이름 열&#x27;</span>, <span class="hljs-string">&#x27;시험 점수&#x27;</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;시험 점수&#x27;</span> <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
 <p>위 코드는 정렬된 모든 학생들의 시험 점수를 반환한다. 1,2 등을 찾을 수는 있지만 효율적이지는 않다. 1,2등만 반환하기 위해서는 위 코드에 명령어 <code>LIMIT</code>를 추가해보자.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-string">&#x27;학생 이름 열&#x27;</span>, <span class="hljs-string">&#x27;시험 점수&#x27;</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br>    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;시험 점수&#x27;</span> <span class="hljs-keyword">DESC</span><br>    LIMIT <span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
@@ -468,9 +455,9 @@
       
         <a href="/tags/db/" class="print-no-link">#DB</a>
       
-        <a href="/tags/sql/" class="print-no-link">#sql</a>
-      
         <a href="/tags/database/" class="print-no-link">#database</a>
+      
+        <a href="/tags/sql/" class="print-no-link">#sql</a>
       
         <a href="/tags/mariadb/" class="print-no-link">#mariaDB</a>
       

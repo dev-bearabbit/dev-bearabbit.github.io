@@ -30,10 +30,10 @@
 <meta property="article:published_time" content="2020-10-09T06:24:10.000Z">
 <meta property="article:modified_time" content="2024-12-29T18:34:03.685Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="docker">
 <meta property="article:tag" content="mariadb">
-<meta property="article:tag" content="sql">
+<meta property="article:tag" content="docker">
 <meta property="article:tag" content="database">
+<meta property="article:tag" content="sql">
 <meta property="article:tag" content="vi">
 <meta property="article:tag" content="vim">
 <meta property="article:tag" content="도커">
@@ -346,41 +346,36 @@
             
               <div class="markdown-body">
                 
-                <p>도커 컨테이너에 MariaDB를 올려서 데이터베이스를 구축합니다. <span id="more"></span></p>
-<hr />
+                <p>도커 컨테이너에 MariaDB를 올려서 데이터베이스를 구축합니다.<br><span id="more"></span></p>
+<hr>
 <p>이번 글에서는 MariaDB에 대해 간단하게 알아보고 도커 컨테이너에 MariaDB를 올려 데이터베이스 구축하는 방법에 대해서 살펴볼 것이다. 해당 글은 도커가 이미 깔렸다는 전제 하에 설명하기 때문에 만약 도커가 없다면 다운받아야 한다.</p>
-<h2 id="database란">Database란</h2>
-<p>데이터베이스(Database, DB)는 여러 사람들이 사용할 목적으로 통합하고 관리하는 데이터 집합을 말하며, 대부분 관계형 데이터베이스(Relational Database, RDB) 형태로 많이 사용하고 있다. 관계형 데이터베이스란 데이터를 컬럼(column)과 로우(row)를 이루는 하나 이상의 테이블(또는 관계)로 정리하는 방식이며, 흔히 우리가 알고 있는 엑셀의 시트 형태와 같다.</p>
-<p>이런 데이터베이스를 통합하고 관리하는 소프트웨어를 '데이터베이스 관리시스템(DataBase Management System, DBMS)'라고 하며, 보통 RDB를 관리하는 시스템을 '관계형 데이터베이스 관리시스템(Relational DBMS, RDBMS)'이라고 한다. 이런 관계형 데이터베이스는 'SQL(Structured Query Language)'이라는 언어를 통해서 데이터 전송을 주고 받는다.</p>
+<h2 id="Database란"><a href="#Database란" class="headerlink" title="Database란"></a>Database란</h2><p>데이터베이스(Database, DB)는 여러 사람들이 사용할 목적으로 통합하고 관리하는 데이터 집합을 말하며, 대부분 관계형 데이터베이스(Relational Database, RDB) 형태로 많이 사용하고 있다. 관계형 데이터베이스란 데이터를 컬럼(column)과 로우(row)를 이루는 하나 이상의 테이블(또는 관계)로 정리하는 방식이며, 흔히 우리가 알고 있는 엑셀의 시트 형태와 같다.</p>
+<p>이런 데이터베이스를 통합하고 관리하는 소프트웨어를 ‘데이터베이스 관리시스템(DataBase Management System, DBMS)’라고 하며, 보통 RDB를 관리하는 시스템을 ‘관계형 데이터베이스 관리시스템(Relational DBMS, RDBMS)’이라고 한다. 이런 관계형 데이터베이스는 ‘SQL(Structured Query Language)’이라는 언어를 통해서 데이터 전송을 주고 받는다.</p>
 <p>정리하면 다음과 같다.</p>
 <ul>
 <li>데이터 뭉치: 관계형 데이터베이스</li>
 <li>데이터를 담는 통: 관계형 데이터베이스 관리시스템</li>
 <li>통에서 특정 데이터 조작: SQL</li>
 </ul>
-<h2 id="mariadb">MariaDB</h2>
-<p>MariaDB는 MysSQL와 동일한 소스코드를 기반으로 한 오픈소스 관계형 데이터베이스 관리시스템(RDBMS)이다. 소스코드가 같으므로 데이터베이스의 구조나 사용방법이 MysSQL과 동일하다.</p>
-<h2 id="docker에-mariadb-컨테이너-생성하기">Docker에 MariaDB 컨테이너 생성하기</h2>
-<p>먼저 MariaDB image를 다운받아야 한다. 아래의 코드를 입력하여 다운을 받은 뒤, 도커 이미지를 확인해보자.</p>
+<h2 id="MariaDB"><a href="#MariaDB" class="headerlink" title="MariaDB"></a>MariaDB</h2><p>MariaDB는 MysSQL와 동일한 소스코드를 기반으로 한 오픈소스 관계형 데이터베이스 관리시스템(RDBMS)이다. 소스코드가 같으므로 데이터베이스의 구조나 사용방법이 MysSQL과 동일하다.</p>
+<h2 id="Docker에-MariaDB-컨테이너-생성하기"><a href="#Docker에-MariaDB-컨테이너-생성하기" class="headerlink" title="Docker에 MariaDB 컨테이너 생성하기"></a>Docker에 MariaDB 컨테이너 생성하기</h2><p>먼저 MariaDB image를 다운받아야 한다. 아래의 코드를 입력하여 다운을 받은 뒤, 도커 이미지를 확인해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker pull mariadb <span class="hljs-comment"># mariaDB image download</span><br>docker images <span class="hljs-comment"># check downloaded images</span><br></code></pre></td></tr></table></figure>
 <p>그 다음 아래의 코드를 입력하여 MariaDB 컨테이너를 생성하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --name <span class="hljs-string">&#x27;컨테이너 이름&#x27;</span> -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=<span class="hljs-string">&#x27;접속 비밀번호&#x27;</span> mariadb<br></code></pre></td></tr></table></figure>
-<p>'접속 비밀번호'는 이후 해당 컨테이너에 접속할 때 사용할 예정이기에 메모하는 것을 추천한다. 위 코드에서 <code>-d</code>는 백그라운드 모드(detached mode)로 생성함으로 의미하며, 포트는 MySQL 포트번호인 '3306'로 설정한다.</p>
-<p><strong>NOTE</strong> 백그라운드 모드(detached mode)란? 사용자가 해당 컨테이너를 사용하지 않는 경우에도 컨테이너 서버가 작동하고 있는 것을 말한다. 보통 서빙 서버와 같이 지속적으로 데이터를 주고받아야 하는 서버들은 백그라운드 모드로 실행한다.</p>
+<p>‘접속 비밀번호’는 이후 해당 컨테이너에 접속할 때 사용할 예정이기에 메모하는 것을 추천한다. 위 코드에서 <code>-d</code>는 백그라운드 모드(detached mode)로 생성함으로 의미하며, 포트는 MySQL 포트번호인 ‘3306’로 설정한다.</p>
+<p><strong>NOTE</strong><br>백그라운드 모드(detached mode)란?<br>사용자가 해당 컨테이너를 사용하지 않는 경우에도 컨테이너 서버가 작동하고 있는 것을 말한다. 보통 서빙 서버와 같이 지속적으로 데이터를 주고받아야 하는 서버들은 백그라운드 모드로 실행한다.</p>
 <p>컨테이너 생성이 완료되었다면 아래의 코드를 입력하여 확인해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker ps<br></code></pre></td></tr></table></figure>
-<h2 id="mariadb-접속하기">MariaDB 접속하기</h2>
-<p>이제 만든 컨테이너에 접속해보자. 아래의 코드를 입력한다.</p>
+<h2 id="MariaDB-접속하기"><a href="#MariaDB-접속하기" class="headerlink" title="MariaDB 접속하기"></a>MariaDB 접속하기</h2><p>이제 만든 컨테이너에 접속해보자. 아래의 코드를 입력한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -i -t mariadb /bin/bash<br></code></pre></td></tr></table></figure>
-<p>도커에서 <code>exec</code>는 컨테이너 내부로 접속하는 명령어이다. 그다음 명령어 <code>exec</code>의 옵션인 <code>-i</code>는 'interactive'의 약자로 사용자가 해당 서버에 입출력할 수 있도록 해주며, <code>-t</code>는 가상 터미널인 TTY(pseudo-TTY)를 통해 bash셀을 사용할 수 있도록 해준다.</p>
+<p>도커에서 <code>exec</code>는 컨테이너 내부로 접속하는 명령어이다. 그다음 명령어 <code>exec</code>의 옵션인 <code>-i</code>는 ‘interactive’의 약자로 사용자가 해당 서버에 입출력할 수 있도록 해주며, <code>-t</code>는 가상 터미널인 TTY(pseudo-TTY)를 통해 bash셀을 사용할 수 있도록 해준다.</p>
 <p>접속이 완료되면 아래와 같이 컨테이너 ID가 프롬프트가 된다.</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">root@<span class="hljs-string">&#x27;컨테이너 ID&#x27;</span>:/<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
 <p>그다음 아래의 코드를 입력하여 MariaDB에 접속한다.</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">mysql -u root -p<br></code></pre></td></tr></table></figure>
 <p>비밀번호는 처음 컨테이너를 생성할 때 만들었던 것을 입력하면 된다. 그러면 아래와 같이 프롬프트창이 변할 것이다.</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">MariaDB [(none)]&gt;<br></code></pre></td></tr></table></figure>
-<h2 id="my.snf-수정하기">my.snf 수정하기</h2>
-<p>MariaDB에서 <code>status</code>를 입력하면, DB 정보를 확인할 수 있다. 그중 characterset이 "latin" 경우에는 힌글이 깨질 수 있기 때문에 UTF-8로 변경해주어야 한다.</p>
+<h2 id="my-snf-수정하기"><a href="#my-snf-수정하기" class="headerlink" title="my.snf 수정하기"></a>my.snf 수정하기</h2><p>MariaDB에서 <code>status</code>를 입력하면, DB 정보를 확인할 수 있다. 그중 characterset이 “latin” 경우에는 힌글이 깨질 수 있기 때문에 UTF-8로 변경해주어야 한다.</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">MariaDB [(none)]&gt; status<br>.<br>.<br>Server characterset:    utf8mb4<br>Db     characterset:    utf8mb4<br>Client characterset:    latin1<br>Conn.  characterset:    latin1<br></code></pre></td></tr></table></figure>
 <p>변경하는 방법은 간단하다. 해당 터미널에서 <code>exit</code>를 입력하여 DB를 빠져나온 후 컨테이너에서 아래의 코드를 입력하여 수정할 파일을 오픈한다. 우리는 에디터 vim을 사용하여 터미널 내에서 수정을 진행할 것이다.</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">root@<span class="hljs-string">&#x27;컨테이너 ID&#x27;</span>:/<span class="hljs-comment"># apt-get update</span><br>root@<span class="hljs-string">&#x27;컨테이너 ID&#x27;</span>:/<span class="hljs-comment"># apt-get install vim</span><br></code></pre></td></tr></table></figure>
@@ -431,13 +426,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/docker/" class="print-no-link">#docker</a>
-      
         <a href="/tags/mariadb/" class="print-no-link">#mariadb</a>
       
-        <a href="/tags/sql/" class="print-no-link">#sql</a>
+        <a href="/tags/docker/" class="print-no-link">#docker</a>
       
         <a href="/tags/database/" class="print-no-link">#database</a>
+      
+        <a href="/tags/sql/" class="print-no-link">#sql</a>
       
         <a href="/tags/vi/" class="print-no-link">#vi</a>
       

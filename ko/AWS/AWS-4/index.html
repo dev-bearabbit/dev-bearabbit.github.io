@@ -346,20 +346,16 @@
             
               <div class="markdown-body">
                 
-                <p>터미널에서 코드만을 사용하여 AWS EC2 인스턴스를 생성하고 접속하는 과정을 정리합니다. <span id="more"></span></p>
-<hr />
-<h2 id="aws-ec2">AWS EC2</h2>
-<p>EC2(Elastic Compute Cloud)는 가상 컴퓨터를 임대해주는 서비스이다. 만약 좋은 성능의 컴퓨터가 없는데 일정 기간동안 빅데이터를 다뤄야 하거나 무거운 딥러닝 모델을 학습시켜야 하는 상황에 부딪힌다면 막막하게 느껴질 것이다. 그런 상황에서 EC2를 사용하여 성능 좋은 컴퓨터를 빌릴 수 있다. 사실 '가상 컴퓨터'라는 말 때문에 물리적인 컴퓨터가 존재하지 않는건가 할 수 있겠지만, amazon 회사 건물에 있는 서버 일부를 우리에게 빌려주는 것이라 생각하면 된다.</p>
-<h2 id="인스턴스-생성하기">인스턴스 생성하기</h2>
-<p>인스턴스는 EC2에서 대여받는 가상 켬퓨터이다. EC2는 서비스 이름이라면 인스턴스는 그 서비스에서 제공해주는 제품인 셈이다. 인스턴스 유형은 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/ec2/instance-types/">해당 페이지</a>에서 확인할 수 있다. 보통 딥러닝 모델을 학습할 때는 GPU 인스턴스인 P나 G를 사용한다.</p>
-<p><strong>NOTE</strong> 만약 사용하려는 인스턴스의 시간 당 비용이 궁금하다면 <a target="_blank" rel="noopener" href="https://calculator.aws/#/">비용 계산기</a>에 들어가서 먼저 확인해볼 수 있다. 해당 프로젝트에서 사용하려는 인스턴스는 시간 당 0.7달러 정도가 청구된다고 보여준다.</p>
-<h3 id="키-페어-생성">1. 키 페어 생성</h3>
-<p>키 페어(key pairs)는 인스턴스 사용자의 정보를 암호화하고 해독하는 키와 값이다. 이는 EC2를 해당 키 페어를 가진 사용자만 SSH로 접속할 수 있도록 하여 다른 이가 사용할 수 없도록 해준다. EC2 인스턴스를 생성하기 위해서는 필수적으로 만들어야 한다. 아래의 코드를 입력하여 키 페어를 생성해주자.</p>
+                <p>터미널에서 코드만을 사용하여 AWS EC2 인스턴스를 생성하고 접속하는 과정을 정리합니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="AWS-EC2"><a href="#AWS-EC2" class="headerlink" title="AWS EC2"></a>AWS EC2</h2><p>EC2(Elastic Compute Cloud)는 가상 컴퓨터를 임대해주는 서비스이다. 만약 좋은 성능의 컴퓨터가 없는데 일정 기간동안 빅데이터를 다뤄야 하거나 무거운 딥러닝 모델을 학습시켜야 하는 상황에 부딪힌다면 막막하게 느껴질 것이다. 그런 상황에서 EC2를 사용하여 성능 좋은 컴퓨터를 빌릴 수 있다. 사실 ‘가상 컴퓨터’라는 말 때문에 물리적인 컴퓨터가 존재하지 않는건가 할 수 있겠지만, amazon 회사 건물에 있는 서버 일부를 우리에게 빌려주는 것이라 생각하면 된다.</p>
+<h2 id="인스턴스-생성하기"><a href="#인스턴스-생성하기" class="headerlink" title="인스턴스 생성하기"></a>인스턴스 생성하기</h2><p>인스턴스는 EC2에서 대여받는 가상 켬퓨터이다. EC2는 서비스 이름이라면 인스턴스는 그 서비스에서 제공해주는 제품인 셈이다. 인스턴스 유형은 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/ec2/instance-types/">해당 페이지</a>에서 확인할 수 있다. 보통 딥러닝 모델을 학습할 때는 GPU 인스턴스인 P나 G를 사용한다.</p>
+<p><strong>NOTE</strong><br>만약 사용하려는 인스턴스의 시간 당 비용이 궁금하다면 <a target="_blank" rel="noopener" href="https://calculator.aws/#/">비용 계산기</a>에 들어가서 먼저 확인해볼 수 있다. 해당 프로젝트에서 사용하려는 인스턴스는 시간 당 0.7달러 정도가 청구된다고 보여준다.</p>
+<h3 id="1-키-페어-생성"><a href="#1-키-페어-생성" class="headerlink" title="1. 키 페어 생성"></a>1. 키 페어 생성</h3><p>키 페어(key pairs)는 인스턴스 사용자의 정보를 암호화하고 해독하는 키와 값이다. 이는 EC2를 해당 키 페어를 가진 사용자만 SSH로 접속할 수 있도록 하여 다른 이가 사용할 수 없도록 해준다. EC2 인스턴스를 생성하기 위해서는 필수적으로 만들어야 한다. 아래의 코드를 입력하여 키 페어를 생성해주자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 create-key-pair --key-name <span class="hljs-string">&#x27;키 페어 이름&#x27;</span> --query <span class="hljs-string">&#x27;KeyMaterial&#x27;</span> --output text &gt; <span class="hljs-string">&#x27;키 페어 이름&#x27;</span>.pem<br></code></pre></td></tr></table></figure>
 <p>이후 AWS EC2 콘솔 페이지에서 키 페어가 생성되었는지 확인할 수 있으며, 해당 커맨드라인의 디렉토리에서 <code>키 페어 이름.pem</code> 를 찾을 수 있다. 만약 키 페어를 삭제하고 싶다면 아래의 코드를 입력하면 삭제된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 delete-key-pair --key-name <span class="hljs-string">&#x27;키 페어 이름&#x27;</span><br></code></pre></td></tr></table></figure>
-<h3 id="보안-그룹-생성">2. 보안 그룹 생성</h3>
-<p>보안 그룹(Security Groups)이란 네트워크 트래픽(접근)을 모니터링하고 제어하는 가상 방화벽이며, 모든 EC2 인스턴스는 보안 그룹에 속해 있어야 한다. 이런 보안 그룹을 사용하는 이유는 해당 인스턴스에 요청하는 .보안 그룹의 세부적인 설정을 살펴보면 다음과 같다.</p>
+<h3 id="2-보안-그룹-생성"><a href="#2-보안-그룹-생성" class="headerlink" title="2. 보안 그룹 생성"></a>2. 보안 그룹 생성</h3><p>보안 그룹(Security Groups)이란 네트워크 트래픽(접근)을 모니터링하고 제어하는 가상 방화벽이며, 모든 EC2 인스턴스는 보안 그룹에 속해 있어야 한다. 이런 보안 그룹을 사용하는 이유는 해당 인스턴스에 요청하는 .보안 그룹의 세부적인 설정을 살펴보면 다음과 같다.</p>
 <ul>
 <li>보안 그룹 ID</li>
 <li>보안 그룹 이름</li>
@@ -368,17 +364,16 @@
 <li>인바운드 규칙</li>
 <li>아웃바운드 규칙</li>
 </ul>
-<p><strong>NOTE</strong> 인바운드 규칙: 인스턴스로 들어오는 트래픽들을 제어한다. 보통 혼자 사용하는 가상 서버인 경우 SSH를 설정하여 키를 가진 사람들만 들어올 수 있게 하며, 만약 웹페이지를 호스팅하는 서버라면 HTTP와 같은 PC 사용자들만 들어올 수 있게 허용할 수도 있다. 아웃바운드 규칙: 인스턴스에서 다른 인스턴스로 나가는 트레픽을 제어한다. 보통 아웃바운드는 모두 허용으로 설정한다.</p>
+<p><strong>NOTE</strong><br>인바운드 규칙: 인스턴스로 들어오는 트래픽들을 제어한다. 보통 혼자 사용하는 가상 서버인 경우 SSH를 설정하여 키를 가진 사람들만 들어올 수 있게 하며, 만약 웹페이지를 호스팅하는 서버라면 HTTP와 같은 PC 사용자들만 들어올 수 있게 허용할 수도 있다.<br>아웃바운드 규칙: 인스턴스에서 다른 인스턴스로 나가는 트레픽을 제어한다. 보통 아웃바운드는 모두 허용으로 설정한다.</p>
 <p>이제 간단하게 커맨드라인에 아래의 코드를 입력하여 보안그룹을 생성해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 create-security-group --group-name <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span> --description <span class="hljs-string">&#x27;보안 그룹 설명&#x27;</span><br></code></pre></td></tr></table></figure>
 <p>위의 코드를 입력하면 보안 그룹 ID가 나타날 것이다. 이후 EC2 인스턴스를 생성할 때 필요하니 적어두거나 복사해두는 것이 좋다. 만약 예전에 설정했던 보안 그룹 이름은 기억이 나는데 ID를 잊어버렸다면 아래의 코드를 입력하여 해당 보안 그룹의 전반적인 정보들을 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 describe-security-groups --group-names <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span><br></code></pre></td></tr></table></figure>
 <p>다음으로는 해당 인스턴스에 우리만 접속할 수 있도록 인바운드에 SSH를 설정해준다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 authorize-security-group-ingress --group-name <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span> --protocol tcp --port 22 --cidr <span class="hljs-string">&#x27;내 IP&#x27;</span><br></code></pre></td></tr></table></figure>
-<p>위 코드에서 <code>tcp</code>는 연결된 컴퓨터의 데이터를 오류없이 전송할 수 있도록 해주는 개방형 프로토콜이며, <code>port</code>는 컴퓨터 프로그램이 가지는 고유한 번호이다 (SSH의 경우는 22번을 사용한다). 마지막으로 <code>cidr</code>은 '사이더'라는 IP 할당 방법이며, 우리는 해당 인스턴스를 본인만 사용할 것이기에 개인적으로 사용하는 IP를 설정해주면 된다. 이후 다시 그룹 정보를 확인하면 인바운드 규칙이 변경된 것을 확인할 수 있다. 만약 보안 그룹을 삭제하고 싶다면 아래의 코드를 입력하면 된다.</p>
+<p>위 코드에서 <code>tcp</code>는 연결된 컴퓨터의 데이터를 오류없이 전송할 수 있도록 해주는 개방형 프로토콜이며, <code>port</code>는 컴퓨터 프로그램이 가지는 고유한 번호이다 (SSH의 경우는 22번을 사용한다). 마지막으로 <code>cidr</code>은 ‘사이더’라는 IP 할당 방법이며, 우리는 해당 인스턴스를 본인만 사용할 것이기에 개인적으로 사용하는 IP를 설정해주면 된다. 이후 다시 그룹 정보를 확인하면 인바운드 규칙이 변경된 것을 확인할 수 있다. 만약 보안 그룹을 삭제하고 싶다면 아래의 코드를 입력하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 delete-security-group --group-name <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span><br></code></pre></td></tr></table></figure>
-<h3 id="인스턴스-생성">3. 인스턴스 생성</h3>
-<p>이제 인스턴스를 생성해보자. 커맨드라인에서 바로 인스턴스를 생성하기 위해서는 사용할 인스턴스의 AMI를 알아야 한다. <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/">AWS 사이트</a> 로그인한 후 콘솔에 들어가면 여러 종류의 이미지들을 살펴볼 수 있다. 우리는 프리티어가 사용할 수 있는 Linux기반의 인스턴스를 사용할 것이다. 해당 AMI와 인스턴스 타입은 다음과 같다.</p>
+<h3 id="3-인스턴스-생성"><a href="#3-인스턴스-생성" class="headerlink" title="3. 인스턴스 생성"></a>3. 인스턴스 생성</h3><p>이제 인스턴스를 생성해보자. 커맨드라인에서 바로 인스턴스를 생성하기 위해서는 사용할 인스턴스의 AMI를 알아야 한다. <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/">AWS 사이트</a> 로그인한 후 콘솔에 들어가면 여러 종류의 이미지들을 살펴볼 수 있다. 우리는 프리티어가 사용할 수 있는 Linux기반의 인스턴스를 사용할 것이다. 해당 AMI와 인스턴스 타입은 다음과 같다.</p>
 <ul>
 <li>image-id : ami-064c81ce3a290fde1 (Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type (Free tier))</li>
 <li>instance-type: t2.micro</li>
@@ -389,8 +384,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">&#123;<br>    <span class="hljs-string">&quot;Groups&quot;</span>: [],<br>    <span class="hljs-string">&quot;Instances&quot;</span>: [<br>        &#123;<br>.<br>.<br>.        &#125;<br>    ],<br>    <span class="hljs-string">&quot;OwnerId&quot;</span>: <span class="hljs-string">&quot;---------&quot;</span>,<br>    <span class="hljs-string">&quot;ReservationId&quot;</span>: <span class="hljs-string">&quot;---------&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>현재 인스턴스가 생성되었는지 확인해보자. 아래의 코드를 입력하면 인스턴스 ID 목록을 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 describe-instances --filters <span class="hljs-string">&quot;Name=instance-type,Values=t2.micro&quot;</span> --query <span class="hljs-string">&quot;Reservations[].Instances[].InstanceId&quot;</span><br></code></pre></td></tr></table></figure>
-<h3 id="인스턴스-종료">3. 인스턴스 종료</h3>
-<p>현재 우리가 만든 EC2 인스턴스가 있다. 주의할 점은 EC2 인스턴스가 작동되는 순간부터 요금책정이 시작된다. (다행히 우리가 사용하는 인스턴스는 프리 티어 전용이라서 요금이 청구되지는 않는다) 즉, 인스턴스를 사용하지 않을 때에는 꼭 종료해주어야 한다. 아래의 코드를 입력하여 생성했던 인스턴스를 종료해보자. 인스턴스 ID는 위 코드를 입력하여 확인할 수 있다.</p>
+<h3 id="3-인스턴스-종료"><a href="#3-인스턴스-종료" class="headerlink" title="3. 인스턴스 종료"></a>3. 인스턴스 종료</h3><p>현재 우리가 만든 EC2 인스턴스가 있다. 주의할 점은 EC2 인스턴스가 작동되는 순간부터 요금책정이 시작된다. (다행히 우리가 사용하는 인스턴스는 프리 티어 전용이라서 요금이 청구되지는 않는다) 즉, 인스턴스를 사용하지 않을 때에는 꼭 종료해주어야 한다. 아래의 코드를 입력하여 생성했던 인스턴스를 종료해보자. 인스턴스 ID는 위 코드를 입력하여 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash">aws ec2 terminate-instances --instance-ids <span class="hljs-string">&#x27;인스턴스 ID&#x27;</span><br></code></pre></td></tr></table></figure>
 <p>지금까지 AWS EC2 인스턴스를 생성하는 방법에 대해 알아보았다.</p>
 
