@@ -253,7 +253,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          126 words
+          127 words
         
       </span>
     
@@ -348,20 +348,28 @@
                 
                 <p>웹사이트에서 데이터를 스크래핑할 때 robots.txt를 확인해야 하는 이유에 대해서 정리합니다.</p>
 <span id="more"></span>
-<h2 id="Web-Scraping"><a href="#Web-Scraping" class="headerlink" title="Web Scraping"></a>Web Scraping</h2><p>스크래핑(scraping)은 말 그대로 다양한 매체에 있는 데이터를 모으는 행위를 의미한다. 흔히 신문이나 잡지 등을 “스크랩한다”라는 표현을 사용하는데 웹 스크래핑 또한 동일한 범주이다. 즉, 웹 스크래핑이란 웹 기반 프로그램에서 데이터들을 가져와 모으는 방법들을 통칭한다.</p>
+<h2 id="web-scraping">Web Scraping</h2>
+<p>스크래핑(scraping)은 말 그대로 다양한 매체에 있는 데이터를 모으는 행위를 의미한다. 흔히 신문이나 잡지 등을 "스크랩한다"라는 표현을 사용하는데 웹 스크래핑 또한 동일한 범주이다. 즉, 웹 스크래핑이란 웹 기반 프로그램에서 데이터들을 가져와 모으는 방법들을 통칭한다.</p>
 <p>스크래핑을 통해 다른 웹사이트에 제공된 데이터를 가져가서 사용하는 것은 어떨까? 대부분은 스크래핑 자체가 사용자들의 브라우저에 보여지는 데이터를 가져와 사용하는 것이기에 당연히 불법이 아니라고 생각한다. 우리가 신문을 스크랩하는 행위가 불법은 아니니 말이다. 맞다. 웹 스크랩핑 행위 자체는 문제가 되지 않는다. 하지만 그 행위가 초래하는 결과가 상업적인 피해를 주는 경우에는 당연히 법적인 문제가 될 수 있다.</p>
-<h3 id="트래픽-문제"><a href="#트래픽-문제" class="headerlink" title="트래픽 문제"></a>트래픽 문제</h3><p>스크래핑은 사실 서버 입장에서는 사용자와 동일하다. 그렇기에 스크래핑이 제한없이 이루어지면 서버 트래픽이 과도하게 증가되고 이는 서비스 운영 자체에 문제를 일으킬 수 있다. 그렇기에 사용자가 많은 사이트들은 스크래핑 봇들의 트래픽을 제한하고자 IP를 차단하거나 트래픽 수를 제한하는 방식으로 운영되고 있다.</p>
-<h3 id="데이터-무단사용"><a href="#데이터-무단사용" class="headerlink" title="데이터 무단사용"></a>데이터 무단사용</h3><blockquote>
-<p><em>“데이터는 돈이다”</em></p>
+<h3 id="트래픽-문제">트래픽 문제</h3>
+<p>스크래핑은 사실 서버 입장에서는 사용자와 동일하다. 그렇기에 스크래핑이 제한없이 이루어지면 서버 트래픽이 과도하게 증가되고 이는 서비스 운영 자체에 문제를 일으킬 수 있다. 그렇기에 사용자가 많은 사이트들은 스크래핑 봇들의 트래픽을 제한하고자 IP를 차단하거나 트래픽 수를 제한하는 방식으로 운영되고 있다.</p>
+<h3 id="데이터-무단사용">데이터 무단사용</h3>
+<blockquote>
+<p><em>"데이터는 돈이다"</em></p>
 </blockquote>
 <p>데이터 분야에서 일하면서 마음속에 새겨진 말이다. 실제로 현 사회는 데이터를 기반으로 많은 의사결정이 진행되며, 또 이를 위해 더 좋은 더 많은 데이터를 얻기 위해 노력한다. 즉, 사용자에게 보여지는 데이터라고 해서 마음대로 가져가 사용하라는 의미는 아닌 경우가 태반이다.</p>
 <p>그래서 위와 같은 문제들로 스크래핑 방식에도 어떤 규약이 필요했다. 그렇게 등장한 것이 <code>robots.txt</code>이다.</p>
-<h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><p><code>robots.txt</code>는 웹 사이트를 스크래핑할 수 있게 허용하거나 제한하는 내용을 담은 웹 페이지이다. 물론 <code>robots.txt</code>에 작성되었다고 해서 기술적으로 수집이 불가한 것은 아니지만 대부분의 웹 스크래핑 로봇들은 해당 페이지를 먼저 확인하고 허용된 페이지만을 수집한다. 따라서 스크래핑 작업을 진행할 때는 <code>robots.txt</code>를 먼저 확인하는 것이 좋다.</p>
-<h3 id="확인-방법"><a href="#확인-방법" class="headerlink" title="확인 방법"></a>확인 방법</h3><p>기본적으로 <code>robots.txt</code>는 웹페이지 도메인 뒤에 바로 붙어서 올라와야 한다. 따라서 개발자 입장에서는 웹 구축 당시에 최상위 디렉토리에 <code>robots.txt</code>를 작성하여 같이 올리면 된다.</p>
+<h2 id="robots.txt">robots.txt</h2>
+<p><code>robots.txt</code>는 웹 사이트를 스크래핑할 수 있게 허용하거나 제한하는 내용을 담은 웹 페이지이다. 물론 <code>robots.txt</code>에 작성되었다고 해서 기술적으로 수집이 불가한 것은 아니지만 대부분의 웹 스크래핑 로봇들은 해당 페이지를 먼저 확인하고 허용된 페이지만을 수집한다. 따라서 스크래핑 작업을 진행할 때는 <code>robots.txt</code>를 먼저 확인하는 것이 좋다.</p>
+<h3 id="확인-방법">확인 방법</h3>
+<p>기본적으로 <code>robots.txt</code>는 웹페이지 도메인 뒤에 바로 붙어서 올라와야 한다. 따라서 개발자 입장에서는 웹 구축 당시에 최상위 디렉토리에 <code>robots.txt</code>를 작성하여 같이 올리면 된다.</p>
 <p>예시: <code>https://www.koreabaseball.com/robots.txt</code></p>
 <p>위 예시는 KBO 공식 사이트의 <code>robots.txt</code> 페이지이다. 해당 URL로 접속하면 아래와 같이 <code>robots.txt</code>의 내용을 확인할 수 있다.</p>
-<p><img src="/images/151.png" srcset="/img/loading.gif" lazyload alt="robots"></p>
-<h3 id="작성-규칙"><a href="#작성-규칙" class="headerlink" title="작성 규칙"></a>작성 규칙</h3><p><code>robots.txt</code>의 존재 여부에 따른 내용은 다음과 같다.</p>
+<figure>
+<img src="/images/151.png" srcset="/img/loading.gif" lazyload alt="robots" /><figcaption aria-hidden="true">robots</figcaption>
+</figure>
+<h3 id="작성-규칙">작성 규칙</h3>
+<p><code>robots.txt</code>의 존재 여부에 따른 내용은 다음과 같다.</p>
 <ul>
 <li>페이지가 없는 경우: 스크래핑 허용</li>
 <li>페이지가 공백인 경우: 스크래핑 허용</li>
@@ -377,7 +385,8 @@
 <p>마지막으로 위에서 봤던 KBO 사이트의 <code>robots.txt</code>를 한번 분석해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">User-agent: *<br>Disallow: /Common/<br>Disallow: /Help/<br>Disallow: /Member/<br>Disallow: /ws/<br></code></pre></td></tr></table></figure>
 <p>먼저 모든 스크래핑 봇들을 대상으로 <code>/Common/</code>,<code>/Help/</code>,<code>/Member/</code>,<code>/ws/</code> 디렉토리의 스크래핑을 제한하고 있다. 즉, KBO 사이트를 스크래핑할 때 사용하는 URL에 위 디렉토리가 들어가 있으면 안된다는 의미이다.</p>
-<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>이 글의 결론은 간단하다.</p>
+<h2 id="결론">결론</h2>
+<p>이 글의 결론은 간단하다.</p>
 <blockquote>
 <p>스크래핑을 하기전에 무조건 해당 사이트에 <code>robots.txt</code>를 확인하고 그 내용을 준수하자</p>
 </blockquote>

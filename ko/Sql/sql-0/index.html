@@ -30,8 +30,8 @@
 <meta property="article:published_time" content="2020-10-09T22:20:09.000Z">
 <meta property="article:modified_time" content="2024-12-29T18:38:04.738Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="database">
 <meta property="article:tag" content="sql">
+<meta property="article:tag" content="database">
 <meta property="article:tag" content="mariaDB">
 <meta property="article:tag" content="RDBMS">
 <meta property="article:tag" content="table">
@@ -343,36 +343,47 @@
             
               <div class="markdown-body">
                 
-                <p>mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="데이터베이스-생성"><a href="#데이터베이스-생성" class="headerlink" title="데이터베이스 생성"></a>데이터베이스 생성</h2><p>새로운 데이터베이스를 만드는 명령어는 다음과 같다.</p>
+                <p>mariaDB에서 데이터베이스와 테이블을 생성하는 방법에 대해 살펴봅니다. <span id="more"></span></p>
+<hr />
+<h2 id="데이터베이스-생성">데이터베이스 생성</h2>
+<p>새로운 데이터베이스를 만드는 명령어는 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> DATABASE <span class="hljs-string">&#x27;데이터베이스 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>그러면 해당 요청(query)가 정상적으로 수행되었다고 아래와 같이 알려준다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">Query OK, <span class="hljs-number">1</span> <span class="hljs-type">row</span> affected (<span class="hljs-number">0.024</span> sec)<br></code></pre></td></tr></table></figure>
-<h2 id="데이터베이스-접속"><a href="#데이터베이스-접속" class="headerlink" title="데이터베이스 접속"></a>데이터베이스 접속</h2><p>원하는 데이터베이스에 접속해야 해당 DB를 사용할 수 있다.</p>
+<h2 id="데이터베이스-접속">데이터베이스 접속</h2>
+<p>원하는 데이터베이스에 접속해야 해당 DB를 사용할 수 있다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">USE DATABASE <span class="hljs-string">&#x27;데이터베이스 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="테이블-생성"><a href="#테이블-생성" class="headerlink" title="테이블 생성"></a>테이블 생성</h2><p>어떤 데이터베이스에 자료를 정리하여 넣으려고 한다. 그때 관계형 DB에서는 테이블을 사용하여 데이터를 저장한다. 테이블은 행과 열로 구성되어 있으며, 행(record)은 객체 하나의 모든 정보를 포함하고 열(field)은 데이터의 카테고리를 포함한다.</p>
+<h2 id="테이블-생성">테이블 생성</h2>
+<p>어떤 데이터베이스에 자료를 정리하여 넣으려고 한다. 그때 관계형 DB에서는 테이블을 사용하여 데이터를 저장한다. 테이블은 행과 열로 구성되어 있으며, 행(record)은 객체 하나의 모든 정보를 포함하고 열(field)은 데이터의 카테고리를 포함한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>), <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">6</span>));<br></code></pre></td></tr></table></figure>
-<p>위 코드에서 <code>VARCHAR</code>은 ‘variable character’의 약자로 해당 카테고리의 데이터타입을 나타낸다. 뒤에 따라오는 (10), (6)과 같은 숫자는 해당 카테고리에서 저장할 수 있는 최대 길이를 설정한 것이다.</p>
-<h2 id="테이블-구조"><a href="#테이블-구조" class="headerlink" title="테이블 구조"></a>테이블 구조</h2><p>생성한 테이블의 구조는 명령어 <code>DESC</code>를 사용하여 볼 수 있다.</p>
+<p>위 코드에서 <code>VARCHAR</code>은 'variable character'의 약자로 해당 카테고리의 데이터타입을 나타낸다. 뒤에 따라오는 (10), (6)과 같은 숫자는 해당 카테고리에서 저장할 수 있는 최대 길이를 설정한 것이다.</p>
+<h2 id="테이블-구조">테이블 구조</h2>
+<p>생성한 테이블의 구조는 명령어 <code>DESC</code>를 사용하여 볼 수 있다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DESC</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="테이블-목록"><a href="#테이블-목록" class="headerlink" title="테이블 목록"></a>테이블 목록</h2><p>데이터베이스에 있는 테이블들의 목록은 해당 데이터베이스에서 <code>SHOW TABLES</code>를 입력하면 볼 수 있다.</p>
+<h2 id="테이블-목록">테이블 목록</h2>
+<p>데이터베이스에 있는 테이블들의 목록은 해당 데이터베이스에서 <code>SHOW TABLES</code>를 입력하면 볼 수 있다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> TABLES;<br></code></pre></td></tr></table></figure>
-<h2 id="테이블-삭제"><a href="#테이블-삭제" class="headerlink" title="테이블 삭제"></a>테이블 삭제</h2><p>테이블 전체를 삭제하는 명령어는 다음과 같다.</p>
+<h2 id="테이블-삭제">테이블 삭제</h2>
+<p>테이블 전체를 삭제하는 명령어는 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<h2 id="테이블에-데이터-추가"><a href="#테이블에-데이터-추가" class="headerlink" title="테이블에 데이터 추가"></a>테이블에 데이터 추가</h2><p>테이블에 데이터를 추가하는 것은  <code>INSERT</code> 명령어를 사용한다.</p>
+<h2 id="테이블에-데이터-추가">테이블에 데이터 추가</h2>
+<p>테이블에 데이터를 추가하는 것은 <code>INSERT</code> 명령어를 사용한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;값1&#x27;</span>, <span class="hljs-string">&#x27;값2&#x27;</span>);<br></code></pre></td></tr></table></figure>
 <p>워 코드는 해당 테이블의 모든 열에 대한 데이터를 순서에 맞게 추가할 때 사용할 수 있다. 특정 데이터를 추가하거나 순서를 변경하기 위해서는 카테고리 이름을 같이 입력해주어야 한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"># 순서 변경<br><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>  (<span class="hljs-string">&#x27;카테고리 2&#x27;</span>, <span class="hljs-string">&#x27;카테고리 1&#x27;</span>) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;값2&#x27;</span>, <span class="hljs-string">&#x27;값1&#x27;</span>);<br># 특정 카테고리만 데이터 추가<br><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>  (<span class="hljs-string">&#x27;카테고리 1&#x27;</span>) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;값1&#x27;</span>);<br></code></pre></td></tr></table></figure>
-<p><strong>WARNING</strong><br>값에 작은따옴표(‘)가 있는 경우<br>작은 따옴표는 SQL에서 문법으로 사용되기 때문에 값 안에 포함된 작은 따옴표와 구분해야 한다. 따라서 값 내부의 작은따옴표는 개행문자를 사용하여 표현한다. 예시는 다음과 같다.</p>
+<p><strong>WARNING</strong> 값에 작은따옴표(')가 있는 경우<br />
+작은 따옴표는 SQL에서 문법으로 사용되기 때문에 값 안에 포함된 작은 따옴표와 구분해야 한다. 따라서 값 내부의 작은따옴표는 개행문자를 사용하여 표현한다. 예시는 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span><br><span class="hljs-keyword">VALUES</span><br>(<span class="hljs-string">&#x27;Indian\&#x27;</span>s Summer<span class="hljs-string">&#x27; , &#x27;</span>cherry juice<span class="hljs-string">&#x27;, 2, &#x27;</span>pineapple juice<span class="hljs-string">&#x27;, 7, &#x27;</span>serve <span class="hljs-keyword">over</span> ice <span class="hljs-keyword">with</span> straw<span class="hljs-string">&#x27;);</span><br></code></pre></td></tr></table></figure>
-<h2 id="테이블-데이터-확인"><a href="#테이블-데이터-확인" class="headerlink" title="테이블 데이터 확인"></a>테이블 데이터 확인</h2><p>테이블에 데이터가 추가되었는지 확인하고 싶다면 아래의 코드를 사용하면 된다.</p>
+<h2 id="테이블-데이터-확인">테이블 데이터 확인</h2>
+<p>테이블에 데이터가 추가되었는지 확인하고 싶다면 아래의 코드를 사용하면 된다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>위 코드에서 사용되는 <code>*</code>는 모든 데이터를 불러오라는 뜻이다.</p>
-<h2 id="NULL-처리"><a href="#NULL-처리" class="headerlink" title="NULL 처리"></a>NULL 처리</h2><p>일부 카테고리에만 데이터를 입력하면 해당 행의 나머지 카테고리에는 자동적으로 <code>NULL</code>로 처리된다. 하지만 어떤 카테고리는 필수적으로 입력되어야 한다고 가정하자. 그렇게 하기 위해서는 테이블을 생성할 때 아래와 같이 입력하여 <code>NULL</code>을 받지 않도록 설정해야 한다.</p>
+<h2 id="null-처리">NULL 처리</h2>
+<p>일부 카테고리에만 데이터를 입력하면 해당 행의 나머지 카테고리에는 자동적으로 <code>NULL</code>로 처리된다. 하지만 어떤 카테고리는 필수적으로 입력되어야 한다고 가정하자. 그렇게 하기 위해서는 테이블을 생성할 때 아래와 같이 입력하여 <code>NULL</code>을 받지 않도록 설정해야 한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">6</span>));<br></code></pre></td></tr></table></figure>
 <p>위 코드로 만들어진 테이블은 데이터를 추가할 때 카테고리 1이 무조건 채워져야 한다. 어떤 테이블의 카테고리들의 NULL 허용여부를 확인하고 싶다면 <code>DESC</code>를 사용하여 테이블 구조를 확인하면 된다.</p>
-<h2 id="디폴트값-설정"><a href="#디폴트값-설정" class="headerlink" title="디폴트값 설정"></a>디폴트값 설정</h2><p>만약 기본 값이 주어진 열인 경우에는 테이블을 생성 시 디퐅트 값을 지정할 수 있다. 디폴트 값은 해당 카테고리에 데이터가 입력되지 않았을 시에 자동으로 적용된다.</p>
+<h2 id="디폴트값-설정">디폴트값 설정</h2>
+<p>만약 기본 값이 주어진 열인 경우에는 테이블을 생성 시 디퐅트 값을 지정할 수 있다. 디폴트 값은 해당 카테고리에 데이터가 입력되지 않았을 시에 자동으로 적용된다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>( <span class="hljs-string">&#x27;카테고리 1&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;카테고리 2&#x27;</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">6</span>));<br></code></pre></td></tr></table></figure>
 <p>위 코드에서는 카테고리 1에 디폴트 값 1을 지정하였다.</p>
 
@@ -415,9 +426,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/database/" class="print-no-link">#database</a>
-      
         <a href="/tags/sql/" class="print-no-link">#sql</a>
+      
+        <a href="/tags/database/" class="print-no-link">#database</a>
       
         <a href="/tags/mariadb/" class="print-no-link">#mariaDB</a>
       

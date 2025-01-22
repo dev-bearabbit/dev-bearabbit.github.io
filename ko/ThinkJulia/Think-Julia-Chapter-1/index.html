@@ -345,60 +345,69 @@
                 <blockquote>
 <p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist를 바탕으로 작성된 글임을 알려드립니다.</p>
 </blockquote>
-<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap02">Variables, Expressions and Statements</a>를 한글로 요약 정리한 글입니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="변수-표현식과-명령문"><a href="#변수-표현식과-명령문" class="headerlink" title="변수 , 표현식과 명령문"></a>변수 , 표현식과 명령문</h2><p>프로그래밍 언어의 가장 큰 특징 중 하나는 변수를 설정할 수 있다는 것이다.  변수(variables)란 값(values)을 나타내는 이름으로서, 개발자가 특정 변수에 직접 값을 할당하여 사용할 수 있다.</p>
-<h3 id="할당문"><a href="#할당문" class="headerlink" title="할당문"></a>할당문</h3><p>할당문이란 새로운 변수를 만들고, 그 변수에 값을 주는 코드를 말한다.</p>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap02">Variables, Expressions and Statements</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<hr />
+<h2 id="변수-표현식과-명령문">변수 , 표현식과 명령문</h2>
+<p>프로그래밍 언어의 가장 큰 특징 중 하나는 변수를 설정할 수 있다는 것이다. 변수(variables)란 값(values)을 나타내는 이름으로서, 개발자가 특정 변수에 직접 값을 할당하여 사용할 수 있다.</p>
+<h3 id="할당문">할당문</h3>
+<p>할당문이란 새로운 변수를 만들고, 그 변수에 값을 주는 코드를 말한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; message = <span class="hljs-string">&quot;And now for something completely different&quot;</span><br><span class="hljs-string">&quot;And now for something completely different&quot;</span><br>julia&gt; n = <span class="hljs-number">17</span><br><span class="hljs-number">17</span><br>julia&gt; π_val = <span class="hljs-number">3.141592653589793</span><br><span class="hljs-number">3.141592653589793</span><br></code></pre></td></tr></table></figure>
 <p>위의 예시는 3개의 할당문을 보여준 것이다. 첫 번째 코드는 <code>message</code>라는 변수를 만들어 등호 뒤의 문자열을 할당한다. 두 번째 코드는 정수 <code>17</code>을 변수 <code>n</code>에 할당하며, 세 번째는 π의 근사값을 변수 <code>π_val</code>에 할당한다.</p>
-<h3 id="변수-이름"><a href="#변수-이름" class="headerlink" title="변수 이름"></a>변수 이름</h3><p>변수 이름은 길이에 제약 없이 설정할 수 있으며, 프로그래머들은 일반적으로 변수 이름에 특정 의미(변수의 목적 등)를 담아 사용한다. 변수 이름은 거의 모든 유니코드 글자들을 포함하지만, 숫자를 이름의 시작으로는 사용할 수 없다. 또한 대문자를 사용하는 것이 문제가 되지는 않지만 주로 소문자를 이용하여 변수 이름을 만든다.</p>
+<h3 id="변수-이름">변수 이름</h3>
+<p>변수 이름은 길이에 제약 없이 설정할 수 있으며, 프로그래머들은 일반적으로 변수 이름에 특정 의미(변수의 목적 등)를 담아 사용한다. 변수 이름은 거의 모든 유니코드 글자들을 포함하지만, 숫자를 이름의 시작으로는 사용할 수 없다. 또한 대문자를 사용하는 것이 문제가 되지는 않지만 주로 소문자를 이용하여 변수 이름을 만든다.</p>
 <p>밑줄문자(_)도 변수 이름에 사용할 수 있다. 이 문자는 your_name 이나 airspeed_of_unladen_swallow 와 같이 여러 단어가 연결된 이름에 단어들을 구분하는 구분자로서 사용된다.</p>
 <p>만약 위의 내용을 어긴 변수 이름을 사용하여 변수를 만든다면, 문법 에러(syntax error)가 나올 것이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-number">76</span>trombones = <span class="hljs-string">&quot;big parade&quot;</span><br>ERROR: syntax: <span class="hljs-string">&quot;76&quot;</span> is not a valid <span class="hljs-keyword">function</span> argument name<br>julia&gt; more@ = <span class="hljs-number">1000000</span><br>ERROR: syntax: extra token <span class="hljs-string">&quot;@&quot;</span> after <span class="hljs-keyword">end</span> of expression<br>julia&gt; <span class="hljs-keyword">struct</span> = <span class="hljs-string">&quot;Advanced Theoretical Zymurgy&quot;</span><br>ERROR: syntax: unexpected <span class="hljs-string">&quot;=&quot;</span><br></code></pre></td></tr></table></figure>
-<p><code>76trombones</code>는 숫자로 시작했기 때문에 변수 이름으로 사용할 수 없으며, <code>more@</code>는 마지막 @기호로 인해서 변수 이름으로 사용할 수 없다. 그렇다면 <code>struct</code>는 뭐가 문제일까?</p>
+<p><code>76trombones</code>는 숫자로 시작했기 때문에 변수 이름으로 사용할 수 없으며, <code>more@</code>는 마지막 <span class="citation" data-cites="기호로">@기호로</span> 인해서 변수 이름으로 사용할 수 없다. 그렇다면 <code>struct</code>는 뭐가 문제일까?</p>
 <p>사실 <code>struct</code>은 줄리아의 키워드이다. REPL에서는 프로그램의 구조를 이해하기 위해서 몇 가지의 키워드를 사용하는데, 이 키워드 또한 변수 이름으로 사용할 수 없다. 줄리아는 아래의 그림과 같은 키워드들을 가지고 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">abstract type</span>     <span class="hljs-keyword">baremodule</span>     <span class="hljs-keyword">begin</span>       <span class="hljs-keyword">break</span>         <span class="hljs-keyword">catch</span><br><span class="hljs-keyword">const</span>             <span class="hljs-keyword">continue</span>       <span class="hljs-keyword">do</span>          <span class="hljs-keyword">else</span>          <span class="hljs-keyword">elseif</span><br><span class="hljs-keyword">end</span>               <span class="hljs-keyword">export</span>         <span class="hljs-keyword">finally</span>     <span class="hljs-keyword">for</span>           <span class="hljs-keyword">function</span><br><span class="hljs-keyword">global</span>            <span class="hljs-keyword">if</span>             <span class="hljs-keyword">import</span>      importall     <span class="hljs-keyword">in</span><br><span class="hljs-keyword">let</span>               <span class="hljs-keyword">local</span>          <span class="hljs-keyword">macro</span>       <span class="hljs-keyword">module</span>        <span class="hljs-keyword">mutable struct</span><br><span class="hljs-keyword">primitive type</span>    <span class="hljs-keyword">quote</span>          <span class="hljs-keyword">return</span>      <span class="hljs-keyword">try</span>           <span class="hljs-keyword">using</span><br><span class="hljs-keyword">struct</span>            <span class="hljs-keyword">where</span>          <span class="hljs-keyword">while</span><br></code></pre></td></tr></table></figure>
 <p>위의 키워드들을 모두 외울 필요는 없다. 만약 키워드로 변수 이름을 설정하려고 해도 대부분의 개발 환경에서는 키워드들을 다른 색깔로 보여주기 때문에 키워드임을 알 수 있다.</p>
-<h3 id="표현식과-명령문들"><a href="#표현식과-명령문들" class="headerlink" title="표현식과 명령문들"></a>표현식과 명령문들</h3><p>표현식(expression)은 값, 변수 및 연산자들의 조합이다. 값이나 변수 그자체는 모두 표현식으로 간주되기 때문에 아래의 코드들은 모두 표현식이라고 볼 수 있다.</p>
+<h3 id="표현식과-명령문들">표현식과 명령문들</h3>
+<p>표현식(expression)은 값, 변수 및 연산자들의 조합이다. 값이나 변수 그자체는 모두 표현식으로 간주되기 때문에 아래의 코드들은 모두 표현식이라고 볼 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; <span class="hljs-number">42</span><br><span class="hljs-number">42</span><br>julia&gt; n<br><span class="hljs-number">17</span><br>julia&gt; n + <span class="hljs-number">25</span><br><span class="hljs-number">42</span><br></code></pre></td></tr></table></figure>
 <p>위의 세 번째 코드와 같은 표현식을 작동시키면, REPL은 변수인 <code>n</code>의 값을 찾아서 연산을 진행한다. <code>n</code>의 값은 17이기 때문에 <code>n + 25</code>의 표현식 값은 12+25인 42이다.</p>
 <p>명령문(statement)은 변수를 작성하거나 변수를 보여주는 등의 특정 효과를 가지는 코드를 말한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; n = <span class="hljs-number">17</span><br><span class="hljs-number">17</span><br>julia&gt; println(n)<br><span class="hljs-number">17</span><br></code></pre></td></tr></table></figure>
 <p>첫 번째 코드는 변수 <code>n</code>에 17이라는 값을 할당하는 명령문이며, 두 번째 코드는 변수 <code>n</code>의 값을 보여주는 함수를 가진 명령문이다.</p>
 <p>명령문을 입력하면, REPL이 명령문이 요청하는대로 수행한다.</p>
-<h3 id="스크립트-모드"><a href="#스크립트-모드" class="headerlink" title="스크립트 모드"></a>스크립트 모드</h3><p>지금까지는 REPL에 코드를 한 줄씩 직접 입력하여 실행하는 대화식 모드를 사용해왔다. 하지만 이 방법은 긴 코드를 작업하는 경우에는 매우 불편할 것이다.  그렇기에 대안으로서 스크립트 모드를 사용하고자 한다.  <strong>스크립트 모드</strong>란 코드들을 파일에 저장한 후, 줄리아를 실행하여 한번에 작동시키는 것이다. 줄리아의 스크립트 파일은 <code>.ji</code>이라는 확장자명을 가진다.</p>
+<h3 id="스크립트-모드">스크립트 모드</h3>
+<p>지금까지는 REPL에 코드를 한 줄씩 직접 입력하여 실행하는 대화식 모드를 사용해왔다. 하지만 이 방법은 긴 코드를 작업하는 경우에는 매우 불편할 것이다. 그렇기에 대안으로서 스크립트 모드를 사용하고자 한다. <strong>스크립트 모드</strong>란 코드들을 파일에 저장한 후, 줄리아를 실행하여 한번에 작동시키는 것이다. 줄리아의 스크립트 파일은 <code>.ji</code>이라는 확장자명을 가진다.</p>
 <p>줄리아는 두 모드를 모두 제공하기 때문에 스크립트에 배치하기 전에 대화식 모드에서 코드를 테스트 해볼 수 있다.</p>
-<p>하지만 두 모드 사이에는 혼동하기 쉬운 차이점이 있다.<br>예를 들어 만약 줄리아를 계산기로 사용하여 아래 코드와 같이 입력하면,</p>
+<p>하지만 두 모드 사이에는 혼동하기 쉬운 차이점이 있다. 예를 들어 만약 줄리아를 계산기로 사용하여 아래 코드와 같이 입력하면,</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; miles = <span class="hljs-number">26.2</span><br><span class="hljs-number">26.2</span><br>julia&gt; miles * <span class="hljs-number">1.61</span><br><span class="hljs-number">42.182</span><br></code></pre></td></tr></table></figure>
-<p>첫 번째 코드에서는 변수 <code>miles</code>에 값을 할당하고 보여준다. 그리고 두 번째는 표현식이기 때문에 REPL은 변수<code>miles</code>의 값을 찾아 계산을 한 뒤에 결괏값을 보여 준다.<br>그러나 위의 코드를 스크립트로 입력하여 작동시키면, 어떠한 결괏값도 나오지 않는다. 그 이유는 스크립트 모드에서는 표현식 그 자체가 결과를 보여주는 기능을 가지고 있지 않기 때문이다. 즉, 아래의 코드와 같이 입력하지 않으면 값을 표시하지 않는다.</p>
+<p>첫 번째 코드에서는 변수 <code>miles</code>에 값을 할당하고 보여준다. 그리고 두 번째는 표현식이기 때문에 REPL은 변수<code>miles</code>의 값을 찾아 계산을 한 뒤에 결괏값을 보여 준다. 그러나 위의 코드를 스크립트로 입력하여 작동시키면, 어떠한 결괏값도 나오지 않는다. 그 이유는 스크립트 모드에서는 표현식 그 자체가 결과를 보여주는 기능을 가지고 있지 않기 때문이다. 즉, 아래의 코드와 같이 입력하지 않으면 값을 표시하지 않는다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">miles = <span class="hljs-number">26.2</span><br>println(miles * <span class="hljs-number">1.61</span>)<br></code></pre></td></tr></table></figure>
 <p>이런 규칙은 초반에 헷갈릴 수 있다.</p>
-<p>스크립트는 보통 일련의 명령문들을 포함한다. 명령문이 둘 이상의 요청을 가진 경우에는 보통 명령문 하나당 하나의 요청만 실행된다.<br>예로, 아래의 코드를 스크립트 모드로 작동시킨다면,</p>
+<p>스크립트는 보통 일련의 명령문들을 포함한다. 명령문이 둘 이상의 요청을 가진 경우에는 보통 명령문 하나당 하나의 요청만 실행된다. 예로, 아래의 코드를 스크립트 모드로 작동시킨다면,</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">println(<span class="hljs-number">1</span>)<br>x = <span class="hljs-number">2</span><br>println(x)<br></code></pre></td></tr></table></figure>
 <p>결과는 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-number">1</span><br><span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 <p>두번째 줄 코드인 할당문은 2라는 결과를 도출하지 않았다. 할당문은 단지 변수에 값은 할당해주는 한 가지 역할만 한 것이다.</p>
-<h3 id="연산자-우선순위"><a href="#연산자-우선순위" class="headerlink" title="연산자 우선순위"></a>연산자 우선순위</h3><p>만약 표현식이 많은 연산자들은 포함하고 있다면, 그 결괏값은 연산자 우선순위에 따라서 결정된다. 줄리아는 수학연산자의 규칙을 따른다. 약어인 PEMDAS는 규칙을 기억하는 유용한 방법이다.</p>
+<h3 id="연산자-우선순위">연산자 우선순위</h3>
+<p>만약 표현식이 많은 연산자들은 포함하고 있다면, 그 결괏값은 연산자 우선순위에 따라서 결정된다. 줄리아는 수학연산자의 규칙을 따른다. 약어인 PEMDAS는 규칙을 기억하는 유용한 방법이다.</p>
 <ul>
 <li>괄호(Parentheses)가장 높은 우선순위를 가지며 원하는 순서를 표현하는데 사용할 수 있다.</li>
 <li>지수(Exponentiation)가 그 다음으로 높은 우선순위를 가진다.</li>
 <li>곱셈(Multiplication)과 나눗셈(Division)이 그 다음으로 작동된다.</li>
-<li>마지막으로 덧셈(Addition)과 뺄셈(Subtraction)이 작동한다.<br>-우선순위가 동일한 연산자의 경우 왼쪽에서 오른쪽으로 진행된다.</li>
+<li>마지막으로 덧셈(Addition)과 뺄셈(Subtraction)이 작동한다. -우선순위가 동일한 연산자의 경우 왼쪽에서 오른쪽으로 진행된다.</li>
 </ul>
-<h3 id="문자열-연산"><a href="#문자열-연산" class="headerlink" title="문자열 연산"></a>문자열 연산</h3><p>일반적으로 수학 연산자들은 문자열에 사용할 수 없다. 심지어 그 문자가 숫자처럼 보일지라도 데이터 타입이 문자열이라면 불가능하다.</p>
+<h3 id="문자열-연산">문자열 연산</h3>
+<p>일반적으로 수학 연산자들은 문자열에 사용할 수 없다. 심지어 그 문자가 숫자처럼 보일지라도 데이터 타입이 문자열이라면 불가능하다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-string">&quot;2&quot;</span> - <span class="hljs-string">&quot;1&quot;</span>    <span class="hljs-string">&quot;eggs&quot;</span> / <span class="hljs-string">&quot;easy&quot;</span>    <span class="hljs-string">&quot;third&quot;</span> + <span class="hljs-string">&quot;a charm&quot;</span><br></code></pre></td></tr></table></figure>
 <p>그러나 예외로 <code>*</code>와 <code>^</code>는 사용할 수 있다.</p>
-<p> <code>*</code> 연산자는 문자를 연결해준다. 즉, 문자열 2개의 끝과 끝을 연결하여 하나의 문자열로 만드는 것을 의미한다.<br>예로 아래의 코드를 확인해보자.</p>
+<p><code>*</code> 연산자는 문자를 연결해준다. 즉, 문자열 2개의 끝과 끝을 연결하여 하나의 문자열로 만드는 것을 의미한다. 예로 아래의 코드를 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; first_str = <span class="hljs-string">&quot;throat&quot;</span><br><span class="hljs-string">&quot;throat&quot;</span><br>julia&gt; second_str = <span class="hljs-string">&quot;warbler&quot;</span><br><span class="hljs-string">&quot;warbler&quot;</span><br>julia&gt; first_str * second_str<br><span class="hljs-string">&quot;throatwarbler&quot;</span><br></code></pre></td></tr></table></figure>
 <p><code>^</code>연산자는 해당 문자열을 반복한다. 예를 들어서 <code>”Spam”^3</code>는 <code>”SpamSpamSpam”</code>로 작동한다. 즉 문자열에서 <code>^</code>연산자는 지수와 유사하게 작동하는 것을 알 수 있다.</p>
-<h3 id="주석"><a href="#주석" class="headerlink" title="주석"></a>주석</h3><p>프로그램이 커지고 복잡해지면, 코드를 보고 어떤 작업을 하는지 또는 왜 그 작업을 하는지 알아내기 어려울 때가 많다. 그렇기 때문에 프로그램을 수행함에 있어서 각각의 작업에 대한 설명을 메모해두는 것이 좋다. 이러한 메모를 주석(comment)라고 하며 <code>#</code>기호를 사용한다.</p>
+<h3 id="주석">주석</h3>
+<p>프로그램이 커지고 복잡해지면, 코드를 보고 어떤 작업을 하는지 또는 왜 그 작업을 하는지 알아내기 어려울 때가 많다. 그렇기 때문에 프로그램을 수행함에 있어서 각각의 작업에 대한 설명을 메모해두는 것이 좋다. 이러한 메모를 주석(comment)라고 하며 <code>#</code>기호를 사용한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># compute the percentage of the hour that has elapsed</span><br>percentage = (minute * <span class="hljs-number">100</span>) / <span class="hljs-number">60</span><br></code></pre></td></tr></table></figure>
 <p>위의 경우는 주석이 한 줄을 차지하고 있다. 만약 코드와 같은 줄에 주석을 작성하고 싶다면 코드 끝에 쓰면 된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">percentage = (minute * <span class="hljs-number">100</span>) / <span class="hljs-number">60</span>   <span class="hljs-comment"># percentage of an hour</span><br></code></pre></td></tr></table></figure>
-<h3 id="디버깅"><a href="#디버깅" class="headerlink" title="디버깅"></a>디버깅</h3><p>프로그램에서는 세 가지 종류의 오류가 발생할 수 있다. 오류를 빠르게 파악하기 위해서는 이 세 가지 오류에 대해서 알아두는 편이 좋다.</p>
-<p><strong>문법 오류(syntax error)</strong><br>문법은 프로그램 구조에 대한 규칙을 나타낸다. 예를 들어서 괄호는 쌍을 이뤄야 하므로 (1+2)는 올바르지만 8)은 문법 오류이다.<br>프로그램 어딘가에 문법오류가 있는 경우 줄리아는 오류 메시지를 도출하고 종료 되며 프로그램은 실행되지 않는다.<br>문법 오류를 추적하는 것은 많은 시간이 필요하지만, 경험이 쌓이면 오류를 빠르게 찾을 수 있다.</p>
-<p><strong>런타임 오류(runtime error)</strong><br>런타임 오류는 프로그램이 실행되기 전까지는 나타나지 않는다. 그렇기 때문에 프로그램을 테스트 할 때 파악할 수 있으며, 대부분 인지하지 못한 예외적인 문제들이 이 오류에 포함된다.<br>간단한 프로그램에서 해당 오류는 드물다.</p>
-<p><strong>의미 오류(semantic error)</strong><br>의미 오류는 개발자의 의도와는 다른 방향으로 프로그램이 작동되는 현상이다. 이는 문법오류와 같이 컴퓨터가 파악할 수 있는 오류가 아니기 때문에 오류 메시지가 나타나지 않는다.<br>그렇기에 해당 오류를 찾기 위해서는 프로그램의 출력을 보고 수행중인 작업에서 예측가능한 결과인지를 파악하여 역으로 찾는 수밖에 없다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>프로그램에서는 세 가지 종류의 오류가 발생할 수 있다. 오류를 빠르게 파악하기 위해서는 이 세 가지 오류에 대해서 알아두는 편이 좋다.</p>
+<p><strong>문법 오류(syntax error)</strong> 문법은 프로그램 구조에 대한 규칙을 나타낸다. 예를 들어서 괄호는 쌍을 이뤄야 하므로 (1+2)는 올바르지만 8)은 문법 오류이다. 프로그램 어딘가에 문법오류가 있는 경우 줄리아는 오류 메시지를 도출하고 종료 되며 프로그램은 실행되지 않는다. 문법 오류를 추적하는 것은 많은 시간이 필요하지만, 경험이 쌓이면 오류를 빠르게 찾을 수 있다.</p>
+<p><strong>런타임 오류(runtime error)</strong> 런타임 오류는 프로그램이 실행되기 전까지는 나타나지 않는다. 그렇기 때문에 프로그램을 테스트 할 때 파악할 수 있으며, 대부분 인지하지 못한 예외적인 문제들이 이 오류에 포함된다. 간단한 프로그램에서 해당 오류는 드물다.</p>
+<p><strong>의미 오류(semantic error)</strong> 의미 오류는 개발자의 의도와는 다른 방향으로 프로그램이 작동되는 현상이다. 이는 문법오류와 같이 컴퓨터가 파악할 수 있는 오류가 아니기 때문에 오류 메시지가 나타나지 않는다. 그렇기에 해당 오류를 찾기 위해서는 프로그램의 출력을 보고 수행중인 작업에서 예측가능한 결과인지를 파악하여 역으로 찾는 수밖에 없다.</p>
 
                 
               </div>

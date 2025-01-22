@@ -258,7 +258,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          107 words
+          108 words
         
       </span>
     
@@ -353,19 +353,29 @@
                 
                 <p>Flask로 웹 서버를 구축하는 과정에 대해서 정리합니다.</p>
 <span id="more"></span>
-<h3 id="Static-IP-setting"><a href="#Static-IP-setting" class="headerlink" title="Static IP setting"></a>Static IP setting</h3><p>관리의 편리함을 위해 서버가 재가동 되어도 동일한 IP를 유지하도록 설정하고자 한다. 현재 사용하고 있는 것은 AWS의 가상 서버이기에 콘솔에서 변경해보자.</p>
-<p><img src="/images/154.png" srcset="/img/loading.gif" lazyload alt="server"></p>
-<p>lightsail 콘솔에 들어가면 네트워킹이라는 섹션이 있다. 이를 클릭하면 위 사진과 같이 “고정 IP 생성”이라는 버튼을 찾을 수 있다.</p>
-<p><img src="/images/155.png" srcset="/img/loading.gif" lazyload alt="server"></p>
-<p>“고정 IP 생성”을 클릭하면 위 사진과 같이 고정 IP를 내가 보유하고 있는 인스턴스에 설정할 수 있다. 나의 경우 이미 붙여놓은 상태라서 연결에 사용할 인스턴스가 없다고 보여진다. 인스턴스 선택하고 해당 IP의 이름을 붙여준 뒤 생성 버튼을 누르면 설정은 끝난다.</p>
-<h3 id="Firewall-setting"><a href="#Firewall-setting" class="headerlink" title="Firewall setting"></a>Firewall setting</h3><p>그 다음으로는 웹 서버가 사용할 포트를 오픈해야 한다. AWS lightsail의 경우 기본적으로 Http와 Https 포트는 개방되어 있다. 사용하고자 하는 포트를 추가하려면 “규칙 추가”를 눌러 포트를 추가해준다.</p>
-<p><img src="/images/156.png" srcset="/img/loading.gif" lazyload alt="server"></p>
-<h3 id="Python-setting"><a href="#Python-setting" class="headerlink" title="Python setting"></a>Python setting</h3><p>이 프로젝트에서 사용하는 프레임워크는 플라스크(Flask)이다. 파이썬 기반의 환경을 셋팅해보자.</p>
+<h3 id="static-ip-setting">Static IP setting</h3>
+<p>관리의 편리함을 위해 서버가 재가동 되어도 동일한 IP를 유지하도록 설정하고자 한다. 현재 사용하고 있는 것은 AWS의 가상 서버이기에 콘솔에서 변경해보자.</p>
+<figure>
+<img src="/images/154.png" srcset="/img/loading.gif" lazyload alt="server" /><figcaption aria-hidden="true">server</figcaption>
+</figure>
+<p>lightsail 콘솔에 들어가면 네트워킹이라는 섹션이 있다. 이를 클릭하면 위 사진과 같이 "고정 IP 생성"이라는 버튼을 찾을 수 있다.</p>
+<figure>
+<img src="/images/155.png" srcset="/img/loading.gif" lazyload alt="server" /><figcaption aria-hidden="true">server</figcaption>
+</figure>
+<p>"고정 IP 생성"을 클릭하면 위 사진과 같이 고정 IP를 내가 보유하고 있는 인스턴스에 설정할 수 있다. 나의 경우 이미 붙여놓은 상태라서 연결에 사용할 인스턴스가 없다고 보여진다. 인스턴스 선택하고 해당 IP의 이름을 붙여준 뒤 생성 버튼을 누르면 설정은 끝난다.</p>
+<h3 id="firewall-setting">Firewall setting</h3>
+<p>그 다음으로는 웹 서버가 사용할 포트를 오픈해야 한다. AWS lightsail의 경우 기본적으로 Http와 Https 포트는 개방되어 있다. 사용하고자 하는 포트를 추가하려면 "규칙 추가"를 눌러 포트를 추가해준다.</p>
+<figure>
+<img src="/images/156.png" srcset="/img/loading.gif" lazyload alt="server" /><figcaption aria-hidden="true">server</figcaption>
+</figure>
+<h3 id="python-setting">Python setting</h3>
+<p>이 프로젝트에서 사용하는 프레임워크는 플라스크(Flask)이다. 파이썬 기반의 환경을 셋팅해보자.</p>
 <p>먼저 파이썬 버전을 확인한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">&gt; python3 --version<br></code></pre></td></tr></table></figure>
 <p>python3이 설치되어 있다면 다음으로 파이썬 패키지 매니저인 pip를 설치한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 패키지 업데이트</span><br>&gt; <span class="hljs-built_in">sudo</span> apt update<br><span class="hljs-comment"># pip 설치</span><br>&gt; <span class="hljs-built_in">sudo</span> apt-get install python3-pip<br></code></pre></td></tr></table></figure>
-<h2 id="Flask-웹-서버-구동하기"><a href="#Flask-웹-서버-구동하기" class="headerlink" title="Flask 웹 서버 구동하기"></a>Flask 웹 서버 구동하기</h2><p>다음으로는 웹 서버를 구동해보자. 이를 위해 해당 서버에 소스 파일을 가져온다. 나의 경우 로컬에 있는 소스들을 tar로 묶은 다음 scp로 복사했다.<br>이제 웹 서버를 올리기 위해 필요한 패키지들을 설치한다.</p>
+<h2 id="flask-웹-서버-구동하기">Flask 웹 서버 구동하기</h2>
+<p>다음으로는 웹 서버를 구동해보자. 이를 위해 해당 서버에 소스 파일을 가져온다. 나의 경우 로컬에 있는 소스들을 tar로 묶은 다음 scp로 복사했다. 이제 웹 서버를 올리기 위해 필요한 패키지들을 설치한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 파이썬 컴파일러 업데이트</span><br>pip3 install --upgrade cython<br><span class="hljs-comment"># 필요한 라이브러리 설치</span><br>pip3 install -r requirement.txt<br></code></pre></td></tr></table></figure>
 <p>소스 파일 <code>requirement.txt</code>에는 해당 웹 서버 구동에 필요한 라이브러리들이 정리되어 있다. 이를 위 코드처럼 한번에 설치할 수 있다. <code>requirement.txt</code>의 내용은 아래와 같다.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs text"># requirement.txt list<br>flask<br>sqlalchemy<br>pandas<br>plotly<br>dash<br>dash_bootstrap_components==0.13<br>pymysql<br>pyarrow==0.16.0<br>dominate<br>visitor<br></code></pre></td></tr></table></figure>

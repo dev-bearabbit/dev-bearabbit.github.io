@@ -343,10 +343,11 @@
             
               <div class="markdown-body">
                 
-                <p>Ansible 설치방법에 대해서 간단히 설명합니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="Ansible-사용-방법"><a href="#Ansible-사용-방법" class="headerlink" title="Ansible 사용 방법"></a>Ansible 사용 방법</h2><p>앤서블은 파이썬으로 구현되었기 때문에 사용하기 위해서는 해당 환경에 파이썬이 셋팅되어 있어야 한다. 현재 회사에서는 테스트 서버의 OS로 centos7를 사용하기 때문에 이를 기준으로 앤서블 사용법을 설명할 예정이다. 또한 앤서블은 저번 글에서 설명한 것처럼 에이전트리스 방식으로 작동하기 때문에 관리자 노드(controller)에만 설치하면 된다.</p>
-<p><strong>TEST ENV</strong><br>테스트 환경은 다음과 같다.</p>
+                <p>Ansible 설치방법에 대해서 간단히 설명합니다. <span id="more"></span></p>
+<hr />
+<h2 id="ansible-사용-방법">Ansible 사용 방법</h2>
+<p>앤서블은 파이썬으로 구현되었기 때문에 사용하기 위해서는 해당 환경에 파이썬이 셋팅되어 있어야 한다. 현재 회사에서는 테스트 서버의 OS로 centos7를 사용하기 때문에 이를 기준으로 앤서블 사용법을 설명할 예정이다. 또한 앤서블은 저번 글에서 설명한 것처럼 에이전트리스 방식으로 작동하기 때문에 관리자 노드(controller)에만 설치하면 된다.</p>
+<p><strong>TEST ENV</strong> 테스트 환경은 다음과 같다.</p>
 <ul>
 <li>Server: 4대</li>
 <li>CPU: 4 core</li>
@@ -356,28 +357,29 @@
 <li>imbedded: python2.7.5</li>
 <li>hostname: controller, target1, target2, target3</li>
 </ul>
-<h2 id="Ansible-설치"><a href="#Ansible-설치" class="headerlink" title="Ansible 설치"></a>Ansible 설치</h2><p>먼저 앤서블을 설치해보자. CentOS의 경우 ansible이 OS 기본 패키지에 속한 경우도 있지만, 아닌 경우도 있다. 일단 아래의 코드를 입력해서 확인해보자.</p>
+<h2 id="ansible-설치">Ansible 설치</h2>
+<p>먼저 앤서블을 설치해보자. CentOS의 경우 ansible이 OS 기본 패키지에 속한 경우도 있지만, 아닌 경우도 있다. 일단 아래의 코드를 입력해서 확인해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">yum install -y ansible<br></code></pre></td></tr></table></figure>
-<p>앤서블이 잘 설치된다면 OS 기본 패키지에 있다는 것이기에 바로 다음 글로 넘어가면 된다.<br>하지만 만약 아래와 같은 답변이 온다면 따로 rpm 파일들을 넣어준 후 설치해야 한다.</p>
+<p>앤서블이 잘 설치된다면 OS 기본 패키지에 있다는 것이기에 바로 다음 글로 넘어가면 된다. 하지만 만약 아래와 같은 답변이 온다면 따로 rpm 파일들을 넣어준 후 설치해야 한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">Loaded plugins: product-id, search-disabled-repos, subscription-manager<br>This system is not registered with an entitlement server. You can use subscription-manager to register.<br>cm                                                       | 2.9 kB     00:00     <br>centos                                                   | 2.8 kB     00:00     <br>No package ansible available.<br>Error: Nothing to <span class="hljs-keyword">do</span><br></code></pre></td></tr></table></figure>
-<h2 id="Ansible-repository"><a href="#Ansible-repository" class="headerlink" title="Ansible repository"></a>Ansible repository</h2><p>앤서블은 EPEL(Extra Packages for Enterprise Linux)에 포함되어 있기에 이를 가져와서 사용해도 되지만 개인적으로 이 방법을 좋아하지 않는데, 그 이유로는 다음과 같다.</p>
+<h2 id="ansible-repository">Ansible repository</h2>
+<p>앤서블은 EPEL(Extra Packages for Enterprise Linux)에 포함되어 있기에 이를 가져와서 사용해도 되지만 개인적으로 이 방법을 좋아하지 않는데, 그 이유로는 다음과 같다.</p>
 <ul>
-<li><p>쓰고 싶은 패키지는 일부인데 EPEL은 너무 많은 패키지를 가지고 있다.<br>실제 테스트에서 사용하는 centos ISO 이미지에는 패키지가 대략 4000개 정도 들어있는데, EPEL은 기본적으로 10000개 정도의 패키지를 가져온다. 물론 네트워크가  오픈망이고 외부 레파지토리를 가져오는거라면 EPEL을 사용해도 괜찮겠지만, 폐쇄망인 경우에는 10000개가 넘는 패키지를 직접 가지고 다녀야 한다.</p>
-</li>
-<li><p>의도치 않은 패키지 업데이트가 진행된다.<br>yum은 기본적으로 EPEL에 현재 사용하는 패키지의 최신 버전이 들어있다면 자동으로 업데이트를 진행한다. 물론 yum에서 레파지토리를 무력화하여 업데이트를 하지 못하게 할 수도 있지만, 이를 잊어버린 경우 커널 단의 시스템들이 업데이트가 진행되면서 버전 문제로 고생할 수 있다. 실제 이 문제로 인해 패키지들의 버전이 맞지 않아 고생한 적이 있다.</p>
-</li>
+<li><p>쓰고 싶은 패키지는 일부인데 EPEL은 너무 많은 패키지를 가지고 있다. 실제 테스트에서 사용하는 centos ISO 이미지에는 패키지가 대략 4000개 정도 들어있는데, EPEL은 기본적으로 10000개 정도의 패키지를 가져온다. 물론 네트워크가 오픈망이고 외부 레파지토리를 가져오는거라면 EPEL을 사용해도 괜찮겠지만, 폐쇄망인 경우에는 10000개가 넘는 패키지를 직접 가지고 다녀야 한다.</p></li>
+<li><p>의도치 않은 패키지 업데이트가 진행된다. yum은 기본적으로 EPEL에 현재 사용하는 패키지의 최신 버전이 들어있다면 자동으로 업데이트를 진행한다. 물론 yum에서 레파지토리를 무력화하여 업데이트를 하지 못하게 할 수도 있지만, 이를 잊어버린 경우 커널 단의 시스템들이 업데이트가 진행되면서 버전 문제로 고생할 수 있다. 실제 이 문제로 인해 패키지들의 버전이 맞지 않아 고생한 적이 있다.</p></li>
 </ul>
 <p>또한 현재 일하고 있는 분야에서는 대부분 클러스터가 폐쇄망으로 구성되기에 개인적으로는 필요한 패키지 rpm들을 다운받은 후 tar로 묶어서 가지고 다니는 것을 더 선호한다.</p>
 <p>그래서 결론적으로 나는 앤서블 설치에 필요한 rpm 파일들을 따로 다운로드 받아 tar로 묶어두었다. 만약 해당 파일이 필요하다면 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Ansible/tree/main/Centos">깃허브</a>에서 다운받을 수 있다. (해당 앤서블 버전은 2.9.2 이다)</p>
 <p>centos에서 레파지토리를 잡는 방법은 다음과 같다.</p>
-<ol>
+<ol type="1">
 <li>ansible rpm 파일들 다운로드</li>
 <li>repo 파일 생성하기</li>
 <li>yum repolist로 확인하기</li>
 </ol>
 <p>위 과정을 코드로 나타내면 아래와 같다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># repo 폴더 생성</span><br><span class="hljs-built_in">mkdir</span> -p /var/www/html/ans<br><br><span class="hljs-comment"># ansible.tar 파일을 전송 후 압축 해제</span><br>tar xvf /var/www/html/ans/ansible.tar<br><br><span class="hljs-comment"># repo 작성하기</span><br><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">EOT &gt;&gt; /etc/yum.repos.d/ans.repo</span><br><span class="hljs-string">[ans]</span><br><span class="hljs-string">name=ans</span><br><span class="hljs-string">baseurl=file://var/www/html/ans</span><br><span class="hljs-string">gpgcheck=0</span><br><span class="hljs-string">enabled=1</span><br><span class="hljs-string">EOT</span><br><br><span class="hljs-comment"># repo 확인</span><br>yum clean all<br>yum repolist<br><br><span class="hljs-comment"># ansible 설치</span><br>yum install ansible<br></code></pre></td></tr></table></figure>
-<h2 id="Ansible-설치-완료-확인"><a href="#Ansible-설치-완료-확인" class="headerlink" title="Ansible 설치 완료 확인"></a>Ansible 설치 완료 확인</h2><p>문제 없이 설치되었다면 아래와 같이 입력해보자.</p>
+<h2 id="ansible-설치-완료-확인">Ansible 설치 완료 확인</h2>
+<p>문제 없이 설치되었다면 아래와 같이 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ansible --version<br></code></pre></td></tr></table></figure>
 <p>그럼 아래와 같이 설치된 앤서블 버전과 정보가 나올 것이다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">ansible 2.9.2<br>  config file = /etc/ansible/ansible.cfg<br>  configured module search path = [u<span class="hljs-string">&#x27;/root/.ansible/plugins/modules&#x27;</span>, u<span class="hljs-string">&#x27;/usr/share/ansible/plugins/modules&#x27;</span>]<br>  ansible python module location = /usr/lib/python2.7/site-packages/ansible<br>  executable location = /usr/bin/ansible<br>  python version = 2.7.5 (default, Oct 30 2018, 23:45:53) [GCC 4.8.5 20150623 (Red Hat 4.8.5-36)]<br></code></pre></td></tr></table></figure>

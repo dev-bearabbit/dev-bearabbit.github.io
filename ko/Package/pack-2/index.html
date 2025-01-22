@@ -345,10 +345,13 @@
             
               <div class="markdown-body">
                 
-                <p>rust를 python에서 바인딩하여 사용할 수 있도록 도와주는 PyO3에 대해서 정리합니다. 해당 글은 <a target="_blank" rel="noopener" href="https://pyo3.rs/v0.16.4/index.html">PyO3 공식문서</a>를 바탕으로 작성되었습니다.<br><span id="more"></span></p>
-<h2 id="사용목적"><a href="#사용목적" class="headerlink" title="사용목적"></a>사용목적</h2><p>현재 러스트로 작성하고 있는 프로젝트인 <a target="_blank" rel="noopener" href="https://github.com/tossicat/tossicat-core">tossicat</a>를 파이썬에서도 사용할 수 있도록 패키지를 생성하고자 한다.</p>
-<h2 id="PyO3란"><a href="#PyO3란" class="headerlink" title="PyO3란"></a>PyO3란</h2><p>PyO3은 러스트 코드를 파이썬으로 바인딩하는 모듈이다. 해당 <a target="_blank" rel="noopener" href="https://github.com/PyO3/pyo3">깃허브</a>에 접속해보면 알겠지만 모듈 대부분이 rust로 개발되고 있으며, 자세한 내용은 <a target="_blank" rel="noopener" href="https://docs.rs/pyo3/latest/pyo3/">Rust crate 문서</a>나 <a target="_blank" rel="noopener" href="https://pyo3.rs/v0.16.4/">공식 가이드</a>에서 찾아볼 수 있다. 해당 모듈을 사용하여 Rust에서 기본 Python 모듈을 작성하거나 Python을 Rust 프로그램에서 실행할 수 있다.</p>
-<h2 id="maturin-사용법"><a href="#maturin-사용법" class="headerlink" title="maturin 사용법"></a>maturin 사용법</h2><p>maturin이란 PyO3를 통해서 러스트 코드를 보다 편리하게 파이썬 패키지로 빌드할 수 있도록 도와주는 도구이다. maturin은 기본적으로 virtualenv에서 작동한다. 아래는 maturin에서 기본적으로 사용하는 명령어이다.</p>
+                <p>rust를 python에서 바인딩하여 사용할 수 있도록 도와주는 PyO3에 대해서 정리합니다. 해당 글은 <a target="_blank" rel="noopener" href="https://pyo3.rs/v0.16.4/index.html">PyO3 공식문서</a>를 바탕으로 작성되었습니다. <span id="more"></span></p>
+<h2 id="사용목적">사용목적</h2>
+<p>현재 러스트로 작성하고 있는 프로젝트인 <a target="_blank" rel="noopener" href="https://github.com/tossicat/tossicat-core">tossicat</a>를 파이썬에서도 사용할 수 있도록 패키지를 생성하고자 한다.</p>
+<h2 id="pyo3란">PyO3란</h2>
+<p>PyO3은 러스트 코드를 파이썬으로 바인딩하는 모듈이다. 해당 <a target="_blank" rel="noopener" href="https://github.com/PyO3/pyo3">깃허브</a>에 접속해보면 알겠지만 모듈 대부분이 rust로 개발되고 있으며, 자세한 내용은 <a target="_blank" rel="noopener" href="https://docs.rs/pyo3/latest/pyo3/">Rust crate 문서</a>나 <a target="_blank" rel="noopener" href="https://pyo3.rs/v0.16.4/">공식 가이드</a>에서 찾아볼 수 있다. 해당 모듈을 사용하여 Rust에서 기본 Python 모듈을 작성하거나 Python을 Rust 프로그램에서 실행할 수 있다.</p>
+<h2 id="maturin-사용법">maturin 사용법</h2>
+<p>maturin이란 PyO3를 통해서 러스트 코드를 보다 편리하게 파이썬 패키지로 빌드할 수 있도록 도와주는 도구이다. maturin은 기본적으로 virtualenv에서 작동한다. 아래는 maturin에서 기본적으로 사용하는 명령어이다.</p>
 <ul>
 <li><code>maturin init</code>: 튜토리얼에서 사용할 예시 코드를 가져온다.</li>
 <li><code>maturin new</code>: 새로운 cargo 프로젝트를 생성한다.</li>
@@ -356,17 +359,18 @@
 <li><code>maturin build</code>: target/wheels(default) 경로에 파이썬 패키지 wheel파일로 빌드한다.</li>
 <li><code>maturin publis</code>: 작성한 러스트 코드를 파이썬 패키지로 빌드하고 PyPi에 배포한다.</li>
 </ul>
-<h2 id="PyO3-튜토리얼"><a href="#PyO3-튜토리얼" class="headerlink" title="PyO3 튜토리얼"></a>PyO3 튜토리얼</h2><p>공식문서의 튜토리얼을 따라해보자. 원하는 경로에서 아래의 코드를 순서대로 입력한다.</p>
+<h2 id="pyo3-튜토리얼">PyO3 튜토리얼</h2>
+<p>공식문서의 튜토리얼을 따라해보자. 원하는 경로에서 아래의 코드를 순서대로 입력한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 먼저 사용할 폴더 만들기</span><br>$ <span class="hljs-built_in">mkdir</span> string_sum<br><span class="hljs-comment"># 폴더로 이동</span><br>$ <span class="hljs-built_in">cd</span> string_sum<br><span class="hljs-comment"># 파이썬 가상환경 생성</span><br>$ python3 -m venv .<span class="hljs-built_in">env</span><br><span class="hljs-comment"># 생성한 가상환경으로 접속</span><br>$ <span class="hljs-built_in">source</span> .<span class="hljs-built_in">env</span>/bin/activate<br><span class="hljs-comment"># 필요한 패키지 설치</span><br>$ pip3 install maturin<br></code></pre></td></tr></table></figure>
 <p>완료되었다면 필요한 환경설정은 끝났다. 다음으로 아래의 코드를 입력한 후 pyo3를 선택한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ maturin init<br><br>? 🤷 Which kind of bindings to use? ›<br>❯ pyo3<br>  rust-cpython<br>  cffi<br>  bin<br></code></pre></td></tr></table></figure>
 <p>그러면 아래와 같이 프로젝트가 생성되었다는 안내가 출력된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">✨ Done! Initialized project &#123;PATH&#125;/string_sum<br></code></pre></td></tr></table></figure>
-<p>튜토리얼을 진행하면 바로 패키지 개발을 테스트 해볼 수 있는 코드들이 <code>/src/lib.rs</code>, <code>cargo.toml</code>에 작성되어 있다.<br>아래의 명령어를 입력해서 테스트 해보자.</p>
+<p>튜토리얼을 진행하면 바로 패키지 개발을 테스트 해볼 수 있는 코드들이 <code>/src/lib.rs</code>, <code>cargo.toml</code>에 작성되어 있다. 아래의 명령어를 입력해서 테스트 해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ maturin develop<br><br>🔗 Found pyo3 bindings<br>🐍 Found CPython 3.9 at &#123;PATH&#125;/string_sum/.env/bin/python<br>   Compiling target-lexicon v0.12.4<br>   Compiling once_cell v1.12.0<br>    .<br>    .<br>   Compiling pyo3-macros v0.16.5<br>   Compiling string_sum v0.1.0 (&#123;PATH&#125;/string_sum)<br>    Finished dev [unoptimized + debuginfo] target(s) <span class="hljs-keyword">in</span> 19.69s<br>📦 Built wheel <span class="hljs-keyword">for</span> CPython 3.9 to &#123;PATH&#125;/string_sum-0.1.0-cp39-cp39-macosx_10_7_x86_64.whl<br>🛠  Installed string_sum-0.1.0<br></code></pre></td></tr></table></figure>
 <p>가상환경에 해당 패키지가 파이썬 모듈로 설치되었다. 파이썬에 직접 접속해서 빌드한 <code>string_sum</code>패키지를 사용해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3<br>&gt;&gt;&gt; import string_sum<br>&gt;&gt;&gt; string_sum.sum_as_string(10,5)<br><span class="hljs-string">&#x27;15&#x27;</span><br></code></pre></td></tr></table></figure>
-<p>정상적으로 작동하는 것을 확인할 수 있다. 만약 러스트 코드를 수정해야 한다면 수정 후 다시 <code>maturin develop</code>을 입력하여 컴파일 후 테스트 해볼 수 있다.<br>또한 아래의 명령어를 사용하여 패키지<code>wheel</code>파일로 저장할 수 있다.</p>
+<p>정상적으로 작동하는 것을 확인할 수 있다. 만약 러스트 코드를 수정해야 한다면 수정 후 다시 <code>maturin develop</code>을 입력하여 컴파일 후 테스트 해볼 수 있다. 또한 아래의 명령어를 사용하여 패키지<code>wheel</code>파일로 저장할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">maturin build<br></code></pre></td></tr></table></figure>
 
                 

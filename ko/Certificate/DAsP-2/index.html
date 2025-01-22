@@ -255,7 +255,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          62 words
+          63 words
         
       </span>
     
@@ -348,20 +348,24 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="데이터-모델링"><a href="#데이터-모델링" class="headerlink" title="데이터 모델링"></a>데이터 모델링</h2><p>데이터를 중복없이 정확하게 유지 및 관리하기 위해서 시행하는 도구. 정보 시스템 개발은 크게 프로세스 모델링과 데이터 모델링으로 구분되는데 보통 데이터 모델링을 중심으로 설계한다. 따라서 데이터 모델링을 할 때는 <strong>중복, 비유연성, 비일관성</strong>을 주의해야 한다.</p>
-<h2 id="데이터-모델링이-중요한-이유"><a href="#데이터-모델링이-중요한-이유" class="headerlink" title="데이터 모델링이 중요한 이유"></a>데이터 모델링이 중요한 이유</h2><ul>
+                <p>해당 시리즈는 데이터아키텍처 준전문가(DAsP) 자격증 공부 내용을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="데이터-모델링">데이터 모델링</h2>
+<p>데이터를 중복없이 정확하게 유지 및 관리하기 위해서 시행하는 도구. 정보 시스템 개발은 크게 프로세스 모델링과 데이터 모델링으로 구분되는데 보통 데이터 모델링을 중심으로 설계한다. 따라서 데이터 모델링을 할 때는 <strong>중복, 비유연성, 비일관성</strong>을 주의해야 한다.</p>
+<h2 id="데이터-모델링이-중요한-이유">데이터 모델링이 중요한 이유</h2>
+<ul>
 <li>파급효과: 데이터 모델은 차후에 변경하는 과정이 매우 힘들다.</li>
 <li>간결한 표현: 시스템 구축 이해 관계자들에게 명확하게 요구사항을 전달할 수 있다.</li>
 <li>데이터 품질: 모델에 따라 데이터 품질 수준이 달라진다.</li>
 </ul>
-<h2 id="데이터-모델링-기본-원칙"><a href="#데이터-모델링-기본-원칙" class="headerlink" title="데이터 모델링 기본 원칙"></a>데이터 모델링 기본 원칙</h2><ul>
+<h2 id="데이터-모델링-기본-원칙">데이터 모델링 기본 원칙</h2>
+<ul>
 <li>커뮤니케이션 원칙: 사용자 및 이해관계자에게 시스템 지향성을 명확히 설명 가능</li>
 <li>모델링 상세화 원칙: 조직이 사용하는 정보 구조의 최소 공통분모를 제시해야 함</li>
 <li>논리적 표현 원칙: 데이터에 대한 논리적 측면을 최대한 표현</li>
 </ul>
-<h2 id="좋은-데이터-모델의-요소"><a href="#좋은-데이터-모델의-요소" class="headerlink" title="좋은 데이터 모델의 요소"></a>좋은 데이터 모델의 요소</h2><ul>
+<h2 id="좋은-데이터-모델의-요소">좋은 데이터 모델의 요소</h2>
+<ul>
 <li>완전성: 업무에 필요한 모든 데이터가 존재</li>
 <li>중복 배제: 동일한 정보는 한번만 있어야 함</li>
 <li>비즈니스 룰: 업무 규칙을 적용</li>
@@ -371,50 +375,58 @@
 <li>의사소통: 업무 규칙을 데이터 모델 요소를 기반으로 의사소통 가능</li>
 <li>통합성: 전체가 한 몸처럼 연결 필요</li>
 </ul>
-<h2 id="데이터-모델링-기법"><a href="#데이터-모델링-기법" class="headerlink" title="데이터 모델링 기법"></a>데이터 모델링 기법</h2><p>데이터에 따라 관리자, 사용자, 개발자가 서로 다르게 인식하고 있는 뷰들을 통합해야 단일화된 설계안 생성이 가능하다. 이를 위해 <strong>개체-관계 다이어그램(ERD)</strong>으로 도식화하는 방법인 <strong>개체-관계 모델 기법</strong>을 사용한다.</p>
-<h3 id="개체-관계-모델-구성요소"><a href="#개체-관계-모델-구성요소" class="headerlink" title="개체-관계 모델 구성요소"></a>개체-관계 모델 구성요소</h3><p>일반적으로 논리/물리 모델링으로 나누어지며, 논리 모델은 업무수행방식이 바뀌어도 설계를 거의 번경하지 않는다.</p>
-<div class="table-container">
+<h2 id="데이터-모델링-기법">데이터 모델링 기법</h2>
+<p>데이터에 따라 관리자, 사용자, 개발자가 서로 다르게 인식하고 있는 뷰들을 통합해야 단일화된 설계안 생성이 가능하다. 이를 위해 <strong>개체-관계 다이어그램(ERD)</strong>으로 도식화하는 방법인 <strong>개체-관계 모델 기법</strong>을 사용한다.</p>
+<h3 id="개체-관계-모델-구성요소">개체-관계 모델 구성요소</h3>
+<p>일반적으로 논리/물리 모델링으로 나누어지며, 논리 모델은 업무수행방식이 바뀌어도 설계를 거의 번경하지 않는다.</p>
 <table>
+
 <thead>
-<tr>
+<tr class="header">
 <th>구성요소</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>엔터티</td>
 <td>동질성을 가진 개체 집합이며 지속해서 관리를 해야하는 대상<br> 모델설계 초기에 도출</td>
 </tr>
-<tr>
+<tr class="even">
 <td>속성</td>
 <td>엔터티에저장되는 집합의 특성을 설명하는 항목</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>식별자</td>
-<td>개체를 식별할 수 있는 속성, 논리적 관점에서 엔터티는 식별자를 가지고 물리적인 테이블은 키를 가진다.<br> - 본질식별자:  집합의 본질의 명확하게 설명하는 의미상 주어 <br> - 후보식별자: 인스턴스를 유일하게 식별할 수 있는 속성 <br> - 대체식별자: 원래 식별자응 대신할 수 있는 또다른 속성 <br> - 인조식별자: 기존 본질 식별자를 사용하기 어려울 때 임의로 만들어 사용 <br> - 실질 식별자: 인스턴스를 구별하기 위해 공식적으로 부여된 식별자</td>
+<td>개체를 식별할 수 있는 속성, 논리적 관점에서 엔터티는 식별자를 가지고 물리적인 테이블은 키를 가진다.<br> - 본질식별자: 집합의 본질의 명확하게 설명하는 의미상 주어 <br> - 후보식별자: 인스턴스를 유일하게 식별할 수 있는 속성 <br> - 대체식별자: 원래 식별자응 대신할 수 있는 또다른 속성 <br> - 인조식별자: 기존 본질 식별자를 사용하기 어려울 때 임의로 만들어 사용 <br> - 실질 식별자: 인스턴스를 구별하기 위해 공식적으로 부여된 식별자</td>
 </tr>
-<tr>
+<tr class="even">
 <td>관계</td>
 <td>엔터티 간의 연관성을 표현한 것 <br> 일대일, 일대다, 다대다 관계가 존재</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>카디날리티</td>
 <td>관계에서 한 개체가 각 엔터티들에 참여되는 수<br> 예로 한 학생이 6개의 수업을 들을 수 있다면 카티날리티는 (1,6)이다.</td>
 </tr>
-<tr>
+<tr class="even">
 <td>존재 종속</td>
 <td>한 엔터티의 개체가 다른 엔터티의 개체에 영향을 받는 경우</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>서브타입</td>
 <td>전체집합인 슈퍼타입의 부분집합, 배타적/포괄적으로 구분</td>
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="데이터-모델링-표기법"><a href="#데이터-모델링-표기법" class="headerlink" title="데이터 모델링 표기법"></a>데이터 모델링 표기법</h2><h3 id="바커-표기법"><a href="#바커-표기법" class="headerlink" title="바커 표기법"></a>바커 표기법</h3><p><img src="/images/111.jpg" srcset="/img/loading.gif" lazyload alt="barker"></p>
-<h3 id="IE-Information-Engineering-표기법"><a href="#IE-Information-Engineering-표기법" class="headerlink" title="IE(Information Engineering) 표기법"></a>IE(Information Engineering) 표기법</h3><p><img src="/images/112.jpg" srcset="/img/loading.gif" lazyload alt="IE"></p>
+<h2 id="데이터-모델링-표기법">데이터 모델링 표기법</h2>
+<h3 id="바커-표기법">바커 표기법</h3>
+<figure>
+<img src="/images/111.jpg" srcset="/img/loading.gif" lazyload alt="barker" /><figcaption aria-hidden="true">barker</figcaption>
+</figure>
+<h3 id="ieinformation-engineering-표기법">IE(Information Engineering) 표기법</h3>
+<figure>
+<img src="/images/112.jpg" srcset="/img/loading.gif" lazyload alt="IE" /><figcaption aria-hidden="true">IE</figcaption>
+</figure>
 
                 
               </div>

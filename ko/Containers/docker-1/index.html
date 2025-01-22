@@ -254,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          471 words
+          472 words
         
       </span>
     
@@ -347,9 +347,10 @@
             
               <div class="markdown-body">
                 
-                <p>모델 훈련을 위한 Docker image 생성하는 과정을 정리합니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="Docker란"><a href="#Docker란" class="headerlink" title="Docker란"></a>Docker란</h2><p>“개발자 A는 MAS OS 유저이다. 현재 MAS OS에서 개발을 완료하여 서버로 배포하려고 한다. 하지만 Linux기반의 서버에서는 해당 애플리케이션이 작동하지 않는다.”</p>
+                <p>모델 훈련을 위한 Docker image 생성하는 과정을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="docker란">Docker란</h2>
+<p>"개발자 A는 MAS OS 유저이다. 현재 MAS OS에서 개발을 완료하여 서버로 배포하려고 한다. 하지만 Linux기반의 서버에서는 해당 애플리케이션이 작동하지 않는다."</p>
 <p>위의 상황은 실행 환경이 맞지 않아 발생하는 문제이다. 이런 문제를 방지하기 위해서는 어떤 해결 방법이 있을까?</p>
 <ul>
 <li>개발자가 서버와 똑같은 운영체제를 사용한다.</li>
@@ -359,32 +360,31 @@
 <p>첫 번째 방법은 환경 제약이 너무 많다. 그렇다면 두 번째 방법과 세 번째 방법을 살펴보자.</p>
 <p>먼저 가상머신(Virtual Machine, VM)은 해당 컴퓨터의 운영체제 위에 가상 운영체제를 구축하여 가상 환경을 만드는 방법이다. 보통 가상머신은 하이퍼바이저를 통해 실제 컴퓨터의 하드웨어 일부를 할당받고 그 위에 원하는 운영체제 쌓아 애플리케이션들을 생성한다. 해당 방법은 완전한 독립된 환경을 구축할 수 있지만, 운영체제도 포함되어 있다보니 배포하는 애플리케이션이 무겁고 다운받는 시간도 오래걸린다.</p>
 <p>하지만 도커는 컨테이너 덕분에 비교적 간단하게 애플리케이션을 만들어 배포할 수 있다. 컨테이너란 컴퓨터 내의 독립적인 실행 환경이다. 그렇다면 실행 환경과 가상 환경의 차이점은 무엇일까? 가상 환경은 위에서 설명한 바와 같이 실제 하드웨어의 일부를 할당하여 완전하게 분리된 운영체제를 가진다. 반면 컨테이너는 기존 운영체제를 기반으로 운영체제에 없는 부분만 다운받아 사용한다. 정리하여 가상머신과 도커를 구분한다면 가상머신은 가상 운영체제를 쌓는 반면, 도커는 기존 운영체제를 사용한다는 점이다. 아래의 그림은 일반적인 환경과 가상 머신, 도커의 환경을 보여준다.</p>
-<p><img src="/images/93.png" srcset="/img/loading.gif" lazyload alt="AWS5_1"></p>
-<h2 id="Docker-Image란"><a href="#Docker-Image란" class="headerlink" title="Docker Image란"></a>Docker Image란</h2><p>이제 도커 이미지에 대해서 자세히 살펴보자.</p>
-<p>이미지(image)는 사용중인 컨테이너의 상태를 그대로 저장하는 방법이다. 예를 들어, 개발자 A가 도커에서 리눅스 기반으로 어떤 애플리케이션을 개발했다고 생각해보자. 그럼 개발자 A는 어떻게 애플리케이션을 배포하는가? 그때 사용되는 방법이 개발자 A의 해당 컨테이너를 이미지로 저장하여 도커 허브(Docker Hub)에 올리는 것이다. 그러면 해당 애플리케이션을 사용하려는 사람들은 이미지를 다운받아 그대로 사용하면 된다. 이미지는 배포를 매우 간단하게 만들어주는 방법으로 실제로 도커 허브에는 수많은 이미지들이 올라와 있다. 우리는 이렇게 이미지를 만드는 과정을 ‘도커라이징(Dockering)’이라고 부른다.</p>
+<figure>
+<img src="/images/93.png" srcset="/img/loading.gif" lazyload alt="AWS5_1" /><figcaption aria-hidden="true">AWS5_1</figcaption>
+</figure>
+<h2 id="docker-image란">Docker Image란</h2>
+<p>이제 도커 이미지에 대해서 자세히 살펴보자.</p>
+<p>이미지(image)는 사용중인 컨테이너의 상태를 그대로 저장하는 방법이다. 예를 들어, 개발자 A가 도커에서 리눅스 기반으로 어떤 애플리케이션을 개발했다고 생각해보자. 그럼 개발자 A는 어떻게 애플리케이션을 배포하는가? 그때 사용되는 방법이 개발자 A의 해당 컨테이너를 이미지로 저장하여 도커 허브(Docker Hub)에 올리는 것이다. 그러면 해당 애플리케이션을 사용하려는 사람들은 이미지를 다운받아 그대로 사용하면 된다. 이미지는 배포를 매우 간단하게 만들어주는 방법으로 실제로 도커 허브에는 수많은 이미지들이 올라와 있다. 우리는 이렇게 이미지를 만드는 과정을 '도커라이징(Dockering)'이라고 부른다.</p>
 <p>이제 우리가 사용할 도커 이미지를 만들어보자. 도커 이미지를 만들기 위해서는 <code>dockerfile</code> 을 작성해야 한다. <code>dockerfile</code>은 도커 이미지를 만들기 위한 스크립트이다. 아래의 순서대로 <code>dockerfile</code>을 빌드하여 도커 이미지를 생성해보자.</p>
-<h3 id="1-먼저-커맨드라인에서-도커파일을-생성한다"><a href="#1-먼저-커맨드라인에서-도커파일을-생성한다" class="headerlink" title="1. 먼저 커맨드라인에서 도커파일을 생성한다"></a>1. 먼저 커맨드라인에서 도커파일을 생성한다</h3><p>이래의 코드를 커맨드라인에 입력해보자.</p>
+<h3 id="먼저-커맨드라인에서-도커파일을-생성한다">1. 먼저 커맨드라인에서 도커파일을 생성한다</h3>
+<p>이래의 코드를 커맨드라인에 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim Dockerfile<br></code></pre></td></tr></table></figure>
 <p>그러면 커맨드라인이 아래와 같이 변경될 것이다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">~<br>~<br>.<br>.<br>~<br>~<br>-- INSERT --<br></code></pre></td></tr></table></figure>
-<h3 id="2-도커파일에-필요한-설정들을-추가한다"><a href="#2-도커파일에-필요한-설정들을-추가한다" class="headerlink" title="2. 도커파일에 필요한 설정들을 추가한다"></a>2. 도커파일에 필요한 설정들을 추가한다</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Bash">FROM ufoym/deepo:tensorflow-py36-cpu<br>MAINTAINER name <span class="hljs-string">&quot;e-mail&quot;</span> <span class="hljs-comment"># 만든 이 정보</span><br>COPY . /app<br>WORKDIR /app<br>RUN pip install --upgrade pip<br>CMD [<span class="hljs-string">&quot;python3&quot;</span>, <span class="hljs-string">&quot;model.py&quot;</span>]<br></code></pre></td></tr></table></figure>
+<h3 id="도커파일에-필요한-설정들을-추가한다">2. 도커파일에 필요한 설정들을 추가한다</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Bash">FROM ufoym/deepo:tensorflow-py36-cpu<br>MAINTAINER name <span class="hljs-string">&quot;e-mail&quot;</span> <span class="hljs-comment"># 만든 이 정보</span><br>COPY . /app<br>WORKDIR /app<br>RUN pip install --upgrade pip<br>CMD [<span class="hljs-string">&quot;python3&quot;</span>, <span class="hljs-string">&quot;model.py&quot;</span>]<br></code></pre></td></tr></table></figure>
 <p>위 도커파일을 하나씩 살펴보자.</p>
 <ul>
-<li><p>FROM : 해당 이미지의 Base 이미지를 명시한 것이다. <code>ufoym/deepo</code>는 원래 GPU를 사용하여 딥러닝 모델을 훈련할 때 사용하기 좋은 이미지이다. 해당 프로젝트에서는 AWS에서 프리티어인 CPU를 사용할 예정이기에 특정 이미지만 다운받았다. ufoym/deepo의 모든 버전을 다운받으면 용량이 매우 커져서 오히려 불편하다. 해당 이미지에 대한 정보는 <a target="_blank" rel="noopener" href="https://github.com/ufoym/deepo">이 페이지</a>에서 확인할 수 있다.</p>
-</li>
-<li><p>MAINTAINER : 도커파일 만든이에 관한 정보를 작성하면 된다.</p>
-</li>
-<li><p>COPY : 호스트 디렉토리를 복사하여 이미지 안의 디렉토리를 생성한다.</p>
-</li>
-<li><p>WORKDIR : 도커파일에서 작동하는 명령들을 진행할 디렉토리를 설정한다.</p>
-</li>
-<li><p>RUN : 해당 이미지로 컨테이너를 생성할 때 작동한다.</p>
-</li>
-<li><p>CMD : 컨테이너가 생성된 후 해당 스크립트 혹은 명령을 작동시킨다.</p>
-</li>
+<li><p>FROM : 해당 이미지의 Base 이미지를 명시한 것이다. <code>ufoym/deepo</code>는 원래 GPU를 사용하여 딥러닝 모델을 훈련할 때 사용하기 좋은 이미지이다. 해당 프로젝트에서는 AWS에서 프리티어인 CPU를 사용할 예정이기에 특정 이미지만 다운받았다. ufoym/deepo의 모든 버전을 다운받으면 용량이 매우 커져서 오히려 불편하다. 해당 이미지에 대한 정보는 <a target="_blank" rel="noopener" href="https://github.com/ufoym/deepo">이 페이지</a>에서 확인할 수 있다.</p></li>
+<li><p>MAINTAINER : 도커파일 만든이에 관한 정보를 작성하면 된다.</p></li>
+<li><p>COPY : 호스트 디렉토리를 복사하여 이미지 안의 디렉토리를 생성한다.</p></li>
+<li><p>WORKDIR : 도커파일에서 작동하는 명령들을 진행할 디렉토리를 설정한다.</p></li>
+<li><p>RUN : 해당 이미지로 컨테이너를 생성할 때 작동한다.</p></li>
+<li><p>CMD : 컨테이너가 생성된 후 해당 스크립트 혹은 명령을 작동시킨다.</p></li>
 </ul>
 <p>위의 정보를 바탕으로 도커파일을 설명한다면</p>
-<ol>
+<ol type="1">
 <li>먼저 <code>ufoym/deepo:tensorflow-py36-cpu</code>를 가져온다.</li>
 <li>호스트 디렉토리를 복사하여 <code>\app</code>이라는 디렉토리를 만들고 내부로 접속한다.</li>
 <li><code>pip</code> 라이브러리를 업그레이드하고 <code>python3</code>에서 <code>model.py</code>를 돌리는 것이다.</li>
@@ -392,16 +392,20 @@
 <p>이렇게 도커파일을 완성하였다면 아래의 코드를 입력하여 저장한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">:w Dockerfile<br></code></pre></td></tr></table></figure>
 <p>그러면 현재 디렉토리에 <code>Dockerfile</code>이 저장되었을 것이다.</p>
-<h3 id="3-model-py-생성하기"><a href="#3-model-py-생성하기" class="headerlink" title="3. model.py 생성하기"></a>3. model.py 생성하기</h3><p>이제 도커에서 훈련할 모델을 생성해야 한다. MNIST 데이터는 비교적 간단한 모델로도 충분하다. 만약 더 복잡한 모델을 훈련하고 싶다면 이 파일에서 해당 모델 스크립트를 작성해주면 된다.</p>
+<h3 id="model.py-생성하기">3. model.py 생성하기</h3>
+<p>이제 도커에서 훈련할 모델을 생성해야 한다. MNIST 데이터는 비교적 간단한 모델로도 충분하다. 만약 더 복잡한 모델을 훈련하고 싶다면 이 파일에서 해당 모델 스크립트를 작성해주면 된다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf<br><span class="hljs-keyword">import</span> pickle<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_data</span>(<span class="hljs-params">data_name</span>):<br><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(data_name, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        data = pickle.load(f)<br><br>    <span class="hljs-keyword">return</span> data<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">Model</span>():<br><br>    Input = tf.keras.layers.Input(shape = (<span class="hljs-number">28</span>,<span class="hljs-number">28</span>,<span class="hljs-number">1</span>))<br>    conv1 = tf.keras.layers.Conv2D(<span class="hljs-number">32</span>, (<span class="hljs-number">3</span>,<span class="hljs-number">3</span>), kernel_initializer=<span class="hljs-string">&#x27;he_normal&#x27;</span>,strides = <span class="hljs-number">1</span>, activation = <span class="hljs-string">&#x27;relu&#x27;</span>)(Input)<br>    pool1 = tf.keras.layers.MaxPooling2D((<span class="hljs-number">2</span>,<span class="hljs-number">2</span>))(conv1)<br>    conv2 = tf.keras.layers.Conv2D(<span class="hljs-number">64</span>, (<span class="hljs-number">3</span>,<span class="hljs-number">3</span>), kernel_initializer=<span class="hljs-string">&#x27;he_normal&#x27;</span>,strides = <span class="hljs-number">1</span>, activation = <span class="hljs-string">&#x27;relu&#x27;</span>)(pool1)<br>    pool2 = tf.keras.layers.MaxPooling2D((<span class="hljs-number">2</span>,<span class="hljs-number">2</span>))(conv2)<br>    conv3 = tf.keras.layers.Conv2D(<span class="hljs-number">128</span>, (<span class="hljs-number">3</span>,<span class="hljs-number">3</span>), kernel_initializer=<span class="hljs-string">&#x27;he_normal&#x27;</span>,strides = <span class="hljs-number">1</span>, activation = <span class="hljs-string">&#x27;relu&#x27;</span>)(pool2)<br>    flat = tf.keras.layers.Flatten()(conv3)<br>    den1= tf.keras.layers.Dense(<span class="hljs-number">64</span>,kernel_initializer=<span class="hljs-string">&#x27;he_normal&#x27;</span>, activation = <span class="hljs-string">&#x27;relu&#x27;</span>)(flat)<br>    output = tf.keras.layers.Dense(<span class="hljs-number">10</span>,kernel_initializer=<span class="hljs-string">&#x27;he_normal&#x27;</span>, activation = <span class="hljs-string">&#x27;softmax&#x27;</span>)(den1)<br><br>    model = tf.keras.Model(Input, output)<br><br>    <span class="hljs-keyword">return</span> model<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Mycallbacks</span>(tf.keras.callbacks.Callback):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">on_epoch_end</span>(<span class="hljs-params">self,epoch,logs</span>):<br><br>        <span class="hljs-keyword">if</span> logs.get(<span class="hljs-string">&#x27;val_accuracy&#x27;</span>) &gt; <span class="hljs-number">0.99</span> <span class="hljs-keyword">or</span> logs.get(<span class="hljs-string">&#x27;accuracy&#x27;</span>) &gt; <span class="hljs-number">0.9999</span> :<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;done!&#x27;</span>)<br>            <span class="hljs-variable language_">self</span>.model.stop_training = <span class="hljs-literal">True</span><br><br><span class="hljs-comment"># training</span><br><br>train_x = np.array(get_data(<span class="hljs-string">&#x27;train_x.pickle&#x27;</span>)).astype(np.float32)<br>train_y = tf.one_hot(get_data(<span class="hljs-string">&#x27;train_y.pickle&#x27;</span>),<span class="hljs-number">10</span>)<br>test_x = np.array(get_data(<span class="hljs-string">&#x27;test_x.pickle&#x27;</span>)).astype(np.float32)<br>test_y = tf.one_hot(get_data(<span class="hljs-string">&#x27;test_y.pickle&#x27;</span>),<span class="hljs-number">10</span>)<br><br>model  = Model()<br>callbacks = Mycallbacks()<br>model.<span class="hljs-built_in">compile</span>(optimizer= <span class="hljs-string">&#x27;Adam&#x27;</span>, loss = <span class="hljs-string">&#x27;categorical_crossentropy&#x27;</span>, metrics = [<span class="hljs-string">&#x27;accuracy&#x27;</span>])<br>model.fit(train_x, train_y, epochs = <span class="hljs-number">100</span>, batch_size = <span class="hljs-number">100</span>, validation_data=(test_x, test_y), callbacks= [callbacks])<br><br>tf.saved_model.save(model, <span class="hljs-string">&#x27;mnist_convNet/1&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <p>다만 도커파일에서 작성해주어야 하기 때문에 <strong>해당 파일의 이름을 꼭 <code>model.py</code>로 저장해야 한다.</strong></p>
-<h2 id="4-Dockerfile-model-py을-S3에-업로드하기"><a href="#4-Dockerfile-model-py을-S3에-업로드하기" class="headerlink" title="4. Dockerfile, model.py을 S3에 업로드하기"></a>4. Dockerfile, model.py을 S3에 업로드하기</h2><p>마지막으로 EC2 인스턴스에서 다운받을 수 있도록 생성한 <code>Dockerfile</code>과 <code>model.py</code>을 S3에 업로드해야 한다. 커맨드라인에서 <code>aws configure</code>을 입력하여 IAM 계정으로 접속한다. 그 다음 아래의 코드를 입력한다.</p>
+<h2 id="dockerfile-model.py을-s3에-업로드하기">4. Dockerfile, model.py을 S3에 업로드하기</h2>
+<p>마지막으로 EC2 인스턴스에서 다운받을 수 있도록 생성한 <code>Dockerfile</code>과 <code>model.py</code>을 S3에 업로드해야 한다. 커맨드라인에서 <code>aws configure</code>을 입력하여 IAM 계정으로 접속한다. 그 다음 아래의 코드를 입력한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3<br>import boto3<br></code></pre></td></tr></table></figure>
 <p>그러면 파이썬이 열리고 <code>boto3</code> 라이브러리를 사용할 수 있다. S3에 접속하기 위해 client를 설정하고, 파일을 업로드 한다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">s3 = boto3.client(<span class="hljs-string">&#x27;s3&#x27;</span>)<br>s3.upload_file(<span class="hljs-string">&#x27;업로드할 파일 이름&#x27;</span>, <span class="hljs-string">&#x27;버킷 이름&#x27;</span>, <span class="hljs-string">&#x27;버킷에 저장할 이름&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <p>파일을 S3에 업로드 하는 방법을 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/09/17/AWS/AWS-project-3/">3편</a>을 살펴보자.</p>
 <p>업로드가 완료된 후 AWS S3 콘솔에 들어가보면 해당 버킷은 아래와 같이 나타날 것이다.</p>
-<p><img src="/images/94.png" srcset="/img/loading.gif" lazyload alt="AWS5_2"></p>
+<figure>
+<img src="/images/94.png" srcset="/img/loading.gif" lazyload alt="AWS5_2" /><figcaption aria-hidden="true">AWS5_2</figcaption>
+</figure>
 
                 
               </div>
