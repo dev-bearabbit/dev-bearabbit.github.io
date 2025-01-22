@@ -4,7 +4,7 @@
   
   
   <entry>
-    <title></title>
+    <title>직장인 개발자의 학점은행제 수강 및 등록 후기</title>
     <link href="/ko/Academic/academic-1/"/>
     <url>/ko/Academic/academic-1/</url>
     
@@ -490,15 +490,15 @@
       
       <tag>docker</tag>
       
-      <tag>apache</tag>
-      
-      <tag>compose</tag>
-      
       <tag>ranger</tag>
       
       <tag>authentication</tag>
       
       <tag>ldap</tag>
+      
+      <tag>apache</tag>
+      
+      <tag>compose</tag>
       
     </tags>
     
@@ -527,15 +527,15 @@
       
       <tag>docker</tag>
       
-      <tag>apache</tag>
-      
-      <tag>compose</tag>
-      
       <tag>ranger</tag>
       
       <tag>authentication</tag>
       
       <tag>ldap</tag>
+      
+      <tag>apache</tag>
+      
+      <tag>compose</tag>
       
     </tags>
     
@@ -790,15 +790,15 @@
       
       <tag>docker</tag>
       
+      <tag>apache</tag>
+      
+      <tag>compose</tag>
+      
       <tag>Hue</tag>
       
       <tag>guide</tag>
       
-      <tag>apache</tag>
-      
       <tag>UI</tag>
-      
-      <tag>compose</tag>
       
     </tags>
     
@@ -1532,11 +1532,11 @@
       
       <tag>ecosystem</tag>
       
+      <tag>datastorage</tag>
+      
       <tag>Yarn</tag>
       
       <tag>resource</tag>
-      
-      <tag>datastorage</tag>
       
     </tags>
     
@@ -1680,11 +1680,11 @@
       
       <tag>ecosystem</tag>
       
-      <tag>datastorage</tag>
-      
       <tag>hdfs</tag>
       
       <tag>HDFS</tag>
+      
+      <tag>datastorage</tag>
       
     </tags>
     
@@ -2087,13 +2087,13 @@
     
     <tags>
       
+      <tag>sql</tag>
+      
       <tag>자격증</tag>
       
       <tag>SQLD</tag>
       
       <tag>sqld</tag>
-      
-      <tag>sql</tag>
       
     </tags>
     
@@ -2749,6 +2749,8 @@
     
     <tags>
       
+      <tag>error</tag>
+      
       <tag>windows</tag>
       
       <tag>rust</tag>
@@ -2760,8 +2762,6 @@
       <tag>gnu</tag>
       
       <tag>vscode</tag>
-      
-      <tag>error</tag>
       
       <tag>toolchain</tag>
       
@@ -2946,6 +2946,8 @@
     
     <tags>
       
+      <tag>docker</tag>
+      
       <tag>AWS</tag>
       
       <tag>DB</tag>
@@ -2955,8 +2957,6 @@
       <tag>analysis</tag>
       
       <tag>dashborad</tag>
-      
-      <tag>docker</tag>
       
       <tag>mariaDB</tag>
       
@@ -3151,9 +3151,9 @@
       
       <tag>DB</tag>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3194,9 +3194,9 @@
       
       <tag>DB</tag>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3307,8 +3307,6 @@
     
     <tags>
       
-      <tag>error</tag>
-      
       <tag>sqlalchemy</tag>
       
       <tag>flask_sqlalchemy</tag>
@@ -3320,6 +3318,8 @@
       <tag>db</tag>
       
       <tag>scoped_session</tag>
+      
+      <tag>error</tag>
       
       <tag>Registrant</tag>
       
@@ -3352,9 +3352,9 @@
       
       <tag>DB</tag>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3391,9 +3391,9 @@
     
     <tags>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>명령어</tag>
       
@@ -3428,9 +3428,9 @@
     
     <tags>
       
-      <tag>sql</tag>
-      
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>mariaDB</tag>
       
@@ -3463,13 +3463,13 @@
     
     <tags>
       
-      <tag>mariadb</tag>
-      
       <tag>docker</tag>
       
-      <tag>sql</tag>
+      <tag>mariadb</tag>
       
       <tag>database</tag>
+      
+      <tag>sql</tag>
       
       <tag>vi</tag>
       
@@ -3822,13 +3822,13 @@
       
       <tag>풀링</tag>
       
-      <tag>im2col</tag>
-      
-      <tag>col2im</tag>
-      
       <tag>Julia</tag>
       
       <tag>모델</tag>
+      
+      <tag>im2col</tag>
+      
+      <tag>col2im</tag>
       
     </tags>
     
@@ -3869,13 +3869,13 @@
       
       <tag>풀링</tag>
       
-      <tag>im2col</tag>
-      
-      <tag>col2im</tag>
-      
       <tag>Julia</tag>
       
       <tag>모델</tag>
+      
+      <tag>im2col</tag>
+      
+      <tag>col2im</tag>
       
     </tags>
     
@@ -3916,13 +3916,13 @@
       
       <tag>풀링</tag>
       
-      <tag>im2col</tag>
-      
-      <tag>col2im</tag>
-      
       <tag>Julia</tag>
       
       <tag>모델</tag>
+      
+      <tag>im2col</tag>
+      
+      <tag>col2im</tag>
       
     </tags>
     
@@ -3963,13 +3963,13 @@
       
       <tag>풀링</tag>
       
-      <tag>im2col</tag>
-      
-      <tag>col2im</tag>
-      
       <tag>Julia</tag>
       
       <tag>모델</tag>
+      
+      <tag>im2col</tag>
+      
+      <tag>col2im</tag>
       
     </tags>
     
@@ -4010,13 +4010,13 @@
       
       <tag>풀링</tag>
       
-      <tag>Julia</tag>
-      
-      <tag>모델</tag>
-      
       <tag>flatten</tag>
       
       <tag>convolution</tag>
+      
+      <tag>Julia</tag>
+      
+      <tag>모델</tag>
       
     </tags>
     
@@ -4711,11 +4711,11 @@
       
       <tag>머신러닝</tag>
       
+      <tag>줄리아</tag>
+      
       <tag>벡터</tag>
       
       <tag>내적</tag>
-      
-      <tag>줄리아</tag>
       
     </tags>
     
