@@ -73,5 +73,44 @@
   
   
   
+  <entry>
+    <title>Basic Structure of Analytical Tables</title>
+    <link href="/en/en/Engineering/engineering-0/"/>
+    <url>/en/en/Engineering/engineering-0/</url>
+    
+    <content type="html"><![CDATA[<p>Before I begin, I’d like to note that this article is summarized and organized from Keisuke Nishida’s book Big Data Technology.</p><span id="more"></span><h2 id="Normalization-and-Denormalization"><a href="#Normalization-and-Denormalization" class="headerlink" title="Normalization and Denormalization"></a>Normalization and Denormalization</h2><p>Typically, relational databases(RDBs) are structured using normalized data, which is generally divided into transaction data and master data. <code>Transaction data</code> refers to data that is recorded sequentially over time, while <code>Master data</code> contains various types of reference information used by transaction data. Transaction data is immutable once recorded, whereas master data may change depending on circumstances.</p><p>The process of organizing data to minimize redundancy is called <code>Normalization</code>. By normalizing data, integrity can be maintained, and the storage size can be optimized.</p><p>However, tables used for analysis often undergo the opposite process called <code>Denormalization</code>. Denormalization involves combining transaction data and master data to make analysis more convenient. To create dimension tables for analysis, normalized tables are recombined into a single table. In this process, data redundancy is acceptable.</p><h2 id="Multidimensional-Model"><a href="#Multidimensional-Model" class="headerlink" title="Multidimensional Model"></a>Multidimensional Model</h2><p>A multidimensional model, as the name suggests, represents data across multiple dimensions. Normally, when we think of data, we envision a two-dimensional model consisting of rows and columns. However, operational data often has much more complex structures, making it challenging to represent it simply in two dimensions. Attempting to do so could result in significant data duplication and an unmanageable number of columns.</p><p>In industry terms, a multidimensional model refers to a design where data is divided into <code>fact tables</code>, which represent actual data, and <code>dimension tables</code>, which provide reference values. This structure minimizes redundancy and helps users better understand the scope of the data.</p><p>Multidimensional models are typically designed based on the metrics to be analyzed. On the other hand, MPP(Massively Parallel Processing) databases do not incorporate the concept of multidimensional models, instead relying on denormalized tables.</p><h2 id="Fact-Table-and-Dimension-Table"><a href="#Fact-Table-and-Dimension-Table" class="headerlink" title="Fact Table and Dimension Table"></a>Fact Table and Dimension Table</h2><p><code>Fact tables</code> record transactional data or observations, while <code>Dimension tables</code> store the reference data used by the fact tables. For example, numerical data used for aggregation is stored in fact tables, and dimension tables are used to classify this data by providing attributes.</p><p>As data volume grows, fact tables become significantly larger than dimension tables, and the size of fact tables directly affects aggregation performance. Therefore, keeping fact tables as small as possible is crucial for high performance. Only keys like IDs are retained in fact tables, with other attributes moved to dimension tables.</p><h2 id="Star-Schema-and-Snowflake-Schema"><a href="#Star-Schema-and-Snowflake-Schema" class="headerlink" title="Star Schema and Snowflake Schema"></a>Star Schema and Snowflake Schema</h2><p>The <code>Star Schema</code> organizes data with a fact table at the center, surrounded by multiple dimension tables. Dimension tables are single-layered and do not have hierarchical structures. The following image illustrates the structure of a star schema:</p><p><img src="/en/images/3.png" alt="star schema"></p><p>The <code>Snowflake Schema</code> extends the star schema by allowing dimension tables to have hierarchical sub-dimensions. In other words, it applies stronger normalization compared to the star schema. The following image shows the structure of a snowflake schema:</p><p><img src="/en/images/4.png" alt="snowflake schmea"></p><p>The comparison between the star schema and the snowflake schema is as follows:</p><table><thead><tr><th>Aspect</th><th>Star Schema</th><th>Snowflake Schema</th></tr></thead><tbody><tr><td>Advantages</td><td>- Simple data structure and queries. <br></td><td>- Minimizes data redundancy and storage space. <br> - Easier to maintain due to the absence of redundancy.</td></tr><tr><td>Disadvantages</td><td>- Dimension tables may have redundancy. <br> - Requires more storage space.</td><td>- Requires more joins, leading to potential performance issues. <br> - More complex data structure.</td></tr></tbody></table><p>Generally, the snowflake schema is more suitable for data warehouses, while the star schema is considered better for data marts.</p><h2 id="Columnar-Storage-and-Denormalized-Tables"><a href="#Columnar-Storage-and-Denormalized-Tables" class="headerlink" title="Columnar Storage and Denormalized Tables"></a>Columnar Storage and Denormalized Tables</h2><p>With the advent of columnar storage systems, the situation has changed. Even if the number of columns increases, the performance of query engines is not significantly affected, and column-level compression reduces disk I&#x2F;O overhead. Consequently, there is less need to separate data into dimension tables, and a single, large fact table may suffice.</p><p>A <code>Denormalized table</code> is created by further denormalizing a star schema and combining all the tables into one fact table. For data warehouses, the star schema remains optimal for table structures. During the data accumulation phase, separating fact and dimension tables is preferable, but when creating data marts, combining them into a denormalized table is often recommended.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>BigData</category>
+      
+      <category>engineering</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>BigData</tag>
+      
+      <tag>DataMart</tag>
+      
+      <tag>DataWarehouse</tag>
+      
+      <tag>Schema</tag>
+      
+      <tag>StarSchema</tag>
+      
+      <tag>SnowflakeSchema</tag>
+      
+      <tag>DenormalizedTable</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
   
 </search>
