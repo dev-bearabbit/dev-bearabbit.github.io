@@ -4,7 +4,7 @@
   
   
   <entry>
-    <title>제발 데이터 웨어하우스를 만들어주세요.</title>
+    <title>데이터 웨어하우스를 만들어주세요, 제발</title>
     <link href="/ko/Engineering/engineering-5/"/>
     <url>/ko/Engineering/engineering-5/</url>
     
@@ -22,13 +22,13 @@
     
     <tags>
       
-      <tag>데이터웨어하우스</tag>
-      
-      <tag>warehouse</tag>
-      
       <tag>빅데이터</tag>
       
+      <tag>데이터웨어하우스</tag>
+      
       <tag>DW</tag>
+      
+      <tag>warehouse</tag>
       
       <tag>데이터품질</tag>
       
@@ -412,11 +412,11 @@
     
     <tags>
       
-      <tag>데이터웨어하우스</tag>
-      
       <tag>빅데이터</tag>
       
       <tag>bigdata</tag>
+      
+      <tag>데이터웨어하우스</tag>
       
       <tag>데이터마트</tag>
       
@@ -681,19 +681,19 @@
       
       <tag>인프라</tag>
       
+      <tag>OS</tag>
+      
+      <tag>운영체제</tag>
+      
       <tag>분산처리</tag>
       
       <tag>대규모데이터</tag>
       
       <tag>데이터구조</tag>
       
-      <tag>서버</tag>
-      
-      <tag>OS</tag>
-      
-      <tag>운영체제</tag>
-      
       <tag>캐시</tag>
+      
+      <tag>서버</tag>
       
     </tags>
     
@@ -724,10 +724,6 @@
       
       <tag>인프라</tag>
       
-      <tag>메모리</tag>
-      
-      <tag>대규모</tag>
-      
       <tag>분산처리</tag>
       
       <tag>대규모데이터</tag>
@@ -735,6 +731,10 @@
       <tag>데이터구조</tag>
       
       <tag>서버</tag>
+      
+      <tag>메모리</tag>
+      
+      <tag>대규모</tag>
       
     </tags>
     
@@ -868,9 +868,9 @@
       
       <tag>데이터웨어하우스</tag>
       
-      <tag>데이터레이크</tag>
-      
       <tag>warehouse</tag>
+      
+      <tag>데이터레이크</tag>
       
       <tag>lake</tag>
       
@@ -1255,9 +1255,9 @@
       
       <tag>python</tag>
       
-      <tag>비교</tag>
-      
       <tag>rust</tag>
+      
+      <tag>비교</tag>
       
       <tag>hanoi</tag>
       
@@ -2130,9 +2130,9 @@
       
       <tag>SQLD</tag>
       
-      <tag>sql</tag>
-      
       <tag>sqld</tag>
+      
+      <tag>sql</tag>
       
     </tags>
     
@@ -2640,8 +2640,6 @@
       
       <tag>알고리즘</tag>
       
-      <tag>기초</tag>
-      
       <tag>버블정렬</tag>
       
       <tag>삽입정렬</tag>
@@ -2651,6 +2649,8 @@
       <tag>정렬알고리즘</tag>
       
       <tag>sort</tag>
+      
+      <tag>기초</tag>
       
     </tags>
     
@@ -3190,9 +3190,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3233,9 +3233,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3391,9 +3391,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3430,9 +3430,9 @@
     
     <tags>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>명령어</tag>
       
@@ -3467,9 +3467,9 @@
     
     <tags>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3506,9 +3506,9 @@
       
       <tag>docker</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>vi</tag>
       
@@ -4917,11 +4917,11 @@
       
       <tag>알고리즘</tag>
       
+      <tag>기초</tag>
+      
       <tag>빅오 표기법</tag>
       
       <tag>피보나치</tag>
-      
-      <tag>기초</tag>
       
     </tags>
     
