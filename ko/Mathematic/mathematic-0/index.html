@@ -22,13 +22,15 @@
   
     <meta name="description" content="글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="introduction">
+<meta property="og:title" content="Linear Algebra (1)">
 <meta property="og:url" content="https://dev-bearabbit.github.io/ko/Mathematic/mathematic-0/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="article:published_time" content="2020-03-16T20:37:08.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:36:39.711Z">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/39.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/images/40.png">
+<meta property="article:published_time" content="2020-04-12T10:31:36.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:36:42.382Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="머신러닝">
 <meta property="article:tag" content="mathematics">
@@ -37,10 +39,11 @@
 <meta property="article:tag" content="머신러닝 수학">
 <meta property="article:tag" content="수학">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/39.png">
   
   
   
-  <title>introduction - DEV AnythinG</title>
+  <title>Linear Algebra (1) - DEV AnythinG</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -228,7 +231,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="introduction"></span>
+            <span id="subtitle" data-typed-text="Linear Algebra (1)"></span>
           
         </div>
 
@@ -239,8 +242,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2020-03-17 05:37" pubdate>
-          2020년 3월 17일 오전
+        <time datetime="2020-04-12 19:31" pubdate>
+          2020년 4월 12일 오후
         </time>
       </span>
     
@@ -251,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          149 words
+          1k words
         
       </span>
     
@@ -262,7 +265,7 @@
         
         
         
-          2 mins
+          9 mins
         
       </span>
     
@@ -339,35 +342,221 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">introduction</h1>
+            <h1 id="seo-header">Linear Algebra (1)</h1>
             
             
               <div class="markdown-body">
                 
                 <p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다. <span id="more"></span></p>
 <hr />
-<p>머신러닝(Machine learning)은 데이터로부터 유용한 정보를 자동으로 추출해주는 알고리즘을 디자인하는 것이다. 강조할 부분은 “자동(automatic)”이다. 머신러닝은 많은 데이터셋에 적용하여 의미있는 것들을 생산하는 범용 방법론(general-purpose methodology)에 관심이 있다. 머신러닝을 설명하는 세 가지의 핵심 단어가 있다. 데이터, 모델, 그리고 학습이다.</p>
-<p>머신러닝의 목적은 데이터로부터 가치있는 패턴을 찾는 방법을 개발하는 방법을 디자인하는 것이다. 이 목적에 도달하기 위해서는 주어진 데이터를 일반화하는 프로세스를 가진 모델을 디자인한다. 이후 학습에서는 모델의 매개 변수를 최적화하여 데이터의 패턴과 구조를 자동으로 찾을 수 있게 한다. 결국 머신러닝의 최종 목표는 위의 과정을 거쳐 준비된 모델이 새로운 데이터를 받아도 패턴을 잘 찾을 수 있는 모델을 구축하는 것이다.</p>
-<p>복잡한 머신러닝이 구축되는 원리를 알기 위해서는 수학적 기초가 중요하다. 원리를 이해하는 것은 새로운 머신러닝 방법들을 생산하고, 기존의 방법들을 디버깅할 수 있다. 머신러닝은 크게 회귀(Regression), 차원 축소(Dimemsionality Reduction), 밀도 추정(Density Estimation), 분류(Classification)로 나눌 수 있으며, 이를 위해 필요한 수학적 지식은 벡터 계산(Vector Calculus), 확률 분포(Probability &amp; Distributions), 최적화(Optimization), 선형 대수(Linear Algebra), 기하학(Analytic Geometry), 행렬 분해(Matrix Decomposition)가 있다. 책에서는 이와 같은 전반적인 수학적 지식을 다룰 예정이다.</p>
-<h2 id="index-part-1">Index: Part 1</h2>
-<p>파트 1에서는 머신러닝을 배우기에 앞서 필요한 수학적 기초들을 볼 예정이다. 파트 1의 목차는 다음과 같다.</p>
+<h2 id="벡터vector란">벡터(vector)란</h2>
+<p>일반적으로 동일한 종류의 두 객체를 합하거나 스칼라와 곱해서 같은 종류의 다른 객체를 생성할 수 있다면 이를 벡터라고 한다. 좀 더 추상적인 수학적 관점에서 벡터를 정의한다면, 앞의 두 조건을 만족하는 모든 객체들이 벡터로 간주된다.</p>
 <ul>
-<li><p><strong>Chapter 1: 선형 대수(Linear Algebra)</strong> 숫자 데이터를 벡터나 행렬로 나타내며, 이런 벡터나 행렬에 대한 연구들을 선형 대수라고 한다. 벡터의 모음인 행렬에 대한 내용도 이 장에서 확인할 수 있다.</p></li>
-<li><p><strong>Chapter 2: 기하학(Analytic Geometry)</strong> 실제 세계에 있는 두 개의 물체를 나타내는 두 개의 벡터가 있다면, 유사성에 대해 논의할 수 있다. 즉, 비슷한 두 벡터가 주어지면 예측 알고리즘에 의해서 나온 결과 값도 비슷해야 한다는 것이다. 벡터 간의 유사성 개념을 공식화하려면 벡터를 입력으로 사용하고 유사성을 나타내는 숫자값을 반환하는 연산을 도입해야 한다. 유사성과 거리에 대한 개념들은 이 장에서 확인할 수 있다.</p></li>
-<li><p><strong>Chapter 3: 행렬 분해(Matrix Decomposition)</strong> 이 장에서는 행렬에 대한 기초적인 개념을 배우고 행렬 분해에 대해 공부할 것이다. 행렬에 대한 연산들은 머신러닝에서 매우 유용하게 사용되며, 실제로 직관적인 데이터 분석을 가능하게 하고 또한 머신러닝이 효율적으로 학습할 수 있도록 해준다.</p></li>
-<li><p><strong>Chapter 4: 벡터 계산(Vector Calculus)</strong> 기계 학습 모델을 학습하기 위해서는 일반적으로 성능을 최대화하는 매개 변수를 찾아야 한다. 이번 장에서는 벡터 미적분을 알아보고 그라디언트에 대해서 살펴볼 것이다.</p></li>
-<li><p><strong>Chapter 5: 확률 이론(probability theory)</strong> 머신러닝 알고리즘은 소음(noise)와 같은 불확실한 변수에 대해서 인식하고 참고해야 한다. 예를 들어 특정 테스트 데이터에서 예측의 대한 신뢰도를 정량화하기 위해서는 일종의 불확실성을 표현할 수있는 예측 변수가 필요하다. 이런 불확실성의 정량화는 확률 이론의 영역이며 이 장에서 배울 것이다.</p></li>
-<li><p><strong>Chapter 6: 최적화(Optimization)</strong> 많은 최적화 기술에는 솔루션을 검색 할 방향을 알려주는 그라디언트의 개념이 필요하다. 함수에서 최소와 최대를 찾는 최적화에 대해서 알아볼 것이다.</p></li>
+<li><p>'기하학에서의 벡터(Geometric vector)'도 합과 스칼라 곱이 가능하기 때문에 벡터이다.</p></li>
+<li><p>'다항식(Polynomials)'도 서로 더하거나 스칼라를 곱할 수 있기에 벡터 중 하나이다.</p></li>
+<li><p>'오디오 신호(Audio signals)'도 숫자의 열거이기에 신호끼리 서로 더하거나 연산할 수 있다. 따라서 벡터 중 하나이다.</p></li>
+<li><p><strong><span class="math inline">\(\mathbb{R}^n\)</span>(실수 집합)의 요소도 벡터이다. 이 책에서 가장 중요한 벡터 개념이기에 예시로 설명하고자 한다.</strong></p></li>
 </ul>
-<h2 id="index-part-2">Index: Part 2</h2>
-<p>파트 2에서는 파트 1에서 배웠던 수학적 지식을 기반으로 여러 머신러닝을 살펴볼 것이다. 파트 2의 목차는 다음과 같다.</p>
+<p><span class="math display">\[a=
+ \begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
+\in
+\mathbb{R}^3\]</span></p>
+<p>위의 예시 <span class="math inline">\(a\)</span>는 삼항이고, 따라서 <span class="math inline">\(\mathbb{R}^3\)</span>에 속한다. 이 벡터를 다른 벡터 <span class="math inline">\(b\)</span>와 더해도 그 결과값이 <span class="math inline">\(\mathbb{R}^3\)</span>에 속하며, 스칼라 <span class="math inline">\(\lambda\)</span>와 곱해도 그 결과값이 <span class="math inline">\(\mathbb{R}^3\)</span>에 속한다. 따라서 이 또한 벡터이다. <span class="math inline">\(\mathbb{R}^n\)</span>의 요소들을 벡터로 전제하면 배열을 사용하여 벡터 연산이 가능하기에 훨씬 편리하다. 선형대수의 알고리즘 대부분이 <span class="math inline">\(\mathbb{R}^n\)</span>로 공식화되기 때문에 우리는 <span class="math inline">\(\mathbb{R}^n\)</span>안에서의 벡터에 집중할 것이다.</p>
+<p>수학의 주요 아이디어 중 하나는 폐포(closure)이다. 폐포의 의미는 주어진 작업에서 발생할 수 있는 모든 것들을 나타내는 것이다. 즉, 어떤 연산를 통해 발생할 수 있는 모든 결과들을 보여주는 것이다. 이를 벡터 개념에서 적용한다면 의미는 다음과 같다. 작은 벡터들을 더하고 크기를 조정할 때 어떤 벡터가 만들어지는가? 이 질문에 대한 답이 '벡터 공간'이다. 벡터 공간에 대해서는 이후 자세히 다룰 것이다. 아래의 그림은 이번 장에서 보여주는 개념들을 요약한 도식이다.</p>
+<figure>
+<img src="/images/39.png" srcset="/img/loading.gif" lazyload alt="벡터 도식" /><figcaption aria-hidden="true">벡터 도식</figcaption>
+</figure>
+<h2 id="연립-선형방정식-systems-of-linear-equations">연립 선형방정식 (Systems of Linear Equations)</h2>
+<p>연립 선형방정식은 선형대수의 중요한 핵심 파트 중 하나이다. 연립 선형방정식에 대한 설명은 예시를 살펴보면서 진행하자.</p>
+<p><span class="math display">\[4x_1 + 4x_2 = 5\]</span> <span class="math display">\[2x_1 - 4x_2 = 1\]</span></p>
+<p>위의 두 수식은 두 개의 변수로 구성된 연립 선형방정식이다. 위의 두 식을 모두 만족하는 <span class="math inline">\(x_1\)</span>의 값과 <span class="math inline">\(x_2\)</span>의 값을 구하려고 한다. 이를 그래프로 나타내면 아래와 같다.</p>
+<figure>
+<img src="/images/40.png" srcset="/img/loading.gif" lazyload alt="연립 선형방정식" /><figcaption aria-hidden="true">연립 선형방정식</figcaption>
+</figure>
+<p>두 수식을 모두 만족하는 값은 위 그래프의 '검은 점'이다. 위의 수식을 정리해보면 검은 점의 좌표는 <span class="math inline">\((1, \frac{1}{4})\)</span>인 것을 알 수 있다.</p>
+<p>변수가 2개일 때는 위의 예시와 같이 2차원 그래프를 그린 후 겹쳐지는 점을 구하면 된다. 그렇다면 변수가 세 개인 경우에는 어떻게 해야 할까? 변수의 개수와 동일하게 차원이 증가하기 때문에 3차원 그래프로 나타낼 수 있다. 또한 변수가 세 개인 경우에는 겹쳐지는 지점으로 평면(plane)이 등장한다.</p>
+<p>연립 선형방정식을 좀 더 일반화하면, 아래와 같은 결론을 도출할 수 있다.</p>
 <ul>
-<li><p><strong>Chapter 7: 머신러닝의 세 가지 요소</strong> 이 장에서는 본격적으로 들어가기에 앞서 머신러닝의 세 가지 요소인 데이터, 모델, 파라미터 추정을 수학적인 방식으로 다시 설명한다. 또한 머신러닝 시스템이 오버피팅되지 않는 방법을 소개한다. 머신러닝의 본질은 새로운 데이터에서 높은 예측률을 가져야 한다는 것을 명심하라.</p></li>
-<li><p><strong>Chapter 8: 선형 회귀(linear regression)</strong> 선형 회귀에서는 입력값 <span class="math inline">\(x\)</span>에 해당하는 결과 값 <span class="math inline">\(y\)</span>에 매핑하는 함수를 찾는 과정을 살펴볼 것이다. 또한 매개 변수를 최적화하는 대신 매개 변수를 통합하는 베이지안 선형 회귀를 살펴보고 매개 변수 추정(클래식 모덱 피팅)에 대해서 논의할 것이다.</p></li>
-<li><p><strong>Chapter 9: 차원 축소(dimensionality reduction)</strong> 차원 축소의 주요 목표는 고차원 데이터를 동일하게 포현된 저차원 데이터로 변경하는 것이다. 저차원 데이터로 변경하는 이유는 분석의 편의를 위해서이다. 선형 회귀와 달리 차원 축소는 데이터 모델링에만 관련된다.</p></li>
-<li><p><strong>Chapter 10: 밀도 추청(density estimation)</strong> 이 장에서는 입릭 데이터셋을 확률 분포로 나타내는 밀도 추정에 대해서 살펴볼 것이다. 이를 위해 '가우시안 혼합 모델(Gaussian mixture model)'에 중점을 두고 매개 변수를 찾기 위한 반복 체계에 대해서 논의할 것이다.</p></li>
-<li><p><strong>Chapter 11: 분류(clssification)</strong> 책의 마무리로서 분류에 대해서 심층적으로 이야기하려고 한다. 분류는 선형 회귀와 동일하게 입력 값과 결과 값이 존재하며, 특히 결과 값이 정수로 구성되어 있음을 유의해야 한다.</p></li>
+<li>1단계: 변수 n개인 연립 선형방정식</li>
 </ul>
+<p><span class="math display">\[a_{11}x_1 + a_{12}x_2  + \cdots + a_{1n}x_n = b_1\\
+\vdots\\
+a_{m1}x_1 + a_{m2}x_2  + \cdots + a_{mn}x_n = b_m\]</span></p>
+<ul>
+<li>2단계: 벡터인 변수의 계수(coefficient)를 행렬(matrix)로 변경하기</li>
+</ul>
+<p><span class="math display">\[x_1\begin{bmatrix}
+a_{11}\\
+\vdots\\
+a_{m1}
+\end{bmatrix}
++
+x_2\begin{bmatrix}
+a_{12}\\
+\vdots\\
+a_{m2}
+\end{bmatrix}
++
+\cdots
++
+x_n\begin{bmatrix}
+a_{1n}\\
+\vdots\\
+a_{mn}
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_{1}\\
+\vdots\\
+b_{m}
+\end{bmatrix}\]</span></p>
+<ul>
+<li>3단계: 변수도 행렬(matrix)로 변경하기 (<span class="math inline">\(Ax=b\)</span>)</li>
+</ul>
+<p><span class="math display">\[\begin{bmatrix}
+a_{11} &amp; \cdots &amp; a_{1n}\\
+\vdots &amp; &amp; \vdots\\
+a_{m1} &amp; \cdots &amp; a_{mn}
+\end{bmatrix}
+\begin{bmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_{1}\\
+\vdots\\
+b_{m}
+\end{bmatrix}\]</span></p>
+<h2 id="행렬-matrices">행렬 (Matrices)</h2>
+<p>행렬은 선형대수에서 가장 중요한 원리이다. 연립 선형방정식을 간단하게 나타내기 위해 사용하기도 하며, 이후 자세히 다룰 '선형 변환 (linear mapping)'에서도 사용된다. 행렬에 대한 흥미로운 주제를 다루기 전에 행렬이 무엇인지 간단히 살펴보자.</p>
+<p><span class="math inline">\(m, n \in \mathbb N\)</span>(자연수)인 행렬 A는 행이 <span class="math inline">\(m\)</span>이고 열이 <span class="math inline">\(n\)</span>인 튜플(tuple)이며, <span class="math inline">\(i=1\cdots m\)</span>이고 <span class="math inline">\(j=1 \cdots n\)</span>인 <span class="math inline">\(a_{ij}\)</span>를 요소로 가진다. 해당 정의를 수식으로 표현하면 다음과 같다.</p>
+<p><span class="math display">\[A=\begin{bmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n}\\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n}\\
+\vdots &amp; \vdots &amp; &amp; \vdots\\
+a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn}
+\end{bmatrix}
+,
+a_{ij} \in \mathbb R\]</span></p>
+<p>행렬의 각각 행과 열은 행벡터 또는 열벡터이며, <span class="math inline">\(\mathbb R^{m\times n}\)</span>은 모든 <span class="math inline">\(m \times n\)</span>행렬을 포함한다. 위의 예시인 <span class="math inline">\(A\)</span> 또한 <span class="math inline">\(m \times n\)</span>에 포함된다. 행렬 <span class="math inline">\(A\)</span>는 긴 벡터형태인 <span class="math inline">\(a\)</span>로 나타낼 수 있으며, <span class="math inline">\(a \in \mathbb R^{mn}\)</span>이다. 예로 행렬 <span class="math inline">\(A\)</span>가 <span class="math inline">\(\mathbb R^{4\times 2}\)</span>에 포함된다면, <span class="math inline">\(a\)</span>는 <span class="math inline">\(\mathbb R^8\)</span>에 포함된다.</p>
+<h3 id="행렬의-덧셈과-곱셈">행렬의 덧셈과 곱셈</h3>
+<p>행렬 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span> 모두가 <span class="math inline">\(\mathbb R^{m \times n}\)</span>에 속한다면, 두 행렬은 더할 수 있다.</p>
+<p><span class="math display">\[A+B:=\begin{bmatrix}
+a_{11}+b_{11} &amp; \cdots &amp; a_{1n}+b_{1n}\\
+\vdots &amp; &amp; \vdots\\
+a_{m1}+b_{m1} &amp; \cdots &amp; a_{mn}+b_{mn}
+\end{bmatrix}
+\in
+\mathbb R^{m \times n}\]</span></p>
+<p>행렬 <span class="math inline">\(A\)</span>가 <span class="math inline">\(\mathbb R^{m \times n}\)</span>에 속하고, 행렬 <span class="math inline">\(B\)</span>가 <span class="math inline">\(\mathbb R^{n \times k}\)</span>에 속한다면, <span class="math inline">\(C=AB\in\mathbb R^{n \times k}\)</span>이다.</p>
+<p><span class="math display">\[c_{ij}=\sum_{l=1}^n a_{il}b_{lj} \quad\quad  i=1 \cdots m,\quad  j= 1 \cdots k\]</span></p>
+<p>행렬 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>의 곱인 <span class="math inline">\(C\)</span>의 요소는 <span class="math inline">\(A\)</span>의 행과 <span class="math inline">\(B\)</span>의 열의 곱과 같다. 행렬의 행과 열을 곱하는 것을 '내적(dot product)'이라고 부르며, 자세한 내용은 2장에서 다룰 것이다. 내적은 기호 " <span class="math inline">\(\cdot\)</span> "로 나타낸다.</p>
+<p>다시 한번 강조하지만 두 행렬의 곱은 이웃하는 차원이 동일해야 가능하다. <span class="math inline">\(m \times n\)</span>인 행렬 <span class="math inline">\(A\)</span>는 <span class="math inline">\(n \times k\)</span>인 행렬 <span class="math inline">\(B\)</span>와 곱할 수 있으며, 그 결과는 <span class="math inline">\(m \times k\)</span>행렬이다. 즉, <span class="math inline">\(AB\)</span>는 가능하다. 하지만 <span class="math inline">\(BA\)</span>의 경우는 이웃하는 차원이 동일하지 않기 때문에 곱할 수 없다.</p>
+<p>하지만 프로그래밍에서는 지금까지 봤던 곱의 원리와는 다르게 행렬의 요소끼리 곱셈을 하는 '아다마르 곱(Hadamard product)'도 가능하다. 아다마르 곱은 같은 <span class="math inline">\(m \times n\)</span>크기의 두 행렬이 같은 위치에 있는 요소끼리 곱해지는 것이며, 행렬 덧셈의 원리와 같다.</p>
+<p>'항등 행렬(Identity Matrix)'은 <span class="math inline">\(n \times n\)</span> 행렬로 <span class="math inline">\(\mathbb R^{n \times n}\)</span>에 속한다. 항등 행렬의 요소는 행과 열의 위치가 같은 주대각선(main diagonal)만 1이고, 나머지는 0이다. 도식화하면 다음과 같다.</p>
+<p><span class="math display">\[I_n=\begin{bmatrix}
+1 &amp; 0 &amp; \cdots &amp; 0 &amp; \cdots &amp; 0\\
+0 &amp; 1 &amp; \cdots &amp; 0 &amp; \cdots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \ddots &amp; \vdots\\
+0 &amp; 0 &amp; \cdots &amp; 1 &amp; \cdots &amp;0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \ddots &amp; \vdots\\
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; \cdots &amp;1
+\end{bmatrix}
+\in
+\mathbb R^{n \times n}\]</span></p>
+<p>지금까지 행렬의 덧셈과 곱셈에 대해 살펴보았다. 행렬은 다음과 같은 특징을 가진다.</p>
+<ul>
+<li>결합법칙(Associativity)</li>
+</ul>
+<p><span class="math inline">\(A \in \mathbb R^{m \times n},\quad B \in \mathbb R^{n \times q},\quad C \in \mathbb R^{q \times p} \ :\ (AB)C = A(BC)\)</span></p>
+<ul>
+<li>분배법칙(Distributivity)</li>
+</ul>
+<p><span class="math inline">\(A \in \mathbb R^{m \times n},\quad B, C \in \mathbb R^{n \times q} \ :\ A(B+C) = AB + AC\)</span></p>
+<ul>
+<li>항등행렬과의 곱</li>
+</ul>
+<p><span class="math inline">\(A \in \mathbb R^{m \times n} \ :\ I_mA = AI_n = A\)</span></p>
+<h3 id="역행렬과-전치행렬">역행렬과 전치행렬</h3>
+<p>행렬 <span class="math inline">\(A \in \mathbb R^{n \times n}\)</span>와 행렬 <span class="math inline">\(B \in \mathbb R^{n \times n}\)</span>가 있다. 만약 행렬 <span class="math inline">\(A, B\)</span>에 대해서 <span class="math inline">\(AB = I_n = BA\)</span>가 성립한다면, <span class="math inline">\(B\)</span>는 <span class="math inline">\(A\)</span>의 '역행렬(inverse matrix)'이다. <span class="math inline">\(A\)</span>에 대한 역행렬의 기호는 <span class="math inline">\(A^{-1}\)</span>이다.</p>
+<p>모든 행렬이 역행렬을 가진 것은 아니다. 역행렬이 존재하는 경우 해당 행렬을 가역 행렬 또는 비특이 행렬이라고 하며, 존재하지 않는 경우 비가역 행렬이라고 한다.</p>
+<p><span class="math display">\[A:=\begin{bmatrix}
+a_{11} &amp; a_{12}\\
+a_{21} &amp; a_{22}\\
+\end{bmatrix}
+\in
+\mathbb R^{2 \times 2}\]</span></p>
+<p>행렬 <span class="math inline">\(A\)</span>를 <span class="math inline">\(2 \times 2\)</span>행렬로 정의한다.</p>
+<p><span class="math display">\[B:=\begin{bmatrix}
+a_{22} &amp; -a_{12}\\
+-a_{21} &amp; a_{11}\\
+\end{bmatrix}
+\in
+\mathbb R^{2 \times 2}\]</span></p>
+<p>행렬 <span class="math inline">\(A\)</span>와 곱해서 항등 행렬이 나올 수 있는 행렬 <span class="math inline">\(B\)</span>를 정의한다.</p>
+<p><span class="math display">\[AB=\begin{bmatrix}
+a_{11}a_{22}-a_{12}a_{21} &amp; 0\\
+0 &amp; a_{11}a_{22}-a_{12}a_{21}\\
+\end{bmatrix}
+=
+(a_{11}a_{22}-a_{12}a_{21})I\]</span></p>
+<p>두 행렬을 곱한 후, 항등 행렬 기준으로 식을 정리한다.</p>
+<p><span class="math display">\[A^{-1}= \frac{1}{a_{11}a_{22}-a_{12}a_{21}}
+\begin{bmatrix}
+a_{22} &amp; -a_{12}\\
+-a_{21} &amp; a_{11}\\
+\end{bmatrix}\]</span></p>
+<p>그 결과 행렬 <span class="math inline">\(A\)</span>의 역행렬을 구할 수 있다.</p>
+<p>정리하면 다음과 같다. 행렬 <span class="math inline">\(A\)</span>와 곱해서 항등 행렬 <span class="math inline">\(I\)</span>가 나온다면 그 행렬은 역행렬 <span class="math inline">\(A^{-1}\)</span>이다.</p>
+<p>일반적으로 전치행렬 <span class="math inline">\(A^T\)</span>은 행렬 <span class="math inline">\(A\)</span>의 행과 열이 바뀐다. 즉, 행렬 <span class="math inline">\(A\)</span>가 <span class="math inline">\(m \times n\)</span>이라면 전치행렬인 <span class="math inline">\(A^T\)</span>는 <span class="math inline">\(n \times m\)</span>인 것이다. 전치행렬은 주대각선(main diagonal)을 기준으로 뒤집힌 행렬을 말한다.</p>
+<p><span class="math display">\[A=\begin{bmatrix}
+\mathbf{a_{11}} &amp; a_{12}\\
+a_{21} &amp; \mathbf{a_{22}}\\
+\end{bmatrix}
+\quad
+A^T=\begin{bmatrix}
+\mathbf{a_{11}} &amp; a_{21}\\
+a_{12} &amp; \mathbf{a_{22}}\\
+\end{bmatrix}
+\]</span></p>
+<p>지금까지 역행렬과 전치행렬의 정의에 대해서 살펴보았다. 역행렬과 전치행렬은 아래와 같은 특징을 가진다.</p>
+<ol type="1">
+<li>역행렬</li>
+</ol>
+<ul>
+<li><span class="math inline">\(AA^{-1} = I = A^{-1}A\)</span></li>
+<li><span class="math inline">\((AB)^{-1} = A^{-1}B^{-1}\)</span></li>
+<li><span class="math inline">\((A+B)^{-1} \ne A^{-1} + B^{-1}\)</span></li>
+</ul>
+<ol start="2" type="1">
+<li>전치행렬</li>
+</ol>
+<ul>
+<li><span class="math inline">\((A^T)^T = A\)</span></li>
+<li><span class="math inline">\((A+B)^T = A^T + B^T\)</span></li>
+<li><span class="math inline">\((AB)^T = B^TA^T\)</span></li>
+</ul>
+<p>역행렬은 <span class="math inline">\(n \times n\)</span> 형태의 가역 행렬일 때만 존재한다. 따라서 행렬 <span class="math inline">\(A\)</span>가 가역 행렬이고 역행렬 <span class="math inline">\(A^{-1}\)</span>가 존재한다면, 아래와 같은 식도 성립한다.</p>
+<p><span class="math inline">\((A^{-1})^T = (A^{T})^-1 =: A^{-T}\)</span></p>
+<h3 id="행렬과-스칼라의-곱">행렬과 스칼라의 곱</h3>
+<p>행렬 <span class="math inline">\(A\)</span>에 스칼라 <span class="math inline">\(\lambda\)</span>를 곱해보자. 여기서 행렬 <span class="math inline">\(A\)</span>는 <span class="math inline">\(\mathbb R^{m \times n}\)</span>에 속하고, 스칼라 <span class="math inline">\(\lambda\)</span>는 실수 <span class="math inline">\(\mathbb R\)</span>에 속한다. 스칼라 <span class="math inline">\(\lambda\)</span>는 행렬 <span class="math inline">\(A\)</span>의 요소들에 각각 곱해진다. 이를 기호로 나타내면 <span class="math inline">\(\lambda A=K\)</span>, <span class="math inline">\(K_{ij} = \lambda a_{ij}\)</span> 이다. 스칼라 <span class="math inline">\(\lambda, \psi\)</span>을 행렬과 곱할 때, 다음과 같은 특징을 가진다.</p>
+<ul>
+<li>결합법칙(Associativity)</li>
+</ul>
+<p><span class="math inline">\((\lambda\psi)C = \lambda(\psi C),\quad C \in \mathbb R^{m \times n}\)</span></p>
+<p><span class="math inline">\(\lambda(BC) = (\lambda B)C = B(\lambda C)= (BC)\lambda, \quad B \in \mathbb R^{m \times n}, C \in \mathbb R^{n \times k}\)</span></p>
+<p><span class="math inline">\((\lambda C)^T = C^T\lambda^T = C^T\lambda = \lambda C^T\)</span></p>
+<ul>
+<li>분배법칙(Distributivity)</li>
+</ul>
+<p><span class="math inline">\((\lambda + \psi)C = \lambda C + \psi C,\quad C \in \mathbb R^{m \times n}\)</span></p>
+<p><span class="math inline">\(\lambda(B + C)=\lambda B + \lambda C,\quad B,C \in \mathbb R^{m \times n}\)</span></p>
 
                 
               </div>
@@ -430,7 +619,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>introduction</div>
+      <div>Linear Algebra (1)</div>
       <div>https://dev-bearabbit.github.io/ko/Mathematic/mathematic-0/</div>
     </div>
     <div class="license-meta">
@@ -443,7 +632,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>2020년 3월 17일</div>
+          <div>2020년 4월 12일</div>
         </div>
       
       
@@ -475,9 +664,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-17/" title="[Think Julia] 서브타이핑 (17/20)">
+                      <a href="/ko/Mathematic/mathematic-1/" title="Linear Algebra (2)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[Think Julia] 서브타이핑 (17/20)</span>
+                        <span class="hidden-mobile">Linear Algebra (2)</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -485,8 +674,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/ko/ThinkJulia/Think-Julia-Chapter-16/" title="[Think Julia] 다중 디스패치 (16/20)">
-                        <span class="hidden-mobile">[Think Julia] 다중 디스패치 (16/20)</span>
+                      <a href="/ko/DeeplearningJulia/Deeplearning-7/" title="[7/18] 인공신경망 구현: 순전파 알고리즘">
+                        <span class="hidden-mobile">[7/18] 인공신경망 구현: 순전파 알고리즘</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -22,15 +22,13 @@
   
     <meta name="description" content="글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linear Algebra (1)">
+<meta property="og:title" content="Linear Algebra (2)">
 <meta property="og:url" content="https://dev-bearabbit.github.io/ko/Mathematic/mathematic-1/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
 <meta property="og:description" content="글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://dev-bearabbit.github.io/images/39.png">
-<meta property="og:image" content="https://dev-bearabbit.github.io/images/40.png">
-<meta property="article:published_time" content="2020-04-12T10:31:36.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:36:42.382Z">
+<meta property="article:published_time" content="2020-04-14T12:45:33.000Z">
+<meta property="article:modified_time" content="2024-12-29T18:36:44.827Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="머신러닝">
 <meta property="article:tag" content="mathematics">
@@ -39,11 +37,10 @@
 <meta property="article:tag" content="머신러닝 수학">
 <meta property="article:tag" content="수학">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dev-bearabbit.github.io/images/39.png">
   
   
   
-  <title>Linear Algebra (1) - DEV AnythinG</title>
+  <title>Linear Algebra (2) - DEV AnythinG</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -231,7 +228,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Linear Algebra (1)"></span>
+            <span id="subtitle" data-typed-text="Linear Algebra (2)"></span>
           
         </div>
 
@@ -242,8 +239,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2020-04-12 19:31" pubdate>
-          2020년 4월 12일 오후
+        <time datetime="2020-04-14 21:45" pubdate>
+          2020년 4월 14일 오후
         </time>
       </span>
     
@@ -254,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1k words
+          2k words
         
       </span>
     
@@ -265,7 +262,7 @@
         
         
         
-          9 mins
+          17 mins
         
       </span>
     
@@ -342,221 +339,431 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Linear Algebra (1)</h1>
+            <h1 id="seo-header">Linear Algebra (2)</h1>
             
             
               <div class="markdown-body">
                 
                 <p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다. <span id="more"></span></p>
 <hr />
-<h2 id="벡터vector란">벡터(vector)란</h2>
-<p>일반적으로 동일한 종류의 두 객체를 합하거나 스칼라와 곱해서 같은 종류의 다른 객체를 생성할 수 있다면 이를 벡터라고 한다. 좀 더 추상적인 수학적 관점에서 벡터를 정의한다면, 앞의 두 조건을 만족하는 모든 객체들이 벡터로 간주된다.</p>
-<ul>
-<li><p>'기하학에서의 벡터(Geometric vector)'도 합과 스칼라 곱이 가능하기 때문에 벡터이다.</p></li>
-<li><p>'다항식(Polynomials)'도 서로 더하거나 스칼라를 곱할 수 있기에 벡터 중 하나이다.</p></li>
-<li><p>'오디오 신호(Audio signals)'도 숫자의 열거이기에 신호끼리 서로 더하거나 연산할 수 있다. 따라서 벡터 중 하나이다.</p></li>
-<li><p><strong><span class="math inline">\(\mathbb{R}^n\)</span>(실수 집합)의 요소도 벡터이다. 이 책에서 가장 중요한 벡터 개념이기에 예시로 설명하고자 한다.</strong></p></li>
-</ul>
-<p><span class="math display">\[a=
- \begin{bmatrix}
-1\\
-2\\
-3
-\end{bmatrix}
-\in
-\mathbb{R}^3\]</span></p>
-<p>위의 예시 <span class="math inline">\(a\)</span>는 삼항이고, 따라서 <span class="math inline">\(\mathbb{R}^3\)</span>에 속한다. 이 벡터를 다른 벡터 <span class="math inline">\(b\)</span>와 더해도 그 결과값이 <span class="math inline">\(\mathbb{R}^3\)</span>에 속하며, 스칼라 <span class="math inline">\(\lambda\)</span>와 곱해도 그 결과값이 <span class="math inline">\(\mathbb{R}^3\)</span>에 속한다. 따라서 이 또한 벡터이다. <span class="math inline">\(\mathbb{R}^n\)</span>의 요소들을 벡터로 전제하면 배열을 사용하여 벡터 연산이 가능하기에 훨씬 편리하다. 선형대수의 알고리즘 대부분이 <span class="math inline">\(\mathbb{R}^n\)</span>로 공식화되기 때문에 우리는 <span class="math inline">\(\mathbb{R}^n\)</span>안에서의 벡터에 집중할 것이다.</p>
-<p>수학의 주요 아이디어 중 하나는 폐포(closure)이다. 폐포의 의미는 주어진 작업에서 발생할 수 있는 모든 것들을 나타내는 것이다. 즉, 어떤 연산를 통해 발생할 수 있는 모든 결과들을 보여주는 것이다. 이를 벡터 개념에서 적용한다면 의미는 다음과 같다. 작은 벡터들을 더하고 크기를 조정할 때 어떤 벡터가 만들어지는가? 이 질문에 대한 답이 '벡터 공간'이다. 벡터 공간에 대해서는 이후 자세히 다룰 것이다. 아래의 그림은 이번 장에서 보여주는 개념들을 요약한 도식이다.</p>
-<figure>
-<img src="/images/39.png" srcset="/img/loading.gif" lazyload alt="벡터 도식" /><figcaption aria-hidden="true">벡터 도식</figcaption>
-</figure>
-<h2 id="연립-선형방정식-systems-of-linear-equations">연립 선형방정식 (Systems of Linear Equations)</h2>
-<p>연립 선형방정식은 선형대수의 중요한 핵심 파트 중 하나이다. 연립 선형방정식에 대한 설명은 예시를 살펴보면서 진행하자.</p>
-<p><span class="math display">\[4x_1 + 4x_2 = 5\]</span> <span class="math display">\[2x_1 - 4x_2 = 1\]</span></p>
-<p>위의 두 수식은 두 개의 변수로 구성된 연립 선형방정식이다. 위의 두 식을 모두 만족하는 <span class="math inline">\(x_1\)</span>의 값과 <span class="math inline">\(x_2\)</span>의 값을 구하려고 한다. 이를 그래프로 나타내면 아래와 같다.</p>
-<figure>
-<img src="/images/40.png" srcset="/img/loading.gif" lazyload alt="연립 선형방정식" /><figcaption aria-hidden="true">연립 선형방정식</figcaption>
-</figure>
-<p>두 수식을 모두 만족하는 값은 위 그래프의 '검은 점'이다. 위의 수식을 정리해보면 검은 점의 좌표는 <span class="math inline">\((1, \frac{1}{4})\)</span>인 것을 알 수 있다.</p>
-<p>변수가 2개일 때는 위의 예시와 같이 2차원 그래프를 그린 후 겹쳐지는 점을 구하면 된다. 그렇다면 변수가 세 개인 경우에는 어떻게 해야 할까? 변수의 개수와 동일하게 차원이 증가하기 때문에 3차원 그래프로 나타낼 수 있다. 또한 변수가 세 개인 경우에는 겹쳐지는 지점으로 평면(plane)이 등장한다.</p>
-<p>연립 선형방정식을 좀 더 일반화하면, 아래와 같은 결론을 도출할 수 있다.</p>
-<ul>
-<li>1단계: 변수 n개인 연립 선형방정식</li>
-</ul>
-<p><span class="math display">\[a_{11}x_1 + a_{12}x_2  + \cdots + a_{1n}x_n = b_1\\
-\vdots\\
-a_{m1}x_1 + a_{m2}x_2  + \cdots + a_{mn}x_n = b_m\]</span></p>
-<ul>
-<li>2단계: 벡터인 변수의 계수(coefficient)를 행렬(matrix)로 변경하기</li>
-</ul>
-<p><span class="math display">\[x_1\begin{bmatrix}
-a_{11}\\
-\vdots\\
-a_{m1}
-\end{bmatrix}
-+
-x_2\begin{bmatrix}
-a_{12}\\
-\vdots\\
-a_{m2}
-\end{bmatrix}
-+
-\cdots
-+
-x_n\begin{bmatrix}
-a_{1n}\\
-\vdots\\
-a_{mn}
-\end{bmatrix}
-=
-\begin{bmatrix}
-b_{1}\\
-\vdots\\
-b_{m}
-\end{bmatrix}\]</span></p>
-<ul>
-<li>3단계: 변수도 행렬(matrix)로 변경하기 (<span class="math inline">\(Ax=b\)</span>)</li>
-</ul>
+<h2 id="연립-선형방정식-풀기">연립 선형방정식 풀기</h2>
+<p>이전 글에서 연립 선형방정식을 행렬로 나타내는 과정을 살펴보았다. 이제는 행렬로 표현된 연립 선형방정식을 풀어보자. 참고로 연립 선형방정식은 다양한 풀이를 가진다.</p>
 <p><span class="math display">\[\begin{bmatrix}
-a_{11} &amp; \cdots &amp; a_{1n}\\
-\vdots &amp; &amp; \vdots\\
-a_{m1} &amp; \cdots &amp; a_{mn}
+1 &amp; 0 &amp; 8 &amp; -4\\
+0 &amp; 1 &amp; 2 &amp; 12\\
 \end{bmatrix}
 \begin{bmatrix}
 x_1\\
-\vdots\\
-x_n
+x_2\\
+x_3\\
+x_4
 \end{bmatrix}
 =
 \begin{bmatrix}
-b_{1}\\
-\vdots\\
-b_{m}
+42\\
+8\\
 \end{bmatrix}\]</span></p>
-<h2 id="행렬-matrices">행렬 (Matrices)</h2>
-<p>행렬은 선형대수에서 가장 중요한 원리이다. 연립 선형방정식을 간단하게 나타내기 위해 사용하기도 하며, 이후 자세히 다룰 '선형 변환 (linear mapping)'에서도 사용된다. 행렬에 대한 흥미로운 주제를 다루기 전에 행렬이 무엇인지 간단히 살펴보자.</p>
-<p><span class="math inline">\(m, n \in \mathbb N\)</span>(자연수)인 행렬 A는 행이 <span class="math inline">\(m\)</span>이고 열이 <span class="math inline">\(n\)</span>인 튜플(tuple)이며, <span class="math inline">\(i=1\cdots m\)</span>이고 <span class="math inline">\(j=1 \cdots n\)</span>인 <span class="math inline">\(a_{ij}\)</span>를 요소로 가진다. 해당 정의를 수식으로 표현하면 다음과 같다.</p>
-<p><span class="math display">\[A=\begin{bmatrix}
-a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n}\\
-a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n}\\
-\vdots &amp; \vdots &amp; &amp; \vdots\\
-a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn}
-\end{bmatrix}
-,
-a_{ij} \in \mathbb R\]</span></p>
-<p>행렬의 각각 행과 열은 행벡터 또는 열벡터이며, <span class="math inline">\(\mathbb R^{m\times n}\)</span>은 모든 <span class="math inline">\(m \times n\)</span>행렬을 포함한다. 위의 예시인 <span class="math inline">\(A\)</span> 또한 <span class="math inline">\(m \times n\)</span>에 포함된다. 행렬 <span class="math inline">\(A\)</span>는 긴 벡터형태인 <span class="math inline">\(a\)</span>로 나타낼 수 있으며, <span class="math inline">\(a \in \mathbb R^{mn}\)</span>이다. 예로 행렬 <span class="math inline">\(A\)</span>가 <span class="math inline">\(\mathbb R^{4\times 2}\)</span>에 포함된다면, <span class="math inline">\(a\)</span>는 <span class="math inline">\(\mathbb R^8\)</span>에 포함된다.</p>
-<h3 id="행렬의-덧셈과-곱셈">행렬의 덧셈과 곱셈</h3>
-<p>행렬 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span> 모두가 <span class="math inline">\(\mathbb R^{m \times n}\)</span>에 속한다면, 두 행렬은 더할 수 있다.</p>
-<p><span class="math display">\[A+B:=\begin{bmatrix}
-a_{11}+b_{11} &amp; \cdots &amp; a_{1n}+b_{1n}\\
-\vdots &amp; &amp; \vdots\\
-a_{m1}+b_{m1} &amp; \cdots &amp; a_{mn}+b_{mn}
-\end{bmatrix}
-\in
-\mathbb R^{m \times n}\]</span></p>
-<p>행렬 <span class="math inline">\(A\)</span>가 <span class="math inline">\(\mathbb R^{m \times n}\)</span>에 속하고, 행렬 <span class="math inline">\(B\)</span>가 <span class="math inline">\(\mathbb R^{n \times k}\)</span>에 속한다면, <span class="math inline">\(C=AB\in\mathbb R^{n \times k}\)</span>이다.</p>
-<p><span class="math display">\[c_{ij}=\sum_{l=1}^n a_{il}b_{lj} \quad\quad  i=1 \cdots m,\quad  j= 1 \cdots k\]</span></p>
-<p>행렬 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>의 곱인 <span class="math inline">\(C\)</span>의 요소는 <span class="math inline">\(A\)</span>의 행과 <span class="math inline">\(B\)</span>의 열의 곱과 같다. 행렬의 행과 열을 곱하는 것을 '내적(dot product)'이라고 부르며, 자세한 내용은 2장에서 다룰 것이다. 내적은 기호 " <span class="math inline">\(\cdot\)</span> "로 나타낸다.</p>
-<p>다시 한번 강조하지만 두 행렬의 곱은 이웃하는 차원이 동일해야 가능하다. <span class="math inline">\(m \times n\)</span>인 행렬 <span class="math inline">\(A\)</span>는 <span class="math inline">\(n \times k\)</span>인 행렬 <span class="math inline">\(B\)</span>와 곱할 수 있으며, 그 결과는 <span class="math inline">\(m \times k\)</span>행렬이다. 즉, <span class="math inline">\(AB\)</span>는 가능하다. 하지만 <span class="math inline">\(BA\)</span>의 경우는 이웃하는 차원이 동일하지 않기 때문에 곱할 수 없다.</p>
-<p>하지만 프로그래밍에서는 지금까지 봤던 곱의 원리와는 다르게 행렬의 요소끼리 곱셈을 하는 '아다마르 곱(Hadamard product)'도 가능하다. 아다마르 곱은 같은 <span class="math inline">\(m \times n\)</span>크기의 두 행렬이 같은 위치에 있는 요소끼리 곱해지는 것이며, 행렬 덧셈의 원리와 같다.</p>
-<p>'항등 행렬(Identity Matrix)'은 <span class="math inline">\(n \times n\)</span> 행렬로 <span class="math inline">\(\mathbb R^{n \times n}\)</span>에 속한다. 항등 행렬의 요소는 행과 열의 위치가 같은 주대각선(main diagonal)만 1이고, 나머지는 0이다. 도식화하면 다음과 같다.</p>
-<p><span class="math display">\[I_n=\begin{bmatrix}
-1 &amp; 0 &amp; \cdots &amp; 0 &amp; \cdots &amp; 0\\
-0 &amp; 1 &amp; \cdots &amp; 0 &amp; \cdots &amp; 0\\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \ddots &amp; \vdots\\
-0 &amp; 0 &amp; \cdots &amp; 1 &amp; \cdots &amp;0\\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \ddots &amp; \vdots\\
-0 &amp; 0 &amp; \cdots &amp; 0 &amp; \cdots &amp;1
-\end{bmatrix}
-\in
-\mathbb R^{n \times n}\]</span></p>
-<p>지금까지 행렬의 덧셈과 곱셈에 대해 살펴보았다. 행렬은 다음과 같은 특징을 가진다.</p>
-<ul>
-<li>결합법칙(Associativity)</li>
-</ul>
-<p><span class="math inline">\(A \in \mathbb R^{m \times n},\quad B \in \mathbb R^{n \times q},\quad C \in \mathbb R^{q \times p} \ :\ (AB)C = A(BC)\)</span></p>
-<ul>
-<li>분배법칙(Distributivity)</li>
-</ul>
-<p><span class="math inline">\(A \in \mathbb R^{m \times n},\quad B, C \in \mathbb R^{n \times q} \ :\ A(B+C) = AB + AC\)</span></p>
-<ul>
-<li>항등행렬과의 곱</li>
-</ul>
-<p><span class="math inline">\(A \in \mathbb R^{m \times n} \ :\ I_mA = AI_n = A\)</span></p>
-<h3 id="역행렬과-전치행렬">역행렬과 전치행렬</h3>
-<p>행렬 <span class="math inline">\(A \in \mathbb R^{n \times n}\)</span>와 행렬 <span class="math inline">\(B \in \mathbb R^{n \times n}\)</span>가 있다. 만약 행렬 <span class="math inline">\(A, B\)</span>에 대해서 <span class="math inline">\(AB = I_n = BA\)</span>가 성립한다면, <span class="math inline">\(B\)</span>는 <span class="math inline">\(A\)</span>의 '역행렬(inverse matrix)'이다. <span class="math inline">\(A\)</span>에 대한 역행렬의 기호는 <span class="math inline">\(A^{-1}\)</span>이다.</p>
-<p>모든 행렬이 역행렬을 가진 것은 아니다. 역행렬이 존재하는 경우 해당 행렬을 가역 행렬 또는 비특이 행렬이라고 하며, 존재하지 않는 경우 비가역 행렬이라고 한다.</p>
-<p><span class="math display">\[A:=\begin{bmatrix}
-a_{11} &amp; a_{12}\\
-a_{21} &amp; a_{22}\\
-\end{bmatrix}
-\in
-\mathbb R^{2 \times 2}\]</span></p>
-<p>행렬 <span class="math inline">\(A\)</span>를 <span class="math inline">\(2 \times 2\)</span>행렬로 정의한다.</p>
-<p><span class="math display">\[B:=\begin{bmatrix}
-a_{22} &amp; -a_{12}\\
--a_{21} &amp; a_{11}\\
-\end{bmatrix}
-\in
-\mathbb R^{2 \times 2}\]</span></p>
-<p>행렬 <span class="math inline">\(A\)</span>와 곱해서 항등 행렬이 나올 수 있는 행렬 <span class="math inline">\(B\)</span>를 정의한다.</p>
-<p><span class="math display">\[AB=\begin{bmatrix}
-a_{11}a_{22}-a_{12}a_{21} &amp; 0\\
-0 &amp; a_{11}a_{22}-a_{12}a_{21}\\
+<p>위의 행렬곱은 4개의 변수를 가진 2개의 선형방정식으로 이루어져 있다. 위의 행렬곱을 수식으로 정리하면 다음과 같다. 우리는 위의 식에서 4개의 변수 해(solution)를 찾는 것이 목표이다.</p>
+<p><span class="math display">\[\sum_{i=1}^4 x_ic_i = b\]</span></p>
+<p>해당 식에서 <span class="math inline">\(c_i\)</span>는 첫 번째 행렬의 <span class="math inline">\(i\)</span>번째 열이며, <span class="math inline">\(b\)</span>는 두 행렬곱의 결과이다. <span class="math inline">\(b\)</span>는 <span class="math inline">\(c_1 \times 42\)</span>과 <span class="math inline">\(c_2 \times 8\)</span>로 나타낼 수 있다.</p>
+<p><span class="math display">\[b =
+\begin{bmatrix}
+42\\
+8\\
 \end{bmatrix}
 =
-(a_{11}a_{22}-a_{12}a_{21})I\]</span></p>
-<p>두 행렬을 곱한 후, 항등 행렬 기준으로 식을 정리한다.</p>
-<p><span class="math display">\[A^{-1}= \frac{1}{a_{11}a_{22}-a_{12}a_{21}}
+42
 \begin{bmatrix}
-a_{22} &amp; -a_{12}\\
--a_{21} &amp; a_{11}\\
-\end{bmatrix}\]</span></p>
-<p>그 결과 행렬 <span class="math inline">\(A\)</span>의 역행렬을 구할 수 있다.</p>
-<p>정리하면 다음과 같다. 행렬 <span class="math inline">\(A\)</span>와 곱해서 항등 행렬 <span class="math inline">\(I\)</span>가 나온다면 그 행렬은 역행렬 <span class="math inline">\(A^{-1}\)</span>이다.</p>
-<p>일반적으로 전치행렬 <span class="math inline">\(A^T\)</span>은 행렬 <span class="math inline">\(A\)</span>의 행과 열이 바뀐다. 즉, 행렬 <span class="math inline">\(A\)</span>가 <span class="math inline">\(m \times n\)</span>이라면 전치행렬인 <span class="math inline">\(A^T\)</span>는 <span class="math inline">\(n \times m\)</span>인 것이다. 전치행렬은 주대각선(main diagonal)을 기준으로 뒤집힌 행렬을 말한다.</p>
-<p><span class="math display">\[A=\begin{bmatrix}
-\mathbf{a_{11}} &amp; a_{12}\\
-a_{21} &amp; \mathbf{a_{22}}\\
+1\\
+0\\
 \end{bmatrix}
-\quad
-A^T=\begin{bmatrix}
-\mathbf{a_{11}} &amp; a_{21}\\
-a_{12} &amp; \mathbf{a_{22}}\\
++
+8
+\begin{bmatrix}
+0\\
+1\\
 \end{bmatrix}
 \]</span></p>
-<p>지금까지 역행렬과 전치행렬의 정의에 대해서 살펴보았다. 역행렬과 전치행렬은 아래와 같은 특징을 가진다.</p>
-<ol type="1">
-<li>역행렬</li>
-</ol>
+<p>따라서 변수 4개의 해(solution)로 <span class="math inline">\([42, 8, 0, 0]^T\)</span>를 도출할 수 있다. 이와 같이 결과값 <span class="math inline">\(b\)</span>를 역추하여 변수를 추정한 해를 '특수 해(special solution)'라고 한다. 하지만 연립 선형방정식에는 더 많은 해가 존재하기도 한다. 특수 해를 찾는 방법은 <span class="math inline">\(Ax=b\)</span>에 해당하는 <span class="math inline">\(x\)</span>값을 찾는 것이다. 다음으로 살펴볼 방법은 <span class="math inline">\(Ax=0\)</span>으로 만드는 <span class="math inline">\(x\)</span>값을 찾는 것이다. <span class="math inline">\(Ax=0\)</span>에 해당하는 방정식을 '동차(homogeneous) 연립 선형방정식'이라고 한다. 첫 번째 행렬의 세 번째 열인 <span class="math inline">\(c_3\)</span>은 다음과 같이 풀어서 쓸 수 있다.</p>
+<p><span class="math display">\[c_3=
+\begin{bmatrix}
+8\\
+2\\
+\end{bmatrix}
+=
+8 \begin{bmatrix}
+1\\
+0\\
+\end{bmatrix}
++
+2 \begin{bmatrix}
+0\\
+1\\
+\end{bmatrix}\]</span></p>
+<p>위의 식은 <span class="math inline">\(c_1\)</span>과 <span class="math inline">\(c_2\)</span>를 사용하여 <span class="math inline">\(c_3\)</span>을 나타낸 것이다. 따라서 <span class="math inline">\(c_3\)</span>는 <span class="math inline">\(8c_1 + 2c_2\)</span>로 표현할 수 있다. 우리의 목표는 행렬 A와 변수 x를 곱했을 때 0이 나오는 해를 찾는 것이므로 <span class="math inline">\(c_3\)</span>에 -1를 곱하여 앞의 <span class="math inline">\(8c_1 + 2c_2\)</span>을 제거하고 <span class="math inline">\(c_4\)</span>에 0을 곱하여 결과를 0으로 맞춰준다. 그렇게 하면 식은 다음과 같다.</p>
+<p><span class="math display">\[8c_1 + 2c_2 + -1c_3 + 0c_4 =0\]</span></p>
+<p>따라서 <span class="math inline">\(Ax=0\)</span>의 결과를 만족시키는 변수 <span class="math inline">\((x_1,x_2,x_3,x_4)\)</span>는 <span class="math inline">\((8,2,-1,0)\)</span>이다. 위의 식은 무작위 실수 <span class="math inline">\(\lambda_1 \in \mathbb R\)</span>를 곱해도 값은 0이다.</p>
+<p><span class="math display">\[\begin{bmatrix}
+1 &amp; 0 &amp; 8 &amp; -4\\
+0 &amp; 1 &amp; 2 &amp; 12\\
+\end{bmatrix}
+\left (
+\lambda_1\begin{bmatrix}
+8\\
+2\\
+-1\\
+0
+\end{bmatrix}
+\right )
+=
+\lambda_1
+\big (
+8c_1 + 2c_2 - c_3
+\big )
+=0
+\]</span></p>
+<p>위 흐름과 같이 <span class="math inline">\(c_4\)</span>도 <span class="math inline">\(c_1, c_2\)</span>을 사용하여 <span class="math inline">\(-4c_1 + 12c_2\)</span>로 나타낼 수 있고, 이를 이용하여 <span class="math inline">\(Ax=0\)</span>을 도출할 수 있다.</p>
+<p><span class="math display">\[\begin{bmatrix}
+1 &amp; 0 &amp; 8 &amp; -4\\
+0 &amp; 1 &amp; 2 &amp; 12\\
+\end{bmatrix}
+\left (
+\lambda_2\begin{bmatrix}
+-4\\
+12\\
+0\\
+-1
+\end{bmatrix}
+\right )
+=
+\lambda_2
+\big (
+-4c_1 + 12c_2 - c_4
+\big )
+=0
+\]</span></p>
+<p><span class="math inline">\(\lambda_1\)</span>과 마찬가지로 <span class="math inline">\(\lambda_2\)</span>도 어떤 실수든지 가능하다.</p>
+<p>지금까지 구한 변수 <span class="math inline">\(x\)</span>를 종합하면, 우리는 해당 연립 선형방정식의 '일반 해( general solution)'를 구할 수 있다.</p>
+<p><span class="math display">\[x \in \mathbb R^4 : x=\begin{bmatrix}
+42\\
+8\\
+0\\
+0
+\end{bmatrix}
++
+\lambda_1\begin{bmatrix}
+8\\
+2\\
+-1\\
+0
+\end{bmatrix}
++
+\lambda_2\begin{bmatrix}
+-4\\
+12\\
+0\\
+-1
+\end{bmatrix}
+\quad
+\lambda_1,\lambda_2 \in \mathbb R\]</span></p>
+<p><strong>Remark</strong> 일반 해를 구하는 접근 방식은 세 단계로 구성되며, 다음과 같다.</p>
 <ul>
-<li><span class="math inline">\(AA^{-1} = I = A^{-1}A\)</span></li>
-<li><span class="math inline">\((AB)^{-1} = A^{-1}B^{-1}\)</span></li>
-<li><span class="math inline">\((A+B)^{-1} \ne A^{-1} + B^{-1}\)</span></li>
+<li><span class="math inline">\(Ax=b\)</span>의 특수 해를 찾기</li>
+<li><span class="math inline">\(Ax=0\)</span>의 모든 해 찾기</li>
+<li>찾은 모든 해들을 결합하기 (일반 해 완성)</li>
 </ul>
-<ol start="2" type="1">
-<li>전치행렬</li>
-</ol>
+<p>지금까지 예시를 통해서 연립 선형방정식을 풀어보았다. 예시는 간단한 형식의 행렬이었기에 해를 구하기 편했지만, 실제 사용되는 선형식들은 매우 복잡하다. 운좋게도 우리는 매우 편리한 알고리즘인 '가우시안 소거법(Gaussian elimination)'이 있다. 가우시안 소거법은 복잡한 방정식 시스템을 간단한 형태로 변환해준다. 그후 위에서 배운 세 단계를 적용할 수 있다.</p>
+<h3 id="요소-변환-elementary-transformations">요소 변환 (elementary transformations)</h3>
+<p>선형 방정식을 쉽게 해결하는 핵심 방법은 바로 '요소 변환 (elementary transformations)'이다. 요소를 변환하는 것은 해는 동일하지만 선형방정식의 식을 더 간편하게 만들어준다.</p>
 <ul>
-<li><span class="math inline">\((A^T)^T = A\)</span></li>
-<li><span class="math inline">\((A+B)^T = A^T + B^T\)</span></li>
-<li><span class="math inline">\((AB)^T = B^TA^T\)</span></li>
+<li>방정식 2개(행 단위)의 위치를 바꾸기</li>
+<li>한 방정식에 <span class="math inline">\(0\)</span>을 제외한 실수 <span class="math inline">\(\lambda\)</span> 곱하기</li>
+<li>두 방정식을 합치기</li>
 </ul>
-<p>역행렬은 <span class="math inline">\(n \times n\)</span> 형태의 가역 행렬일 때만 존재한다. 따라서 행렬 <span class="math inline">\(A\)</span>가 가역 행렬이고 역행렬 <span class="math inline">\(A^{-1}\)</span>가 존재한다면, 아래와 같은 식도 성립한다.</p>
-<p><span class="math inline">\((A^{-1})^T = (A^{T})^-1 =: A^{-T}\)</span></p>
-<h3 id="행렬과-스칼라의-곱">행렬과 스칼라의 곱</h3>
-<p>행렬 <span class="math inline">\(A\)</span>에 스칼라 <span class="math inline">\(\lambda\)</span>를 곱해보자. 여기서 행렬 <span class="math inline">\(A\)</span>는 <span class="math inline">\(\mathbb R^{m \times n}\)</span>에 속하고, 스칼라 <span class="math inline">\(\lambda\)</span>는 실수 <span class="math inline">\(\mathbb R\)</span>에 속한다. 스칼라 <span class="math inline">\(\lambda\)</span>는 행렬 <span class="math inline">\(A\)</span>의 요소들에 각각 곱해진다. 이를 기호로 나타내면 <span class="math inline">\(\lambda A=K\)</span>, <span class="math inline">\(K_{ij} = \lambda a_{ij}\)</span> 이다. 스칼라 <span class="math inline">\(\lambda, \psi\)</span>을 행렬과 곱할 때, 다음과 같은 특징을 가진다.</p>
+<p>제시된 3개가 요소를 변환하는 방법이다. 아래의 예시를 통해서 하나씩 알아보자.</p>
+<p><span class="math display">\[\begin{matrix}
+-2x_1&amp;+&amp;4x_2&amp;-&amp;2x_3&amp;-&amp;x_4&amp;+&amp;4x_5&amp;=&amp; -3\\
+4x_1&amp;-&amp;8x_2&amp;+&amp;3x_3&amp;-&amp;3x_4&amp;+&amp;x_5&amp;=&amp; 2\\
+x_1&amp;-&amp;2x_2&amp;+&amp;x_3&amp;-&amp;x_4&amp;+&amp;x_5&amp;=&amp; 0\\
+x_1&amp;-&amp;2x_2&amp; &amp; &amp;-&amp;3x_4&amp;+&amp;4x_5&amp;=&amp; a
+\end{matrix}\]</span></p>
+<p>위의 수식은 5개의 변수를 가진 연립 선형방정식이다. 총 4개의 수식이 포함되어 있으며, 우리는 위 문제에서 <span class="math inline">\(a \in \mathbb R\)</span>일 때의 모든 해를 찾으려 한다.</p>
+<p>먼저 <span class="math inline">\(Ax=b\)</span>인 특수 해를 찾아보자. 특수 해를 찾기 위해서는 각 방정식의 변수들을 최소화해야 한다. 변수를 최소화하기 위해서 방정식들의 요소를 변환해야 한다. 지금부터는 변수 <span class="math inline">\(x\)</span>를 명시하지 않고 설명하는 방법을 사용할 것이다. 이 방법을 '확장 행렬(augmented matrix)'이라고 하며, <span class="math inline">\([A\ |\ b]\)</span>의 형태이다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+-2 &amp; 4 &amp; -2 &amp; -1 &amp; 4 &amp; -3\\
+4 &amp; -8 &amp; 3 &amp; -3 &amp; 1 &amp; 2\\
+1 &amp; -2 &amp; 1 &amp; -1 &amp; 1 &amp; 0\\
+1 &amp; -2 &amp; 0 &amp; -3 &amp; 4 &amp; a
+\end{array}
+\right]\]</span></p>
+<p>위의 확장 행렬에서 첫 번째 행과 세 번째 행의 위치를 바꿔주자.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 1 &amp; -1 &amp; 1 &amp; 0\\
+4 &amp; -8 &amp; 3 &amp; -3 &amp; 1 &amp; 2\\
+-2 &amp; 4 &amp; -2 &amp; -1 &amp; 4 &amp; -3\\
+1 &amp; -2 &amp; 0 &amp; -3 &amp; 4 &amp; a
+\end{array}
+\right]\]</span></p>
+<p>그 다음 두 번째 행에서 <span class="math inline">\(-4\mathbb R_1\)</span>을 더해준다. 그러면 두번째 행은 아래와 같은 결과가 나온다.</p>
+<p><span class="math display">\[\mathbb R_2 =
+\left[
+\begin{array}{ccccc|c}
+4-4 &amp; -8+ 8 &amp; 3-4 &amp; -3+4 &amp; 1-4 &amp; 2-0\\
+\end{array}
+\right]
+\]</span></p>
+<p><span class="math display">\[\quad \ =
+\left[
+\begin{array}{ccccc|c}
+0 &amp; 0 &amp; -1 &amp; 1 &amp; -3 &amp; 2\\
+\end{array}
+\right]
+\]</span></p>
+<p>위와 같은 방법으로 세 번째 행에는 <span class="math inline">\(+2\mathbb R_1\)</span>을 더해주고, 네 번째 행에는 <span class="math inline">\(-1\mathbb R_1\)</span>을 더해준다. 그 결과는 다음과 같다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 1 &amp; -1 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; -1 &amp; 1 &amp; -3 &amp; 2\\
+0 &amp; 0 &amp; 0 &amp; -3 &amp; 6 &amp; -3\\
+0 &amp; 0 &amp; -1 &amp; -2 &amp; 3 &amp; a
+\end{array}
+\right]\]</span></p>
+<p>변수 <span class="math inline">\(x_1, x_2\)</span>의 계수는 <span class="math inline">\(\mathbb R_1\)</span>에만 남은 것을 확인할 수 있다. 이와 같은 방법으로 연립 선형방정식을 정리하면 다음과 같다.</p>
+<p>-네 번째 행에 <span class="math inline">\(-\mathbb R_2 -\mathbb R_3\)</span>을 더해준다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 1 &amp; -1 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; -1 &amp; 1 &amp; -3 &amp; 2\\
+0 &amp; 0 &amp; 0 &amp; -3 &amp; 6 &amp; -3\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; a+1
+\end{array}
+\right]\]</span></p>
 <ul>
-<li>결합법칙(Associativity)</li>
+<li>두번째 행에 <span class="math inline">\(-1\)</span>을 곱해주고 세 번째 행에 <span class="math inline">\(-\frac{1}{3}\)</span>을 곱해준다.</li>
 </ul>
-<p><span class="math inline">\((\lambda\psi)C = \lambda(\psi C),\quad C \in \mathbb R^{m \times n}\)</span></p>
-<p><span class="math inline">\(\lambda(BC) = (\lambda B)C = B(\lambda C)= (BC)\lambda, \quad B \in \mathbb R^{m \times n}, C \in \mathbb R^{n \times k}\)</span></p>
-<p><span class="math inline">\((\lambda C)^T = C^T\lambda^T = C^T\lambda = \lambda C^T\)</span></p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 1 &amp; -1 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; -1 &amp; 3 &amp; -2\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; a+1
+\end{array}
+\right]\]</span></p>
 <ul>
-<li>분배법칙(Distributivity)</li>
+<li>위의 식을 연립 선형방정식으로 표현하면 다음과 같다.</li>
 </ul>
-<p><span class="math inline">\((\lambda + \psi)C = \lambda C + \psi C,\quad C \in \mathbb R^{m \times n}\)</span></p>
-<p><span class="math inline">\(\lambda(B + C)=\lambda B + \lambda C,\quad B,C \in \mathbb R^{m \times n}\)</span></p>
+<p><span class="math display">\[\begin{matrix}
+x_1&amp;-&amp;2x_2&amp;+&amp;x_3&amp;-&amp;x_4&amp;+&amp;x_5&amp;=&amp; 0\\
+&amp;&amp;&amp;&amp;x_3&amp;-&amp;x_4&amp;+&amp;3x_5&amp;=&amp; -2\\
+&amp;&amp;&amp;&amp;&amp;&amp;x_4&amp;-&amp;2x_5&amp;=&amp; 1\\
+&amp;&amp;&amp;&amp;&amp;&amp;&amp;+&amp;0&amp;=&amp; a+1
+\end{matrix}\]</span></p>
+<p>복잡했던 확장 행렬에서 요소 변환을 통해 간단하게 정리되었다. 이와 같은 형태를 '행 사다리꼴(row-echelon form, REF)'이라고 한다. 행 사다리꼴은 아래와 같은 특징을 가진다.</p>
+<ul>
+<li>열의 앞에 오는 계수(leading coefficient)는 주성분(pivot)이라고 한다.</li>
+<li>행 사다리꼴은 각 열의 주성분이 위의 열보다 한칸 이상 뒤에 있다. 따라서 계단식(staircase) 구조를 가진다.</li>
+<li>0만 포함하는 열은 행렬의 가장 아래에 위치한다.</li>
+<li>주성분에 속하는 변수를 '기본 변수(basic variables)'라고 하며, 그 외의 변수들은 '자유 변수(free variables)'라고 한다. 예로 위의 행 사다리꼴은 보면 변수 <span class="math inline">\(x_1, x_3, x_4\)</span>는 기본 변수이며, <span class="math inline">\(x_2, x_5\)</span>는 자유 변수이다.</li>
+</ul>
+<p>이제 위의 행 사다리꼴로 <span class="math inline">\(a=-1\)</span>일 때의 특수 해를 찾아보자. 해당 연립 선형방정식은 <span class="math inline">\(a=-1\)</span>일 때만 특수 해를 구할 수 있다.</p>
+<p>자유 변수는 행 사다리꼴에서 주성분이 없다. 따라서 임의적으로 자유 변수를 0으로 처리한다. 그럼 위의 행 사다리꼴의 자유 변수인 <span class="math inline">\(x_2, x_5\)</span>은 0으로 처리된다. 그 다음 주성분이 존재하는 기본 변수의 값을 구하면 된다.</p>
+<p>위의 확장 행렬을 다시 살펴보자.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 1 &amp; -1 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; -1 &amp; 3 &amp; -2\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; a+1
+\end{array}
+\right]\]</span></p>
+<p>여기서 기본 변수인 <span class="math inline">\(x_1, x_3, x_4\)</span>와 곱해지는 열은 아래와 같다.</p>
+<p><span class="math display">\[x_1\begin{bmatrix}
+1\\
+0\\
+0\\
+0
+\end{bmatrix}
++
+x_3\begin{bmatrix}
+1\\
+1\\
+0\\
+0
+\end{bmatrix}
++
+x_4\begin{bmatrix}
+-1\\
+-1\\
+1\\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+-2\\
+1\\
+0
+\end{bmatrix}\]</span></p>
+<p>위의 행렬을 다시 연립 선형방정식으로 나타내면 다음과 같다.</p>
+<p><span class="math display">\[\begin{matrix}
+x_1&amp;+&amp;x_3&amp;-&amp;x_4&amp;=&amp; 0\\
+&amp;&amp;x_3&amp;-&amp;x_4&amp;=&amp; -2\\
+&amp;&amp;&amp;&amp;x_4&amp;=&amp; 1\\
+\end{matrix}\]</span></p>
+<p>따라서 이를 정리하면 <span class="math inline">\(x_4 = 1, x_3 = -1, x_1 = 2\)</span>를 구할 수 있다. 따라서 위의 연립 선형방정식의 특수 해는 <span class="math inline">\([2, 0, -1, 1, 0]^T\)</span>인 것이다.</p>
+<p>이제 헤당 연립 선형방정식의 일반 해를 구해보자. 일반 해를 구하기 위해서는 '기약 행 사다리꼴(educed row-echelon form, RREF)를 알아야 한다. 기약 행 사다리꼴의 특징은 다음과 같다.</p>
+<ul>
+<li>행 사다리꼴이다.</li>
+<li>모든 주성분(pivot)이 1이다.</li>
+<li>주성분이 포함된 열에서는 주성분을 제외한 모든 수가 0이다.</li>
+</ul>
+<p>기약 행 사다리꼴은 선형방정식들의 일반 해를 간단하게 구할 수 있게 해주기에 매우 중요한 개념이다. 또한 우리는 앞서 '가우시안 소거법(Gaussian Elimination)'을 복잡한 방정식 시스템을 간단한 형태로 변환해준다고 언급한 적이 있었다. 이제 기약 행 사다리꼴의 개념을 이해했으니 가우시안 소거법의 정의를 더 정확하게 할 수 있다. <strong>가우시안 소거법은 일반 선형방정식을 기약 행 사다리꼴로 만들어주는 알고리즘이다.</strong></p>
+<p>그럼 우리가 예시로 사용하는 확장행렬을 기약 행 사다리꼴로 변환해보자.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 1 &amp; -1 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; -1 &amp; 3 &amp; -2\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1\\
+\end{array}
+\right]\]</span></p>
+<p>위 확장 행렬에서 주성분을 포함한 열은 <span class="math inline">\(c_1, c_3, c_4\)</span>이다. <span class="math inline">\(c_1\)</span>은 주성분을 제외한 나머지가 모두 0이라서 기약 행 사다리꼴의 기준을 만족하지만 <span class="math inline">\(c_3, c_4\)</span>는 아니다. 따라서 요소변환을 통해 <span class="math inline">\(c_3, c_4\)</span>도 변환해주어야 한다.</p>
+<p>이를 위해 <span class="math inline">\(\mathbb R_3\)</span>을 <span class="math inline">\(\mathbb R_1, \mathbb R_2\)</span>에 각각 더해준다. 그럼 다음과 같은 행렬이 된다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 1 &amp; 0 &amp; -1 &amp; 2\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; -1\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1\\
+\end{array}
+\right]\]</span></p>
+<p>그후 <span class="math inline">\(\mathbb R_2\)</span>를 <span class="math inline">\(\mathbb R_1\)</span>에서 빼주면, 아래와 같은 기약 행 사다리꼴이 완성된다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 0 &amp; 0 &amp; -2 &amp; 2\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; -1\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1\\
+\end{array}
+\right]\]</span></p>
+<p>드디어 기약 행 사다리꼴이 완성되었다. 이제 <span class="math inline">\(Ax=0\)</span>을 만족하는 해를 찾을 수 있다. 변수 <span class="math inline">\(x\)</span>와 행렬 A의 열인 <span class="math inline">\(c\)</span>가 곱해졌을 때 0이 되기 위해서는 자유 변수와 열의 곱을 제거하는 방식으로 풀면 된다.</p>
+<p>여기서 자유 변수는 <span class="math inline">\(x_2, x_5\)</span>이며, <span class="math inline">\(c_2\)</span>를 먼저 살펴보자. <span class="math inline">\(c_2\)</span>는 <span class="math inline">\([-2, 0, 0, 0]^T\)</span>이기 때문에 <span class="math inline">\(c_1\)</span>에 2를 곱하여 더하면 0이 된다.</p>
+<p><span class="math display">\[\lambda_1
+\big (
+2c_1 + 1c_2 + 0c_3 + 0c_4 + 0c_5
+\big )
+=0\]</span></p>
+<p>따라서 첫 번째 해는 <span class="math inline">\([2, 1, 0, 0, 0]^T\)</span>이다.</p>
+<p>다음으로 <span class="math inline">\(c_5\)</span>를 본다면, <span class="math inline">\([-2, 1, -2 , 1]^T\)</span>은 <span class="math inline">\(c_1, c_4\)</span>에 2를 곱한 것과 <span class="math inline">\(c_3\)</span>를 더해주면 0이 된다.</p>
+<p><span class="math display">\[\lambda_2
+\big (
+2c_1 + 0c_2 - 1c_3 + 2c_4 + 1c_5
+\big )
+=0\]</span></p>
+<p>따라서 두 번째 해는 <span class="math inline">\([2, 0, -1, 2, 1]^T\)</span>이다.</p>
+<p>드디어 선형방정식의 해를 모두 구하였다. 이를 바탕으로 일반 해를 구하면 아래와 같다.</p>
+<p><span class="math display">\[x \in \mathbb R^5 : x=\begin{bmatrix}
+2\\
+0\\
+-1\\
+1\\
+0
+\end{bmatrix}
++
+\lambda_1\begin{bmatrix}
+2\\
+1\\
+0\\
+0\\
+0
+\end{bmatrix}
++
+\lambda_2\begin{bmatrix}
+2\\
+0\\
+-1\\
+2\\
+1
+\end{bmatrix}
+\quad
+\lambda_1,\lambda_2 \in \mathbb R\]</span></p>
+<h3 id="마이너스-1-트릭-the-minus-1-trick">'마이너스 1' 트릭 (The Minus-1 Trick)</h3>
+<p>지금까지 우리는 연립 선형방정식의 일반 해를 구하는 방법을 살펴보았다. 물론 수식으로 푸는 것보다는 위의 방식이 편리하지만 우리는 더 쉽게 <span class="math inline">\(Ax =0\)</span>일 때의 해를 구할 수 있다. 먼저 기약 행 사다리꼴을 다시 보자.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 0 &amp; 0 &amp; -2 &amp; 2\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; -1\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1\\
+\end{array}
+\right]\]</span></p>
+<p>여기서 자유 변수인 <span class="math inline">\(x_2, x_5\)</span>의 수와 같은 <span class="math inline">\(\mathbb R_2, \mathbb R_5\)</span>의 위치에 <span class="math inline">\(&#39;-1&#39;\)</span>을 대입한다. 즉, 자유 변수와 곱해지는 열 <span class="math inline">\(c\)</span>에 값을 대입하여 기본 변수로 만들어주는 것이다</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; -2 &amp; 0 &amp; 0 &amp; -2 &amp; 2\\
+\color{RoyalBlue}0 &amp; \color{RoyalBlue}{-1} &amp; \color{RoyalBlue}0 &amp; \color{RoyalBlue}0 &amp; \color{RoyalBlue}0 \\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; -1\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1\\
+\color{RoyalBlue}0 &amp; \color{RoyalBlue}0 &amp; \color{RoyalBlue}0 &amp; \color{RoyalBlue}0 &amp; \color{RoyalBlue}{-1} \\
+\end{array}
+\right]\]</span></p>
+<p>위의 확장 행렬에서 <span class="math inline">\(c_2, c_5\)</span>를 보면 <span class="math inline">\(Ax=0\)</span>을 만족하는 해가 있음을 확인할 수 있다. 위의 식에서는 '-1'을 <span class="math inline">\(\lambda\)</span>로 묶어서 빼주면 위에서 구했던 해와 똑같은 결과를 얻을 수 있다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{ccccc|c}
+1 &amp; \color{Orchid}{-2} &amp; 0 &amp; 0 &amp; \color{Orchid}{-2} &amp; 2\\
+0 &amp; \color{Orchid}{-1} &amp;0 &amp; 0 &amp; \color{Orchid}0 &amp; \\
+0 &amp; \color{Orchid}0 &amp; 1 &amp; 0 &amp; \color{Orchid}1 &amp; -1\\
+0 &amp; \color{Orchid}0 &amp; 0 &amp; 1 &amp; \color{Orchid}{-2} &amp; 1\\
+0 &amp; \color{Orchid}0 &amp;0 &amp; 0 &amp; \color{Orchid}-1 &amp; \\
+\end{array}
+\right]\]</span></p>
+<h3 id="역행렬-계산">역행렬 계산</h3>
+<p>우리는 행렬 <span class="math inline">\(A, A \in \mathbb R^{n \times n}\)</span>의 역행렬을 구하기 위해서 <span class="math inline">\(AX=I_n\)</span>을 만족하는 <span class="math inline">\(X\)</span>를 찾았으며,해당 <span class="math inline">\(X\)</span>를 역행렬 <span class="math inline">\(A^{-1}\)</span>이라고 불렀다. 확장 행렬도 다음과 같은 식을 만족한다.</p>
+<p><span class="math display">\[[A|I_n] \rightsquigarrow [I_n|A^{-1}]\]</span></p>
+<p>위식을 직접 풀어보자. 먼저 행렬 <span class="math inline">\(A\)</span>와 항등행렬을 첨가 행렬 형태로 작성한다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{cccc|cccc}
+1 &amp; 0 &amp; 2 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0\\
+1 &amp; 2 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1\\
+\end{array}
+\right]\]</span></p>
+<p>위 식에서 행렬 <span class="math inline">\(A\)</span>를 가우시안 소거법을 사용하여 항등 행렬로 바꿔준다.</p>
+<p><span class="math display">\[\left[
+\begin{array}{cccc|cccc}
+1 &amp; 0 &amp; 0 &amp; 0 &amp; -1 &amp; 2 &amp; -2 &amp; 2\\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; -1 &amp; 2 &amp; -2\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; -1 &amp; 1 &amp; -1\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; -1 &amp; 0 &amp; -1 &amp; 2\\
+\end{array}
+\right]\]</span></p>
+<p>원래 항등 행렬이었던 오른쪽 부분이 바로 역행렬이다.</p>
+<p><span class="math display">\[A^{-1}=\left[
+\begin{array}{cccc}
+-1 &amp; 2 &amp; -2 &amp; 2\\
+1 &amp; -1 &amp; 2 &amp; -2\\
+1 &amp; -1 &amp; 1 &amp; -1\\
+-1 &amp; 0 &amp; -1 &amp; 2\\
+\end{array}
+\right]\]</span></p>
+<p>가우시안 소거법을 사용하면 역행렬도 편리하게 구할 수 있다.</p>
+<h3 id="선형방정식을-해결하는-알고리즘">선형방정식을 해결하는 알고리즘</h3>
+<p>지금까지 우리는 해(solution)가 있는 <span class="math inline">\(Ax = b\)</span>형태의 선형방정식들을 풀어보았다. 하지만 해가 없는 선형방정식은 어떻게 풀어야 하는가? 이 부분은 이후 chapter 8에서 자세하게 살펴볼 것이다. <span class="math inline">\(A\)</span>가 정방행렬이며 동시에 가역행렬인 경우, 우리는 <span class="math inline">\(Ax = b\)</span>의 해로 <span class="math inline">\(x = A^{-1}b\)</span>가 주어지도록 역행렬 <span class="math inline">\(A^{-1}\)</span>을 구할 수 있다. 하지만 그외의 경우에는 (<span class="math inline">\(A\)</span>의 행(column)이 독립적인 선형방정식이라는 전제 하에) 전치행렬과 '무어-펜로즈의 의사역행렬(Moore-Penrose pseudo-inverse)'을 사용하여 해를 구해야 한다.</p>
+<p>무어-펜로즈의 의사역행렬(Moore-Penrose pseudo-inverse)'은 의사역행렬(pseudo inverse)이라고도 불리며, 정방행렬이 아닌 행렬에 대해서 <span class="math inline">\(x\)</span>값을 근사적으로 구할 수 있는 방법이다. 이 방법은 미지수보다 선형방정식의 수가 더 많을 때 사용한다.</p>
+<p><strong>NOTE</strong> 미지수 <span class="math inline">\(x\)</span>와 선형방정식의 관계 미지수는 방정식의 개수와 동일할 때 해를 갖는다. 즉, <span class="math inline">\(x_1, x_2, x_3\)</span>이 미지수로 주어졌다면, 선형방정식도 3개가 주어져야 한다는 뜻이다. 하지만 그 외에도 방정식의 개수보다 미지수 수가 더 많거나 적은 경우가 존재한다. 미지수보다 방정식 개수가 더 적다면 이는 무수히 많은 해가 존재한다. 또한 미지수보다 방정식 개수가 더 많다면 해가 없는데, 이 경우에는 '근사 해'를 구해야 한다.</p>
+<ul>
+<li>(미지수 개수 &gt; 방정식 개수) -&gt; 해가 무수히 많음</li>
+<li>(미지수 개수 &lt; 방정식 개수) -&gt; 해가 없음 -&gt; 근사 해 구할 수 있음</li>
+</ul>
+<p><span class="math display">\[Ax = b \Longleftrightarrow A^TAx = A^Tb \Longleftrightarrow x=(A^TA)^{-1}A^Tb\]</span></p>
+<p>위 식은 의사역행렬을 적용하는 과정을 보여준다. 하나씩 천천히 살펴보면서 원리를 이해해보자.</p>
+<p><span class="math display">\[Ax = b, \quad  A \in R^{3 \times 2}\]</span></p>
+<p>평범한 선형방정식이 있다. 하지만 행렬 <span class="math inline">\(A\)</span>는 정방행렬이 아니다. 즉, 위 식은 미지수 <span class="math inline">\(x\)</span>가 2개인데, 선형방정식은 3개인 경우이다. 이 상태에서는 행렬 <span class="math inline">\(A\)</span>의 역행렬을 구할 수 없다. 역행렬이 존재하기 위해서는 정방행렬이어야 하기 때문이다. 따라서 각 항에 전치행렬을 곱해서 정방행렬의 형태로 만들어준다.</p>
+<p><span class="math display">\[A^TAx = A^Tb, \quad A^TA \in R^{3 \times 3}\]</span></p>
+<p>이제 <span class="math inline">\(A^TA\)</span>는 <span class="math inline">\(3 \times 3\)</span> 형태의 정방행렬이기에 역행렬을 구할 수 있다. <span class="math inline">\(A^TA\)</span>의 역행렬은 <span class="math inline">\((A^TA)^{-1}\)</span>이다. 해당 역행렬을 양쪽 항에 곱해주자.</p>
+<p><span class="math display">\[(A^TA)^{-1}A^TAx = (A^TA)^{-1}A^Tb, \quad A^TA \in R^{3 \times 3}\]</span></p>
+<p>특정 행렬과 그의 역행렬을 곱하면 항등 행렬이 되며, 이는 <span class="math inline">\(x\)</span>와 같다. 그 이유는 항등행렬은 각 행마다 하나의 1만을 가지고 있기 때문에 <span class="math inline">\(Ix\)</span>는 <span class="math inline">\(x\)</span>와 똑같은 결과를 도출한다. 따라서 식을 정리해보면 다음과 같다.</p>
+<p><span class="math display">\[x = (A^TA)^{-1}A^Tb, \quad A^TA \in R^{3 \times 3}\]</span></p>
+<p>이 방법은 근사 해를 구할 수 있게 해주기에 매우 유용하지만, 많은 행렬 계산이 들어가고 근사값을 구하는 것이기에 일반적으로 사용하기를 추천하지는 않는다. 이의 대안으로 우리는 chapter2에서 벡터 사이의 유사성을 계산할 수 있는 방법을 살펴볼 것이다.</p>
 
                 
               </div>
@@ -619,7 +826,7 @@ a_{12} &amp; \mathbf{a_{22}}\\
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Linear Algebra (1)</div>
+      <div>Linear Algebra (2)</div>
       <div>https://dev-bearabbit.github.io/ko/Mathematic/mathematic-1/</div>
     </div>
     <div class="license-meta">
@@ -632,7 +839,7 @@ a_{12} &amp; \mathbf{a_{22}}\\
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>2020년 4월 12일</div>
+          <div>2020년 4월 14일</div>
         </div>
       
       
@@ -664,9 +871,9 @@ a_{12} &amp; \mathbf{a_{22}}\\
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/ko/Mathematic/mathematic-2/" title="Linear Algebra (2)">
+                      <a href="/ko/DeeplearningJulia/Deeplearning-8/" title="[8/18] 인공신경망 구현: 역전파 설명">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linear Algebra (2)</span>
+                        <span class="hidden-mobile">[8/18] 인공신경망 구현: 역전파 설명</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -674,8 +881,8 @@ a_{12} &amp; \mathbf{a_{22}}\\
                   <article class="post-next col-6">
                     
                     
-                      <a href="/ko/DeeplearningJulia/Deeplearning-7/" title="[Deep Learning in Julia] 인공신경망 구현: 순전파 알고리즘 (7/18)">
-                        <span class="hidden-mobile">[Deep Learning in Julia] 인공신경망 구현: 순전파 알고리즘 (7/18)</span>
+                      <a href="/ko/Mathematic/mathematic-0/" title="Linear Algebra (1)">
+                        <span class="hidden-mobile">Linear Algebra (1)</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
