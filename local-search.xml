@@ -15,7 +15,7 @@
       
       <category>BigData</category>
       
-      <category>Engineering</category>
+      <category>engineering</category>
       
     </categories>
     
@@ -61,21 +61,21 @@
     
     <tags>
       
+      <tag>직장인</tag>
+      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
-      
-      <tag>직장인</tag>
       
       <tag>대학원</tag>
       
       <tag>학위</tag>
       
+      <tag>학점은행제</tag>
+      
       <tag>컴퓨터공학</tag>
       
       <tag>비전공</tag>
-      
-      <tag>학점은행제</tag>
       
     </tags>
     
@@ -172,19 +172,19 @@
     
     <tags>
       
+      <tag>직장인</tag>
+      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
-      
-      <tag>직장인</tag>
       
       <tag>대학원</tag>
       
       <tag>학위</tag>
       
-      <tag>학점은행제</tag>
-      
       <tag>외국계</tag>
+      
+      <tag>학점은행제</tag>
       
       <tag>TOEFL</tag>
       
@@ -488,11 +488,11 @@
     
     <tags>
       
-      <tag>회고</tag>
-      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
+      
+      <tag>회고</tag>
       
       <tag>주니어</tag>
       
@@ -638,11 +638,11 @@
     
     <tags>
       
-      <tag>빅데이터</tag>
-      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
+      
+      <tag>빅데이터</tag>
       
       <tag>주니어</tag>
       
@@ -1171,13 +1171,13 @@
       
       <tag>DB</tag>
       
+      <tag>database</tag>
+      
       <tag>architecture</tag>
       
       <tag>sharednothing</tag>
       
       <tag>shareddisk</tag>
-      
-      <tag>database</tag>
       
       <tag>아키텍처</tag>
       
@@ -1210,11 +1210,11 @@
     
     <tags>
       
-      <tag>회고</tag>
-      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
+      
+      <tag>회고</tag>
       
       <tag>주니어</tag>
       
@@ -1255,9 +1255,9 @@
       
       <tag>python</tag>
       
-      <tag>비교</tag>
-      
       <tag>rust</tag>
+      
+      <tag>비교</tag>
       
       <tag>hanoi</tag>
       
@@ -2788,6 +2788,8 @@
     
     <tags>
       
+      <tag>error</tag>
+      
       <tag>windows</tag>
       
       <tag>rust</tag>
@@ -2799,8 +2801,6 @@
       <tag>gnu</tag>
       
       <tag>vscode</tag>
-      
-      <tag>error</tag>
       
       <tag>toolchain</tag>
       
@@ -2946,11 +2946,11 @@
     
     <tags>
       
+      <tag>OS</tag>
+      
       <tag>Linux</tag>
       
       <tag>리눅스</tag>
-      
-      <tag>OS</tag>
       
       <tag>커맨드라인</tag>
       
@@ -3346,8 +3346,6 @@
     
     <tags>
       
-      <tag>error</tag>
-      
       <tag>sqlalchemy</tag>
       
       <tag>flask_sqlalchemy</tag>
@@ -3359,6 +3357,8 @@
       <tag>db</tag>
       
       <tag>scoped_session</tag>
+      
+      <tag>error</tag>
       
       <tag>Registrant</tag>
       
@@ -4088,9 +4088,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>신경망</tag>
-      
       <tag>줄리아</tag>
+      
+      <tag>신경망</tag>
       
       <tag>Dropout</tag>
       
@@ -4131,9 +4131,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>신경망</tag>
-      
       <tag>줄리아</tag>
+      
+      <tag>신경망</tag>
       
       <tag>std</tag>
       
@@ -4217,9 +4217,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>신경망</tag>
-      
       <tag>줄리아</tag>
+      
+      <tag>신경망</tag>
       
       <tag>optimizer</tag>
       
@@ -4266,6 +4266,8 @@
       
       <tag>머신러닝</tag>
       
+      <tag>줄리아</tag>
+      
       <tag>신경망</tag>
       
       <tag>ReLU</tag>
@@ -4277,8 +4279,6 @@
       <tag>Sigmoid</tag>
       
       <tag>활성화 함수</tag>
-      
-      <tag>줄리아</tag>
       
     </tags>
     
@@ -4311,9 +4311,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>신경망</tag>
-      
       <tag>줄리아</tag>
+      
+      <tag>신경망</tag>
       
       <tag>역전파</tag>
       
@@ -4401,9 +4401,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>신경망</tag>
-      
       <tag>줄리아</tag>
+      
+      <tag>신경망</tag>
       
       <tag>역전파</tag>
       
@@ -4512,9 +4512,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>신경망</tag>
-      
       <tag>줄리아</tag>
+      
+      <tag>신경망</tag>
       
       <tag>순전파</tag>
       
@@ -4594,9 +4594,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>신경망</tag>
-      
       <tag>줄리아</tag>
+      
+      <tag>신경망</tag>
       
       <tag>순전파</tag>
       
@@ -4705,13 +4705,13 @@
       
       <tag>머신러닝</tag>
       
+      <tag>줄리아</tag>
+      
       <tag>ReLU</tag>
       
       <tag>렐루</tag>
       
       <tag>시그모이드</tag>
-      
-      <tag>줄리아</tag>
       
       <tag>sigmoid</tag>
       
@@ -4796,7 +4796,7 @@
   
   
   <entry>
-    <title>20. 디버깅</title>
+    <title>[Think Julia] 디버깅 (20/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-20/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-20/</url>
     
@@ -4829,7 +4829,7 @@
   
   
   <entry>
-    <title>19. 베이스 및 표준 라이브러리</title>
+    <title>[Think Julia] 베이스 및 표준 라이브러리 (19/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-19/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-19/</url>
     
@@ -4862,7 +4862,7 @@
   
   
   <entry>
-    <title>18. 기타 문법들</title>
+    <title>[Think Julia] 기타 문법들 (18/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-18/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-18/</url>
     
@@ -4930,7 +4930,7 @@
   
   
   <entry>
-    <title>17. 서브타이핑</title>
+    <title>[Think Julia] 서브타이핑 (17/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-17/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-17/</url>
     
@@ -5000,7 +5000,7 @@
   
   
   <entry>
-    <title>16. 다중 디스패치</title>
+    <title>[Think Julia] 다중 디스패치 (16/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-16/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-16/</url>
     
@@ -5033,7 +5033,7 @@
   
   
   <entry>
-    <title>15. 구조체와 함수</title>
+    <title>[Think Julia] 구조체와 함수 (15/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-15/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-15/</url>
     
@@ -5066,7 +5066,7 @@
   
   
   <entry>
-    <title>14. 구조체와 객체</title>
+    <title>[Think Julia] 구조체와 객체 (14/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-14/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-14/</url>
     
@@ -5099,7 +5099,7 @@
   
   
   <entry>
-    <title>13. 파일</title>
+    <title>[Think Julia] 파일 (13/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-13/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-13/</url>
     
@@ -5132,7 +5132,7 @@
   
   
   <entry>
-    <title>12. 사례 연구 - 데이터 구조 선택</title>
+    <title>[Think Julia] 사례 연구: 데이터 구조 선택 (12/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-12/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-12/</url>
     
@@ -5165,7 +5165,7 @@
   
   
   <entry>
-    <title>11. 튜플</title>
+    <title>[Think Julia] 튜플 (11/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-11/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-11/</url>
     
@@ -5198,7 +5198,7 @@
   
   
   <entry>
-    <title>10. 딕셔너리</title>
+    <title>[Think Julia] 딕셔너리 (10/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-10/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-10/</url>
     
@@ -5231,7 +5231,7 @@
   
   
   <entry>
-    <title>9. 배열</title>
+    <title>[Think Julia] 배열 (9/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-9/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-9/</url>
     
@@ -5309,7 +5309,7 @@
   
   
   <entry>
-    <title>8. 사례 연구 - 워드 플레이</title>
+    <title>[Think Julia] 사례 연구: 워드 플레이 (8/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-8/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-8/</url>
     
@@ -5342,7 +5342,7 @@
   
   
   <entry>
-    <title>7. 문자열</title>
+    <title>[Think Julia] 문자열 (7/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-7/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-7/</url>
     
@@ -5375,7 +5375,7 @@
   
   
   <entry>
-    <title>6. 반복</title>
+    <title>[Think Julia] 반복 (6/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-6/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-6/</url>
     
@@ -5408,7 +5408,7 @@
   
   
   <entry>
-    <title>5. 결과 있는 함수</title>
+    <title>[Think Julia] 결과 있는 함수 (5/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-5/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-5/</url>
     
@@ -5441,7 +5441,7 @@
   
   
   <entry>
-    <title>4. 조건문과 재귀</title>
+    <title>[Think Julia] 조건문과 재귀 (4/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-4/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-4/</url>
     
@@ -5474,7 +5474,7 @@
   
   
   <entry>
-    <title>3. 사례 연구 - 인터페이스 디자인</title>
+    <title>[Think Julia] 사례 연구: 인터페이스 디자인 (3/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-3/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-3/</url>
     
@@ -5507,7 +5507,7 @@
   
   
   <entry>
-    <title>2. 함수</title>
+    <title>[Think Julia] 함수 (2/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-2/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-2/</url>
     
@@ -5540,7 +5540,7 @@
   
   
   <entry>
-    <title>1. 변수, 표현식과 명령문</title>
+    <title>[Think Julia] 변수, 표현식과 명령문 (1/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-1/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-1/</url>
     
@@ -5610,7 +5610,7 @@
   
   
   <entry>
-    <title>0. Why Julia?</title>
+    <title>[Think Julia] Why Julia? (0/20)</title>
     <link href="/ko/ThinkJulia/Think-Julia-Chapter-0/"/>
     <url>/ko/ThinkJulia/Think-Julia-Chapter-0/</url>
     
