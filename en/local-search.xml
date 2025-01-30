@@ -4,7 +4,7 @@
   
   
   <entry>
-    <title>julia-0</title>
+    <title>My Experience Translating 『Julia for Data Analytics』</title>
     <link href="/en/en/Julia/julia-0/"/>
     <url>/en/en/Julia/julia-0/</url>
     
@@ -170,9 +170,9 @@
       
       <tag>BigData</tag>
       
-      <tag>DataMart</tag>
-      
       <tag>DataWarehouse</tag>
+      
+      <tag>DataMart</tag>
       
       <tag>Schema</tag>
       

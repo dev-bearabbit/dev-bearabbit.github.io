@@ -30,8 +30,8 @@
 <meta property="article:published_time" content="2021-04-20T07:45:18.000Z">
 <meta property="article:modified_time" content="2024-12-29T18:38:16.873Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="mariadb">
 <meta property="article:tag" content="sql">
+<meta property="article:tag" content="mariadb">
 <meta property="article:tag" content="mysql">
 <meta property="article:tag" content="DATETIME">
 <meta property="article:tag" content="HOUR">
@@ -346,29 +346,22 @@
             
               <div class="markdown-body">
                 
-                <p>DATETIME 형식의 날짜 데이터에서 일부만 추출하는 방법을 정리합니다. <span id="more"></span></p>
-<hr />
-<h2 id="datetime">DATETIME</h2>
-<p><code>DATETIME</code>은 SQL에서 지정한 날짜 형식이다. 해당 구조는 아래와 같다.</p>
+                <p>DATETIME 형식의 날짜 데이터에서 일부만 추출하는 방법을 정리합니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="DATETIME"><a href="#DATETIME" class="headerlink" title="DATETIME"></a>DATETIME</h2><p><code>DATETIME</code>은 SQL에서 지정한 날짜 형식이다. 해당 구조는 아래와 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-number">2013</span><span class="hljs-number">-12</span><span class="hljs-number">-22</span> <span class="hljs-number">11</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span><br><span class="hljs-number">2017</span><span class="hljs-number">-09</span><span class="hljs-number">-27</span> <span class="hljs-number">19</span>:<span class="hljs-number">09</span>:<span class="hljs-number">00</span><br><span class="hljs-number">2018</span><span class="hljs-number">-02</span><span class="hljs-number">-02</span> <span class="hljs-number">14</span>:<span class="hljs-number">18</span>:<span class="hljs-number">00</span><br><span class="hljs-number">2018</span><span class="hljs-number">-02</span><span class="hljs-number">-02</span> <span class="hljs-number">14</span>:<span class="hljs-number">17</span>:<span class="hljs-number">00</span><br></code></pre></td></tr></table></figure>
-<p>예시에서 확인할 수 있듯이 <code>연도-월-일 시간:분:초</code> 형식으로 셋팅되어 있다. 만약 여기서 시간만 필요하거나 월만 필요하다면 어떻게 쿼리를 해야할까? SQL에서는 원하는 날짜나 시간대를 부분 추출할 수 있는 여러 함수들을 제공한다.</p>
-<h2 id="year-연도">YEAR: 연도</h2>
-<p><code>YEAR</code>은 <code>DATETIME</code>형식에서 연도만 추출하여 출력한다. 문법은 다음과 같다.</p>
+<p>예시에서 확인할 수 있듯이 <code>연도-월-일 시간:분:초</code> 형식으로 셋팅되어 있다. 만약 여기서 시간만 필요하거나 월만 필요하다면 어떻게 쿼리를 해야할까?<br>SQL에서는 원하는 날짜나 시간대를 부분 추출할 수 있는 여러 함수들을 제공한다.</p>
+<h2 id="YEAR-연도"><a href="#YEAR-연도" class="headerlink" title="YEAR: 연도"></a>YEAR: 연도</h2><p><code>YEAR</code>은 <code>DATETIME</code>형식에서 연도만 추출하여 출력한다. 문법은 다음과 같다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">YEAR</span>(DATETIME) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br><span class="hljs-number">2013</span><br><span class="hljs-number">2017</span><br><span class="hljs-number">2018</span><br><span class="hljs-number">2018</span><br><span class="hljs-number">2018</span><br></code></pre></td></tr></table></figure>
-<h2 id="month-월">MONTH: 월</h2>
-<p><code>MONTH</code>은 <code>DATETIME</code>형식에서 월 단위만 추출하여 출력한다.</p>
+<h2 id="MONTH-월"><a href="#MONTH-월" class="headerlink" title="MONTH: 월"></a>MONTH: 월</h2><p><code>MONTH</code>은 <code>DATETIME</code>형식에서 월 단위만 추출하여 출력한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">MONTH</span>(DATETIME) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br><span class="hljs-number">12</span><br><span class="hljs-number">9</span><br><span class="hljs-number">2</span><br><span class="hljs-number">2</span><br><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
-<h2 id="day-일">DAY: 일</h2>
-<p><code>DAY</code>은 <code>DATETIME</code>형식에서 일 단위만 추출하여 출력한다.</p>
+<h2 id="DAY-일"><a href="#DAY-일" class="headerlink" title="DAY: 일"></a>DAY: 일</h2><p><code>DAY</code>은 <code>DATETIME</code>형식에서 일 단위만 추출하여 출력한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DAY</span>(DATETIME) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br><span class="hljs-number">22</span><br><span class="hljs-number">27</span><br><span class="hljs-number">2</span><br><span class="hljs-number">2</span><br><span class="hljs-number">28</span><br></code></pre></td></tr></table></figure>
-<h2 id="hour-시간">HOUR: 시간</h2>
-<p><code>HOUR</code>은 <code>DATETIME</code>형식에서 시간 단위만 추출하여 출력한다.</p>
+<h2 id="HOUR-시간"><a href="#HOUR-시간" class="headerlink" title="HOUR: 시간"></a>HOUR: 시간</h2><p><code>HOUR</code>은 <code>DATETIME</code>형식에서 시간 단위만 추출하여 출력한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">HOUR</span>(DATETIME) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br><span class="hljs-number">11</span><br><span class="hljs-number">19</span><br><span class="hljs-number">14</span><br><span class="hljs-number">14</span><br><span class="hljs-number">17</span><br></code></pre></td></tr></table></figure>
-<h2 id="minute-분">MINUTE: 분</h2>
-<p><code>MINUTE</code>은 <code>DATETIME</code>형식에서 분 단위만 추출하여 출력한다.</p>
+<h2 id="MINUTE-분"><a href="#MINUTE-분" class="headerlink" title="MINUTE: 분"></a>MINUTE: 분</h2><p><code>MINUTE</code>은 <code>DATETIME</code>형식에서 분 단위만 추출하여 출력한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">MINUTE</span>(DATETIME) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br><span class="hljs-number">30</span><br><span class="hljs-number">9</span><br><span class="hljs-number">18</span><br><span class="hljs-number">17</span><br><span class="hljs-number">51</span><br></code></pre></td></tr></table></figure>
-<h2 id="second-초">SECOND: 초</h2>
-<p><code>SECOND</code>은 <code>DATETIME</code>형식에서 초 단위만 추출하여 출력한다.</p>
+<h2 id="SECOND-초"><a href="#SECOND-초" class="headerlink" title="SECOND: 초"></a>SECOND: 초</h2><p><code>SECOND</code>은 <code>DATETIME</code>형식에서 초 단위만 추출하여 출력한다.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">SECOND</span>(DATETIME) <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;테이블 이름&#x27;</span>;<br><span class="hljs-number">0</span><br><span class="hljs-number">0</span><br><span class="hljs-number">0</span><br><span class="hljs-number">0</span><br><span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
 
                 
@@ -410,9 +403,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/mariadb/" class="print-no-link">#mariadb</a>
-      
         <a href="/tags/sql/" class="print-no-link">#sql</a>
+      
+        <a href="/tags/mariadb/" class="print-no-link">#mariadb</a>
       
         <a href="/tags/mysql/" class="print-no-link">#mysql</a>
       

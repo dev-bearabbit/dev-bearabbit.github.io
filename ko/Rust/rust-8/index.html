@@ -258,7 +258,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          401 words
+          399 words
         
       </span>
     
@@ -351,63 +351,52 @@
             
               <div class="markdown-body">
                 
-                <p>러스트 print 매크로 사용하는 경우의 성능에 대해서 정리합니다. <span id="more"></span></p>
-<h2 id="문제-발생-시점">문제 발생 시점</h2>
-<p>러스트로 <a target="_blank" rel="noopener" href="https://www.acmicpc.net/problem/1914">백준의 하노이 탑 문제</a>를 풀고 있었다. 이미 해당 문제는 파이썬으로 풀었기에 로직 변화 없이 러스트 코드로 컨버팅했다. 하지만 계속 채점률 40%에서 시간 초과 오류가 발생했다. 시간 초과가 발생하는 코드는 아래와 같다.</p>
+                <p>러스트 print 매크로 사용하는 경우의 성능에 대해서 정리합니다.<br><span id="more"></span></p>
+<h2 id="문제-발생-시점"><a href="#문제-발생-시점" class="headerlink" title="문제 발생 시점"></a>문제 발생 시점</h2><p>러스트로 <a target="_blank" rel="noopener" href="https://www.acmicpc.net/problem/1914">백준의 하노이 탑 문제</a>를 풀고 있었다. 이미 해당 문제는 파이썬으로 풀었기에 로직 변화 없이 러스트 코드로 컨버팅했다. 하지만 계속 채점률 40%에서 시간 초과 오류가 발생했다. 시간 초과가 발생하는 코드는 아래와 같다.</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::io;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">num</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    io::<span class="hljs-title function_ invoke__">stdin</span>().<span class="hljs-title function_ invoke__">read_line</span>(&amp;<span class="hljs-keyword">mut</span> num).<span class="hljs-title function_ invoke__">unwrap</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">n</span>:<span class="hljs-type">u32</span> = num.<span class="hljs-title function_ invoke__">trim</span>().<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;숫자가 아닙니다.&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">start</span>:<span class="hljs-type">u32</span> = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">dest</span>:<span class="hljs-type">u32</span> = <span class="hljs-number">3</span>;<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt; n &amp;&amp; n &lt;= <span class="hljs-number">20</span> &#123;<br>        <span class="hljs-title function_ invoke__">count_move</span>(n);<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n, start, dest);<br>    &#125;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-title function_ invoke__">count_move</span>(n);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">count_move</span>(n: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">count</span> = <span class="hljs-type">i128</span>::<span class="hljs-title function_ invoke__">pow</span>(<span class="hljs-number">2</span>,n);<br>    <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125;\n&quot;</span>,count-<span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">hanoi</span>(n: <span class="hljs-type">u32</span>, start: <span class="hljs-type">u32</span>, dest: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, start, <span class="hljs-number">6</span>-start-dest);<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest);<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, <span class="hljs-number">6</span>-start-dest, dest);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>위 코드의 로직이 궁금한 사람은 <a href="https://dev-bearabbit.github.io/2022/03/08/Algorithms/Algorithms-2/">이 글</a>에서 확인할 수 있다.</p>
-<h2 id="원인-분석">원인 분석</h2>
-<p>처음에는 로직에 문제가 있었나 했지만 파이썬 코드로는 채점 통과하는 것을 확인하니 이 부분은 문제가 아닐 것 같아 배제하고 다른 원인을 찾아보았다. 그러다가 아래와 같은 글을 발견하였다.</p>
+<h2 id="원인-분석"><a href="#원인-분석" class="headerlink" title="원인 분석"></a>원인 분석</h2><p>처음에는 로직에 문제가 있었나 했지만 파이썬 코드로는 채점 통과하는 것을 확인하니 이 부분은 문제가 아닐 것 같아 배제하고 다른 원인을 찾아보았다.<br>그러다가 아래와 같은 글을 발견하였다.</p>
 <blockquote>
-<p>아 출력 병목이었습니다.<br />
-rust 쓰시는 분들 조심하세요.<br />
-println!이나 print! 호출이 100000단위가 넘어가면 무조건 병목 생깁니다.<br />
-병목 해결 소스도 같이 올려요~<br />
-https://www.acmicpc.net/board/view/43948</p>
+<p>아 출력 병목이었습니다.<br>rust 쓰시는 분들 조심하세요.<br>println!이나 print! 호출이 100000단위가 넘어가면 무조건 병목 생깁니다.<br>병목 해결 소스도 같이 올려요~<br><a target="_blank" rel="noopener" href="https://www.acmicpc.net/board/view/43948">https://www.acmicpc.net/board/view/43948</a>  </p>
 </blockquote>
-<p>위 코드는 원판이 20개 이하라면 이동 과정을 모두 출력하는데, 원판 20개일 때 출력해야 하는 개수는 <span class="math inline">\(2^{20}-1\)</span>의 결과인 1048575개이다. 그래서 채점 중간에 시간초과로 결과가 나오는 것 같았다. 그렇다면 러스트는 왜 <code>println!</code>, <code>print!</code>를 일정 이상 사용하면 병목현상이 발생하는 것인가? 이에 대해 reddit에서 관련 내용들을 찾아보았다.</p>
+<p>위 코드는 원판이 20개 이하라면 이동 과정을 모두 출력하는데, 원판 20개일 때 출력해야 하는 개수는 $2^{20}-1$의 결과인 1048575개이다. 그래서 채점 중간에 시간초과로 결과가 나오는 것 같았다. 그렇다면 러스트는 왜 <code>println!</code>, <code>print!</code>를 일정 이상 사용하면 병목현상이 발생하는 것인가?<br>이에 대해 reddit에서 관련 내용들을 찾아보았다.</p>
 <blockquote>
-<p>I would guess the explanation is output buffering. By default, Python will buffer multiple lines before writing them to stdout, which Rust does not. Try running the Python script with a -u flag and see what happens.<br />
-https://www.reddit.com/r/rust/comments/qiyqlo/fizzbuzz_in_rust_is_slower_than_python/</p>
+<p>I would guess the explanation is output buffering. By default, Python will buffer multiple lines before writing them to stdout, which Rust does not. Try running the Python script with a -u flag and see what happens.<br><a target="_blank" rel="noopener" href="https://www.reddit.com/r/rust/comments/qiyqlo/fizzbuzz_in_rust_is_slower_than_python/">https://www.reddit.com/r/rust/comments/qiyqlo/fizzbuzz_in_rust_is_slower_than_python/</a></p>
 </blockquote>
 <p>사실인지는 확실하지 않지만 이를 통해 파이썬에서는 작동이 되고 러스트에서는 안되는 이유를 유추해볼 수 있을 것 같다. 파이썬은 여러 줄을 버퍼링해서 출력하지만 러스트는 매크로가 작동될 때마다 출력한다는 것이다. 당연히 출력이 여러 번 발생하면 rust가 모니터로 출력할 데이터를 전송해야 하기에 더 많은 시간이 소요될 수밖에 없다. 따라서 위와 같은 로직을 구현할 때는 버퍼를 사용하여 출력해야 할 자료들을 메모리에 올려놨다가 한번에 출력하는게 훨씬 빠를 수 있다는 것이다.</p>
-<h2 id="코드-분석">코드 분석</h2>
-<p>아래의 코드는 채점을 통과한 코드이다.</p>
+<h2 id="코드-분석"><a href="#코드-분석" class="headerlink" title="코드 분석"></a>코드 분석</h2><p>아래의 코드는 채점을 통과한 코드이다.</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::io;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">num</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    io::<span class="hljs-title function_ invoke__">stdin</span>().<span class="hljs-title function_ invoke__">read_line</span>(&amp;<span class="hljs-keyword">mut</span> num).<span class="hljs-title function_ invoke__">unwrap</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">n</span>:<span class="hljs-type">u32</span> = num.<span class="hljs-title function_ invoke__">trim</span>().<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;숫자가 아닙니다.&quot;</span>);<br>    <span class="hljs-title function_ invoke__">count_move</span>(n);<br><br>    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">21</span> &#123;<br>        <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">list</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, &amp;<span class="hljs-keyword">mut</span> list);<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, list);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">count_move</span>(n: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">count</span> = <span class="hljs-type">i128</span>::<span class="hljs-title function_ invoke__">pow</span>(<span class="hljs-number">2</span>,n);<br>    <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125;\n&quot;</span>,count-<span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">hanoi</span>(n: <span class="hljs-type">u32</span>, start: <span class="hljs-type">u32</span>, dest: <span class="hljs-type">u32</span>, list: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">String</span>) &#123;<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> &#123;<br>        list.<span class="hljs-title function_ invoke__">push_str</span>(&amp;<span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest));<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, start, <span class="hljs-number">6</span>-start-dest, list);<br>        list.<span class="hljs-title function_ invoke__">push_str</span>(&amp;<span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest));<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, <span class="hljs-number">6</span>-start-dest, dest, list);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>에러가 발생한 코드와의 차이점은 재귀함수에 <code>println!</code>, <code>print!</code> 명령어를 없앴다는 것이다. 코드를 자세히 뜯어보면 <code>main()</code>에서 list라는 빈 문자열을 만들고 출력해야 할 문자열을 list에 저장하였다. 그리고 재귀가 끝나면 한번에 출력하였다.</p>
-<h2 id="python과-성능-비교">Python과 성능 비교</h2>
-<p>이제 러스트의 성능을 확인해보기 위해서 동일한 로직으로 작성한 파이썬 코드와 비교해보자. 먼저 위 코드를 백준에서 채점하면 아래와 같다.</p>
-<figure>
-<img src="/images/158.png" srcset="/img/loading.gif" lazyload alt="rust" /><figcaption aria-hidden="true">rust</figcaption>
-</figure>
-<p>다음으로는 파이썬 코드를 채점해보자. 아래 코드는 비교를 위해 사용한 파이썬 코드이다.</p>
+<p>에러가 발생한 코드와의 차이점은 재귀함수에 <code>println!</code>, <code>print!</code> 명령어를 없앴다는 것이다.<br>코드를 자세히 뜯어보면 <code>main()</code>에서 list라는 빈 문자열을 만들고 출력해야 할 문자열을 list에 저장하였다. 그리고 재귀가 끝나면 한번에 출력하였다.</p>
+<h2 id="Python과-성능-비교"><a href="#Python과-성능-비교" class="headerlink" title="Python과 성능 비교"></a>Python과 성능 비교</h2><p>이제 러스트의 성능을 확인해보기 위해서 동일한 로직으로 작성한 파이썬 코드와 비교해보자.<br>먼저 위 코드를 백준에서 채점하면 아래와 같다.</p>
+<p><img src="/images/158.png" srcset="/img/loading.gif" lazyload alt="rust"></p>
+<p>다음으로는 파이썬 코드를 채점해보자.<br>아래 코드는 비교를 위해 사용한 파이썬 코드이다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_func</span>(<span class="hljs-params">n, _<span class="hljs-keyword">from</span>, _to</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:<br>        path.append([_<span class="hljs-keyword">from</span>,_to])<br>    <span class="hljs-keyword">else</span>:<br>        hanoi_func(n-<span class="hljs-number">1</span>,_<span class="hljs-keyword">from</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to))<br>        path.append([_<span class="hljs-keyword">from</span>,_to])<br>        hanoi_func(n-<span class="hljs-number">1</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to),_to)<br>        <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_num_func</span>(<span class="hljs-params">n</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>**n -<span class="hljs-number">1</span><br><br>n = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>())<br><br><span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">21</span>:<br>    <span class="hljs-built_in">print</span>(hanoi_num_func(n))<br>    path = []<br>    hanoi_func(n,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">for</span> a,b <span class="hljs-keyword">in</span> path:<br>        <span class="hljs-built_in">print</span>(a, end=<span class="hljs-string">&quot; &quot;</span>)<br>        <span class="hljs-built_in">print</span>(b)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(hanoi_num_func(n))<br></code></pre></td></tr></table></figure>
 <p>백준에서 파이썬 코드로 채점한 결과는 아래와 같다.</p>
-<figure>
-<img src="/images/157.png" srcset="/img/loading.gif" lazyload alt="python" /><figcaption aria-hidden="true">python</figcaption>
-</figure>
+<p><img src="/images/157.png" srcset="/img/loading.gif" lazyload alt="python"></p>
 <p>확실히 똑같은 로직이라도 러스트가 리소스를 덜 사용하는 것을 알 수 있다.</p>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>언어</th>
 <th>메모리</th>
 <th>소요시간</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>python</td>
 <td>122052 KB</td>
 <td>1812 ms</td>
 </tr>
-<tr class="even">
+<tr>
 <td>rust</td>
 <td>20340 KB</td>
 <td>120 ms</td>
 </tr>
 </tbody>
 </table>
+</div>
 
                 
               </div>

@@ -342,9 +342,8 @@
             
               <div class="markdown-body">
                 
-                <p>하노이 탑 문제를 재귀 알고리즘으로 해결합니다. <span id="more"></span></p>
-<h2 id="하노이-탑-문제">하노이 탑 문제</h2>
-<p>하노이 탑은 3개의 기둥에서 원판을 옮기는 과정을 찾는 문제이다. 아래의 글은 <a target="_blank" rel="noopener" href="https://www.acmicpc.net/problem/1914">백준의 하노이 탑 문제</a>의 설명을 가져온 것이다.</p>
+                <p>하노이 탑 문제를 재귀 알고리즘으로 해결합니다.<br><span id="more"></span></p>
+<h2 id="하노이-탑-문제"><a href="#하노이-탑-문제" class="headerlink" title="하노이 탑 문제"></a>하노이 탑 문제</h2><p>하노이 탑은 3개의 기둥에서 원판을 옮기는 과정을 찾는 문제이다. 아래의 글은 <a target="_blank" rel="noopener" href="https://www.acmicpc.net/problem/1914">백준의 하노이 탑 문제</a>의 설명을 가져온 것이다.</p>
 <blockquote>
 <p>세 개의 장대가 있고 첫 번째 장대에는 반경이 서로 다른 n개의 원판이 쌓여 있다. 각 원판은 반경이 큰 순서대로 쌓여있다. 이제 수도승들이 다음 규칙에 따라 첫 번째 장대에서 세 번째 장대로 옮기려 한다.</p>
 <ul>
@@ -354,8 +353,7 @@
 </ul>
 </blockquote>
 <p>이제 문제를 분석해보자.</p>
-<h3 id="문제-분석">문제 분석</h3>
-<p>하노이 탑 문제에서는 기둥이 3개로 제한된다. 처음에는 C 원판을 3기둥으로 옮겨야 하는데 이를 위해서는 위에 있던 나머지 원판들을 모두 2기둥에 옮겨야 한다. 결국 원판을 목적지까지 옮기면 아래처럼 정리된다.</p>
+<h3 id="문제-분석"><a href="#문제-분석" class="headerlink" title="문제 분석"></a>문제 분석</h3><p>하노이 탑 문제에서는 기둥이 3개로 제한된다. 처음에는 C 원판을 3기둥으로 옮겨야 하는데 이를 위해서는 위에 있던 나머지 원판들을 모두 2기둥에 옮겨야 한다. 결국 원판을 목적지까지 옮기면 아래처럼 정리된다.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">A ║─  ║   ║   ║       ║   ║   ║   ║       ║   ║   ║   ║       ║   ║   ║   ║       ║   ║   ║   ║    <br>B ║── ║   ║   ║   -&gt;  ║── ║   ║   ║   -&gt;  ║   ║   ║   ║   -&gt;  ║   ║─  ║   ║   -&gt;  ║   ║─  ║   ║ <br>C ║───║   ║   ║       ║───║   ║─  ║       ║───║── ║─  ║       ║───║── ║   ║       ║   ║── ║───║<br>    1   2   3 <br></code></pre></td></tr></table></figure>
 <ul>
 <li>C원판은 B원판이 보관 기둥인 2에 먼저 도착한 후에 도착 기둥인 3으로 이동할 수 있다.</li>
@@ -375,7 +373,7 @@
 <li>B원판이 도착했으므로 A원판도 도착 기둥인 3으로 이동한다.</li>
 <li>원판이 하나만 남았을 경우에는 보관이 필요 없이 바로 이동할 수 있다.</li>
 </ul>
-<p>이런 구조는 A원판을 제외한 원판마다 출발 -&gt; 경유, 경유 -&gt; 도착 형태의 동일 로직을 사용하고 있음을 보여준다. 또한 각 원판들이 모두 바로 위에 있는 원판의 이동 후에 움직일 수 있다는 규칙도 찾을 수 있다. 이를 로직으로 표현해보자.</p>
+<p>이런 구조는 A원판을 제외한 원판마다 출발 -&gt; 경유, 경유 -&gt; 도착 형태의 동일 로직을 사용하고 있음을 보여준다.<br>또한 각 원판들이 모두 바로 위에 있는 원판의 이동 후에 움직일 수 있다는 규칙도 찾을 수 있다.<br>이를 로직으로 표현해보자.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">1. C(1 -&gt; 3) --- B(1 -&gt; 2) --- 이동(A(1 -&gt; 3))<br>2.          |             |   이동(B(1 -&gt; 2))<br>3.          |              --- 이동(A(3 -&gt; 2))<br>4.          |    이동(C(1 -&gt; 3))<br>5.           --- B(2 -&gt; 3) --- 이동(A(2 -&gt; 1))<br>6.                        |    이동(B(2 -&gt; 3))<br>7.                         --- 이동(A(1 -&gt; 3))<br></code></pre></td></tr></table></figure>
 <p>결론적으로 하노이 문제에서 핵심은 크게 3가지로 나눠볼 수 있다.</p>
 <ul>
@@ -384,22 +382,19 @@
 <li>워에 있던 원판을 다시 가져오자.</li>
 </ul>
 <p>이제 위 로직을 코드로 작성해보자.</p>
-<h2 id="파이썬-코드">파이썬 코드</h2>
-<p>아래 함수는 원판의 개수와 출발 기둥, 도착 기둥을 인자 값으로 넣어주면 원판들의 이동 과정을 출력한다.</p>
+<h2 id="파이썬-코드"><a href="#파이썬-코드" class="headerlink" title="파이썬 코드"></a>파이썬 코드</h2><p>아래 함수는 원판의 개수와 출발 기둥, 도착 기둥을 인자 값으로 넣어주면 원판들의 이동 과정을 출력한다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_func</span>(<span class="hljs-params">n, _<span class="hljs-keyword">from</span>, _to</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(_<span class="hljs-keyword">from</span>)+<span class="hljs-string">&quot; &quot;</span>+<span class="hljs-built_in">str</span>(_to))<br>    <span class="hljs-keyword">else</span>:<br>        hanoi_func(n-<span class="hljs-number">1</span>,_<span class="hljs-keyword">from</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(_<span class="hljs-keyword">from</span>)+<span class="hljs-string">&quot; &quot;</span>+<span class="hljs-built_in">str</span>(_to))<br>        hanoi_func(n-<span class="hljs-number">1</span>,<span class="hljs-number">6</span>-(_<span class="hljs-keyword">from</span>+_to),_to)<br></code></pre></td></tr></table></figure>
-<p>원판이 1인 경우에는 위에 다른 원판이 없기 때문에 나만 옮겨지면 된다. 그래서 if문으로 예외를 두었다. 나머지의 경우 이전 원판(n-1)을 보관 기둥으로 옮겨주는 과정과 보관 기둥에서 도착 기둥으로 가는 과정을 재귀로 작성하였다. 보관 기둥을 구하는 식은 <code>6-출발기둥-도착기둥</code>인데 그 이유는 간단하다. 기둥이 3개로 한정되어 있고 1+2+3에서 각 기둥을 빼주면 남는 숫자가 보관 기둥이 되기 때문이다.</p>
-<p>위 코드는 이동 순서들을 모두 보여주기 때문에 이해하기는 쉽지만, 원판의 개수가 많아질수록 성능이 떨어질 것이다. 만약 이동 순서가 필요없다면 이동 횟수만 수학식으로 구할 수는 없을까?</p>
-<p>다행히도 있다. 위에서 찾았던 패턴을 바탕으로 일반항을 구할 수 있다. 어떤 원반의 도착할 때까지의 이동 횟수를 구하려면 다음의 과정이 필요하다.</p>
+<p>원판이 1인 경우에는 위에 다른 원판이 없기 때문에 나만 옮겨지면 된다. 그래서 if문으로 예외를 두었다.<br>나머지의 경우 이전 원판(n-1)을 보관 기둥으로 옮겨주는 과정과 보관 기둥에서 도착 기둥으로 가는 과정을 재귀로 작성하였다.<br>보관 기둥을 구하는 식은 <code>6-출발기둥-도착기둥</code>인데 그 이유는 간단하다. 기둥이 3개로 한정되어 있고 1+2+3에서 각 기둥을 빼주면 남는 숫자가 보관 기둥이 되기 때문이다.</p>
+<p>위 코드는 이동 순서들을 모두 보여주기 때문에 이해하기는 쉽지만, 원판의 개수가 많아질수록 성능이 떨어질 것이다.<br>만약 이동 순서가 필요없다면 이동 횟수만 수학식으로 구할 수는 없을까?</p>
+<p>다행히도 있다. 위에서 찾았던 패턴을 바탕으로 일반항을 구할 수 있다.<br>어떤 원반의 도착할 때까지의 이동 횟수를 구하려면 다음의 과정이 필요하다.</p>
 <ul>
-<li><span class="math inline">\(a_{n-1}\)</span>: 위(n-1)에 있는 원반이 보관 기둥으로 이동하는 것</li>
-<li><span class="math inline">\(+1\)</span>: 해당 원반이 도착 기둥으로 이동하는 것</li>
-<li><span class="math inline">\(a_{n-1}\)</span>: 위(n-1)에 있는 원반이 도착 기둥으로 이동하는 것</li>
+<li>$a_{n-1}$: 위(n-1)에 있는 원반이 보관 기둥으로 이동하는 것</li>
+<li>$+1$: 해당 원반이 도착 기둥으로 이동하는 것</li>
+<li>$a_{n-1}$: 위(n-1)에 있는 원반이 도착 기둥으로 이동하는 것</li>
 </ul>
 <p>이를 정리하면 아래의 식이 도출된다.</p>
-<p><span class="math display">\[a_n = 2a_{n-1}+1\]</span></p>
-<p>위 수식을 정리해서 일반항을 구해보자.</p>
-<p><span class="math display">\[a_n+1 = 2(a_{n-1}+1) = 2^{n-1}(a_1+1)\]</span> <span class="math display">\[a_1 = 1 이므로\]</span> <span class="math display">\[a_n+1 = 2^{n}\]</span> <span class="math display">\[a_n = 2^{n}-1\]</span></p>
-<p>이를 파이썬 코드로 작성하면 아래와 같다.</p>
+<script type="math/tex; mode=display">a_n = 2a_{n-1}+1</script><p>위 수식을 정리해서 일반항을 구해보자.</p>
+<script type="math/tex; mode=display">a_n+1 = 2(a_{n-1}+1) = 2^{n-1}(a_1+1)</script><script type="math/tex; mode=display">a_1 = 1 이므로</script><script type="math/tex; mode=display">a_n+1 = 2^{n}</script><script type="math/tex; mode=display">a_n = 2^{n}-1</script><p>이를 파이썬 코드로 작성하면 아래와 같다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hanoi_num_func</span>(<span class="hljs-params">n</span>):<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>**n - <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 
                 

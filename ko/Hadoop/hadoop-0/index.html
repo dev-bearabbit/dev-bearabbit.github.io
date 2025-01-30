@@ -39,12 +39,12 @@
 <meta property="article:modified_time" content="2024-12-29T18:35:38.278Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="Docker">
+<meta property="article:tag" content="빅데이터">
+<meta property="article:tag" content="bigdata">
 <meta property="article:tag" content="raspberrypi">
 <meta property="article:tag" content="cluster">
 <meta property="article:tag" content="하둡">
 <meta property="article:tag" content="스파크">
-<meta property="article:tag" content="빅데이터">
-<meta property="article:tag" content="bigdata">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dev-bearabbit.github.io/images/96.jpg">
   
@@ -261,7 +261,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          95 words
+          88 words
         
       </span>
     
@@ -354,43 +354,24 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다. <span id="more"></span></p>
-<hr />
-<h2 id="introduction">Introduction</h2>
-<p>이제는 대부분의 데이터가 '빅데이터'라고 불리는 만큼 그 용량이 매우 크며, 이런 데이터들을 전부 저장하고 불러오기 위해서는 정말 좋은 컴퓨터 사양이 필요하다. 하지만 컴퓨터는 고성능일수록 가격이 가파르게 상승한다. 그렇다면 데이터를 다루기 위해 모든 사람들이 슈퍼컴퓨터를 살 필요가 있을까? 오히려 적당한 컴퓨터 여러 개를 붙여서 하나처럼 사용할 수 있다면 훨씬 저렴하게 빅데이터를 다룰 수 있을 것이다. 이처럼 여러 개의 컴퓨터를 연결하여 하나의 좋은 컴퓨터처럼 사용하는 시스템을 클러스터(Cluster)라고 한다. 해당 프로젝트에서는 라즈베리 파이4 3개를 연결하여 클러스터링하는 과정들을 공부하고, 이를 기록하는 데 목적이 있다. 라즈베리 파이 3개를 연결한 모습은 다음과 같다.</p>
-<figure>
-<img src="/images/96.jpg" srcset="/img/loading.gif" lazyload alt="rasp1" /><figcaption aria-hidden="true">rasp1</figcaption>
-</figure>
-<h2 id="라즈베리-파이4-키트">라즈베리 파이4 키트</h2>
-<p>라즈베리 파이는 영국의 라즈베리 파이 재단에서 생성하는 초소형, 최저가 컴퓨터이다. 라즈베리 파이를 구매하면 간단한 개발 보드의 형태로 배송되며, 키트로 구매할 시 설명서와 키보스, 마우스 등을 포함하여 제공한다. 이번엔 EU 2020년 기준 최신 모델인 라즈베리 파이4를 키트로 구매하였다. 라즈베리 파이4 언박싱을 시작해보자.</p>
-<figure>
-<img src="/images/97.jpg" srcset="/img/loading.gif" lazyload alt="rasp2" /><figcaption aria-hidden="true">rasp2</figcaption>
-</figure>
+                <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>이제는 대부분의 데이터가 ‘빅데이터’라고 불리는 만큼 그 용량이 매우 크며, 이런 데이터들을 전부 저장하고 불러오기 위해서는 정말 좋은 컴퓨터 사양이 필요하다. 하지만 컴퓨터는 고성능일수록 가격이 가파르게 상승한다. 그렇다면 데이터를 다루기 위해 모든 사람들이 슈퍼컴퓨터를 살 필요가 있을까? 오히려 적당한 컴퓨터 여러 개를 붙여서 하나처럼 사용할 수 있다면 훨씬 저렴하게 빅데이터를 다룰 수 있을 것이다. 이처럼 여러 개의 컴퓨터를 연결하여 하나의 좋은 컴퓨터처럼 사용하는 시스템을 클러스터(Cluster)라고 한다. 해당 프로젝트에서는 라즈베리 파이4 3개를 연결하여 클러스터링하는 과정들을 공부하고, 이를 기록하는 데 목적이 있다. 라즈베리 파이 3개를 연결한 모습은 다음과 같다.</p>
+<p><img src="/images/96.jpg" srcset="/img/loading.gif" lazyload alt="rasp1"></p>
+<h2 id="라즈베리-파이4-키트"><a href="#라즈베리-파이4-키트" class="headerlink" title="라즈베리 파이4 키트"></a>라즈베리 파이4 키트</h2><p>라즈베리 파이는 영국의 라즈베리 파이 재단에서 생성하는 초소형, 최저가 컴퓨터이다. 라즈베리 파이를 구매하면 간단한 개발 보드의 형태로 배송되며, 키트로 구매할 시 설명서와 키보스, 마우스 등을 포함하여 제공한다. 이번엔 EU 2020년 기준 최신 모델인 라즈베리 파이4를 키트로 구매하였다. 라즈베리 파이4 언박싱을 시작해보자.</p>
+<p><img src="/images/97.jpg" srcset="/img/loading.gif" lazyload alt="rasp2"></p>
 <p>위 사진은 키트 박스이다. 해당 박스 한쪽 면에는 키트 구성품들을 설명하고 있다.</p>
-<figure>
-<img src="/images/98.jpg" srcset="/img/loading.gif" lazyload alt="rasp3" /><figcaption aria-hidden="true">rasp3</figcaption>
-</figure>
+<p><img src="/images/98.jpg" srcset="/img/loading.gif" lazyload alt="rasp3"></p>
 <p>박스를 처음 개봉하면 구성품들이 깔끔하게 패키징되어 있다. 아래 사진의 중간에 있는 케이스 안에 라즈베리 파이4가 들어 있다.</p>
-<figure>
-<img src="/images/99.jpg" srcset="/img/loading.gif" lazyload alt="rasp4" /><figcaption aria-hidden="true">rasp4</figcaption>
-</figure>
+<p><img src="/images/99.jpg" srcset="/img/loading.gif" lazyload alt="rasp4"></p>
 <p>아래의 사진은 모든 구성품들을 꺼낸 것이다. 키트에는 라즈베리 파이 공식 설명서도 포함되어 있다. 포장지가 참 귀엽다.</p>
-<figure>
-<img src="/images/100.jpg" srcset="/img/loading.gif" lazyload alt="rasp5" /><figcaption aria-hidden="true">rasp5</figcaption>
-</figure>
-<p>이번에 키트를 구매하면서 사실 키보드와 마우스는 별 기대 안했는데 생각보다 컬러도 예쁘고 퀄리티도 괜찮았다. 아래 사진은 구성품들을 모두 꺼낸 모습이다.</p>
-<figure>
-<img src="/images/101.jpg" srcset="/img/loading.gif" lazyload alt="rasp6" /><figcaption aria-hidden="true">rasp6</figcaption>
-</figure>
+<p><img src="/images/100.jpg" srcset="/img/loading.gif" lazyload alt="rasp5"></p>
+<p>이번에 키트를 구매하면서 사실  키보드와 마우스는 별 기대 안했는데 생각보다 컬러도 예쁘고 퀄리티도 괜찮았다. 아래 사진은 구성품들을 모두 꺼낸 모습이다.</p>
+<p><img src="/images/101.jpg" srcset="/img/loading.gif" lazyload alt="rasp6"></p>
 <p>SD 메모리 카드도 깔끔하게 포장되어 왔다. 안의 메모리 카드를 확인해보면 16GB 이다.</p>
-<figure>
-<img src="/images/102.jpg" srcset="/img/loading.gif" lazyload alt="rasp7" /><figcaption aria-hidden="true">rasp7</figcaption>
-</figure>
-<h2 id="라즈베리-파이4-3개-연결">라즈베리 파이4 3개 연결</h2>
-<p>라즈베리 파이들을 연결하기 위해서는 몇 가지의 준비물이 필요하다. 바로 PoE 스위칭 허브와 PoE 랜선이다. PoE란 Power over Ethernet의 약자로 한 개의 랜선이 전원과 데이터 송신을 모두 공급하는 기술을 말한다. 기본적으로 컴퓨터는 전기를 공급받는 전원선과 네트워크를 연결하여 데이터를 받는 랜선 2가지가 필요하다. 따라서 여러 개의 컴퓨터를 동시에 연결해야 하는 경우, 각 컴퓨터 당 최소 2개의 선이 발생하고 전원 어댑터를 연결할 콘센트도 컴퓨터 갯수만큼 필요하다. 한마디로 정신없다. 이럴 때 PoE 기술이 포함된 랜선과 스위칭 허브를 사용하면 선 하나로 깔끔하게 정리할 수 있다. 또한 멀티 콘센트도 필요 없다. 이런 방법은 연결할 컴퓨터의 갯수가 많을수록 더욱 의미있다. 라즈베리 파이 3개를 스위칭 허브와 연결한 모습은 아래와 같다.</p>
-<figure>
-<img src="/images/103.jpg" srcset="/img/loading.gif" lazyload alt="rasp8" /><figcaption aria-hidden="true">rasp8</figcaption>
-</figure>
+<p><img src="/images/102.jpg" srcset="/img/loading.gif" lazyload alt="rasp7"></p>
+<h2 id="라즈베리-파이4-3개-연결"><a href="#라즈베리-파이4-3개-연결" class="headerlink" title="라즈베리 파이4 3개 연결"></a>라즈베리 파이4 3개 연결</h2><p>라즈베리 파이들을 연결하기 위해서는 몇 가지의 준비물이 필요하다. 바로 PoE 스위칭 허브와 PoE 랜선이다. PoE란 Power over Ethernet의 약자로 한 개의 랜선이 전원과 데이터 송신을 모두 공급하는 기술을 말한다. 기본적으로 컴퓨터는 전기를 공급받는 전원선과 네트워크를 연결하여 데이터를 받는 랜선 2가지가 필요하다. 따라서 여러 개의 컴퓨터를 동시에 연결해야 하는 경우, 각 컴퓨터 당 최소 2개의 선이 발생하고 전원 어댑터를 연결할 콘센트도 컴퓨터 갯수만큼 필요하다. 한마디로 정신없다. 이럴 때 PoE 기술이 포함된 랜선과 스위칭 허브를 사용하면 선 하나로 깔끔하게 정리할 수 있다. 또한 멀티 콘센트도 필요 없다. 이런 방법은 연결할 컴퓨터의 갯수가 많을수록 더욱 의미있다. 라즈베리 파이 3개를 스위칭 허브와 연결한 모습은 아래와 같다.</p>
+<p><img src="/images/103.jpg" srcset="/img/loading.gif" lazyload alt="rasp8"></p>
 <p>지금까지 라즈베리 파이4를 살펴보았다. 다음 글에서는 라즈베리 파이의 초기 환경설정에 대해서 살펴볼 것이다.</p>
 
                 
@@ -434,6 +415,10 @@
       
         <a href="/tags/docker/" class="print-no-link">#Docker</a>
       
+        <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" class="print-no-link">#빅데이터</a>
+      
+        <a href="/tags/bigdata/" class="print-no-link">#bigdata</a>
+      
         <a href="/tags/raspberrypi/" class="print-no-link">#raspberrypi</a>
       
         <a href="/tags/cluster/" class="print-no-link">#cluster</a>
@@ -441,10 +426,6 @@
         <a href="/tags/%ED%95%98%EB%91%A1/" class="print-no-link">#하둡</a>
       
         <a href="/tags/%EC%8A%A4%ED%8C%8C%ED%81%AC/" class="print-no-link">#스파크</a>
-      
-        <a href="/tags/%EB%B9%85%EB%8D%B0%EC%9D%B4%ED%84%B0/" class="print-no-link">#빅데이터</a>
-      
-        <a href="/tags/bigdata/" class="print-no-link">#bigdata</a>
       
     </div>
   

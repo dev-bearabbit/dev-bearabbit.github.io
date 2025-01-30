@@ -263,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          98 words
+          87 words
         
       </span>
     
@@ -356,62 +356,31 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다. <span id="more"></span></p>
+                <p>해당 시리즈는 엔지니어의 Resume를 생성하는 과정을 공유합니다.<br><span id="more"></span></p>
 <p>섹션을 어떻게 나눌지는 <a href="https://dev-bearabbit.github.io/2021/11/12/Resume/resume-1/">이전 글</a>에서 다뤘다. 이제 각 섹션 별로 어떻게 내용을 작성할지 고민해보자.</p>
-<h2 id="상단-바">상단 바</h2>
-<p>상단 바에는 크게 페이지 타이틀, 섹션, 언어 선택을 포함시켰다. 타이틀의 경우 블로그 이름과 동일하게 사용하였으며, 섹션 버튼은 누르면 바로 해당 자료가 있는 곳으로 이동할 수 있게 설정하였다. 마지막으로 언어 선택은 Bootstrap의 선택 폼을 사용하여 추가하였다.</p>
-<figure>
-<img src="/images/139.png" srcset="/img/loading.gif" lazyload alt="intro1" /><figcaption aria-hidden="true">intro1</figcaption>
-</figure>
+<h2 id="상단-바"><a href="#상단-바" class="headerlink" title="상단 바"></a>상단 바</h2><p>상단 바에는 크게 페이지 타이틀, 섹션, 언어 선택을 포함시켰다. 타이틀의 경우 블로그 이름과 동일하게 사용하였으며, 섹션 버튼은 누르면 바로 해당 자료가 있는 곳으로 이동할 수 있게 설정하였다. 마지막으로 언어 선택은 Bootstrap의 선택 폼을 사용하여 추가하였다.</p>
+<p><img src="/images/139.png" srcset="/img/loading.gif" lazyload alt="intro1"></p>
 <p>위 사진은 완성된 상단 바의 모습니다. 해당 폼에 대한 자세한 내용은 <a target="_blank" rel="noopener" href="https://getbootstrap.com/docs/5.1/forms/select/">문서</a>에서 찾아볼 수 있다. 스크롤을 클릭하면 아래의 사진처럼 선택할 수 있는 언어가 나열된다.</p>
-<figure>
-<img src="/images/138.png" srcset="/img/loading.gif" lazyload alt="intro0" /><figcaption aria-hidden="true">intro0</figcaption>
-</figure>
+<p><img src="/images/138.png" srcset="/img/loading.gif" lazyload alt="intro0"></p>
 <p>이 중 언어를 하나 선택하면 해당 언어로 된 Resume 페이지로 이동한다.</p>
-<h2 id="헤더">헤더</h2>
-<p>헤더는 가장 윗 부분에 위치한 섹션이다. 여기에는 블로그와 동일한 백그라운드를 사용하였으며, 이름과 현재 하고 있는 일과 엔지니어로서의 가지고 있는 가치관을 짧게 한줄로 적어두었다.</p>
-<figure>
-<img src="/images/130.png" srcset="/img/loading.gif" lazyload alt="resume1" /><figcaption aria-hidden="true">resume1</figcaption>
-</figure>
-<h2 id="개인정보-간단한-소개">개인정보 &amp; 간단한 소개</h2>
-<p>개인 정보는 이름, 현재 직업, 거주 위치, 이메일을 간단하게 작성하였다. 너무 많은 개인 정보를 입력하는 것은 모든 사람들에게 공개된 웹페이지라는 특성상 조금 부담스러웠기 때문이다. 또한 현재 나를 대표하는 이모티콘으로 사용하고 있는 사진을 추가하였으며, 엔지니어로서 중요하게 생각하는 가치들을 적어두었다. 해당 부분의 결과는 다음과 같다.</p>
-<figure>
-<img src="/images/131.png" srcset="/img/loading.gif" lazyload alt="resume2" /><figcaption aria-hidden="true">resume2</figcaption>
-</figure>
-<h2 id="기술스택">기술스택</h2>
-<p>기술스택의 경우 고민이 많았다. 어느 정도로 사용해야 입력할 수 있을까? 또 입력해도 어느정도 잘하는지의 여부를 작성해야 할까? 할 수 있다의 기준이 무엇인가? 등등. 그 결과 비교적 원리를 이해하고 사용했던 툴(tool)들과 프로그램을 작성할 때 사용한 적이 있는 언어를 입력하기로 결정하였다. 또한 실력이란 것은 혼자 객관적으로 판단이 어렵다고 생각했기에 추가로 작성하지는 않았다. 그 결과는 아래의 사진과 같다. 아래 사진에서 사용한 아이콘들은 <a target="_blank" rel="noopener" href="https://fontello.com">fontello</a>라는 사이트에서 css로 변환하여 사용하였다.</p>
-<figure>
-<img src="/images/132.png" srcset="/img/loading.gif" lazyload alt="resume3" /><figcaption aria-hidden="true">resume3</figcaption>
-</figure>
-<h2 id="블로그-깃허브">블로그 &amp; 깃허브</h2>
-<p>블로그와 깃허브는 간단하게 이동할 수 있는 링크만 추가하는 방식으로 구상했었다. 그리하여 간단하게 Bootstrap의 card를 사용하여 간단하게 링크를 추가하였다. 여기에서 사용한 이모티콘들은 Bootstrap에서 기본으로 제공하는 것들을 사용하였다.</p>
-<figure>
-<img src="/images/133.png" srcset="/img/loading.gif" lazyload alt="resume4" /><figcaption aria-hidden="true">resume4</figcaption>
-</figure>
-<h2 id="경력">경력</h2>
-<p>경력은 아직 주니어 엔지니어이기 때문에 크게 내용은 없다. 현재 맡고 있는 직무와 개괄적으로 어떤 일들을 하는지 요약하여 덧붙였다.</p>
-<figure>
-<img src="/images/134.png" srcset="/img/loading.gif" lazyload alt="resume5" /><figcaption aria-hidden="true">resume5</figcaption>
-</figure>
-<h2 id="프로젝트">프로젝트</h2>
-<p>프로젝트는 크게 <code>WORK</code>와 <code>SIDE</code>로 나누어 시간순대로 작성하였다. <code>WORK</code>는 직장에서 실제 참여했던 프로젝트를 포함하였으며, <code>SIDE</code>는 직장 외 개인적으로 진행했던 프로젝트들을 포함하였다. 프로젝트들은 Bootstrap의 <a target="_blank" rel="noopener" href="https://getbootstrap.com/docs/5.1/components/accordion/">Accordion</a> 레아이웃을 사용하였다. 각 리스트를 클릭하지 않은 모습은 다음과 같다.</p>
-<figure>
-<img src="/images/135.png" srcset="/img/loading.gif" lazyload alt="resume6" /><figcaption aria-hidden="true">resume6</figcaption>
-</figure>
+<h2 id="헤더"><a href="#헤더" class="headerlink" title="헤더"></a>헤더</h2><p>헤더는 가장 윗 부분에 위치한 섹션이다. 여기에는 블로그와 동일한 백그라운드를 사용하였으며, 이름과 현재 하고 있는 일과 엔지니어로서의 가지고 있는 가치관을 짧게 한줄로 적어두었다.</p>
+<p><img src="/images/130.png" srcset="/img/loading.gif" lazyload alt="resume1"></p>
+<h2 id="개인정보-amp-간단한-소개"><a href="#개인정보-amp-간단한-소개" class="headerlink" title="개인정보 &amp; 간단한 소개"></a>개인정보 &amp; 간단한 소개</h2><p>개인 정보는 이름, 현재 직업, 거주 위치, 이메일을 간단하게 작성하였다. 너무 많은 개인 정보를 입력하는 것은 모든 사람들에게 공개된 웹페이지라는 특성상 조금 부담스러웠기 때문이다. 또한 현재 나를 대표하는 이모티콘으로 사용하고 있는 사진을 추가하였으며, 엔지니어로서 중요하게 생각하는 가치들을 적어두었다. 해당 부분의 결과는 다음과 같다.</p>
+<p><img src="/images/131.png" srcset="/img/loading.gif" lazyload alt="resume2"></p>
+<h2 id="기술스택"><a href="#기술스택" class="headerlink" title="기술스택"></a>기술스택</h2><p>기술스택의 경우 고민이 많았다. 어느 정도로 사용해야 입력할 수 있을까? 또 입력해도 어느정도 잘하는지의 여부를 작성해야 할까? 할 수 있다의 기준이 무엇인가? 등등. 그 결과 비교적 원리를 이해하고 사용했던 툴(tool)들과 프로그램을 작성할 때 사용한 적이 있는 언어를 입력하기로 결정하였다. 또한 실력이란 것은 혼자 객관적으로 판단이 어렵다고 생각했기에 추가로 작성하지는 않았다. 그 결과는 아래의 사진과 같다. 아래 사진에서 사용한 아이콘들은 <a target="_blank" rel="noopener" href="https://fontello.com">fontello</a>라는 사이트에서 css로 변환하여 사용하였다.</p>
+<p><img src="/images/132.png" srcset="/img/loading.gif" lazyload alt="resume3"></p>
+<h2 id="블로그-amp-깃허브"><a href="#블로그-amp-깃허브" class="headerlink" title="블로그 &amp; 깃허브"></a>블로그 &amp; 깃허브</h2><p>블로그와 깃허브는 간단하게 이동할 수 있는 링크만 추가하는 방식으로 구상했었다. 그리하여 간단하게 Bootstrap의 card를 사용하여 간단하게 링크를 추가하였다. 여기에서 사용한 이모티콘들은 Bootstrap에서 기본으로 제공하는 것들을 사용하였다.</p>
+<p><img src="/images/133.png" srcset="/img/loading.gif" lazyload alt="resume4"></p>
+<h2 id="경력"><a href="#경력" class="headerlink" title="경력"></a>경력</h2><p>경력은 아직 주니어 엔지니어이기 때문에 크게 내용은 없다. 현재 맡고 있는 직무와 개괄적으로 어떤 일들을 하는지 요약하여 덧붙였다.</p>
+<p><img src="/images/134.png" srcset="/img/loading.gif" lazyload alt="resume5"></p>
+<h2 id="프로젝트"><a href="#프로젝트" class="headerlink" title="프로젝트"></a>프로젝트</h2><p>프로젝트는 크게 <code>WORK</code>와 <code>SIDE</code>로 나누어 시간순대로 작성하였다. <code>WORK</code>는 직장에서 실제 참여했던 프로젝트를 포함하였으며, <code>SIDE</code>는 직장 외 개인적으로 진행했던 프로젝트들을 포함하였다. 프로젝트들은 Bootstrap의 <a target="_blank" rel="noopener" href="https://getbootstrap.com/docs/5.1/components/accordion/">Accordion</a> 레아이웃을 사용하였다. 각 리스트를 클릭하지 않은 모습은 다음과 같다.</p>
+<p><img src="/images/135.png" srcset="/img/loading.gif" lazyload alt="resume6"></p>
 <p>위 사진과 같은 구조에서 프로젝트 이름을 클릭하면 아래의 사진처럼 프로젝트에 대한 상세한 정보들이 보여진다. 상세한 정보들은 테이블 구조로 정리하였다.</p>
-<figure>
-<img src="/images/136.png" srcset="/img/loading.gif" lazyload alt="resume7" /><figcaption aria-hidden="true">resume7</figcaption>
-</figure>
-<h2 id="개인-활동">개인 활동</h2>
-<p>일이 아닌 개인적인 활동들을 적어두었다. 현재 활동 중인 개발 커뮤니티나 스터디에서 발표했던 것들, 또는 개인적으로 공부했던 것들을 적어두었다.</p>
-<figure>
-<img src="/images/152.png" srcset="/img/loading.gif" lazyload alt="resume7" /><figcaption aria-hidden="true">resume7</figcaption>
-</figure>
-<h2 id="학력">학력</h2>
-<p>힉력은 간단하게 학교이름, 전공, 기간을 입력하였다. 이후 대학원이나 Coursera에서 대학 강의를 듣는다면 추가할 예정이다. 아래의 사진이 학력의 레이아웃이다.</p>
-<figure>
-<img src="/images/137.png" srcset="/img/loading.gif" lazyload alt="resume8" /><figcaption aria-hidden="true">resume8</figcaption>
-</figure>
+<p><img src="/images/136.png" srcset="/img/loading.gif" lazyload alt="resume7"></p>
+<h2 id="개인-활동"><a href="#개인-활동" class="headerlink" title="개인 활동"></a>개인 활동</h2><p>일이 아닌 개인적인 활동들을 적어두었다. 현재 활동 중인 개발 커뮤니티나 스터디에서 발표했던 것들, 또는 개인적으로 공부했던 것들을 적어두었다.</p>
+<p><img src="/images/152.png" srcset="/img/loading.gif" lazyload alt="resume7"></p>
+<h2 id="학력"><a href="#학력" class="headerlink" title="학력"></a>학력</h2><p>힉력은 간단하게 학교이름, 전공, 기간을 입력하였다. 이후 대학원이나 Coursera에서 대학 강의를 듣는다면 추가할 예정이다. 아래의 사진이 학력의 레이아웃이다.</p>
+<p><img src="/images/137.png" srcset="/img/loading.gif" lazyload alt="resume8"></p>
 
                 
               </div>

@@ -260,7 +260,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          184 words
+          175 words
         
       </span>
     
@@ -353,56 +353,31 @@
             
               <div class="markdown-body">
                 
-                <p>하둡의 코어 서비스 중 하나인 HDFS의 아키텍처에 대해서 공부한 내용을 정리합니다. <span id="more"></span></p>
-<h2 id="core-hadoop">Core Hadoop</h2>
-<p>하둡은 크게 클러스터의 데이터를 저장하는 HDFS와 리소스를 관리하는 YARN, 이 2가지의 형태로 이루어져 있다.</p>
-<figure>
-<img src="/images/123.png" srcset="/img/loading.gif" lazyload alt="corehadoop" /><figcaption aria-hidden="true">corehadoop</figcaption>
-</figure>
+                <p>하둡의 코어 서비스 중 하나인 HDFS의 아키텍처에 대해서 공부한 내용을 정리합니다.<br><span id="more"></span></p>
+<h2 id="Core-Hadoop"><a href="#Core-Hadoop" class="headerlink" title="Core Hadoop"></a>Core Hadoop</h2><p>하둡은 크게 클러스터의 데이터를 저장하는 HDFS와 리소스를 관리하는 YARN, 이 2가지의 형태로 이루어져 있다.</p>
+<p><img src="/images/123.png" srcset="/img/loading.gif" lazyload alt="corehadoop"></p>
 <p>이번 글에서는 이 중 클러스터의 스토리지를 관리하고 데이터를 분산 저장하는 HDFS에 대해서 살펴볼 것이다.</p>
-<h2 id="hdfs">HDFS</h2>
-<p>HDFS는 Hadoop Data File System의 줄임말로 클러스터에 속한 노드들의 스토리지를 관리하며 데이터들을 분산 저장한다. 즉, 여러 개의 노드에 들어있는 스토리지들을 하나의 저장소처럼 사용할 수 있는 것이다. HDFS에서는 <code>블록</code>이라는 개념으로 데이터를 분산저장한다. 아래의 그림을 참고하자.</p>
-<figure>
-<img src="/images/124.png" srcset="/img/loading.gif" lazyload alt="hdfsblock" /><figcaption aria-hidden="true">hdfsblock</figcaption>
-</figure>
+<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><p>HDFS는 Hadoop Data File System의 줄임말로 클러스터에 속한 노드들의 스토리지를 관리하며 데이터들을 분산 저장한다. 즉, 여러 개의 노드에 들어있는 스토리지들을 하나의 저장소처럼 사용할 수 있는 것이다. HDFS에서는 <code>블록</code>이라는 개념으로 데이터를 분산저장한다. 아래의 그림을 참고하자.</p>
+<p><img src="/images/124.png" srcset="/img/loading.gif" lazyload alt="hdfsblock"></p>
 <p>위 그림의 예시를 보면 블록의 개념을 알 수 있다. 만약 1GB의 파일을 HDFS에 저장한다면 이를 데이터 블록으로 나누어 여러 노드에 분산저장한다. 데이터 블록의 크기는 변경할 수 있으며, HDFS에서 다루는 파일 크기와 갯수에 따라서 튜닝할 수 있다. 작은 크기의 파일이 경우에는 데이터 블록 크기를 작게 변경하는 것이 스토리지의 낭비가 없을 것이며, 큰 파일은 적당한 블록 크기로 올려주는 것이 좋다. 너무 잘게 분산해두면 이후 서버에서 데이터를 끌어올 때 상대적으로 많은 블록들을 오픈해야 하기 때문이다.</p>
-<h2 id="hdfs-roles">HDFS Roles</h2>
-<p>HDFS는 크게 마스터-워커 구조로 이루어져 있다. 마스터의 역할을 하는 서버를 네임 노드라고 하며, 워커 역할을 하는 서버를 데이터 노드라고 한다. HDFS의 역할들의 자세한 설명은 아래의 그림을 참고하자. 세컨더리 네임 노드의 경우 아래의 프로세스에서 자세히 설명할 것이다.</p>
-<figure>
-<img src="/images/125.png" srcset="/img/loading.gif" lazyload alt="hdfsrole" /><figcaption aria-hidden="true">hdfsrole</figcaption>
-</figure>
+<h2 id="HDFS-Roles"><a href="#HDFS-Roles" class="headerlink" title="HDFS Roles"></a>HDFS Roles</h2><p>HDFS는 크게 마스터-워커 구조로 이루어져 있다. 마스터의 역할을 하는 서버를 네임 노드라고 하며, 워커 역할을 하는 서버를 데이터 노드라고 한다. HDFS의 역할들의 자세한 설명은 아래의 그림을 참고하자. 세컨더리 네임 노드의 경우 아래의 프로세스에서 자세히 설명할 것이다.</p>
+<p><img src="/images/125.png" srcset="/img/loading.gif" lazyload alt="hdfsrole"></p>
 <p>이제 어느정도 HDFS가 어떻게 작동하는지 머리속에 그려질 것이다. HDFS는 데이터가 들어오면 여러 개의 블록으로 나눈다. 그 다음 여러 데이터 노드에 저장하고, 그 위치를 네임 노드에게 전달한다. 그러면 네임 노드는 한 파일에 대한 블록 개수와 위치 등을 메타 정보로 저장한다.</p>
-<h2 id="hdfs-process">HDFS Process</h2>
-<p>위 정보들을 바탕으로 HDFS가 작동하는 프로세스를 확인해보자. 아래의 그림에는 세컨더리 네임 노드(2NN)의 역할 또한 자세하게 설명되어 있다.</p>
-<figure>
-<img src="/images/126.png" srcset="/img/loading.gif" lazyload alt="hdfsprc" /><figcaption aria-hidden="true">hdfsprc</figcaption>
-</figure>
+<h2 id="HDFS-Process"><a href="#HDFS-Process" class="headerlink" title="HDFS Process"></a>HDFS Process</h2><p>위 정보들을 바탕으로 HDFS가 작동하는 프로세스를 확인해보자. 아래의 그림에는 세컨더리 네임 노드(2NN)의 역할 또한 자세하게 설명되어 있다.</p>
+<p><img src="/images/126.png" srcset="/img/loading.gif" lazyload alt="hdfsprc"></p>
 <p>네임 노드는 데이터 노드에게 지속적으로 HeartBeat를 받으며 상태를 모니터링한다. 네임 노드는 블록 변경 정보들을 edits이라는 파일에 저장해두었다가 일정 시간이 되면 세컨더리 네임 노드(2NN)에게 보낸다. 2NN은 edits의 내용들을 fsimage에 업데이트 하여 새로운 메타 정보(fsimage)를 생성하고 이를 다시 네임 노드에 보낸다.</p>
-<h2 id="hdfs-ha-process">HDFS HA Process</h2>
-<p>HA는 High Availability의 약자로 고가용성이라고도 한다. 일반적인 HDFS 구조에서는 네임노드가 어떤 이유로 정상작동을 하지 않을 시 즉각적으로 운영 상에 문제가 생긴다. 이런 부분을 방지하고자 네임 노드를 Active-StandBy 구조로 설정하여 액티브 네임 노드에 문제가 있을 시 바로 스탠바이 네임 노드가 작동할 수 있도록 한다. HA 구조로 설정한 HDFS의 프로세스는 아래의 그림과 같다.</p>
-<figure>
-<img src="/images/127.png" srcset="/img/loading.gif" lazyload alt="hdfsHA" /><figcaption aria-hidden="true">hdfsHA</figcaption>
-</figure>
+<h2 id="HDFS-HA-Process"><a href="#HDFS-HA-Process" class="headerlink" title="HDFS HA Process"></a>HDFS HA Process</h2><p>HA는 High Availability의 약자로 고가용성이라고도 한다. 일반적인 HDFS 구조에서는 네임노드가 어떤 이유로 정상작동을 하지 않을 시 즉각적으로 운영 상에 문제가 생긴다. 이런 부분을 방지하고자 네임 노드를 Active-StandBy 구조로 설정하여 액티브 네임 노드에 문제가 있을 시 바로 스탠바이 네임 노드가 작동할 수 있도록 한다. HA 구조로 설정한 HDFS의 프로세스는 아래의 그림과 같다.</p>
+<p><img src="/images/127.png" srcset="/img/loading.gif" lazyload alt="hdfsHA"></p>
 <p>일반 HDFS 구조에서는 2NN이 존재했지만, HA구조에서는 스탠바이 네임 노드가 이를 대신한다. 또한 스탠바이 네임 노드가 액티브 네임 노드와 동일하게 업데이트가 진행되어야 하기에 저널 노드를 추가한다. 저널 노드는 블록 변경 기록을 바로 받아서 스탠바이 노드에 넘기는 역할을 한다. 저널노드를 3개 배치한 이유는 저널 노드끼리도 변경 기록이 유효한 정보인지를 검증하기 때문이다. 또한 액티브 네임노드는 더이상 edits를 생성 및 저장하지 않기 때문에 네임 노드의 할 일도 줄어든다.</p>
-<h2 id="fault-tolerance">Fault tolerance</h2>
-<p>HA구조로 네임노드의 가용성을 높였으니 그 다음은 내결함성을 보장하는 것이다. 이를 위해서 HDFS의 데이터 노드들은 데이터 블록들을 복제하여 저장한다. 이는 특정 데이터 노드가 정상작동하지 않을 시 유실될 데이터 블록들을 방지하기 위한 방법 중 하나이다.</p>
-<h3 id="basic-replication-factor">Basic Replication factor</h3>
-<p>HDFS는 3벌 복제를 디폴트 값으로 가진다. 즉, 데이터 블록들은 총 3개로 복제되어 다른 데이터 노드에 저장된다. 이 방법은 데이터 노드 2대까지 정상작동하지 않아도 시스템 운영상에는 문제 없도록 하지만 데이터 노드 3대 이상 문제가 생긴다면 데이터 유실이 발생하게 된다. 또한 기본이 3벌 복제라는 말은 한 가지를 암시하고 있다. 바로 HDFS의 데이터 노드는 최소 3대가 필요하다는 것이다. 복제된 데이터 블록들이 각각 다른 노드에 저장되어야 하기 때문에 복제 수에 따라 최소 데이터 노드 수도 달라진다.</p>
-<h3 id="erasure-coding">Erasure Coding</h3>
-<p>이레이저 코딩은 3벌 복제의 단점을 해결하기 위해 나온 방법이며, 하둡에는 버전 3부터 도입되었다. 원리는 아래의 그림을 참고하자.</p>
-<figure>
-<img src="/images/128.png" srcset="/img/loading.gif" lazyload alt="EC" /><figcaption aria-hidden="true">EC</figcaption>
-</figure>
+<h2 id="Fault-tolerance"><a href="#Fault-tolerance" class="headerlink" title="Fault tolerance"></a>Fault tolerance</h2><p>HA구조로 네임노드의 가용성을 높였으니 그 다음은 내결함성을 보장하는 것이다. 이를 위해서 HDFS의 데이터 노드들은 데이터 블록들을 복제하여 저장한다. 이는 특정 데이터 노드가 정상작동하지 않을 시 유실될 데이터 블록들을 방지하기 위한 방법 중 하나이다.</p>
+<h3 id="Basic-Replication-factor"><a href="#Basic-Replication-factor" class="headerlink" title="Basic Replication factor"></a>Basic Replication factor</h3><p>HDFS는 3벌 복제를 디폴트 값으로 가진다. 즉, 데이터 블록들은 총 3개로 복제되어 다른 데이터 노드에 저장된다. 이 방법은 데이터 노드 2대까지 정상작동하지 않아도 시스템 운영상에는 문제 없도록 하지만 데이터 노드 3대 이상 문제가 생긴다면 데이터 유실이 발생하게 된다. 또한 기본이 3벌 복제라는 말은 한 가지를 암시하고 있다. 바로 HDFS의 데이터 노드는 최소 3대가 필요하다는 것이다. 복제된 데이터 블록들이 각각 다른 노드에 저장되어야 하기 때문에 복제 수에 따라 최소 데이터 노드 수도 달라진다.</p>
+<h3 id="Erasure-Coding"><a href="#Erasure-Coding" class="headerlink" title="Erasure Coding"></a>Erasure Coding</h3><p>이레이저 코딩은 3벌 복제의 단점을 해결하기 위해 나온 방법이며, 하둡에는 버전 3부터 도입되었다. 원리는 아래의 그림을 참고하자.</p>
+<p><img src="/images/128.png" srcset="/img/loading.gif" lazyload alt="EC"></p>
 <p>위 그림처럼 이레이저 코딩은 인코딩, 디코딩 방식으로 손실된 데이터를 복구한다. 데이터 블럭을 n개의 청크(덩어리)로 나눈 후, 이를 인코딩하여 n의 절반인 parity block를 생성한다. 이후 원본 청크 n개 중에 parity block 개수보다 이하로 손실이 된다면 이는 디코딩을 통해 원본을 복구할 수 있다.</p>
 <p>그렇다면 인코딩 방식은 무엇일까? 이레이저 코딩에서는 RAID에서 주로 사용하는 Reed-Solomon 알고리즘을 사용한다. Reed-Solomon 알고리즘 원리는 아래 그림과 같다.</p>
-<figure>
-<img src="/images/140.png" srcset="/img/loading.gif" lazyload alt="Reed-Solomon" /><figcaption aria-hidden="true">Reed-Solomon</figcaption>
-</figure>
-<h3 id="두-가지-방법-비교">두 가지 방법 비교</h3>
-<p>두 가지 방법은 확실한 장단점이 있다. 3벌 복제는 간단하고, 어떤 연산도 요구되지 않지만 잘 사용하지 않는 데이터도 디스크 공간을 원데이터의 3배나 차지하게 된다. 그와 반면 이레이저 코딩은 인코딩, 디코딩 작업에서 연산이 필요하지만 차지하는 디스크 용량이 확실하게 줄어든다.</p>
-<figure>
-<img src="/images/129.png" srcset="/img/loading.gif" lazyload alt="compare" /><figcaption aria-hidden="true">compare</figcaption>
-</figure>
+<p><img src="/images/140.png" srcset="/img/loading.gif" lazyload alt="Reed-Solomon"></p>
+<h3 id="두-가지-방법-비교"><a href="#두-가지-방법-비교" class="headerlink" title="두 가지 방법 비교"></a>두 가지 방법 비교</h3><p>두 가지 방법은 확실한 장단점이 있다. 3벌 복제는 간단하고, 어떤 연산도 요구되지 않지만 잘 사용하지 않는 데이터도 디스크 공간을 원데이터의 3배나 차지하게 된다. 그와 반면 이레이저 코딩은 인코딩, 디코딩 작업에서 연산이 필요하지만 차지하는 디스크 용량이 확실하게 줄어든다.</p>
+<p><img src="/images/129.png" srcset="/img/loading.gif" lazyload alt="compare"></p>
 
                 
               </div>

@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          655 words
+          656 words
         
       </span>
     
@@ -347,13 +347,11 @@
                 <blockquote>
 <p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist를 바탕으로 작성된 글임을 알려드립니다.</p>
 </blockquote>
-<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap03">Functions</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
-<h2 id="함수">함수</h2>
-<p>프로그래밍에서 함수는 특정 계산을 수행하는 일련의 명령문이다. 함수를 정의할 때에는 이름과 명령문의 순서를 정하며, 이후 해당 이름을 통해서 함수를 호출할 수 있다.</p>
-<h3 id="함수-호출">함수 호출</h3>
-<p>우리는 이미 함수를 호출해 본 경험이 있다.</p>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap03">Functions</a>를 한글로 요약 정리한 글입니다.<br><span id="more"></span></p>
+<h2 id="함수"><a href="#함수" class="headerlink" title="함수"></a>함수</h2><p>프로그래밍에서 함수는 특정 계산을 수행하는 일련의 명령문이다. 함수를 정의할 때에는 이름과 명령문의 순서를 정하며, 이후 해당 이름을 통해서 함수를 호출할 수 있다.</p>
+<h3 id="함수-호출"><a href="#함수-호출" class="headerlink" title="함수 호출"></a>함수 호출</h3><p>우리는 이미 함수를 호출해 본 경험이 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; println(<span class="hljs-string">&quot;Hello, World!&quot;</span>)<br>Hello, World!<br></code></pre></td></tr></table></figure>
-<p>이 함수의 이름은 <code>println()</code>이다. 또한 괄호 안에 들어가는 표현식은 함수의 인수(argument)라고 부른다. 함수가 작동하는 과정은 일반적으로 인수를 받은 후 결과를 반환한다고 설명하며, 이런 결과를 반환 값이라고 한다.</p>
+<p>이 함수의 이름은 <code>println()</code>이다. 또한 괄호 안에 들어가는 표현식은 함수의 인수(argument)라고 부른다.<br>함수가 작동하는 과정은 일반적으로 인수를 받은 후 결과를 반환한다고 설명하며, 이런 결과를 반환 값이라고 한다.</p>
 <p>줄리아는 데이터 타입을 바꿔주는 함수도 제공한다. 예로 <code>parse()</code>는 숫자로 구성된 문자열을 인수로 받은 후, 정수나 소수로 변환한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; parse(<span class="hljs-built_in">Int64</span>, <span class="hljs-string">&quot;32&quot;</span>)<br><span class="hljs-number">32</span><br>julia&gt; parse(<span class="hljs-built_in">Float64</span>, <span class="hljs-string">&quot;3.14159&quot;</span>)<br><span class="hljs-number">3.14159</span><br>julia&gt; parse(<span class="hljs-built_in">Int64</span>, <span class="hljs-string">&quot;Hello&quot;</span>)<br>ERROR: <span class="hljs-built_in">ArgumentError</span>: invalid base <span class="hljs-number">10</span> digit <span class="hljs-string">&#x27;H&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;Hello&quot;</span><br></code></pre></td></tr></table></figure>
 <p>또한 <code>trunc()</code>는 소수를 인수로 받아 나머지들을 제거한 후, 남은 정수만을 반환한다.</p>
@@ -362,72 +360,61 @@
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; float(<span class="hljs-number">32</span>)<br><span class="hljs-number">32.0</span><br></code></pre></td></tr></table></figure>
 <p>마지막으로, <code>string()</code>는 인수들을 모두 문자로 변환한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; string(<span class="hljs-number">32</span>)<br><span class="hljs-string">&quot;32&quot;</span><br>julia&gt; string(<span class="hljs-number">3.14159</span>)<br><span class="hljs-string">&quot;3.14159&quot;</span><br></code></pre></td></tr></table></figure>
-<h3 id="수학-함수">수학 함수</h3>
-<p>줄리아는 대부분의 기본적인 수학 함수들이 내장되어 있다.</p>
+<h3 id="수학-함수"><a href="#수학-함수" class="headerlink" title="수학 함수"></a>수학 함수</h3><p>줄리아는 대부분의 기본적인 수학 함수들이 내장되어 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">ratio = signal_power / noise_power<br>decibels = <span class="hljs-number">10</span> * log10(ratio)<br></code></pre></td></tr></table></figure>
 <p>위의 예시에서는 <code>log10</code>을 사용하여 신호와 잡음의 비율을 데시벨 단위로 계산한다. (신호 변수인 <code>signal_power</code>과 잡음 변수인<code>noise_power</code>가 정의되었다는 전제 하에) 또한 자연로그를 계산하는 <code>log</code> 또한 제공된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">radians = <span class="hljs-number">0.7</span><br>height = sin(radians)<br></code></pre></td></tr></table></figure>
 <p>다음의 예시는 해당 <code>radians</code>을 <code>sin()</code>에 적용한다. 위의 예시에서 볼 수 있듯이 줄리아는 <code>sin()</code> 및 기타 삼각 함수 (cos, tan 등) 또한 제공한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; degrees = <span class="hljs-number">45</span><br><span class="hljs-number">45</span><br>julia&gt; radians = degrees / <span class="hljs-number">180</span> * <span class="hljs-literal">π</span><br><span class="hljs-number">0.7853981633974483</span><br>julia&gt; sin(radians)<br><span class="hljs-number">0.7071067811865475</span><br></code></pre></td></tr></table></figure>
 <p>각도(degree)를 통해 <code>radians</code>을 구하기 위해서는 각도를 180으로 나누고 <code>π</code>를 곱해야 한다. 줄리아에서는 <code>π</code>도 바로 사용할 수 있으며, 소수점 16자리까지 정확하다.</p>
-<h3 id="컴포지션composition">컴포지션(composition)</h3>
-<p>지금까지 우리는 변수, 표현식, 명령문과 같은 프로그램의 요소들이 어떻게 결합하는지에 대해서 이야기하고자 한다. 프로그래밍 언어의 가장 유용한 특징 중 하나는 작은 요소들을 가져와서 프로그램을 구성할 수 있다는 것이다. 예를 들어 함수의 인수로 산술연산자를 포함한 모든 종류의 표현식들을 사용할 수 있다.</p>
+<h3 id="컴포지션-composition"><a href="#컴포지션-composition" class="headerlink" title="컴포지션(composition)"></a>컴포지션(composition)</h3><p>지금까지 우리는 변수, 표현식, 명령문과 같은 프로그램의 요소들이 어떻게 결합하는지에 대해서 이야기하고자 한다.<br>프로그래밍 언어의 가장 유용한 특징 중 하나는 작은 요소들을 가져와서 프로그램을 구성할 수 있다는 것이다. 예를 들어 함수의 인수로 산술연산자를 포함한 모든 종류의 표현식들을 사용할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x = sin(degrees / <span class="hljs-number">360</span> * <span class="hljs-number">2</span> * <span class="hljs-literal">π</span>)<br>x = exp(log(x+<span class="hljs-number">1</span>))<br></code></pre></td></tr></table></figure>
 <p>할당문의 왼쪽은 무조건 변수 이름이 와야 한다. 이 한 가지의 규칙만 어기지 않는다면, 표현식 대부분에 값을 넣을 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; minutes = hours * <span class="hljs-number">60</span> <span class="hljs-comment"># right</span><br><span class="hljs-number">120</span><br>julia&gt; hours * <span class="hljs-number">60</span> = minutes <span class="hljs-comment"># wrong!</span><br>ERROR: syntax: <span class="hljs-string">&quot;60&quot;</span> is not a valid <span class="hljs-keyword">function</span> argument name<br></code></pre></td></tr></table></figure>
-<h3 id="새로운-함수-만들기">새로운 함수 만들기</h3>
-<p>지금까지 우리는 줄리아가 제공하는 함수들을 사용해왔다. 하지만 그외에도 새로운 함수를 만들어 사용할 수 있다. 새로운 함수를 만드는 방법은 새로운 함수의 이름을 설정하고 실행될 일련의 명령문들의 순서를 설정하는 것이다. 예를 들면 아래와 같다.</p>
+<h3 id="새로운-함수-만들기"><a href="#새로운-함수-만들기" class="headerlink" title="새로운 함수 만들기"></a>새로운 함수 만들기</h3><p>지금까지 우리는 줄리아가 제공하는 함수들을 사용해왔다. 하지만 그외에도 새로운 함수를 만들어 사용할 수 있다. 새로운 함수를 만드는 방법은 새로운 함수의 이름을 설정하고 실행될 일련의 명령문들의 순서를 설정하는 것이다. 예를 들면 아래와 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> printlyrics()<br>    println(<span class="hljs-string">&quot;I&#x27;m a lumberjack, and I&#x27;m okay.&quot;</span>)<br>    println(<span class="hljs-string">&quot;I sleep all night and I work all day.&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><code>function</code>은 함수를 정의하는 키워드이다. 위의 예시에서 함수의 이름은 <code>printlyrics</code>이다. 함수 이름에 대한 규칙은 변수 이름 만드는 규칙과 동일하다. (거의 모든 유니코드는 사용가능하지만 숫자를 이름의 첫 번째 문자로 사용할 수는 없다. 키워드 이름은 사용할 수 없다.) 이름 뒤의 빈 괄호는 함수가 인수를 가지지 않는다는 것을 나타낸다. 지금까지 설명한 함수의 첫 번째 줄은 헤더(header)라고 부르며, 그 외 나머지는 본문(body)라고 부른다. 본문에는 여러 명령문들이 포함되어 있으며, 함수는 키워드 <code>end</code>로 종료된다. 또한 가독성을 위해서 본문은 들여 쓰기로 작성해야 한다.</p>
+<p><code>function</code>은 함수를 정의하는 키워드이다. 위의 예시에서 함수의 이름은 <code>printlyrics</code>이다. 함수 이름에 대한 규칙은 변수 이름 만드는 규칙과 동일하다. (거의 모든 유니코드는 사용가능하지만 숫자를 이름의 첫 번째 문자로 사용할 수는 없다. 키워드 이름은 사용할 수 없다.)<br>이름 뒤의 빈 괄호는 함수가 인수를 가지지 않는다는 것을 나타낸다.<br>지금까지 설명한 함수의 첫 번째 줄은 헤더(header)라고 부르며, 그 외 나머지는 본문(body)라고 부른다.<br>본문에는 여러 명령문들이 포함되어 있으며, 함수는 키워드 <code>end</code>로 종료된다.<br>또한 가독성을 위해서 본문은 들여 쓰기로 작성해야 한다.</p>
 <p>대화식 모드에서 함수를 정의한다면 헤더부터 본문까지 한 줄씩 작성하면 된다. 본문 작성이 끝나고 난 후에는 <code>end</code>를 입력하여 함수 정의를 끝내주어야 한다. 새로 만든 함수를 사용하는 방법은 기존에 있던 함수와 같이 이름을 사용하여 호출하는 것이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; printlyrics()<br>I&#x27;m a lumberjack, and I&#x27;m okay.<br>I sleep all night and I work all day.<br></code></pre></td></tr></table></figure>
 <p>새로 만든 함수는 다른 함수 본문에 넣어서 사용할 수도 있다. 아래의 예시를 보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> repeatlyrics()<br>    printlyrics()<br>    printlyrics()<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><code>repeatlyrics()</code>는 앞서 만들었던 <code>printlyrics()</code>를 두 번 실행하도록 정의하였다. 이후 <code>repeatlyrics()</code>를 호출한다면 다음과 같은 결과를 얻을 수 있다.</p>
+<p><code>repeatlyrics()</code>는 앞서 만들었던 <code>printlyrics()</code>를 두 번 실행하도록 정의하였다.<br> 이후 <code>repeatlyrics()</code>를 호출한다면 다음과 같은 결과를 얻을 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; repeatlyrics()<br>I&#x27;m a lumberjack, and I&#x27;m okay.<br>I sleep all night and I work all day.<br>I&#x27;m a lumberjack, and I&#x27;m okay.<br>I sleep all night and I work all day.<br></code></pre></td></tr></table></figure>
-<h3 id="함수-정의와-사용">함수 정의와 사용</h3>
-<p>앞 장에서 만들었던 함수 정의와 사용 코드를 결합한 전체 프로그램은 다음과 같다.</p>
+<h3 id="함수-정의와-사용"><a href="#함수-정의와-사용" class="headerlink" title="함수 정의와 사용"></a>함수 정의와 사용</h3><p>앞 장에서 만들었던 함수 정의와 사용 코드를 결합한 전체 프로그램은 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> printlyrics()<br>    println(<span class="hljs-string">&quot;I&#x27;m a lumberjack, and I&#x27;m okay.&quot;</span>)<br>    println(<span class="hljs-string">&quot;I sleep all night and I work all day.&quot;</span>)<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> repeatlyrics()<br>    printlyrics()<br>    printlyrics()<br><span class="hljs-keyword">end</span><br><br>repeatlyrics()<br></code></pre></td></tr></table></figure>
 <p>위의 프로그램은 <code>repeatlyrics()</code>와 <code>printlyrics()</code>를 정의한다. 함수를 정의하는 코드는 오로지 함수 객체를 만드는 역할만 하며, 함수가 호출되기 전까지는 함수 본문의 코드가 진행되지 않는다. 따라서 특정 함수를 사용하고 싶다면, 함수를 먼저 정의한 후에 함수를 호출해야 한다.</p>
-<h3 id="실행-과정">실행 과정</h3>
-<p>함수의 정의와 사용을 올바르게 사용하기 위해서는 실행 과정을 정확히 알고 있어야 한다. 실행은 항상 첫 번째 문장에서 시작하며, 명령문은 위에서 아래로 한 번씩만 작동한다.</p>
+<h3 id="실행-과정"><a href="#실행-과정" class="headerlink" title="실행 과정"></a>실행 과정</h3><p>함수의 정의와 사용을 올바르게 사용하기 위해서는 실행 과정을 정확히 알고 있어야 한다.<br>실행은 항상 첫 번째 문장에서 시작하며, 명령문은 위에서 아래로 한 번씩만 작동한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> printlyrics()<br>    println(<span class="hljs-string">&quot;I&#x27;m a lumberjack, and I&#x27;m okay.&quot;</span>)<br>    println(<span class="hljs-string">&quot;I sleep all night and I work all day.&quot;</span>)<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> repeatlyrics()<br>    printlyrics()<br>    printlyrics()<br><span class="hljs-keyword">end</span><br><br>repeatlyrics()<br></code></pre></td></tr></table></figure>
-<p>이 예시를 통해 실행과정을 본다면, 줄리아는 먼저 <code>printlyrics()</code>를 정의한다. 그 후 <code>repeatlyrics()</code>를 정의한 후 호출한다. 호출된 <code>repeatlyrics()</code>는 위에 정의된 본문으로 돌아가 <code>printlyrics()</code>를 호출하는 명령문을 수행한다. 다음으로 호출된 <code>printlyrics()</code>는 해당 함수의 정의된 본문으로 돌아가 명령문을 수행한다. 그 결과가 <code>repeatlyrics()</code>를 호출한 결과로 도출되는 것이다.</p>
-<h3 id="매개-변수와-인수">매개 변수와 인수</h3>
-<p>몇 몇의 함수들은 인수를 필요로 한다. 예를 들어 <code>sin()</code>를 호출하기 위해서는 숫자 한 개를 인수로 입력해야 하며, <code>parse()</code>의 경우 숫자 유형과 문자열 두 개를 인수로 입력해야 한다.</p>
+<p>이 예시를 통해 실행과정을 본다면, 줄리아는 먼저 <code>printlyrics()</code>를 정의한다. 그 후 <code>repeatlyrics()</code>를 정의한 후 호출한다. 호출된  <code>repeatlyrics()</code>는 위에 정의된 본문으로 돌아가 <code>printlyrics()</code>를 호출하는 명령문을 수행한다. 다음으로 호출된 <code>printlyrics()</code>는 해당 함수의 정의된 본문으로 돌아가 명령문을 수행한다. 그 결과가 <code>repeatlyrics()</code>를 호출한 결과로 도출되는 것이다.</p>
+<h3 id="매개-변수와-인수"><a href="#매개-변수와-인수" class="headerlink" title="매개 변수와 인수"></a>매개 변수와 인수</h3><p>몇 몇의 함수들은 인수를 필요로 한다. 예를 들어 <code>sin()</code>를 호출하기 위해서는 숫자 한 개를 인수로 입력해야 하며, <code>parse()</code>의 경우 숫자 유형과 문자열 두 개를 인수로 입력해야 한다.</p>
 <p>함수 내부에서 인수는 매개 변수라는 변수에 할당된다. 다음 예시는 인수를 취하는 함수에 대한 정의이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> printtwice(bruce)<br>    println(bruce)<br>    println(bruce)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>이 함수는 인수를 <code>bruce</code>라는 매개 변수에 지정하였기 때문에 함수가 호출되면 매개 변수 값을 두 번 인쇄한다. 또한 위의 함수는 인수에 어떤 값이 들어가든 인쇄한다.</p>
+<p>이 함수는 인수를 <code>bruce</code>라는 매개 변수에 지정하였기 때문에 함수가 호출되면 매개 변수 값을 두 번 인쇄한다.<br>또한 위의 함수는 인수에 어떤 값이 들어가든 인쇄한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; printtwice(<span class="hljs-string">&quot;Spam&quot;</span>)<br>Spam<br>Spam<br>julia&gt; printtwice(<span class="hljs-number">42</span>)<br><span class="hljs-number">42</span><br><span class="hljs-number">42</span><br>julia&gt; printtwice(<span class="hljs-literal">π</span>)<br><span class="hljs-literal">π</span> = <span class="hljs-number">3.1415926535897</span>...<br><span class="hljs-literal">π</span> = <span class="hljs-number">3.1415926535897</span>...<br></code></pre></td></tr></table></figure>
 <p><code>printtwice()</code>에 내장되어 있는 <code>println()</code>는 모든 표현식들을 인수로 받으므로 <code>printtwice()</code> 또한 모든 표현식들을 인수로 사용할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; printtwice(<span class="hljs-string">&quot;Spam &quot;</span>^<span class="hljs-number">4</span>)<br>Spam Spam Spam Spam<br>Spam Spam Spam Spam<br>julia&gt; printtwice(cos(<span class="hljs-literal">π</span>))<br>-<span class="hljs-number">1.0</span><br>-<span class="hljs-number">1.0</span><br></code></pre></td></tr></table></figure>
-<p>인수는 함수가 호출되기 전에 우선적으로 값을 도출된다. 따라서 위의 예시에서 인수로 쓰인 표현식들은 먼저 값으로 정리 된 후 함수에 적용된다. <code>"Spam "^4</code>인수의 경우, 먼저 <code>Spam Spam Spam Spam</code>으로 도출된 다음에 함수의 인자로 적용된다.</p>
+<p>인수는 함수가 호출되기 전에 우선적으로 값을 도출된다. 따라서 위의 예시에서 인수로 쓰인 표현식들은 먼저 값으로 정리 된 후 함수에 적용된다. <code>&quot;Spam &quot;^4</code>인수의 경우, 먼저 <code>Spam Spam Spam Spam</code>으로 도출된 다음에 함수의 인자로 적용된다.</p>
 <p>또한 변수도 함수의 인자로 사용할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; michael = <span class="hljs-string">&quot;Eric, the half a bee.&quot;</span><br><span class="hljs-string">&quot;Eric, the half a bee.&quot;</span><br>julia&gt; printtwice(michael)<br>Eric, the half a bee.<br>Eric, the half a bee.<br></code></pre></td></tr></table></figure>
-<h3 id="로컬-변수">로컬 변수</h3>
-<p>로컬 변수(local)는 함수 정의 안에서 만들어진 변수를 의미한다. 예를 들면,</p>
+<h3 id="로컬-변수"><a href="#로컬-변수" class="headerlink" title="로컬 변수"></a>로컬 변수</h3><p>로컬 변수(local)는 함수 정의 안에서 만들어진 변수를 의미한다. 예를 들면,</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> cattwice(part1, part2)<br>    concat = part1 * part2<br>    printtwice(concat)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>위의 함수는 두 개의 인수를 사용하여 곱한 다음에 그 결과를 두 번 인쇄한다. 이 함수에서 <code>conat</code>은 함수 내부에서 만들어진 로컬 변수이다. 위의 함수를 사용한 예시는 다음과 같다.</p>
+<p>위의 함수는 두 개의 인수를 사용하여 곱한 다음에 그 결과를 두 번 인쇄한다. 이 함수에서 <code>conat</code>은 함수 내부에서 만들어진 로컬 변수이다.<br>위의 함수를 사용한 예시는 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; line1 = <span class="hljs-string">&quot;Bing tiddle &quot;</span><br><span class="hljs-string">&quot;Bing tiddle &quot;</span><br>julia&gt; line2 = <span class="hljs-string">&quot;tiddle bang.&quot;</span><br><span class="hljs-string">&quot;tiddle bang.&quot;</span><br>julia&gt; cattwice(line1, line2)<br>Bing tiddle tiddle bang.<br>Bing tiddle tiddle bang.<br></code></pre></td></tr></table></figure>
-<p>위의 실행에서 <code>cattwice()</code>가 종료되는 순간 로컬 변수 <code>conat</code>은 삭제된다. 그렇기 때문에 <code>conat</code>을 인쇄하려고 하면 아래와 같은 오류를 만날 수 있다.</p>
+<p>위의 실행에서 <code>cattwice()</code>가 종료되는 순간 로컬 변수 <code>conat</code>은 삭제된다. 그렇기 때문에  <code>conat</code>을 인쇄하려고 하면 아래와 같은 오류를 만날 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; println(concat)<br>ERROR: <span class="hljs-built_in">UndefVarError</span>: concat not defined<br></code></pre></td></tr></table></figure>
 <p>매개 변수 또한 로컬 변수이다. 즉, <code>printtwice()</code> 정의에 사용된 매개 변수 <code>bruce</code> 또한 인쇄할 수 없다.</p>
-<h3 id="스택-다이어그램">스택 다이어그램</h3>
-<p>어디에서 어떤 변수를 사용했는지 추척하려면 스택 다이어그램을 그리는 것이 유용하다. 스택 다이어그램에는 각 변수의 값과 그 값이 속한 함수도 표시된다. 각 함수는 프레임 단위로 그리며, 프레임 안에는 함수의 매개 변수와 로컬 변수를 쓴다.</p>
+<h3 id="스택-다이어그램"><a href="#스택-다이어그램" class="headerlink" title="스택 다이어그램"></a>스택 다이어그램</h3><p>어디에서 어떤 변수를 사용했는지 추척하려면 스택 다이어그램을 그리는 것이 유용하다. 스택 다이어그램에는 각 변수의 값과 그 값이 속한 함수도 표시된다.<br>각 함수는 프레임 단위로 그리며, 프레임 안에는 함수의 매개 변수와 로컬 변수를 쓴다.</p>
 <p>예시는 다음과 같다.</p>
-<figure>
-<img src="/images/stack.png" srcset="/img/loading.gif" lazyload alt="stack diagram" /><figcaption aria-hidden="true">stack diagram</figcaption>
-</figure>
+<p><img src="/images/stack.png" srcset="/img/loading.gif" lazyload alt="stack diagram"></p>
 <p>프레임은 함수가 호출되는 순서대로 배열한다. 위의 예에서는 <code>Main</code>이 <code>cattwice()</code>를 호출하며, <code>cattwice()</code>는 <code>printtwice()</code>를 호출한다. 함수 외부에서 변수를 만들면, 이는 <code>Main</code>에 속한다.</p>
-<p>각 매개 변수는 해당 인수와 동일한 값을 나타낸다. 따라서 <code>part1</code>은 <code>line1</code>과 같고 <code>part2</code>는 <code>line2</code>와 같으며, <code>bruce</code>는 <code>conat</code>과 같다.</p>
-<p>함수 호출 도중에 오류가 발생가면 줄리아는 해당 오류의 위치를 알려 준다. 예를 들어, <code>printtwice()</code>에서 <code>concat</code>에 액세스하려고하면 <code>UndefVarError</code>가 발생한다.</p>
+<p>각 매개 변수는 해당 인수와 동일한 값을 나타낸다. 따라서 <code>part1</code>은 <code>line1</code>과 같고 <code>part2</code>는  <code>line2</code>와 같으며, <code>bruce</code>는 <code>conat</code>과 같다.</p>
+<p>함수 호출 도중에 오류가 발생가면 줄리아는 해당 오류의 위치를 알려 준다.<br>예를 들어,  <code>printtwice()</code>에서 <code>concat</code>에 액세스하려고하면 <code>UndefVarError</code>가 발생한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">ERROR: <span class="hljs-built_in">UndefVarError</span>: concat not defined<br>Stacktrace:<br> [<span class="hljs-number">1</span>] printtwice at ./REPL[<span class="hljs-number">1</span>]:<span class="hljs-number">2</span> [inlined]<br> [<span class="hljs-number">2</span>] cattwice(::<span class="hljs-built_in">String</span>, ::<span class="hljs-built_in">String</span>) at ./REPL[<span class="hljs-number">2</span>]:<span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
-<p>위처럼 함수 목록들을 통해 오류가 발생한 프로그램 파일과 함수를 알려주는 것을 스택 추적이라고 한다 스택 추척의 함수 목록 순서는 스택 다이어그램의 프레임 순서와 반대이다.</p>
-<h3 id="결과-있는-함수와-결과-없는-함수">결과 있는 함수와 결과 없는 함수</h3>
-<p>우리가 사용하는 어떤 함수는 결괏값을 반환하지만 어떤 함수는 결과를 반환하지 않는다. 우리는 전자를 결과 있는 함수(fruitful function)이라고 하며, 후자를 결과 없는 함수(void function)이라고 한다.</p>
+<p>위처럼 함수 목록들을 통해 오류가 발생한 프로그램 파일과 함수를 알려주는 것을 스택 추적이라고 한다<br>스택 추척의 함수 목록 순서는 스택 다이어그램의 프레임 순서와 반대이다.</p>
+<h3 id="결과-있는-함수와-결과-없는-함수"><a href="#결과-있는-함수와-결과-없는-함수" class="headerlink" title="결과 있는 함수와 결과 없는 함수"></a>결과 있는 함수와 결과 없는 함수</h3><p>우리가 사용하는 어떤 함수는 결괏값을 반환하지만 어떤 함수는 결과를 반환하지 않는다. 우리는 전자를 결과 있는 함수(fruitful function)이라고 하며, 후자를 결과 없는 함수(void function)이라고 한다.</p>
 <p>예로 결과 있는 함수를 먼저 본다면,</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">golden = (sqrt(<span class="hljs-number">5</span>) + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
-<p>위의 예시의 <code>sqrt()</code>는 유익한 함수로서 반환 값을 가지고 있기 때문에 바로 계산이 가능하다. 대화식 모드에서 함수를 호출하면, 다음과 같은 결과를 도출한다.</p>
+<p>위의 예시의 <code>sqrt()</code>는 유익한 함수로서 반환 값을 가지고 있기 때문에 바로 계산이 가능하다.<br>대화식 모드에서 함수를 호출하면, 다음과 같은 결과를 도출한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; sqrt(<span class="hljs-number">5</span>)<br><span class="hljs-number">2.23606797749979</span><br></code></pre></td></tr></table></figure>
 <p>하지만 스크립트 모드에서는 위의 예시처럼 함수를 호출하면 반환 값은 손실된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">sqrt(<span class="hljs-number">5</span>)<br></code></pre></td></tr></table></figure>
@@ -436,10 +423,9 @@
 <p>따라서 스크립트 모드에서는 그다지 유익한 함수로서 작동하지 않는다.</p>
 <p>결과 없는 함수는 화면에 값을 표시하거나 다른 영향을 줄 수는 있지만 반환 값은 없다. 아래의 예시를 보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; result = printtwice(<span class="hljs-string">&quot;Bing&quot;</span>)<br>Bing<br>Bing<br>julia&gt; show(result)<br><span class="hljs-literal">nothing</span><br></code></pre></td></tr></table></figure>
-<p>위의 예시는 변수 <code>result</code>에 함수의 값을 할당하였지만, 밑에 결과를 보면 아무것도 없는 것을 확인할 수 있다. 두번째 코드의 결과인 <code>nothing</code>은 그 자체로 특수한 데이터 타입이며, 문자열인 <code>”nothing”</code>과는 구분된다.</p>
+<p>위의 예시는 변수 <code>result</code>에 함수의 값을 할당하였지만, 밑에 결과를 보면 아무것도 없는 것을 확인할 수 있다.  두번째 코드의 결과인 <code>nothing</code>은 그 자체로 특수한 데이터 타입이며,  문자열인 <code>”nothing”</code>과는 구분된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; typeof(<span class="hljs-literal">nothing</span>)<br><span class="hljs-built_in">Nothing</span><br></code></pre></td></tr></table></figure>
-<h3 id="왜-함수인가">왜 함수인가</h3>
-<p>프로그램을 만드는데 있어 함수가 왜 유용한지 궁금할 것이다. 이에 대한 몇 가지 이유를 보자.</p>
+<h3 id="왜-함수인가"><a href="#왜-함수인가" class="headerlink" title="왜 함수인가"></a>왜 함수인가</h3><p>프로그램을 만드는데 있어 함수가 왜 유용한지 궁금할 것이다. 이에 대한 몇 가지 이유를 보자.</p>
 <ul>
 <li>함수는 명령문들을 묶어서 사용할 수 있으므로, 이후 프로그램을 쉽게 파악하고 디버깅을 할 수 있다.</li>
 <li>함수는 반복적인 코드들을 대체하여 프로그램 코드를 더 짧게 만들어준다.</li>
@@ -447,8 +433,7 @@
 <li>잘 설계된 함수는 여러 프로그램에서 사용할 수 있다. (재사용 가능)</li>
 <li>줄리아에서는 함수들이 성능을 크게 향상시킬 수 있다.</li>
 </ul>
-<h3 id="디버깅">디버깅</h3>
-<p>디버깅은 가장 중요한 기술 중 하나이다. 그 이유는 프로그램 진행과정을 완벽히 알고 있어야 가능한 기술이기 때문이다. 프로그램에 문제가 생긴다면 개발자는 프로그램의 진행과정에서 문제와 관련된 단서를 찾고, 해결방안을 모색해야 한다. 이런 과정들은 매우 어렵고 힘들지만, 꼭 필요한 능력이다.</p>
+<h3 id="디버깅"><a href="#디버깅" class="headerlink" title="디버깅"></a>디버깅</h3><p>디버깅은 가장 중요한 기술 중 하나이다. 그 이유는 프로그램 진행과정을 완벽히 알고 있어야 가능한 기술이기 때문이다. 프로그램에 문제가 생긴다면 개발자는 프로그램의 진행과정에서 문제와 관련된 단서를 찾고, 해결방안을 모색해야 한다. 이런 과정들은 매우 어렵고 힘들지만, 꼭 필요한 능력이다.</p>
 <p>어떤 사람들에게는 프로그래밍과 디버깅은 동일하다. 즉, 프로그래밍은 원하는 작업이 수행될 때까지 코드들을 점검하고 디버깅하는 과정이기 때문이다.</p>
 
                 

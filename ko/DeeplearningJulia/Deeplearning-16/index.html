@@ -262,7 +262,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          307 words
+          303 words
         
       </span>
     
@@ -355,44 +355,29 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
-<hr />
-<p>이전 글에서는 <code>im2col()</code>에 대해서 알아보았다. <code>im2col()</code>은 4차원의 데이터를 2차원으로 변경하며, 보통 순전파에서 사용된다. 그와 반대로 <code>col2im()</code>은 2차원 데이터를 4차원으로 변경하여 반환하며, 보통 역전파 알고리즘에서 사용된다. 따라서 이번 글에서는 CNN 모델의 학습 속도를 높여줄 <code>col2im()</code>의 원리를 살펴보고 줄리아로 구현하며, 동시에 합성곱 계층과 풀링 계층의 역전파에 대해서도 알아볼 것이다.</p>
-<h2 id="col2im-이란">col2im 이란</h2>
-<p><code>col2im()</code>은 <code>im2col()</code>과 달리 차원을 변경하는 용도로만 쓰이지는 않는다. 간단하게 설명한다면 <code>col2im()</code>은 차원 변경과 동시에 미분값들을 최종적으로 도출해주는 역할을 같이 한다. 그렇기에 <code>col2im</code>을 이해하기 위해서는 합성곱이나 풀링의 역전파 미분 과정을 먼저 알아야 한다.</p>
-<h2 id="합성곱의-역전파-계산">합성곱의 역전파 계산</h2>
-<p>먼저 합성곱을 미분하는 과정을 살펴보자. 합성곱 또한 수식으로 미분을 전개할 수는 있다. 하지만 좀 더 직관적으로 설명하기 위하여 아래의 예시를 통해서 미분을 설명해보고자 한다.</p>
-<figure>
-<img src="/images/73.png" srcset="/img/loading.gif" lazyload alt="conv_for" /><figcaption aria-hidden="true">conv_for</figcaption>
-</figure>
-<p>위 그림처럼 하나의 합성곱 레이어가 있다고 가정해보자. 합성곱 계산을 식으로 표현하면 그림과 같다. 즉, 행렬 <span class="math inline">\(Y\)</span>는 입력데이터인 행렬 <span class="math inline">\(X\)</span>와 필터인 행렬 <span class="math inline">\(F\)</span>로 표현할 수 있다. 그렇다면 역전파 과정은 어떻게 진행될까? 역전파는 가중치와 편향의 미분값을 찾기 위하여 매 층마다 계산한다. 따라서 역전파는 겹겹이 쌓여 있는 합성함수를 미분하는 과정과 동일하다. 이를 정리하면 다음과 같다.</p>
-<p><span class="math display">\[Backward\  Propagation: dout \times dx\]</span></p>
-<p>위 설명에서 <span class="math inline">\(dout\)</span>은 이전 계층들의 미분값이다. <span class="math inline">\(dout\)</span>은 순전파에서 결과값인 <span class="math inline">\(Y\)</span>와 똑같은 형상으로 해당 레이어의 미분 과정에 투입된다. 즉, <span class="math inline">\(dout\)</span>은 역전파에서 사용되는 입력데이터라고 볼 수 있다. <span class="math inline">\(dx\)</span>는 해당 레이어의 순전파 계산에서 사용된 입력데이터 <span class="math inline">\(X\)</span>의 편미분이다. <span class="math inline">\(X\)</span>의 각각 요소들은 해당 인덱스에 따라서 미분된다. <span class="math inline">\(dx\)</span>를 계산하는 과정은 아래와 같다.</p>
-<figure>
-<img src="/images/74.png" srcset="/img/loading.gif" lazyload alt="conv_back" /><figcaption aria-hidden="true">conv_back</figcaption>
-</figure>
-<p>위 그림은 $ dx$를 각 성분 별로 미분한 식을 보여준다. <span class="math inline">\(dx\)</span>는 순전파의 결과값을 도출하는 식인 <span class="math inline">\(Y\)</span>를 <span class="math inline">\(X\)</span>의 각 성분들로 미분한 결과이다. 이렇게 계산된 <span class="math inline">\(dx\)</span>는 다음 레이어의 <span class="math inline">\(dout\)</span>으로 전달된다.</p>
-<p>합성곱 레이어의 역전파에서는 <span class="math inline">\(dx\)</span>뿐만 아니라 해당 레이어의 순전파에서 사용되었던 가중치와 편향의 미분도 동시에 진행된다. 가중치의 미분은 <span class="math inline">\(dw\)</span>이고, 편향의 미분은 <span class="math inline">\(db\)</span>이다. 아래의 그림은 가중치와 편향의 미분 과정을 나타낸 것이다.</p>
-<figure>
-<img src="/images/75.png" srcset="/img/loading.gif" lazyload alt="dout" /><figcaption aria-hidden="true">dout</figcaption>
-</figure>
-<p><span class="math inline">\(dw\)</span>와 <span class="math inline">\(db\)</span> 또한 순전파 계산에서 사용된 식을 미분함으로써 정의된다. 먼저 <span class="math inline">\(dw\)</span>의 경우, <span class="math inline">\(Y\)</span>를 <span class="math inline">\(F\)</span>의 성분으로 미분하면 각 필터의 성분들과 곱해졌던 입력데이터의 값들만 남는다. 이를 이전 레이어의 미분값인 <span class="math inline">\(dout\)</span>에 곱해주면 <span class="math inline">\(\frac{\partial L}{\partial f_n}\)</span>이 도출된다. 그 다음 <span class="math inline">\(db\)</span>를 살펴보면, 순전파 계산 과정에서 편향은 필터의 개수만큼 더해준다. 위 그림에서는 필터가 1개였기에 편향도 <span class="math inline">\(1 \times 1\)</span> 형태임을 알 수 있다. <span class="math inline">\(Y\)</span>를 미분하면 편향의 미분값은 1이 되고, 이를 <span class="math inline">\(dout\)</span>에 곱하여 더해주면 <span class="math inline">\(db\)</span>가 도출된다.</p>
-<h2 id="풀링의-역전파-계산">풀링의 역전파 계산</h2>
-<p>풀링의 역전파는 합성곱과 달리 어떤 사칙연산도 없다. 단순히 줄였던 크기를 다시 크게 만들어 주는 것이다. 합성곱 미분에 비해 매우 간단하니 아래의 그림을 참고하자.</p>
-<figure>
-<img src="/images/76.png" srcset="/img/loading.gif" lazyload alt="pool_dout" /><figcaption aria-hidden="true">pool_dout</figcaption>
-</figure>
-<p>위 그림은 Max pooling의 순전파, 역전파 계산 과정을 모두 보여준다. Max pooling은 순전파 계산에서 각 범위마다의 Max 값 위치를 저장한다. 그 이유는 이후 역전파에서 입력되는 미분값들을 해당 위치에 알맞게 보내야 하기 때문이다. 보통 Max pooling은 <span class="math inline">\(2 \times 2\)</span> 사이즈에 스트라이드가 2인 형태로 많이 쓰이기에 위 그림도 이를 기준으로 사용하였다.</p>
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.<br><span id="more"></span></p>
+<hr>
+<p>이전 글에서는 <code>im2col()</code>에 대해서 알아보았다. <code>im2col()</code>은 4차원의 데이터를 2차원으로 변경하며, 보통 순전파에서 사용된다. 그와 반대로 <code>col2im()</code>은 2차원 데이터를 4차원으로 변경하여 반환하며, 보통 역전파 알고리즘에서 사용된다.  따라서 이번 글에서는 CNN 모델의 학습 속도를 높여줄 <code>col2im()</code>의 원리를 살펴보고 줄리아로 구현하며, 동시에 합성곱 계층과 풀링 계층의 역전파에 대해서도 알아볼 것이다.</p>
+<h2 id="col2im-이란"><a href="#col2im-이란" class="headerlink" title="col2im 이란"></a>col2im 이란</h2><p><code>col2im()</code>은 <code>im2col()</code>과 달리 차원을 변경하는 용도로만 쓰이지는 않는다. 간단하게 설명한다면 <code>col2im()</code>은 차원 변경과 동시에 미분값들을 최종적으로 도출해주는 역할을 같이 한다. 그렇기에 <code>col2im</code>을 이해하기 위해서는 합성곱이나 풀링의 역전파 미분 과정을 먼저 알아야 한다.</p>
+<h2 id="합성곱의-역전파-계산"><a href="#합성곱의-역전파-계산" class="headerlink" title="합성곱의 역전파 계산"></a>합성곱의 역전파 계산</h2><p>먼저 합성곱을 미분하는 과정을 살펴보자. 합성곱 또한 수식으로 미분을 전개할 수는 있다. 하지만 좀 더 직관적으로 설명하기 위하여 아래의 예시를 통해서 미분을 설명해보고자 한다.</p>
+<p><img src="/images/73.png" srcset="/img/loading.gif" lazyload alt="conv_for"></p>
+<p>위 그림처럼 하나의 합성곱 레이어가 있다고 가정해보자. 합성곱 계산을 식으로 표현하면 그림과 같다. 즉, 행렬 $Y$는 입력데이터인 행렬 $X$와 필터인 행렬 $F$로 표현할 수 있다. 그렇다면 역전파 과정은 어떻게 진행될까? 역전파는 가중치와 편향의 미분값을 찾기 위하여 매 층마다 계산한다. 따라서 역전파는 겹겹이 쌓여 있는 합성함수를 미분하는 과정과 동일하다. 이를 정리하면 다음과 같다.</p>
+<script type="math/tex; mode=display">Backward\  Propagation: dout \times dx</script><p>위 설명에서 $dout$은 이전 계층들의 미분값이다. $dout$은 순전파에서 결과값인 $Y$와 똑같은 형상으로 해당 레이어의 미분 과정에 투입된다. 즉, $dout$은 역전파에서 사용되는 입력데이터라고 볼 수 있다. $dx$는 해당 레이어의 순전파 계산에서 사용된 입력데이터 $X$의 편미분이다. $X$의 각각 요소들은 해당 인덱스에 따라서 미분된다. $dx$를 계산하는 과정은 아래와 같다.</p>
+<p><img src="/images/74.png" srcset="/img/loading.gif" lazyload alt="conv_back"></p>
+<p>위 그림은 $ dx$를 각 성분 별로 미분한 식을 보여준다. $dx$는 순전파의 결과값을 도출하는 식인 $Y$를 $X$의 각 성분들로 미분한 결과이다. 이렇게 계산된 $dx$는 다음 레이어의 $dout$으로 전달된다.</p>
+<p>합성곱 레이어의 역전파에서는 $dx$뿐만 아니라 해당 레이어의 순전파에서 사용되었던 가중치와 편향의 미분도 동시에 진행된다. 가중치의 미분은 $dw$이고, 편향의 미분은 $db$이다. 아래의 그림은 가중치와 편향의 미분 과정을 나타낸 것이다.</p>
+<p><img src="/images/75.png" srcset="/img/loading.gif" lazyload alt="dout"></p>
+<p>$dw$와 $db$ 또한 순전파 계산에서 사용된 식을 미분함으로써 정의된다. 먼저 $dw$의 경우, $Y$를 $F$의 성분으로 미분하면 각 필터의 성분들과 곱해졌던 입력데이터의 값들만 남는다. 이를 이전 레이어의 미분값인 $dout$에 곱해주면 $\frac{\partial L}{\partial f_n}$이 도출된다. 그 다음 $db$를 살펴보면, 순전파 계산 과정에서 편향은 필터의 개수만큼 더해준다. 위 그림에서는 필터가 1개였기에 편향도 $1 \times 1$ 형태임을 알 수 있다. $Y$를 미분하면 편향의 미분값은 1이 되고, 이를 $dout$에 곱하여 더해주면 $db$가 도출된다.</p>
+<h2 id="풀링의-역전파-계산"><a href="#풀링의-역전파-계산" class="headerlink" title="풀링의 역전파 계산"></a>풀링의 역전파 계산</h2><p>풀링의 역전파는 합성곱과 달리 어떤 사칙연산도 없다. 단순히 줄였던 크기를 다시 크게 만들어 주는 것이다. 합성곱 미분에 비해 매우 간단하니 아래의 그림을 참고하자.</p>
+<p><img src="/images/76.png" srcset="/img/loading.gif" lazyload alt="pool_dout"></p>
+<p>위 그림은 Max pooling의 순전파, 역전파 계산 과정을 모두 보여준다. Max pooling은 순전파 계산에서 각 범위마다의 Max 값 위치를 저장한다. 그 이유는 이후 역전파에서 입력되는 미분값들을 해당 위치에 알맞게 보내야 하기 때문이다. 보통 Max pooling은 $2 \times 2$ 사이즈에 스트라이드가 2인 형태로 많이 쓰이기에 위 그림도 이를 기준으로 사용하였다.</p>
 <p>지금까지 <code>col2im()</code>의 원리를 알기 위해서 필요한 역전파 계산을 설명하였다. 이제<code>col2im()</code>이 언제 쓰이는지 또 원리는 무엇인지 알아보자.</p>
-<h2 id="col2im-의-원리">col2im 의 원리</h2>
-<p>위에서 간단하게 설명했다시피 <code>col2im()</code>은 단순한 차원 변경만 해주는 것이 아니라 역전파 계산의 일부를 담당한다. 아래의 그림을 살펴보자.</p>
-<figure>
-<img src="/images/77.png" srcset="/img/loading.gif" lazyload alt="col2im" /><figcaption aria-hidden="true">col2im</figcaption>
-</figure>
-<p><code>col2im()</code>은 이전 레이어의 미분값인 <span class="math inline">\(dout\)</span>와 순전파 계산에서 사용했던 가중치를 곱한 행렬을 입력데이터로 받는다. 그 다음, 위 그림과 같이 미분식에 알맞게 각 성분들을 더하여 결과값으로 도출한다. 즉, <code>col2im()</code> 은 2차원을 받아 4차원으로 변경해주는 것 뿐만 아니라 미분 과정에서 각각의 성분들을 알맞게 더해주는 역할도 하는 것이다.</p>
+<h2 id="col2im-의-원리"><a href="#col2im-의-원리" class="headerlink" title="col2im 의 원리"></a>col2im 의 원리</h2><p>위에서 간단하게 설명했다시피 <code>col2im()</code>은 단순한 차원 변경만 해주는 것이 아니라 역전파 계산의 일부를 담당한다. 아래의 그림을 살펴보자.</p>
+<p><img src="/images/77.png" srcset="/img/loading.gif" lazyload alt="col2im"></p>
+<p><code>col2im()</code>은 이전 레이어의 미분값인 $dout$와 순전파 계산에서 사용했던 가중치를 곱한 행렬을 입력데이터로 받는다. 그 다음, 위 그림과 같이 미분식에 알맞게 각 성분들을 더하여 결과값으로 도출한다. 즉, <code>col2im()</code> 은 2차원을 받아 4차원으로 변경해주는 것 뿐만 아니라 미분 과정에서 각각의 성분들을 알맞게 더해주는 역할도 하는 것이다.</p>
 <p><code>col2im()</code>을 줄리아로 구현한 코드는 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> col2im(dense, dcol, filter_r,filter_c, stride, pad)<br><br>    input_r, input_c,input_d,input_num = size(dense.x)<br><br>    out_r = <span class="hljs-built_in">Int</span>(((input_r + <span class="hljs-number">2</span>*pad - filter_r) ÷ stride) + <span class="hljs-number">1</span>)<br>    out_c = <span class="hljs-built_in">Int</span>(((input_c + <span class="hljs-number">2</span>*pad - filter_c) ÷ stride) + <span class="hljs-number">1</span>)<br><br>    temp = <span class="hljs-built_in">Array</span>(dcol&#x27;)<br>    mc = reshape(temp,filter_r,filter_c,input_d,out_r,out_c,input_num)<br>    col = permutedims(mc,(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>))<br><br>    img = zeros((input_r+<span class="hljs-number">2</span>*pad+stride-<span class="hljs-number">1</span>),(input_c+<span class="hljs-number">2</span>*pad+stride-<span class="hljs-number">1</span>), input_d, input_num)<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:filter_r<br>        r_max = (i + stride *out_r) -<span class="hljs-number">1</span><br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:filter_c<br>            c_max = (j + stride *out_c) -<span class="hljs-number">1</span><br><br>            img[i:stride:r_max, j:stride:c_max,:,:] += col[:, :, j, i, :, :]<br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><br>    result = img[<span class="hljs-number">1</span>+pad:input_r+pad,<span class="hljs-number">1</span>+pad:input_c+pad,:,:]<br><br>    <span class="hljs-keyword">return</span> result<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>위 코드에서 <code>dcol</code>은 <span class="math inline">\(dout \times weight\)</span>한 행렬이다. 그 다음 입력값을 더해줄 크기로 조각내기 위해서 6차원 배열인 <code>col</code>로 형태를 변경한다. 그 다음 알맞게 더해준 후, 값을 도출한다.</p>
+<p>위 코드에서 <code>dcol</code>은 $dout \times weight$한 행렬이다. 그 다음 입력값을 더해줄 크기로 조각내기 위해서 6차원 배열인 <code>col</code>로 형태를 변경한다. 그 다음 알맞게 더해준 후, 값을 도출한다.</p>
 <p>지금까지 <code>col2im()</code>의 원리에 대해서 알아보았다. 다음 글에서는 오늘 만든 <code>col2im()</code>을 가지고 합성곱과 풀링을 구현할 것이다.</p>
 
                 

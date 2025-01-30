@@ -35,8 +35,8 @@
 <meta property="article:modified_time" content="2025-01-27T20:54:50.275Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
-<meta property="article:tag" content="머신러닝">
 <meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
 <meta property="article:tag" content="줄리아">
 <meta property="article:tag" content="신경망">
 <meta property="article:tag" content="순전파">
@@ -349,38 +349,35 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
-<hr />
-<p>이전 글에서 인공신경망을 학습한다는 것이 어떤 의미인지 살펴보았다. 이번에는 인공신경망을 직접 설계하고 학습하여 손글씨 숫자를 분류하는 인공신경망을 만들 것이다. 인공신경망을 설계하는 것은 앞전에 살펴봤던 도식을 만드는 것이다. 은닉층 개수를 정하여 인공신경망의 깊이를 설정하고, 사용되는 활성화 함수들을 정한다. <strong>그 후 인공신경망을 '어떻게' 학습시킬 것인가를 정해야 한다.</strong> 오늘 같이 구현할 '순전파'는 경사하강법에서 기울기를 구하는 방법 중 하나이다.</p>
-<h2 id="순전파란">순전파란</h2>
-<p>순전파는 기울기를 구하는 과정이 입력값에서 예측값으로 진행되는 것을 의미한다. 즉, 순서대로 이행되는 정직한 미분 알고리즘이다. 우리가 앞서 <a href="https://dev-bearabbit.github.io/2020/03/31/DeeplearningJulia/Deeplearning-4/">경사하강법</a> 파트에서 살펴봤던 미분 방법을 사용한다.</p>
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.<br><span id="more"></span></p>
+<hr>
+<p>이전 글에서 인공신경망을 학습한다는 것이 어떤 의미인지 살펴보았다. 이번에는 인공신경망을 직접 설계하고 학습하여 손글씨 숫자를 분류하는 인공신경망을 만들 것이다. 인공신경망을 설계하는 것은 앞전에 살펴봤던 도식을 만드는 것이다. 은닉층 개수를 정하여 인공신경망의 깊이를 설정하고, 사용되는 활성화 함수들을 정한다. <strong>그 후 인공신경망을 ‘어떻게’ 학습시킬 것인가를 정해야 한다.</strong> 오늘 같이 구현할 ‘순전파’는 경사하강법에서 기울기를 구하는 방법 중 하나이다.</p>
+<h2 id="순전파란"><a href="#순전파란" class="headerlink" title="순전파란"></a>순전파란</h2><p>순전파는 기울기를 구하는 과정이 입력값에서 예측값으로 진행되는 것을 의미한다. 즉, 순서대로 이행되는 정직한 미분 알고리즘이다. 우리가 앞서 <a href="https://dev-bearabbit.github.io/2020/03/31/DeeplearningJulia/Deeplearning-4/">경사하강법</a> 파트에서 살펴봤던 미분 방법을 사용한다.</p>
 <p>순전파 알고리즘의 편미분 원리는 다음과 같다.</p>
-<ol type="1">
+<ol>
 <li>편미분 대상(가중치와 편향)에 아주 작은 수(1e-50)를 더해준다.</li>
-<li>손실 함수 값인 <span class="math inline">\(f1\)</span>을 구한다.</li>
+<li>손실 함수 값인 $f1$을 구한다.</li>
 <li>편미분 대상(가중치와 편향)에 아주 작은 수(1e-50)를 빼준다.</li>
-<li>손실 함수 값인 <span class="math inline">\(f2\)</span> 구한다.</li>
-<li><span class="math inline">\(\frac{(f1 - f2)}{2h}\)</span>를 한다. -&gt; 편미분값 완성</li>
+<li>손실 함수 값인 $f2$ 구한다.</li>
+<li>$\frac{(f1 - f2)}{2h}$를 한다. -&gt; 편미분값 완성</li>
 <li>위의 식 결과를 미분값 객체에 저장한다.</li>
 </ol>
 <p>하지만 순전파 알고리즘은 너무 느리다. 그 이유는 매개 변수인 가중치와 편향을 업데이트한 후 다시 처음부터 신경망을 계산하여 손실함수 값을 갱신하기 때문이다. 다음 글에서는 이를 좀 더 빨리 진행할 수 있는 역전파 알고리즘을 살펴볼 것이다.</p>
 <p>아래의 수식은 이전 글에서 우리가 만들었던 인공신경망의 프로세스를 나타낸 것이다.</p>
-<p><span class="math display">\[\hat{y}=\sigma(h(XW1+B1)\times W2+B2)\]</span></p>
-<p>순전파는 위의 수식에서 합성 함수들 가장 안쪽에 위치한 입력값부터 계산이 진행된다. 즉, 안쪽에서 바깥쪽으로 계산된다고도 볼 수 있다. 도식에서는 왼쪽에서 오른쪽으로 이동하며, 수식에서는 안쪽에서 바깥쪽으로 이동한다.</p>
-<h2 id="mnist-project">'MNIST' Project</h2>
-<p>'MNIST'는 손글씨로 쓴 숫자를 예측하는 인공신경망을 만드는 프로젝트이다. 해당 프로젝트에 대해 더 알고싶다면 <a target="_blank" rel="noopener" href="https://juliaml.github.io/MLDatasets.jl/latest/datasets/MNIST/#MLDatasets.MNIST.testtensor">이 링크</a>를 참고하면 된다. MNIST는 대부분의 교재에서 사용하는 예시 중 하나이며, 해당 데이터셋이 패키지 안에 준비되어 있다. 먼저 아래의 코드를 입력해서 데이터를 가져오자.</p>
+<script type="math/tex; mode=display">\hat{y}=\sigma(h(XW1+B1)\times W2+B2)</script><p>순전파는 위의 수식에서 합성 함수들 가장 안쪽에 위치한 입력값부터 계산이 진행된다. 즉, 안쪽에서 바깥쪽으로 계산된다고도 볼 수 있다. 도식에서는 왼쪽에서 오른쪽으로 이동하며, 수식에서는 안쪽에서 바깥쪽으로 이동한다.</p>
+<h2 id="‘MNIST’-Project"><a href="#‘MNIST’-Project" class="headerlink" title="‘MNIST’ Project"></a>‘MNIST’ Project</h2><p>‘MNIST’는 손글씨로 쓴 숫자를 예측하는 인공신경망을 만드는 프로젝트이다. 해당 프로젝트에 대해 더 알고싶다면 <a target="_blank" rel="noopener" href="https://juliaml.github.io/MLDatasets.jl/latest/datasets/MNIST/#MLDatasets.MNIST.testtensor">이 링크</a>를 참고하면 된다. MNIST는 대부분의 교재에서 사용하는 예시 중 하나이며, 해당 데이터셋이 패키지 안에 준비되어 있다. 먼저 아래의 코드를 입력해서 데이터를 가져오자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment">#import Pkg           # 패키지를 처음 사용할 때 입력해야 한다.</span><br>Pkg.add(<span class="hljs-string">&quot;MNIST&quot;</span>)<br><span class="hljs-keyword">using</span> MLDatasets<br>train_x, train_y = MNIST.traindata()<br>test_x,  test_y  = MNIST.testdata()<br></code></pre></td></tr></table></figure>
-<p>해당 데이터의 입력값 <code>train_x</code>는 <span class="math inline">\(28 \times 28\)</span> 이미지 데이터가 60000개 들어 있으며, <code>train_y</code>는 정답 숫자가 <span class="math inline">\(60000 \times 1\)</span> 형태로 들어 있다. 우리는 이를 신경망 모델에 알맞게 전처리해주어야 한다. 특히 <code>train_y</code>는 <code>7</code>이나 <code>8</code>같은 숫자로 들어가 있는데 이를 '원-핫 인코딩'형태로 변환해야 한다. 이를 위해 아래의 함수를 먼저 정의하자.</p>
-<p><strong>Note</strong> 원-핫 인코딩이란? 원-핫 인코딩은 숫자의 형태를 분류하기 위해 사용되는 데이터 형태로 <code>7</code>을 [0,0,0,0,0,0,0,1,0,0]로 변경해준다.</p>
+<p>해당 데이터의 입력값 <code>train_x</code>는 $28 \times 28$ 이미지 데이터가 60000개 들어 있으며, <code>train_y</code>는 정답 숫자가 $60000 \times 1$ 형태로 들어 있다. 우리는 이를 신경망 모델에 알맞게 전처리해주어야 한다. 특히 <code>train_y</code>는 <code>7</code>이나 <code>8</code>같은 숫자로 들어가 있는데 이를 ‘원-핫 인코딩’형태로 변환해야 한다. 이를 위해 아래의 함수를 먼저 정의하자.</p>
+<p><strong>Note</strong><br> 원-핫 인코딩이란?<br> 원-핫 인코딩은 숫자의 형태를 분류하기 위해 사용되는 데이터 형태로 <code>7</code>을 [0,0,0,0,0,0,0,1,0,0]로 변경해준다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    원-핫 인코딩 레이블을 만드는 함수</span><br><span class="hljs-string">    예를 들어 0~9까지의 숫자 중 3을 원-핫 레이블로 만들면</span><br><span class="hljs-string">    [0  0  0  1  0  0  0  0  0  0]과 같이 출력할 것이다.</span><br><span class="hljs-string">    x : 만들려는 숫자</span><br><span class="hljs-string">    y: 메트릭스의 길이, 주의할 점은 이것은 0부터 시작한다!</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">function</span> making_one_hot_label(x, y)<br><br>    temp = x + <span class="hljs-number">1</span><br>    temp_matrix = zeros(<span class="hljs-built_in">Int8</span>, <span class="hljs-number">1</span>, y)<br>    temp_matrix[temp] = <span class="hljs-number">1</span><br>    <span class="hljs-keyword">return</span>(temp_matrix)<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> making_one_hot_labels(y_train)<br>    t = making_one_hot_label.(y_train, <span class="hljs-number">10</span>)<br>    <span class="hljs-keyword">return</span> (reduce(vcat, t))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위의 함수를 사용하면 숫자로 입력된 <code>train_y</code>가 원-핫 레이블로 변경된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 훈련데이터 입력값 전처리</span><br>train_x = reshape(train_x,<span class="hljs-number">784</span>, <span class="hljs-number">60000</span>)<br>train_x = <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>&#125;(train_x)<br>train_x=train_x&#x27;<br><br><span class="hljs-comment"># 실제 실험데이터 입력값 전처리</span><br>test_x = reshape(test_x,<span class="hljs-number">784</span>, <span class="hljs-number">10000</span>)<br>test_x = <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>&#125;(test_x)<br>test_x=test_x&#x27;<br><br><span class="hljs-comment"># 훈련데이터 정답 레이블 전처리 (원-핫 인코딩)</span><br>t = making_one_hot_labels(train_y)<br>typeof(t), size(t)<br></code></pre></td></tr></table></figure>
-<p>이제 신경망 모델을 학습하기 위해 필요한 데이터는 모두 준비되었다. 우리가 만들 신경망은 이전 글에서 정리했던 '2층 신경망(TwoLayerNet)'이다. 신경망 모델에서는 네트워크에서 가중치와 편향이 계속 업데이트되어야 하기 때문에 딕셔너리로 정의한다. 만약 딕셔너리에 대해서 모르거나 더 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/10/ThinkJulia/Think-Julia-Chapter-11/">해당 글</a>을 참고하자. 또한 네트워크가 정확히 무엇인지 궁금하다면 <a href="https://dev-bearabbit.github.io/2020/04/02/DeeplearningJulia/Deeplearning-6/">이전 글</a>을 참고하면 된다.</p>
+<p>이제 신경망 모델을 학습하기 위해 필요한 데이터는 모두 준비되었다. 우리가 만들 신경망은 이전 글에서 정리했던 ‘2층 신경망(TwoLayerNet)’이다. 신경망 모델에서는 네트워크에서 가중치와 편향이 계속 업데이트되어야 하기 때문에 딕셔너리로 정의한다. 만약 딕셔너리에 대해서 모르거나 더 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/10/ThinkJulia/Think-Julia-Chapter-11/">해당 글</a>을 참고하자. 또한 네트워크가 정확히 무엇인지 궁금하다면 <a href="https://dev-bearabbit.github.io/2020/04/02/DeeplearningJulia/Deeplearning-6/">이전 글</a>을 참고하면 된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">params = <span class="hljs-built_in">Dict</span>()<br>grads = <span class="hljs-built_in">Dict</span>()<br></code></pre></td></tr></table></figure>
 <p>가중치를 할당할 딕셔너리를 정의하였다. <code>params</code>는 기존 매개 변수를 저장하며, <code>grads</code>는 매개 변수의 미분값들을 저장한다. 이제 가중치와 편향의 초기값을 생성하는 함수를 정의하자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> making_network(input_size, hidden_size, output_size, weight_init_std =<span class="hljs-number">0.01</span>)<br>    params[<span class="hljs-string">&quot;W1&quot;</span>] = weight_init_std * randn(<span class="hljs-built_in">Float64</span>, input_size, hidden_size)<br>    params[<span class="hljs-string">&quot;b1&quot;</span>] = zeros(<span class="hljs-built_in">Float32</span>, <span class="hljs-number">1</span>, hidden_size)<br>    params[<span class="hljs-string">&quot;W2&quot;</span>] = weight_init_std * randn(<span class="hljs-built_in">Float64</span>, hidden_size, output_size)<br>    params[<span class="hljs-string">&quot;b2&quot;</span>] = zeros(<span class="hljs-built_in">Float32</span>, <span class="hljs-number">1</span>, output_size)<br>    <span class="hljs-keyword">return</span>(params)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위의 함수는 입력 데이터의 행렬 크기, 은닉층의 행렬 크기, 결과값의 행렬 크기를 받아서 그에 알맞는 가중치와 편향 행렬을 생성해준다. 가중치는 오버피팅을 막기 위해 가장 작게 셋팅하는 것이 좋기 때문에 <code>weight_init_std</code>을 곱해준다. 가중치인 <code>W1</code>, <code>W2</code>는 정규분포를 따라 랜덤 수를 생성해주는 <code>randn()</code>를 사용하였으며, 편향인 <code>b1</code>, <code>b2</code>는 초기값인 크기에 맞게 제로 행렬로 만들어준다. 제로 행렬을 만드는 방법은 <code>zeros()</code>를 사용한다.</p>
-<p>우리가 사용하는 데이터는 입력값이 <span class="math inline">\(60000 \times 784\)</span>이며, 결과값은 <span class="math inline">\(60000 \times 10\)</span>이다. 따라서 <code>W1</code>은 <span class="math inline">\(784 \times 50\)</span>이며, <code>W2</code>는 <span class="math inline">\(50 \times 10\)</span>이다. <code>b1</code>은 <span class="math inline">\(1 \times 50\)</span>이고, <code>b2</code>는 <span class="math inline">\(1 \times 10\)</span>이다. 따라서 다음과 같이 함수를 사용하면 알맞은 가중치와 행렬 초기값을 만들 수 있다.</p>
+<p>우리가 사용하는 데이터는 입력값이 $60000 \times 784$이며, 결과값은 $60000 \times 10$이다. 따라서 <code>W1</code>은 $784 \times 50$이며, <code>W2</code>는 $50 \times 10$이다. <code>b1</code>은 $1 \times 50$이고, <code>b2</code>는 $1 \times 10$이다. 따라서 다음과 같이 함수를 사용하면 알맞은 가중치와 행렬 초기값을 만들 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">making_network(<span class="hljs-number">784</span>, <span class="hljs-number">50</span>, <span class="hljs-number">10</span>)<br></code></pre></td></tr></table></figure>
 <p>초기값 설정이 끝났다면 이제 신경망을 학습할 차례이다. 학습을 진행하기 전에 필요한 변수들을 미리 세팅해준다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">train_loss_list = <span class="hljs-built_in">Float64</span>[]<br>accuracy = <span class="hljs-built_in">Float64</span>[]<br></code></pre></td></tr></table></figure>
@@ -389,33 +386,39 @@
 <p>먼저 기본적인 활성화 함수를 정의한다. 우리는 이번 신경망 모델에 시그모이드와 소프트맥스를 사용할 예정이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> sigmoid(x)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>/(<span class="hljs-number">1</span>+exp(-x))<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> softmax_single(a)<br>    c = maximum(a)<br>    exp.(a .- c) / sum(exp.(a .- c))<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment"># 배치 데이터에 사용하는 소프트맥스</span><br><span class="hljs-keyword">function</span> softmax(a)<br>    temp = map(softmax_single, eachrow(a))<br>    <span class="hljs-keyword">return</span>(transpose(hcat(temp ...)))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>시그모이드 함수는 그대로 사용하며, 소프트맥스의 경우는 배치 데이터에 사용하는 함수를 따로 생성해준다. 배치 데이터는 각 행이 하나의 이미지이기 때문에 행 하나의 요소 합이 1이어야 한다. 위의 <code>softmax()</code>는 각 행 별로 <code>softmax_single()</code>를 계산하여 배열로 반환한다.</p>
-<p><strong>Note</strong> 배치(batch)란? 배치는 모델이 한번에 처리하는 데이터의 개수를 의미한다. 예를 들어 MNIST 데이터를 본다면, 입력데이터 <span class="math inline">\(1 \times 784\)</span>는 하나의 이미지이다. 만약 모델에 투입하는 입력데이터가 <span class="math inline">\(100 \times 784\)</span>라면 이미지 100개를 한번에 사용한 것이며, 이는 배치 데이터이다.</p>
-<p>그 다음 예측값 <span class="math inline">\(\hat{y}\)</span>을 반환하는 <code>predict()</code>를 정의한다.</p>
+<p><strong>Note</strong><br>배치(batch)란?<br>배치는 모델이 한번에 처리하는 데이터의 개수를 의미한다. 예를 들어 MNIST 데이터를 본다면, 입력데이터 $1 \times 784$는 하나의 이미지이다. 만약 모델에 투입하는 입력데이터가 $100 \times 784$라면 이미지 100개를 한번에 사용한 것이며, 이는 배치 데이터이다.</p>
+<p>그 다음 예측값 $\hat{y}$을 반환하는 <code>predict()</code>를 정의한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> predict(x)<br>    a1 = (x * params[<span class="hljs-string">&quot;W1&quot;</span>]) .+ params[<span class="hljs-string">&quot;b1&quot;</span>]<br>    z1 = sigmoid.(a1)<br>    a2 = (z1 * params[<span class="hljs-string">&quot;W2&quot;</span>]) .+ params[<span class="hljs-string">&quot;b2&quot;</span>]<br>    <span class="hljs-keyword">return</span> softmax(a2)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p><code>predict()</code>는 <code>params</code>에 있는 초기값 가중치와 편향을 사용하여 계산한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> cross_entropy_error(y,t)<br>    delta = <span class="hljs-number">1e-7</span><br>    batch_size = length(y[:,<span class="hljs-number">1</span>])<br>    <span class="hljs-keyword">return</span> (-sum(log.(y.+delta).*t) / batch_size)<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">function</span> loss(x, t)<br>    y = predict(x)<br>    <span class="hljs-keyword">return</span> cross_entropy_error(y, t)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><code>loss()</code>는 예측값을 계산하고 손실 함수의 결과까지 도출해주는 함수이며, 손실 함수로는 '교차 엔트로피 오차'를 사용하였다. <code>cross_entropy_error()</code>은 배치데이터 손실함수 값의 평균을 제공할 수 있도록 수정하였다.</p>
+<p><code>loss()</code>는 예측값을 계산하고 손실 함수의 결과까지 도출해주는 함수이며, 손실 함수로는 ‘교차 엔트로피 오차’를 사용하였다. <code>cross_entropy_error()</code>은 배치데이터 손실함수 값의 평균을 제공할 수 있도록 수정하였다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    f는 손실함수, x는 입력값, t는 정답, w는 대상</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">function</span> numerical_gradient(f, x, t, w)<br>    h=<span class="hljs-number">10</span>^-<span class="hljs-number">4</span><br>    vec=zeros(<span class="hljs-built_in">Float64</span>,size(w))<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> (<span class="hljs-number">1</span>:length(w))<br>        origin=w[i]<br>        w[i]+=h<br>        fx1=f(x,t)<br>        w[i]-=<span class="hljs-number">2</span>*h<br>        fx2=f(x,t)<br>        vec[i]=(fx1-fx2)/<span class="hljs-number">2</span>h<br>        w[i]=origin<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span>  vec<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>기존의 <code>numerical_gradient()</code>는 매개 변수로 <code>f()</code>와 미분 대상인 <code>x</code>값만 받았다. 하지만 우리가 적용하려는 <code>loss()</code>는 매개 변수가 <code>x, t</code>로 2개가 들어가기 때문에 이 또한 <code>numerical_gradient()</code>의 매개 변수로 추가하였다. 그 다음 <code>loss()</code>에서 편미분되는 변수가 가중치와 편향이기 때문에 이 또한 매개 변수로 추가하였다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> TwoLayerNet_numerical_gradient(f, x, t)<br>    grads[<span class="hljs-string">&quot;W1&quot;</span>] = numerical_gradient(f, x, t,params[<span class="hljs-string">&quot;W1&quot;</span>])<br>    grads[<span class="hljs-string">&quot;W2&quot;</span>] = numerical_gradient(f, x, t,params[<span class="hljs-string">&quot;W2&quot;</span>])<br>    grads[<span class="hljs-string">&quot;b1&quot;</span>] = numerical_gradient(f, x, t,params[<span class="hljs-string">&quot;b1&quot;</span>])<br>    grads[<span class="hljs-string">&quot;b2&quot;</span>] = numerical_gradient(f, x, t,params[<span class="hljs-string">&quot;b2&quot;</span>])<br>    <span class="hljs-keyword">return</span>(grads)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위의 <code>TwoLayerNet_numerical_gradient()</code>는 가중치와 편향을 모두 편미분하여 <code>grads</code>에 값을 저장한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> SGD(params,grads)<br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys(params)<br>        params[key] -= learning_rate * grads[key]<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">return</span> params<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><code>SGD()</code>는 '확률적 경사하강법'으로 기존 가중치와 편향에서 '학습률 <span class="math inline">\(\times\)</span> 편미분값'을 빼서 갱신한다.</p>
+<p><code>SGD()</code>는 ‘확률적 경사하강법’으로 기존 가중치와 편향에서 ‘학습률 $\times$ 편미분값’을 빼서 갱신한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> evaluate(test_x,test_y)<br>    temp = (sum((argmax.(eachrow(predict(test_x))).-<span class="hljs-number">1</span>) .== test_y)/size(test_x)[<span class="hljs-number">1</span>])<br>    <span class="hljs-keyword">return</span> (temp * <span class="hljs-number">100</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>마지막으로 정의할 함수 <code>evaluate()</code>는 정확도를 계산한다. 정확도란 실제 실험데이터들을 사용하여 해당 신경망 모델이 얼마나 맞추는지를 확률로 반환한다. 이후 신경망을 직접 학습시키고 정확도를 확인할 것이다.</p>
 <p>이제 학습을 진행하기 전에 배치 사이즈와 학습률, 반복 횟수를 지정한다. 보통 학습률은 0.01이나 0.1을 사용한다. 또한 배치 사이즈는 입력 데이터의 형태에 따라 최적화된 크기가 다르지만 이번에는 임의로 배치사이즈를 100으로 지정할 것이다. 그리고 반복 횟수는 100개의 배치데이터 기준으로 1에폭(epoch)인 600을 지정하였다. 에폭이라는 기준에 대해 자세히 알고 싶다면 아래 Note를 확인해보자.</p>
-<p><strong>Note</strong> 에폭이란? 에폭(epoch)은 훈련데이터 전체의 개수를 의미한다. MNIST 데이터를 예시로 본다면 훈련데이터는 60000개이다. 배치 사이즈가 100인 경우 한번에 100개의 훈련데이터가 사용되므로 모델에 1에폭을 훈련시키려면 600번을 반복해야 한다.</p>
+<p><strong>Note</strong><br>에폭이란?<br>에폭(epoch)은 훈련데이터 전체의 개수를 의미한다. MNIST 데이터를 예시로 본다면 훈련데이터는 60000개이다. 배치 사이즈가 100인 경우 한번에 100개의 훈련데이터가 사용되므로 모델에 1에폭을 훈련시키려면 600번을 반복해야 한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">train_size = size(train_x)[<span class="hljs-number">1</span>]<br>batch_size = <span class="hljs-number">100</span><br>learning_rate = <span class="hljs-number">0.1</span><br>iters_num = <span class="hljs-number">600</span><br></code></pre></td></tr></table></figure>
 <p>이제 모든 준비가 완료되었다. 아래의 코드를 입력하여 학습을 실행해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@time</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:iters_num<br>        batch_mask = rand(<span class="hljs-number">1</span>:train_size, <span class="hljs-number">100</span>)<br>        x_batch = train_x[batch_mask, :]<br>        t_batch = t[batch_mask, :]<br><br>        <span class="hljs-comment"># 편미분값 구하기</span><br>        TwoLayerNet_numerical_gradient(loss, x_batch, t_batch)<br><br>        <span class="hljs-comment"># 확률적 경사하강법</span><br>        SGD(params, grads)<br><br>        temp_loss = loss(x_batch, t_batch)<br>        print(<span class="hljs-string">&quot;NO.<span class="hljs-variable">$i</span>: &quot;</span>)<br>        println(temp_loss)<br>        append!(train_loss_list, temp_loss)<br>        append!(accuracy, evaluate(test_x, test_y))<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위의 코드는 순전파 기반 경사하강법을 구현한 것이다. 프로세스는 다음과 같다.</p>
 <ul>
-<li><p>먼저 입력 데이터 60000개 중에 100개를 무작위로 뽑아서 배치 데이터셋을 생성한다.</p></li>
-<li><p>그 다음 가중치와 편향을 편미분한다.(순전파) <code>grads</code>에 가중치와 편향의 편미분 값들을 저장한다.</p></li>
-<li><p>기존 신경망인 <code>params</code>의 가중치와 편향에서 '학습률 <span class="math inline">\(\times\)</span> 편미분값'을 빼서 갱신한다. (SGD)</p></li>
-<li><p>갱신한 가중치와 편향으로 다시 손실 함수의 값을 구한 후 <code>train_loss_list</code>에 추가한다.</p></li>
-<li><p>해당 모델을 사용하여 실제 실험데이터를 얼마나 맞추는지 확률을 계산하고, <code>accuracy</code>에 추가한다.</p></li>
-<li><p><code>iters_num</code>만큼 위의 프로세스를 반복한다.</p></li>
+<li><p>먼저 입력 데이터 60000개 중에 100개를 무작위로 뽑아서 배치 데이터셋을 생성한다.</p>
+</li>
+<li><p>그 다음 가중치와 편향을 편미분한다.(순전파) <code>grads</code>에 가중치와 편향의 편미분 값들을 저장한다.</p>
+</li>
+<li><p>기존 신경망인 <code>params</code>의 가중치와 편향에서 ‘학습률 $\times$ 편미분값’을 빼서 갱신한다. (SGD)</p>
+</li>
+<li><p>갱신한 가중치와 편향으로 다시 손실 함수의 값을 구한 후 <code>train_loss_list</code>에 추가한다.</p>
+</li>
+<li><p>해당 모델을 사용하여 실제 실험데이터를 얼마나 맞추는지 확률을 계산하고, <code>accuracy</code>에 추가한다.</p>
+</li>
+<li><p><code>iters_num</code>만큼 위의 프로세스를 반복한다.</p>
+</li>
 </ul>
 <p>편미분을 진행하는 파트에서 순전파는 역전파보다 시간이 매우 많이 소요된다. 따라서 비교적 시간이 여유로울 때 코드를 진행하기를 추천한다.</p>
 <p>위의 학습 결과는 다음과 같다.</p>
@@ -423,25 +426,17 @@
 <p>100 단위의 배치 데이터를 600번 반복한 결과, 처음 2.29였던 손실 함수 값이 0.86까지 떨어졌다. 이는 오답률이 많이 감소되었다는 것을 의미한다. 시간은 대략 17600초가 걸렸으며, 환산해보면 약 5시간 정도 소요되었다.</p>
 <p>위의 학습 과정에서 저장했던 <code>train_loss_list</code>와 <code>accuracy</code>를 그래프로 나타내보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">using</span> Plots<br>x = range(<span class="hljs-number">1</span>,length(train_loss_list),step=<span class="hljs-number">1</span>)<br>y = train_loss_list<br></code></pre></td></tr></table></figure>
-<figure>
-<img src="/images/41.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
-</figure>
+<p><img src="/images/41.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프"></p>
 <p>저장된 손실 함수 값을 그래프로 그려본 결과, 지속적으로 감소하는 양상을 확인할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x = range(<span class="hljs-number">1</span>,length(accuracy),step=<span class="hljs-number">1</span>)<br>y = accuracy<br><br>plot(x,y)<br></code></pre></td></tr></table></figure>
-<figure>
-<img src="/images/42.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
-</figure>
+<p><img src="/images/42.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프"></p>
 <p>저장된 정확도 또한 계속 상승하는 것을 볼 수 있다. 가장 높은 정확도는 아래의 코드를 통해 확인하자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">argmax(accuracy)   <span class="hljs-comment"># 최대값 인덱스 반환</span><br><span class="hljs-number">598</span><br>accuracy[<span class="hljs-number">598</span>]<br><span class="hljs-number">80.15</span><br></code></pre></td></tr></table></figure>
 <p>정확도는 80%를 웃돈다. 여기서 추가로 더 학습하면 정확도는 90%도 넘을 수 있다.</p>
 <p>위의 코드를 돌려보면 알겠지만 순전파는 매우 느리다. 아마 1에폭을 돌리면 더이상 학습을 진행하고 싶지 않을 것이다. 하지만 학습을 더 진행하고 싶진 않지만 90%가 넘는지 확인하고 싶은 이들을 위해 순전파로 3에폭을 돌려보았다. 결과는 다음과 같다.</p>
-<figure>
-<img src="/images/46.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프" /><figcaption aria-hidden="true">손실 함수 그래프</figcaption>
-</figure>
+<p><img src="/images/46.png" srcset="/img/loading.gif" lazyload alt="손실 함수 그래프"></p>
 <p>손실 함수 그래프이다. 손실 함수의 값이 0.5 아래로 떨어진 것을 확인할 수 있다.</p>
-<figure>
-<img src="/images/45.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프" /><figcaption aria-hidden="true">정확도 그래프</figcaption>
-</figure>
+<p><img src="/images/45.png" srcset="/img/loading.gif" lazyload alt="정확도 그래프"></p>
 <p>정확도는 80%를 훨씬 넘었다. 가장 높은 정확도를 확인하기 위해 아래의 코드를 입력해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">argmax(accuracy)   <span class="hljs-comment"># 최대값 인덱스 반환</span><br><span class="hljs-number">1709</span><br>accuracy[<span class="hljs-number">1709</span>]<br><span class="hljs-number">90.16999999999999</span><br></code></pre></td></tr></table></figure>
 <p>정확도가 90%가 넘은 것을 확인할 수 있다.</p>
@@ -488,9 +483,9 @@
       
         <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
       
-        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
-      
         <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
       
         <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
       

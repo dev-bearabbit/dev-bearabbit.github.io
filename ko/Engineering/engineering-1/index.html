@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          51 words
+          49 words
         
       </span>
     
@@ -344,59 +344,53 @@
             
               <div class="markdown-body">
                 
-                <p>Hive에서 주로 언급되는 Schema on Read에 대해서 정리합니다. <span id="more"></span></p>
-<h2 id="시작하기-전에">시작하기 전에</h2>
-<p>보통 데이터를 관리하는 시스템들은 크게 Schema on Read, Schema on Write 2가지 타입의 구조를 가진다. 두 타입은 데이터 프로세싱 과정에서 언제 스키마를 정의할 것인지에 따라 나눠지며 일반적으로 사용하는 RDB의 경우 Schema on Write, Hive는 Schema on Read에 해당한다. 두 용어에 대해서 자세히 알아보자.</p>
-<h2 id="schema-on-write">Schema on Write</h2>
-<p>Schema on Write는 데이터를 적재하기 전에 스키마를 먼저 생성해야 하는 방식을 말한다. 이를 그림으로 나타내면 아래와 같다.</p>
-<figure>
-<img src="/images/161.png" srcset="/img/loading.gif" lazyload alt="SW" /><figcaption aria-hidden="true">SW</figcaption>
-</figure>
+                <p>Hive에서 주로 언급되는 Schema on Read에 대해서 정리합니다.<br><span id="more"></span></p>
+<h2 id="시작하기-전에"><a href="#시작하기-전에" class="headerlink" title="시작하기 전에"></a>시작하기 전에</h2><p>보통 데이터를 관리하는 시스템들은 크게 Schema on Read, Schema on Write 2가지 타입의 구조를 가진다. 두 타입은 데이터 프로세싱 과정에서 언제 스키마를 정의할 것인지에 따라 나눠지며 일반적으로 사용하는 RDB의 경우 Schema on Write, Hive는 Schema on Read에 해당한다. 두 용어에 대해서 자세히 알아보자.</p>
+<h2 id="Schema-on-Write"><a href="#Schema-on-Write" class="headerlink" title="Schema on Write"></a>Schema on Write</h2><p>Schema on Write는 데이터를 적재하기 전에 스키마를 먼저 생성해야 하는 방식을 말한다. 이를 그림으로 나타내면 아래와 같다.</p>
+<p><img src="/images/161.png" srcset="/img/loading.gif" lazyload alt="SW"></p>
 <p>이 방식은 일반 RDB처럼 데이터를 저장하기 위해서는 먼저 스키마를 생성해야 하고 그 다음 데이터를 추가할 수 있는 구조이다. 따라서 스키마에 정의된 데이터 타입이 아닌 데이터를 추가하려고 한다면 에러가 발생한다.</p>
-<h2 id="schema-on-read">Schema on Read</h2>
-<p>하지만 하둡 기반의 빅데이터 플랫폼은 구조가 다르다. HDFS라는 파일분산시스템을 통해 데이터를 적재하고 이를 SQL엔진인 Hive가 RDB형태로 가져오는 구조이기 때문이다. 따라서 Hive는 자연스레 Schema on Read 구조를 따를 수 밖에 없다.</p>
-<figure>
-<img src="/images/162.png" srcset="/img/loading.gif" lazyload alt="SR" /><figcaption aria-hidden="true">SR</figcaption>
-</figure>
+<h2 id="Schema-on-Read"><a href="#Schema-on-Read" class="headerlink" title="Schema on Read"></a>Schema on Read</h2><p>하지만 하둡 기반의 빅데이터 플랫폼은 구조가 다르다. HDFS라는 파일분산시스템을 통해 데이터를 적재하고 이를 SQL엔진인 Hive가 RDB형태로 가져오는 구조이기 때문이다. 따라서 Hive는 자연스레 Schema on Read 구조를 따를 수 밖에 없다.</p>
+<p><img src="/images/162.png" srcset="/img/loading.gif" lazyload alt="SR"></p>
 <p>이 방식은 Raw 데이터를 일단 저장한 후 차후에 필요한 스키마를 생성함으로써 데이터를 읽어온다. 따라서 정의된 스키마 데이터 타입과 실제 저장된 데이터 형식은 일치하지 않을 수 있다. 또한 동일한 데이터를 가지고 여러 개의 스키마를 정의할 수도 있다.</p>
-<h2 id="비교">비교</h2>
-<p>두 구조는 각각의 특징이 존재하며, 이를 정리하면 아래와 같다.</p>
+<h2 id="비교"><a href="#비교" class="headerlink" title="비교"></a>비교</h2><p>두 구조는 각각의 특징이 존재하며, 이를 정리하면 아래와 같다.</p>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>타입</th>
 <th>Schema on Write</th>
 <th>Schema on Read</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>데이터 확인</td>
 <td>적재 전</td>
 <td>읽기 전</td>
 </tr>
-<tr class="even">
+<tr>
 <td>적재 속도</td>
 <td>비교적 느림</td>
 <td>비교적 빠름</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>읽는 속도</td>
 <td>비교적 빠름</td>
 <td>비교적 느림</td>
 </tr>
-<tr class="even">
+<tr>
 <td>오류 빈도</td>
 <td>비교적 낮음</td>
 <td>비교적 높음</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>유연성</td>
 <td>비교적 낮음</td>
 <td>비교적 높음</td>
 </tr>
 </tbody>
 </table>
+</div>
 
                 
               </div>

@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          280 words
+          279 words
         
       </span>
     
@@ -344,32 +344,26 @@
             
               <div class="markdown-body">
                 
-                <p>단일 스레드 웹서버를 러스트로 구현하는 과정을 정리합니다. <span id="more"></span></p>
+                <p>단일 스레드 웹서버를 러스트로 구현하는 과정을 정리합니다.<br><span id="more"></span></p>
 <p>이전 글에서 HTTP 요청을 읽어오는 것까지 살펴보았다. 이번 글에서는 그 이후 요청을 분석하여 응답을 작성 및 보내는 과정에 대해서 정리하고자 한다.</p>
 <p><a href="https://dev-bearabbit.github.io/2022/06/26/Rust/rust-10/">이전 글 보러가기</a></p>
-<h2 id="http-요청-분석-및-검증하기">HTTP 요청 분석 및 검증하기</h2>
-<p>요청을 분석하기 위해서는 HTTP 통신에 대해서 알아야 한다. 기본적으로 HTTP는 텍스트 기반 프로토콜로 클라이언트 요청 정보를 형식에 맞춰서 전달하는 방식이다. HTTP의 요쳥 규약은 다음과 같다.</p>
+<h2 id="HTTP-요청-분석-및-검증하기"><a href="#HTTP-요청-분석-및-검증하기" class="headerlink" title="HTTP 요청 분석 및 검증하기"></a>HTTP 요청 분석 및 검증하기</h2><p>요청을 분석하기 위해서는 HTTP 통신에 대해서 알아야 한다. 기본적으로 HTTP는 텍스트 기반 프로토콜로 클라이언트 요청 정보를 형식에 맞춰서 전달하는 방식이다. HTTP의 요쳥 규약은 다음과 같다.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">Method Request-URI HTTP-Version CRLF<br>headers CRLF<br>message-body<br></code></pre></td></tr></table></figure>
-<p>첫 번째 줄은 요청 줄(request line)이라고 하며 요청 종류, URI, 프로토콜 버전 등 요청 자체에 대한 정보를 담고 있다. URI는 Uniform Resource Identifier의 줄임말로 요청하는 데이터 위치를 담고 있는 고유식별자이다. 만약 클라이언트가 <a href="https://dev-bearabbit.github.io/" class="uri">https://dev-bearabbit.github.io/</a> 을 입력하면 서버는 /에 해당하는 응답 결과를 보내고, <a href="https://dev-bearabbit.github.io/categories/" class="uri">https://dev-bearabbit.github.io/categories/</a> 를 입력하면 /categories/에 해당하는 응답을 보낼 것이다. 정리하면 URI는 서버에서 어떤 리소스를 보내야 할지를 구분하는 식별자이다.<br />
-그리고 뒤에 붙는 <code>CRLF</code>는 CR과 LF가 합쳐진 문자로 줄바꿈을 나타낼 때 쓰이는 용어이다. CR은 Carriage Return로 커서를 맨 앞으로 보내는 것이고 LF는 Line Feed로 커서를 한 줄 아래로 내리는 것이다. 따라서 <code>CRLF</code>는 한줄 내리고 커서를 맨 앞으로 가져오는 줄바꿈이다.</p>
+<p>첫 번째 줄은 요청 줄(request line)이라고 하며 요청 종류, URI, 프로토콜 버전 등 요청 자체에 대한 정보를 담고 있다. URI는 Uniform Resource Identifier의 줄임말로 요청하는 데이터 위치를 담고 있는 고유식별자이다. 만약 클라이언트가 <a href="https://dev-bearabbit.github.io/">https://dev-bearabbit.github.io/</a> 을 입력하면 서버는 /에 해당하는 응답 결과를 보내고, <a href="https://dev-bearabbit.github.io/categories/">https://dev-bearabbit.github.io/categories/</a> 를 입력하면 /categories/에 해당하는 응답을 보낼 것이다. 정리하면 URI는 서버에서 어떤 리소스를 보내야 할지를 구분하는 식별자이다.<br>그리고 뒤에 붙는 <code>CRLF</code>는 CR과 LF가 합쳐진 문자로 줄바꿈을 나타낼 때 쓰이는 용어이다. CR은 Carriage Return로 커서를 맨 앞으로 보내는 것이고 LF는 Line Feed로 커서를 한 줄 아래로 내리는 것이다. 따라서 <code>CRLF</code>는 한줄 내리고 커서를 맨 앞으로 가져오는 줄바꿈이다.</p>
 <p>두번째 줄은 헤더로 요청을 보낸 클라이언트 및 연결에 대한 정보을 담고 있다. 헤더는 크게 요청(request), 응답(response), 엔티티(entity), 공통(general) 헤더로 구분된다. 헤더에 대한 자세한 내용은 다른 글에서 정리하고자 한다.</p>
 <p>마지막 줄은 전달할 데이터를 담는 공간인데 GET 요청에는 따로 내용은 없다. 말그대로 GET은 오로지 데이터를 받아가기 위한 요청이기 때문이다.</p>
 <p>이제 위 내용들을 바탕으로 아래의 HTTP 요청을 분석해보자.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs text">request: GET / HTTP/1.1<br>Host: localhost:7878<br>Connection: keep-alive<br>sec-ch-ua: &quot; Not A;Brand&quot;;v=&quot;99&quot;, &quot;Chromium&quot;;v=&quot;101&quot;, &quot;Google Chrome&quot;;v=&quot;101&quot;<br>sec-ch-ua-mobile: ?0<br>sec-ch-ua-platform: &quot;macOS&quot;<br>Upgrade-Insecure-Requests: 1<br>User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36<br>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9<br>Sec-Fetch-<br></code></pre></td></tr></table></figure>
 <p>먼저 GET 요청이고 URI는 <code>\</code>이며 프로토콜 버전은 1.1이다. 헤더를 확인해보니 IP는 localhost이고 포트는 7878이다. 연결 상태는 유지하고 있으며, 클라이언트의 프로그램 버전들과 처리 가능한 파일 타입 등을 알려주고 있다.</p>
-<h2 id="요청-분석에-따른-응답-작성하기">요청 분석에 따른 응답 작성하기</h2>
-<p>이제 위 요청에 보낼 응답을 작성해보자. HTTP 응답 규약은 다음과 같은 형식이다.</p>
+<h2 id="요청-분석에-따른-응답-작성하기"><a href="#요청-분석에-따른-응답-작성하기" class="headerlink" title="요청 분석에 따른 응답 작성하기"></a>요청 분석에 따른 응답 작성하기</h2><p>이제 위 요청에 보낼 응답을 작성해보자. HTTP 응답 규약은 다음과 같은 형식이다.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">HTTP-Version Status-Code Reason-Phrase CRLF<br>headers CRLF<br>message-body<br></code></pre></td></tr></table></figure>
 <p>첫 번째 줄은 상태 줄(status line)이라고 하며 HTTP 버전과 상태 코드, 상태에 대한 설명 등이 포함된다. 그 다음에는 요청 규약과 동일하게 헤더와 메세지 본문으로 구성된다. 이제 서버가 정상적으로 요청을 받았다는 답변을 작성해보자.</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">handle_connection</span>(<span class="hljs-keyword">mut</span> stream: TcpStream) &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">buffer</span> = [<span class="hljs-number">0</span>; <span class="hljs-number">512</span>];<br>    stream.<span class="hljs-title function_ invoke__">read</span>(&amp;<span class="hljs-keyword">mut</span> buffer).<span class="hljs-title function_ invoke__">unwrap</span>();<br>    <span class="hljs-comment">//println!(&quot;request: &#123;&#125;&quot;, String::from_utf8_lossy(&amp;buffer[..]));</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">response</span> = <span class="hljs-string">&quot;HTTP/1.1 200 OK\r\n\r\n&quot;</span>;<br>    stream.<span class="hljs-title function_ invoke__">write</span>(response.<span class="hljs-title function_ invoke__">as_bytes</span>()).<span class="hljs-title function_ invoke__">unwrap</span>();<br>    stream.<span class="hljs-title function_ invoke__">flush</span>().<span class="hljs-title function_ invoke__">unwrap</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>위 코드는 클라이언트에 정상적으로 연결이 되었다는 응답을 보내주는 코드이다. 하나씩 본다면 <code>reponse</code> 변수에 헤더와 본문 없이 상태 코드 200과 설명 OK를 담은 문자열을 할당하고 이를 바이트로 변환하여 스트림에 직접 보내는 구조이다. <code>write</code> 메서드는 버퍼에 해당 내용을 작성하며 <code>flush</code> 메서드는 버퍼에 작성된 데이터가 도착지까지 도달할 수 있도록 한다.</p>
-<h2 id="응답-보내기">응답 보내기</h2>
-<p>이제 마지막으로 응답을 보내기 위해서 프로그램을 실행해보자.</p>
+<h2 id="응답-보내기"><a href="#응답-보내기" class="headerlink" title="응답 보내기"></a>응답 보내기</h2><p>이제 마지막으로 응답을 보내기 위해서 프로그램을 실행해보자.</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs rust">cargo run<br></code></pre></td></tr></table></figure>
-<p>그 다음 <a target="_blank" rel="noopener" href="http://localhost:7878/" class="uri">http://localhost:7878/</a>에 접속해보면 "연결할 수 없음"이라는 에러 대신 아무것도 없는 하얀 브라우저 창을 만날 수 있다.</p>
-<figure>
-<img src="/images/171.png" srcset="/img/loading.gif" lazyload alt="200" /><figcaption aria-hidden="true">200</figcaption>
-</figure>
+<p>그 다음 <a target="_blank" rel="noopener" href="http://localhost:7878/">http://localhost:7878/</a>에 접속해보면 “연결할 수 없음”이라는 에러 대신 아무것도 없는 하얀 브라우저 창을 만날 수 있다.</p>
+<p><img src="/images/171.png" srcset="/img/loading.gif" lazyload alt="200"></p>
 <p>동시에 프로그램에서는 연결되었다는 출력이 나오고 있을 것이다. 성공적으로 연결되었다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">connected<br>connected<br></code></pre></td></tr></table></figure>
 

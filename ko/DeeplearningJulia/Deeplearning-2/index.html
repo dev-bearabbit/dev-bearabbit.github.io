@@ -34,8 +34,8 @@
 <meta property="article:modified_time" content="2025-01-27T20:55:38.760Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
-<meta property="article:tag" content="머신러닝">
 <meta property="article:tag" content="Deeplearning">
+<meta property="article:tag" content="머신러닝">
 <meta property="article:tag" content="줄리아">
 <meta property="article:tag" content="ReLU">
 <meta property="article:tag" content="렐루">
@@ -259,7 +259,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          382 words
+          383 words
         
       </span>
     
@@ -352,82 +352,65 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
-<hr />
-<h2 id="활성화-함수">활성화 함수</h2>
-<p>활성화 함수란 신경망 노드에 위치해 있는 함수로서 입력값들을 출력 신호의 여부로 변환해주는 함수이다. 보통 은닉층에서 사용하는 활성화 함수와 출력층에서 사용하는 활성화 함수로 나눠져 있으며, <span class="math inline">\(h(x)\)</span>로 표기한다.</p>
-<h3 id="은닉층에서-사용하는-활성화-함수">은닉층에서 사용하는 활성화 함수</h3>
-<p>은닉층에서 사용되는 기본적인 활성화 함수로는 3가지 정도가 있다.</p>
-<h4 id="계단-함수">계단 함수</h4>
-<p>계단 함수는 입력값이 <span class="math inline">\(0\)</span>이하이면 <span class="math inline">\(0\)</span>, <span class="math inline">\(0\)</span>을 초과하면 <span class="math inline">\(1\)</span>로 변환해주는 함수이다. 수식으로는 다음과 같다.</p>
-<p><span class="math display">\[
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="활성화-함수"><a href="#활성화-함수" class="headerlink" title="활성화 함수"></a>활성화 함수</h2><p>활성화 함수란 신경망 노드에 위치해 있는 함수로서 입력값들을 출력 신호의 여부로 변환해주는 함수이다. 보통 은닉층에서 사용하는 활성화 함수와 출력층에서 사용하는 활성화 함수로 나눠져 있으며, $h(x)$로 표기한다.</p>
+<h3 id="은닉층에서-사용하는-활성화-함수"><a href="#은닉층에서-사용하는-활성화-함수" class="headerlink" title="은닉층에서 사용하는 활성화 함수"></a>은닉층에서 사용하는 활성화 함수</h3><p>은닉층에서 사용되는 기본적인 활성화 함수로는 3가지 정도가 있다.</p>
+<h4 id="계단-함수"><a href="#계단-함수" class="headerlink" title="계단 함수"></a>계단 함수</h4><p>계단 함수는 입력값이 $0$이하이면 $0$, $0$을 초과하면 $1$로 변환해주는 함수이다. 수식으로는 다음과 같다.</p>
+<script type="math/tex; mode=display">
 h(x) =
  \begin{cases}
-0 &amp; \text{(x≤0) \]</span>}\ 1 &amp; \ \end{cases} $$</p>
-<p>아래는 위 수식의 코드 구현이다.</p>
+0 & \text{(x≤0) $$}\\
+1 & \text{(x>0) $$}\\
+\end{cases}</script><p>아래는 위 수식의 코드 구현이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> step_function(x)<br>    <span class="hljs-keyword">if</span> x&lt;=<span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>이를 그래프로 나타내보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; <span class="hljs-keyword">using</span> Plots<br>Julia&gt; x = range(-<span class="hljs-number">5.0</span>, <span class="hljs-number">5.0</span>, step = <span class="hljs-number">0.1</span>)<br>Julia&gt; y = step_function.(x)<br>Julia&gt; plot(x,y)<br></code></pre></td></tr></table></figure>
-<figure>
-<img src="/images/33.png" srcset="/img/loading.gif" lazyload alt="계단 함수" /><figcaption aria-hidden="true">계단 함수</figcaption>
-</figure>
-<p>그래프에서 보면 <span class="math inline">\(0\)</span>을 기준으로 <span class="math inline">\(0\)</span> 또는 <span class="math inline">\(1\)</span>을 반환하는 것을 확인할 수 있다. 위의 함수는 연속적인 값이 아닌 이진수를 결과로 반환한다.</p>
-<p><strong>Tip</strong> 위의 코드를 보면 <code>step_function.(x)</code>에 도트 연산자를 확인할 수 있다. 도트 연산자는 배열 단위의 입력 값에 함수나 연산자를 각 요소별로 적용해준다.</p>
-<h4 id="시그모이드-함수">시그모이드 함수</h4>
-<p>시그모이드 함수는 입력값들을 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span>사이의 수로 변환해주는 함수이다. 수식은 아래와 같다.</p>
-<p><span class="math display">\[h(x)=\frac{1}{1+e^{-x}}\]</span></p>
-<p>위의 식을 코드로 구현해보자.</p>
+<p><img src="/images/33.png" srcset="/img/loading.gif" lazyload alt="계단 함수"></p>
+<p>그래프에서 보면 $0$을 기준으로 $0$ 또는 $1$을 반환하는 것을 확인할 수 있다. 위의 함수는 연속적인 값이 아닌 이진수를 결과로 반환한다.</p>
+<p><strong>Tip</strong><br>위의 코드를 보면 <code>step_function.(x)</code>에 도트 연산자를 확인할 수 있다. 도트 연산자는 배열 단위의 입력 값에 함수나 연산자를 각 요소별로 적용해준다.</p>
+<h4 id="시그모이드-함수"><a href="#시그모이드-함수" class="headerlink" title="시그모이드 함수"></a>시그모이드 함수</h4><p>시그모이드 함수는 입력값들을 $0$과 $1$사이의 수로 변환해주는 함수이다. 수식은 아래와 같다.</p>
+<script type="math/tex; mode=display">h(x)=\frac{1}{1+e^{-x}}</script><p>위의 식을 코드로 구현해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> sigmoid(x)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / (<span class="hljs-number">1</span>+exp(-x))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>그래프를 그려보면 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span> 사이의 소수들로 구성된 것을 볼 수 있다.</p>
+<p>그래프를 그려보면 $0$과 $1$ 사이의 소수들로 구성된 것을 볼 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; <span class="hljs-keyword">using</span> Plots<br>Julia&gt; x = range(-<span class="hljs-number">5.0</span>, <span class="hljs-number">5.0</span>, step = <span class="hljs-number">0.1</span>)<br>Julia&gt; y = sigmoid.(x)<br>Julia&gt; plot(x,y)<br></code></pre></td></tr></table></figure>
-<figure>
-<img src="/images/32.png" srcset="/img/loading.gif" lazyload alt="시그모이드 함수" /><figcaption aria-hidden="true">시그모이드 함수</figcaption>
-</figure>
-<p>시그모이드 함수는 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span>의 사이에서 연속적인 값을 반환하며, <span class="math inline">\(0\)</span>을 중간값인 <span class="math inline">\(0.5\)</span>로 설정한다. 따라서 계단 함수와 달리 각 신호의 강도를 표현할 수 있다.</p>
-<h4 id="relu-함수">ReLU 함수</h4>
-<p>ReLU 함수는 음수를 모두 <span class="math inline">\(0\)</span>으로 바꾸고 양수는 그대로 출력하는 함수이다. 수식은 다음과 같다.</p>
-<p><span class="math display">\[
+<p><img src="/images/32.png" srcset="/img/loading.gif" lazyload alt="시그모이드 함수"></p>
+<p>시그모이드 함수는 $0$과 $1$의 사이에서 연속적인 값을 반환하며, $0$을 중간값인 $0.5$로 설정한다. 따라서 계단 함수와 달리 각 신호의 강도를 표현할 수 있다.</p>
+<h4 id="ReLU-함수"><a href="#ReLU-함수" class="headerlink" title="ReLU 함수"></a>ReLU 함수</h4><p>ReLU 함수는 음수를 모두 $0$으로 바꾸고 양수는 그대로 출력하는 함수이다. 수식은 다음과 같다.</p>
+<script type="math/tex; mode=display">
 h(x) =
  \begin{cases}
-0 &amp; \text{(x≤0)\]</span>}\ x &amp; \ \end{cases} $$</p>
-<p>위 수식을 코드로 구현해보자.</p>
+0 & \text{(x≤0)$$}\\
+x & \text{(x>0) $$}\\
+\end{cases}</script><p>위 수식을 코드로 구현해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> relu(x)<br>    <span class="hljs-keyword">return</span> max(<span class="hljs-number">0</span>,x)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<figure>
-<img src="/images/34.png" srcset="/img/loading.gif" lazyload alt="ReLU 함수" /><figcaption aria-hidden="true">ReLU 함수</figcaption>
-</figure>
-<p>위의 그래프를 통해 음수는 모두 <span class="math inline">\(0\)</span>으로 처리되며, 양수는 값이 그대로 출력되는 것을 확인할 수 있다.</p>
-<h4 id="세-가지-함수-비교">세 가지 함수 비교</h4>
-<p>지금까지 은닉층에서 사용하는 활성화 함수들을 살펴보았다. 이제는 배열에 직접 적용해봄으로서 각 함수들을 비교해보고자 한다.</p>
+<p><img src="/images/34.png" srcset="/img/loading.gif" lazyload alt="ReLU 함수"></p>
+<p>위의 그래프를 통해 음수는 모두 $0$으로 처리되며, 양수는 값이 그대로 출력되는 것을 확인할 수 있다.</p>
+<h4 id="세-가지-함수-비교"><a href="#세-가지-함수-비교" class="headerlink" title="세 가지 함수 비교"></a>세 가지 함수 비교</h4><p>지금까지 은닉층에서 사용하는 활성화 함수들을 살펴보았다. 이제는 배열에 직접 적용해봄으로서 각 함수들을 비교해보고자 한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; x = [-<span class="hljs-number">1</span> -<span class="hljs-number">2</span> -<span class="hljs-number">3</span>;<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">7</span>]<br></code></pre></td></tr></table></figure>
-<p>위의 코드는 예시로 적용해 볼 <span class="math inline">\(2\times3\)</span> 배열이다. 계단 함수와 시그모이드 함수, ReLU 함수 순서로 적용해보자.</p>
+<p>위의 코드는 예시로 적용해 볼 $2\times3$ 배열이다. 계단 함수와 시그모이드 함수, ReLU 함수 순서로 적용해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; step_function.(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">0</span><br> <span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
-<p>계단 함수는 음수와 <span class="math inline">\(0\)</span>은 모두 '<span class="math inline">\(0\)</span>'으로 바꾸고 양수들을 '<span class="math inline">\(1\)</span>'로 출력하였다.</p>
+<p>계단 함수는 음수와 $0$은 모두 ‘$0$’으로 바꾸고 양수들을 ‘$1$’로 출력하였다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; sigmoid.(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0.268941</span>  <span class="hljs-number">0.119203</span>  <span class="hljs-number">0.0474259</span><br> <span class="hljs-number">0.5</span>       <span class="hljs-number">0.952574</span>  <span class="hljs-number">0.999089</span><br></code></pre></td></tr></table></figure>
-<p>시그모이드 함수는 각 배열 요소들을 <span class="math inline">\(0\)</span>부터 <span class="math inline">\(1\)</span>까지의 수로 변환하여 출력하였다. 요소 중 하나인 <span class="math inline">\(0\)</span>은 중간값 0.5로 설정된 것을 볼 수 있다.</p>
+<p>시그모이드 함수는 각 배열 요소들을 $0$부터 $1$까지의 수로 변환하여 출력하였다. 요소 중 하나인 $0$은 중간값 0.5로 설정된 것을 볼 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; relu.(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">0</span><br> <span class="hljs-number">0</span>  <span class="hljs-number">3</span>  <span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
-<p>ReLU 함수의 경우 음수는 모두 <span class="math inline">\(0\)</span>으로 바꾸고 양수는 그대로 출력한 것을 확인할 수 있다.</p>
-<h3 id="출력층에서-사용하는-활성화-함수">출력층에서 사용하는 활성화 함수</h3>
-<p>출력층에서 사용되는 활성화 함수는 목적에 따라 달라진다. 일반적으로 회귀에는 항등 함수, 분류에는 소프트맥스 함수가 쓰인다.</p>
-<h4 id="항등-함수">항등 함수</h4>
-<p>항등 함수는 입력값을 그대로 출력한다. 수식과 코드는 아래와 같다.</p>
-<p><span class="math display">\[σ(x)=x\]</span></p>
-<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> identity_function(x)<br>    <span class="hljs-keyword">return</span> x<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<h4 id="소프트맥스-함수">소프트맥스 함수</h4>
-<p>소프트맥스 함수는 0과 1사이의 값을 비율로 출력하기 때문에 "확률"로 해석할 수 있다. 이런 이유로 분류 신경망에서 소프트맥스 함수를 사용한다. 예를 들어, 꽃 사진 하나를 분석하여 어떤 꽃인지 분류하는 신경망을 구현 중이라면 소프트맥스 함수는 (장미 70%, 진달래 21%, 붓꽃 9%) 이런 식으로 결과를 제공한다. 수식은 다음와 같다.</p>
-<p><span class="math display">\[y_k=\frac{e^{a_k}}{\sum_{i=1}^n e^{a_i}}\]</span></p>
-<p>이 수식에서 <span class="math inline">\(y_k\)</span>는 출력층의 <span class="math inline">\(k\)</span>번째 노드이며, 분자의 <span class="math inline">\(a_k\)</span>는 <span class="math inline">\(k\)</span>번째 입력 값이다. 또한 분모에서 <span class="math inline">\(n\)</span>은 총 출력층의 개수이며, 분모 전체는 출력된 값의 전체 합을 의미한다. 이를 코드로 구현하면 아래와 같다.</p>
+<p>ReLU 함수의 경우 음수는 모두 $0$으로 바꾸고 양수는 그대로 출력한 것을 확인할 수 있다.</p>
+<h3 id="출력층에서-사용하는-활성화-함수"><a href="#출력층에서-사용하는-활성화-함수" class="headerlink" title="출력층에서 사용하는 활성화 함수"></a>출력층에서 사용하는 활성화 함수</h3><p>출력층에서 사용되는 활성화 함수는 목적에 따라 달라진다. 일반적으로 회귀에는 항등 함수, 분류에는 소프트맥스 함수가 쓰인다.</p>
+<h4 id="항등-함수"><a href="#항등-함수" class="headerlink" title="항등 함수"></a>항등 함수</h4><p>항등 함수는 입력값을 그대로 출력한다. 수식과 코드는 아래와 같다.</p>
+<script type="math/tex; mode=display">σ(x)=x</script><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> identity_function(x)<br>    <span class="hljs-keyword">return</span> x<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<h4 id="소프트맥스-함수"><a href="#소프트맥스-함수" class="headerlink" title="소프트맥스 함수"></a>소프트맥스 함수</h4><p>소프트맥스 함수는 0과 1사이의 값을 비율로 출력하기 때문에 “확률”로 해석할 수 있다. 이런 이유로 분류 신경망에서 소프트맥스 함수를 사용한다. 예를 들어, 꽃 사진 하나를 분석하여 어떤 꽃인지 분류하는 신경망을 구현 중이라면 소프트맥스 함수는 (장미 70%, 진달래 21%, 붓꽃 9%) 이런 식으로 결과를 제공한다. 수식은 다음와 같다.</p>
+<script type="math/tex; mode=display">y_k=\frac{e^{a_k}}{\sum_{i=1}^n e^{a_i}}</script><p>이 수식에서 $y_k$는 출력층의 $k$번째 노드이며, 분자의 $a_k$는 $k$번째 입력 값이다. 또한 분모에서 $n$은 총 출력층의 개수이며, 분모 전체는 출력된 값의 전체 합을 의미한다. 이를 코드로 구현하면 아래와 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> softmax(x)<br>    c = maximum(x)<br>    exp.(x.-c)/sum(exp.(x.-c))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위 코드에서 입력 신호의 최대값을 빼는 이유는 오버플로(overflow) 문제를 막기 위함이다. 오버플로(overflow)란 결과값이 컴퓨터가 표현할 수 있는 값을 넘어갔을 때 발생하는 문제이며, 최대값을 빼주면 에러를 막을 수 있다.</p>
-<h4 id="두-가지-함수-비교">두 가지 함수 비교</h4>
-<p>지금까지 출력층에서 사용하는 항등 함수와 소프트맥스 함수를 살펴보았다. 이제는 예시에 직접 적용해보면서 각 함수들의 결과들을 비교해보고자 한다. 예시로 사용할 배열은 은닉층 활성화 함수들 비교했던 <code>x</code>를 그대로 사용하기로 한다.</p>
+<h4 id="두-가지-함수-비교"><a href="#두-가지-함수-비교" class="headerlink" title="두 가지 함수 비교"></a>두 가지 함수 비교</h4><p>지금까지 출력층에서 사용하는 항등 함수와 소프트맥스 함수를 살펴보았다. 이제는 예시에 직접 적용해보면서 각 함수들의 결과들을 비교해보고자 한다. 예시로 사용할 배열은 은닉층 활성화 함수들 비교했던 <code>x</code>를 그대로 사용하기로 한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; x = [-<span class="hljs-number">1</span> -<span class="hljs-number">2</span> -<span class="hljs-number">3</span>;<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">7</span>]<br></code></pre></td></tr></table></figure>
 <p>먼저 항등 함수부터 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; identity_function(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>&#125;:<br> -<span class="hljs-number">1</span>  -<span class="hljs-number">2</span>  -<span class="hljs-number">3</span><br>  <span class="hljs-number">0</span>   <span class="hljs-number">3</span>   <span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
 <p>입력값을 그대로 반환하는 것을 알 수 있다. 그 다음으로는 소프트맥스 함수를 적용해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; softmax(x)<br><span class="hljs-number">2</span>×<span class="hljs-number">3</span> <span class="hljs-built_in">Array</span>&#123;<span class="hljs-built_in">Float64</span>,<span class="hljs-number">2</span>&#125;:<br> <span class="hljs-number">0.000328971</span>  <span class="hljs-number">0.000121022</span>  <span class="hljs-number">4.45214e-5</span><br> <span class="hljs-number">0.000894237</span>  <span class="hljs-number">0.0179612</span>    <span class="hljs-number">0.98065</span><br></code></pre></td></tr></table></figure>
-<p><span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span> 사이의 값들로 변환되어 출력하는 것을 확인할 수 있다. 여기서 소프트맥스가 제대로 구현되었는지 확인하려면 모든 요소들을 더해서 <span class="math inline">\(1\)</span>이 나오면 된다.</p>
+<p>$0$과 $1$ 사이의 값들로 변환되어 출력하는 것을 확인할 수 있다. 여기서 소프트맥스가 제대로 구현되었는지 확인하려면 모든 요소들을 더해서 $1$이 나오면 된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">Julia&gt; sum(softmax(x))<br><span class="hljs-number">1.0</span><br></code></pre></td></tr></table></figure>
-<p>요소들의 합이 <span class="math inline">\(1\)</span>임을 확인할 수 있다.</p>
+<p>요소들의 합이 $1$임을 확인할 수 있다.</p>
 
                 
               </div>
@@ -470,9 +453,9 @@ h(x) =
       
         <a href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" class="print-no-link">#딥러닝</a>
       
-        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
-      
         <a href="/tags/deeplearning/" class="print-no-link">#Deeplearning</a>
+      
+        <a href="/tags/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D/" class="print-no-link">#머신러닝</a>
       
         <a href="/tags/%EC%A4%84%EB%A6%AC%EC%95%84/" class="print-no-link">#줄리아</a>
       

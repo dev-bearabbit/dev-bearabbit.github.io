@@ -253,7 +253,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          360 words
+          359 words
         
       </span>
     
@@ -264,7 +264,7 @@
         
         
         
-          4 mins
+          3 mins
         
       </span>
     
@@ -346,21 +346,18 @@
             
               <div class="markdown-body">
                 
-                <p>AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다. <span id="more"></span></p>
-<hr />
-<h2 id="ec2-인스턴스-생성하기">EC2 인스턴스 생성하기</h2>
-<p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://dev-bearabbit.github.io/2020/09/21/AWS/AWS-4/">EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
+                <p>AWS EC2 인스턴스에 있는 Docker 컨테이너에서 딥러닝 모델을 훈련하는 과정에 대해서 정리합니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="EC2-인스턴스-생성하기"><a href="#EC2-인스턴스-생성하기" class="headerlink" title="EC2 인스턴스 생성하기"></a>EC2 인스턴스 생성하기</h2><p>먼저 커맨드라인에서 AWS에 접속하여 사용할 EC2 인스턴스를 생성한다. 만약 생성하는 방법을 모른다면 <a href="https://dev-bearabbit.github.io/2020/09/21/AWS/AWS-4/">EC2 인스턴스 생성하기</a>에서 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># IAM계정 로그인</span><br>aws configure<br></code></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># EC2 인스턴스 생성</span><br>aws ec2 run-instances --image-id <span class="hljs-string">&#x27;인스턴스 이미지&#x27;</span> --count <span class="hljs-string">&#x27;인스턴스 수&#x27;</span> --instance-type <span class="hljs-string">&#x27;인스턴스 타입&#x27;</span> --key-name <span class="hljs-string">&#x27;키 페어 이름&#x27;</span> --security-groups <span class="hljs-string">&#x27;보안 그룹 이름&#x27;</span><br></code></pre></td></tr></table></figure>
-<h2 id="ec2-인스턴스에-접속하기">EC2 인스턴스에 접속하기</h2>
-<p>다음으로는 생성한 인스턴스에 접속한다. 해당 인스턴스의 인바운드 규칙이 SSH 접속이기 때문에 아래의 코드를 입력한다.</p>
+<h2 id="EC2-인스턴스에-접속하기"><a href="#EC2-인스턴스에-접속하기" class="headerlink" title="EC2 인스턴스에 접속하기"></a>EC2 인스턴스에 접속하기</h2><p>다음으로는 생성한 인스턴스에 접속한다. 해당 인스턴스의 인바운드 규칙이 SSH 접속이기 때문에 아래의 코드를 입력한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">chmod</span> 400 <span class="hljs-string">&#x27;키 페어 이름.pem&#x27;</span>  <span class="hljs-comment"># SSH 퍼미션 변경</span><br>ssh -i <span class="hljs-string">&#x27;키 페어 이름.pem&#x27;</span> ec2-user@ <span class="hljs-string">&#x27;헤당 인스턴스 PublicDnsName&#x27;</span><br></code></pre></td></tr></table></figure>
 <p><code>chmod 400</code>은 해당 파일의 소유주만 읽을 수 있도록 권한을 변경하는 것이다. <code>해당 인스턴스 PublicDnsName</code>는 인스턴스의 정보에서 찾을 수 있다. 만약 PublicDnsName를 모른다면 아래의 코드를 입력해서 복사해오면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 describe-instanses<br></code></pre></td></tr></table></figure>
 <p>해당 인스턴스 접속에 성공하면 프롬프트가 인스턴스 ID로 변경된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[ec2-user@ip-**-**-*-*** ~]$ <span class="hljs-comment"># 인스턴스에 접속된 프롬프트</span><br></code></pre></td></tr></table></figure>
-<h2 id="ec2-인스턴스에-훈련-데이터-가져오기">EC2 인스턴스에 훈련 데이터 가져오기</h2>
-<p>이제 인스턴스에 S3에 저장해둔 훈련데이터를 가져올 것이다. 인스턴스는 가상 서버이기 때문에 S3에 접속하려면 다시 IAM 계정에 로그인해야 한다.</p>
+<h2 id="EC2-인스턴스에-훈련-데이터-가져오기"><a href="#EC2-인스턴스에-훈련-데이터-가져오기" class="headerlink" title="EC2 인스턴스에 훈련 데이터 가져오기"></a>EC2 인스턴스에 훈련 데이터 가져오기</h2><p>이제 인스턴스에 S3에 저장해둔 훈련데이터를 가져올 것이다. 인스턴스는 가상 서버이기 때문에 S3에 접속하려면 다시 IAM 계정에 로그인해야 한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># IAM계정 다시 로그인</span><br>aws configure<br></code></pre></td></tr></table></figure>
 <p>그 다음에는 아래의 코드를 입력하여 훈련데이터가 들어있는 버킷을 인스턴스에 복사해온다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws s3 <span class="hljs-built_in">sync</span> s3://;<span class="hljs-string">&#x27;가져올 버킷 이름&#x27;</span> /home/ec2-user<br></code></pre></td></tr></table></figure>
@@ -368,36 +365,30 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">download: s3://mnist-data-60000/Dockerfile to ./Dockerfile<br>download: s3://mnist-data-60000/model.py to ./model.py<br>download: s3://mnist-data-60000/test_y.pickle to ./test_y.pickle<br>download: s3://mnist-data-60000/train_y.pickle to ./train_y.pickle<br>download: s3://mnist-data-60000/test_x.pickle to ./test_x.pickle<br>download: s3://mnist-data-60000/train_x.pickle to ./train_x.pickle<br></code></pre></td></tr></table></figure>
 <p>인스턴스 디렉토리를 확인하여 잘 다운되었는지 확인해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">&gt; <span class="hljs-built_in">ls</span><br>Dockerfile  model.py  test_x.pickle  test_y.pickle  train_x.pickle  train_y.pickle<br></code></pre></td></tr></table></figure>
-<h2 id="ec2-인스턴스에-도커-설치하기">EC2 인스턴스에 도커 설치하기</h2>
-<p>이제 인스턴스에 도커를 설치해야 한다. 아래의 코드를 입력하여 도커를 설치해보자.</p>
+<h2 id="EC2-인스턴스에-도커-설치하기"><a href="#EC2-인스턴스에-도커-설치하기" class="headerlink" title="EC2 인스턴스에 도커 설치하기"></a>EC2 인스턴스에 도커 설치하기</h2><p>이제 인스턴스에 도커를 설치해야 한다. 아래의 코드를 입력하여 도커를 설치해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> yum update -y<br><span class="hljs-built_in">sudo</span> yum install docker<br><span class="hljs-built_in">sudo</span> service docker start<br><span class="hljs-built_in">sudo</span> usermod -a -G docker ec2-user<br></code></pre></td></tr></table></figure>
 <p>도커가 정상작동하기 위해서는 인스턴스를 재부팅해야 한다. 아래의 코드를 입력하여 EC2 인스턴스를 재부팅한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws ec2 reboot-instances --instance-ids <span class="hljs-string">&#x27;인스턴스  ID&#x27;</span> <span class="hljs-comment"># 그냥 logout만 입력해도 된다.</span><br>ssh -i <span class="hljs-string">&#x27;키 페어 이름.pem&#x27;</span> ec2-user@ <span class="hljs-string">&#x27;헤당 인스턴스 PublicDnsName&#x27;</span><br></code></pre></td></tr></table></figure>
 <p>그 다음 아래의 코드를 입력하면 도커가 정상작동하는 것을 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker info<br></code></pre></td></tr></table></figure>
-<h2 id="docker-image-빌드하고-컨테이너-생성하기">docker image 빌드하고 컨테이너 생성하기</h2>
-<p>인스턴스 재부팅이 완료되었다면 저장해두었던 도커파일을 빌드하여 컨테이너를 생성해보자. 아래의 코드를 입력하여 도커파일을 빌드한다.</p>
+<h2 id="docker-image-빌드하고-컨테이너-생성하기"><a href="#docker-image-빌드하고-컨테이너-생성하기" class="headerlink" title="docker image 빌드하고 컨테이너 생성하기"></a>docker image 빌드하고 컨테이너 생성하기</h2><p>인스턴스 재부팅이 완료되었다면 저장해두었던 도커파일을 빌드하여 컨테이너를 생성해보자. 아래의 코드를 입력하여 도커파일을 빌드한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker build -t train:0.0 .<br></code></pre></td></tr></table></figure>
-<p>위 코드는 현재 디렉토리에 있는 도커파일을 <code>train:0.0</code>라는 이름으로 빌드한다. 뒤에 <code>(띄어쓰기).</code>는 현재 디렉토리를 나타낸 것이다. 그렇기 때문에 위 코드를 입력할 때 잊지 말고 같이 입력해야 한다. 이미지 빌드가 완성되면 아래의 코드를 입력하여 확인할 수 있다.</p>
+<p>위 코드는 현재 디렉토리에 있는 도커파일을 <code>train:0.0</code>라는 이름으로 빌드한다. 뒤에 <code>(띄어쓰기).</code>는 현재 디렉토리를 나타낸 것이다. 그렇기 때문에  위 코드를 입력할 때 잊지 말고 같이 입력해야 한다. 이미지 빌드가 완성되면 아래의 코드를 입력하여 확인할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker images<br><br>REPOSITORY          TAG                   IMAGE ID            CREATED             SIZE<br>train               0.0                   947c77773268        8 seconds ago       2.05GB<br>ufoym/deepo         tensorflow-py36-cpu   437bbe6aecab        5 weeks ago         1.79GB<br></code></pre></td></tr></table></figure>
 <p>위와 같이 나왔다면 이미지 빌드에 성공한 것이다. 이제 train:0.0을 사용하여 컨테이너를 생성할 것이다. 아래의 코드를 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -v /home/ec2-user:/app train:0.0<br></code></pre></td></tr></table></figure>
 <p>위 코드에 대해 살펴보자면 먼저 <code>-v</code>는 호스트의 디렉토리를 생성할 컨테이너 디렉토리로 마운트하는 것이다. <code>/home/ec2-user</code>은 EC2 인스턴스의 디렉토리이고, <code>/app</code>은 컨테이너 디렉토리이다. (도커파일에서 컨테이너 디렉토리를 <code>/app</code>으로 설정하였다 ) 그 다음 사용할 이미지 이름과 태그를 입력하면 도커 컨테이너가 작동한다.</p>
-<h2 id="훈련-결과-확인하기">훈련 결과 확인하기</h2>
-<p>컨테이너가 작동되면 커맨드라인에 아래와 같이 훈련이 진행되는 상황이 보인다.</p>
+<h2 id="훈련-결과-확인하기"><a href="#훈련-결과-확인하기" class="headerlink" title="훈련 결과 확인하기"></a>훈련 결과 확인하기</h2><p>컨테이너가 작동되면 커맨드라인에 아래와 같이 훈련이 진행되는 상황이 보인다.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python3">Epoch 1/100<br>600/600 [==============================] - 55s 92ms/step - loss: 0.1782 - accuracy: 0.9444 - val_loss: 6.7693 - val_accuracy: 0.9827<br>Epoch 2/100<br>600/600 [==============================] - 55s 91ms/step - loss: 0.0519 - accuracy: 0.9840 - val_loss: 5.7595 - val_accuracy: 0.9855<br>Epoch 3/100<br>600/600 [==============================] - 55s 91ms/step - loss: 0.0357 - accuracy: 0.9886 - val_loss: 8.1897 - val_accuracy: 0.9838<br>.heco<br>.<br></code></pre></td></tr></table></figure>
 <p>이것은 우리가 명령했던 <code>model.py</code>가 잘 작동하고 있다는 의미이며, 학습이 끝나면 가중치, 모델 스트럭쳐와 같은 모델 정보들을 EC2 인스턴스에 저장한다. 모델 정보는 <code>mnist_convNet</code>이라는 폴더로 저장된다. (model.py의 마지막 줄에서 폴더 이름 수정 가능하다)</p>
 <p>아래의 코드를 입력하여 EC2 인스턴스의 디렉토리를 확인해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span><br><br>Dockerfile     model.py       test_y.pickle   train_y.pickle<br>mnist_convNet  test_x.pickle  train_x.pickle<br></code></pre></td></tr></table></figure>
-<h2 id="훈련-결과-s3에-저장하기">훈련 결과 S3에 저장하기</h2>
-<p>훈련이 끝났다. 이제 훈련이 완료된 모델 정보를 S3의 버킷에 저장해야 한다. 아래의 코드를 입력해보자.</p>
+<h2 id="훈련-결과-S3에-저장하기"><a href="#훈련-결과-S3에-저장하기" class="headerlink" title="훈련 결과 S3에 저장하기"></a>훈련 결과 S3에 저장하기</h2><p>훈련이 끝났다. 이제 훈련이 완료된 모델 정보를 S3의 버킷에 저장해야 한다. 아래의 코드를 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">tar cvf `저장할 이름.tar` mnist_convNet<br></code></pre></td></tr></table></figure>
 <p>위 코드는 <code>mnist_convNet</code>폴더를 하나로 묶어준다. 이후 해당 파일을 S3 버킷에 복사하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws s3 <span class="hljs-built_in">cp</span> `저장한 이름.tar` s3://<span class="hljs-string">&#x27;저장할 버킷 이름&#x27;</span><br></code></pre></td></tr></table></figure>
 <p>그럼 아래와 같이 훈련 결과가 S3에 저장된 것을 확인할 수 있다.</p>
-<figure>
-<img src="/images/95.png" srcset="/img/loading.gif" lazyload alt="AWS6_1" /><figcaption aria-hidden="true">AWS6_1</figcaption>
-</figure>
+<p><img src="/images/95.png" srcset="/img/loading.gif" lazyload alt="AWS6_1"></p>
 <p>이제 AWS를 사용하여 모델 훈련까지 완료하였다. 다음 글에서는 훈련된 모델에 사용하는 방법에 대해서 살펴볼 것이다.</p>
 
                 

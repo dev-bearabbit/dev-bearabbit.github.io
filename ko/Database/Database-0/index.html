@@ -33,10 +33,10 @@
 <meta property="article:modified_time" content="2024-12-29T18:34:16.271Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="DB">
+<meta property="article:tag" content="database">
 <meta property="article:tag" content="architecture">
 <meta property="article:tag" content="sharednothing">
 <meta property="article:tag" content="shareddisk">
-<meta property="article:tag" content="database">
 <meta property="article:tag" content="아키텍처">
 <meta property="article:tag" content="clustering">
 <meta property="article:tag" content="replication">
@@ -256,7 +256,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          112 words
+          111 words
         
       </span>
     
@@ -349,69 +349,60 @@
             
               <div class="markdown-body">
                 
-                <p>데이터베이스 아키텍처에 대해서 공부하고 정리합니다. <span id="more"></span></p>
-<hr />
-<h2 id="시작하기-전에">시작하기 전에</h2>
-<p>가끔씩 데이터베이스(DB)에 대해서 설명할 때 DBMS, DB서버, 저장소를 혼용하여 사용하곤 한다. 하지만 이에 대한 차이점을 명확히 짚고 넘어가지 않는다면 아키텍처를 이해하는 데 어려울 수 있다. 따라서 데이터베이스 아키텍처를 공부하기 전에 아래 단어들의 차이점들을 살펴보자.</p>
+                <p>데이터베이스 아키텍처에 대해서 공부하고 정리합니다.<br><span id="more"></span></p>
+<hr>
+<h2 id="시작하기-전에"><a href="#시작하기-전에" class="headerlink" title="시작하기 전에"></a>시작하기 전에</h2><p>가끔씩 데이터베이스(DB)에 대해서 설명할 때 DBMS, DB서버, 저장소를 혼용하여 사용하곤 한다. 하지만 이에 대한 차이점을 명확히 짚고 넘어가지 않는다면 아키텍처를 이해하는 데 어려울 수 있다. 따라서 데이터베이스 아키텍처를 공부하기 전에 아래 단어들의 차이점들을 살펴보자.</p>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>단어</th>
 <th>설명</th>
 <th>예시</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>DBMS</td>
 <td>데이터를 체계적인 형태로 가공하여 저장소에 저장하거나 가져오는 프로그램</td>
 <td>mysql, oracle, postgresql 등</td>
 </tr>
-<tr class="even">
+<tr>
 <td>DB서버</td>
 <td>DBMS가 설치되어 다른 앱들과의 데이터 송수신을 담당하는 서버</td>
 <td>DBMS가 설치된 서버</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>저장소</td>
 <td>DB서버가 데이터를 저장하는 물리적 하드웨어</td>
 <td>하드디스크, SSD 등</td>
 </tr>
 </tbody>
 </table>
+</div>
 <p>위 정보를 기반으로 데이터베이스 아키텍처에 대해 알아보자.</p>
-<h2 id="데이터베이스-아키텍처란">데이터베이스 아키텍처란</h2>
-<p>아키텍처는 어떤 시스템을 구성한 설계도이다. 그렇기에 어떤 아키텍처를 채택했는가에 따라서 해당 시스템의 견고함과 안정성이 결정된다. 만약 달성하려는 목적에 적합하지 않은 아키텍처를 사용한다면 당연히 시스템은 여러 문제들에 부딪힐 것이다. 예로 건물을 건축하는 과정을 생각해보자. 만약 어떤 사람이 10층 규모의 빌딩을 건설하려고 하는데 3층 규모의 설계도를 사용한다면 당연히 그 건물은 안정성을 보장받을 수 없다. 또한 내부균열이나 자연재해 등에 의해 문제가 발생할 가능성이 높아지며 이를 해결하기가 훨씬 어려워진다. 그래서 보통 설계를 진행할 때는 건물이 완공되고 유지되면서 부딪힐 수 있는 외부변수들을 모두 고려하여 건물의 견고함과 안정성을 향상시키고자 한다. 시스템도 마찬가지다.</p>
+<h2 id="데이터베이스-아키텍처란"><a href="#데이터베이스-아키텍처란" class="headerlink" title="데이터베이스 아키텍처란"></a>데이터베이스 아키텍처란</h2><p>아키텍처는 어떤 시스템을 구성한 설계도이다. 그렇기에 어떤 아키텍처를 채택했는가에 따라서 해당 시스템의 견고함과 안정성이 결정된다. 만약 달성하려는 목적에 적합하지 않은 아키텍처를 사용한다면 당연히 시스템은 여러 문제들에 부딪힐 것이다. 예로 건물을 건축하는 과정을 생각해보자. 만약 어떤 사람이 10층 규모의 빌딩을 건설하려고 하는데 3층 규모의 설계도를 사용한다면 당연히 그 건물은 안정성을 보장받을 수 없다. 또한 내부균열이나 자연재해 등에 의해 문제가 발생할 가능성이 높아지며 이를 해결하기가 훨씬 어려워진다. 그래서 보통 설계를 진행할 때는 건물이 완공되고 유지되면서 부딪힐 수 있는 외부변수들을 모두 고려하여 건물의 견고함과 안정성을 향상시키고자 한다. 시스템도 마찬가지다.</p>
 <p>위 내용을 바탕으로 고민해보자. 데이터베이스 아키텍처란 무엇일까? 데이터베이스 서버들이 견고하고 안정적으로 운영될 수 있도록 구성된 설계도라고 설명할 수 있을 것이다.</p>
-<h2 id="데이터베이스-아키텍처-종류">데이터베이스 아키텍처 종류</h2>
-<p>어떤 서비스가 예상치 못한 중단 없이 안정적으로 지속되는 비율을 가용성이라고 하며, 가용성은 시스템의 안정성을 검증하는 하나의 요소이다. 가용성을 높이기 위한 전략으로는 크게 소수의 고품질을 지향하는 심장전략과 다수의 저품질을 지향하는 신장전략 2가지가 언급되며, 현재는 이 중에서 신장전략을 대부분 채택한다. 서비스 컴포넌트 하나에 문제가 생겨도 서비스가 중단되지 않도록 여러 개의 동일한 컴포넌트를 마련해두는 것이다.</p>
-<h3 id="클러스터링">클러스터링</h3>
-<p>클러스터링은 DB서버와 저장소를 수평적인 구조로 설계된 아키텍처이다. 여러 대의 컴퓨터가 데이터 트랜젝션을 처리하다보니 데이터 정합성 유지하는 것이 중요하기 때문에 동기 방식으로 노드들 간의 데이터를 동기화한다.</p>
-<h4 id="shared-disk">Shared Disk</h4>
-<p>Shared Disk란 이름 그대로 여러 대의 DB서버가 저장소(Disk)를 공유하는 구조이다. 여러 대의 DB서버가 사용되므로 단일 DB서버 구조에 비해 장애가능성이 현져히 낮아지지만, 단일 저장소로 운영하다보니 저장소에 장애가 발생한 경우 서비스가 중단될 수 있다. Shared Disk 구조는 아래와 같다.</p>
-<figure>
-<img src="/images/159.png" srcset="/img/loading.gif" lazyload alt="SD" /><figcaption aria-hidden="true">SD</figcaption>
-</figure>
+<h2 id="데이터베이스-아키텍처-종류"><a href="#데이터베이스-아키텍처-종류" class="headerlink" title="데이터베이스 아키텍처 종류"></a>데이터베이스 아키텍처 종류</h2><p>어떤 서비스가 예상치 못한 중단 없이 안정적으로 지속되는 비율을 가용성이라고 하며, 가용성은 시스템의 안정성을 검증하는 하나의 요소이다. 가용성을 높이기 위한 전략으로는 크게 소수의 고품질을 지향하는 심장전략과 다수의 저품질을 지향하는 신장전략 2가지가 언급되며, 현재는 이 중에서 신장전략을 대부분 채택한다. 서비스 컴포넌트 하나에 문제가 생겨도 서비스가 중단되지 않도록 여러 개의 동일한 컴포넌트를 마련해두는 것이다.</p>
+<h3 id="클러스터링"><a href="#클러스터링" class="headerlink" title="클러스터링"></a>클러스터링</h3><p>클러스터링은 DB서버와 저장소를 수평적인 구조로 설계된 아키텍처이다. 여러 대의 컴퓨터가 데이터 트랜젝션을 처리하다보니 데이터 정합성 유지하는 것이 중요하기 때문에 동기 방식으로 노드들 간의 데이터를 동기화한다.</p>
+<h4 id="Shared-Disk"><a href="#Shared-Disk" class="headerlink" title="Shared Disk"></a>Shared Disk</h4><p>Shared Disk란 이름 그대로 여러 대의 DB서버가 저장소(Disk)를 공유하는 구조이다. 여러 대의 DB서버가 사용되므로 단일 DB서버 구조에 비해 장애가능성이 현져히 낮아지지만, 단일 저장소로 운영하다보니 저장소에 장애가 발생한 경우 서비스가 중단될 수 있다.<br>Shared Disk 구조는 아래와 같다.</p>
+<p><img src="/images/159.png" srcset="/img/loading.gif" lazyload alt="SD"></p>
 <p>Shared Disk 구조는 운영 방식에 따라서 Active-Active, Active-Standby 2가지로 구분된다.</p>
 <ul>
-<li>Active-Active: DB서버 여러 대를 동시에 작동하는 운영방식
-<ul>
+<li>Active-Active: DB서버 여러 대를 동시에 작동하는 운영방식<ul>
 <li>장점: 여러 대 리소스를 사용하여 성능 향상, 시스템 다운 시간 미미</li>
 <li>단점: 서버 대수가 늘어날수록 저장소 병목현상 발생가능성 증가</li>
-</ul></li>
-<li>Active-Standby: Active DB서버 한대만 운영하다가 장애 시 Standby DB서버를 사용하는 운영방식
-<ul>
+</ul>
+</li>
+<li>Active-Standby: Active DB서버 한대만 운영하다가 장애 시 Standby DB서버를 사용하는 운영방식<ul>
 <li>장점: 비용 절약하며 다중화 가능</li>
 <li>단점: 전환 시에 시스템 다운 시간 발생</li>
-</ul></li>
 </ul>
-<h4 id="shared-nothing">Shared Nothing</h4>
-<p>Shared Nothing이란 DB서버뿐만 아니라 저장소도 분리한 구조이다. 각 DB서버는 로컬에 위치한 데이터만 관리하면 되므로 노드를 추가할수록 선형적으로 성능이 향상된다. 다만 각자 로컬 저장소만을 사용하기 때문에 메타 데이터를 관리하는 서버가 따로 필요하다. 또한 한 대의 노드에 장애 발생 시 데이터 일부를 사용할 수 없기에 이를 방지하기 위한 조치도 요구된다. Shared Nothing 구조는 아래와 같다.</p>
-<figure>
-<img src="/images/160.png" srcset="/img/loading.gif" lazyload alt="SN" /><figcaption aria-hidden="true">SN</figcaption>
-</figure>
-<h3 id="레플리케이션">레플리케이션</h3>
-<p>레플리케이션은 DB서버와 저장소를 그대로 복제해두는 아키텍처이다. 레플리케이션의 DB서버는 마스터(master)-슬레이브(slave)구조로 구성되며, 마스터는 실제 서비스의 데이터를 관리하고 슬레이브 서버는 마스터와 비동기 방식으로 동기화한다.</p>
+</li>
+</ul>
+<h4 id="Shared-Nothing"><a href="#Shared-Nothing" class="headerlink" title="Shared Nothing"></a>Shared Nothing</h4><p>Shared Nothing이란 DB서버뿐만 아니라 저장소도 분리한 구조이다. 각 DB서버는 로컬에 위치한 데이터만 관리하면 되므로 노드를 추가할수록 선형적으로 성능이 향상된다. 다만 각자 로컬 저장소만을 사용하기 때문에 메타 데이터를 관리하는 서버가 따로 필요하다. 또한 한 대의 노드에 장애 발생 시 데이터 일부를 사용할 수 없기에 이를 방지하기 위한 조치도 요구된다.<br>Shared Nothing 구조는 아래와 같다.</p>
+<p><img src="/images/160.png" srcset="/img/loading.gif" lazyload alt="SN"></p>
+<h3 id="레플리케이션"><a href="#레플리케이션" class="headerlink" title="레플리케이션"></a>레플리케이션</h3><p>레플리케이션은 DB서버와 저장소를 그대로 복제해두는 아키텍처이다. 레플리케이션의 DB서버는 마스터(master)-슬레이브(slave)구조로 구성되며, 마스터는 실제 서비스의 데이터를 관리하고 슬레이브 서버는 마스터와 비동기 방식으로 동기화한다.</p>
 
                 
               </div>
@@ -454,13 +445,13 @@
       
         <a href="/tags/db/" class="print-no-link">#DB</a>
       
+        <a href="/tags/database/" class="print-no-link">#database</a>
+      
         <a href="/tags/architecture/" class="print-no-link">#architecture</a>
       
         <a href="/tags/sharednothing/" class="print-no-link">#sharednothing</a>
       
         <a href="/tags/shareddisk/" class="print-no-link">#shareddisk</a>
-      
-        <a href="/tags/database/" class="print-no-link">#database</a>
       
         <a href="/tags/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/" class="print-no-link">#아키텍처</a>
       

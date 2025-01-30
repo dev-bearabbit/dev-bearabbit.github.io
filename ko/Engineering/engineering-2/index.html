@@ -254,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          77 words
+          74 words
         
       </span>
     
@@ -347,14 +347,10 @@
             
               <div class="markdown-body">
                 
-                <p>데이터 웨어하우스와 데이터 레이크에 대해 공부한 내용들을 정리합니다. <span id="more"></span></p>
-<h2 id="시작하며">시작하며</h2>
-<p>데이터 분석에 가장 중요한 부분은 <strong>데이터</strong>이다. 하지만 일반적으로 운영 서비스에서 사용되는 데이터들은 분석에 적합한 형태가 아닌 경우가 많고 또 민감정보로 인해 분석으로 사용할 수 없는 경우도 있다. 따라서 데이터 분석을 위한 데이터 저장소가 필요하다. 그렇게 데이터 웨어하우스가 등장했고 하드웨어가 급속도로 발전하면서 데이터 레이크라는 개념도 등장했다. 이번 글에서는 두 저장소의 개념과 장단점에 대해서 정리해보고자 한다.</p>
-<h2 id="data-warehouse">Data Warehouse</h2>
-<p>데이터 웨어하우스(Data Warehouse, DW)는 분석에 필요한 데이터를 정제하여 적재하는 저장소이다. 운영 서비스 여기저기 흩뿌려져 있는 원천 데이터들을 분석에 필요한 카테고리 별로 정리하여 RDB 형태로 정리해둔 구조라고 보면 될 것 같다.</p>
-<figure>
-<img src="/images/167.png" srcset="/img/loading.gif" lazyload alt="DW" /><figcaption aria-hidden="true">DW</figcaption>
-</figure>
+                <p>데이터 웨어하우스와 데이터 레이크에 대해 공부한 내용들을 정리합니다.<br><span id="more"></span></p>
+<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>데이터 분석에 가장 중요한 부분은 <strong>데이터</strong>이다. 하지만 일반적으로 운영 서비스에서 사용되는 데이터들은 분석에 적합한 형태가 아닌 경우가 많고 또 민감정보로 인해 분석으로 사용할 수 없는 경우도 있다. 따라서 데이터 분석을 위한 데이터 저장소가 필요하다. 그렇게 데이터 웨어하우스가 등장했고 하드웨어가 급속도로 발전하면서 데이터 레이크라는 개념도 등장했다. 이번 글에서는 두 저장소의 개념과 장단점에 대해서 정리해보고자 한다.</p>
+<h2 id="Data-Warehouse"><a href="#Data-Warehouse" class="headerlink" title="Data Warehouse"></a>Data Warehouse</h2><p>데이터 웨어하우스(Data Warehouse, DW)는 분석에 필요한 데이터를 정제하여 적재하는 저장소이다. 운영 서비스 여기저기 흩뿌려져 있는 원천 데이터들을 분석에 필요한 카테고리 별로 정리하여 RDB 형태로 정리해둔 구조라고 보면 될 것 같다.</p>
+<p><img src="/images/167.png" srcset="/img/loading.gif" lazyload alt="DW"></p>
 <p>위 그림에서 알 수 있듯이 DW에 저장하기 전에 변환(Transform) 작업을 통해 데이터를 정제한다. 그 이유는 크게 데이터 품질 유지, 쿼리 속도 개선, 데이터 접근 제한 등이 있다.</p>
 <ul>
 <li>데이터 품질 유지: 원천 데이터 스키마나 데이터 타입 변경 시 ETL 파이프라인만 수정해주면 기존 DW 데이터 변환 없이 일관적으로 데이터를 적재할 수 있다.</li>
@@ -362,57 +358,52 @@
 <li>데이터 접근 제한: 원천 데이터 자체를 모두가 접근할 수 있다면 개인정보나 민감정보 이슈가 존재하게 되며 이는 법적 이슈가 될 수 있다. 또한 원천 데이터는 언제나 생각하는 것보다 기상천외하기에 일반 사용자들이 인사이트를 도출하기에는 어려움이 따를 수밖에 없다.</li>
 </ul>
 <p>데이터 웨어하우스는 데이터 관리가 편하고 사용자 또한 비교적 쉽게 이해한다는 장점이 있지만 이를 유지하기 위해서는 복잡한 ETL 파이프라인을 구축하고 유지보수 해야 한다. 또한 데이터 레이크에 비해 데이터 적재 작업에 하드웨어 리소스가 많이 사용되고 시간도 오래걸린다.</p>
-<h2 id="data-lake">Data Lake</h2>
-<p>데이터 레이크(Data Lake, DL)는 운영 서비스에서 생성되는 원천 데이터를 정제 없이 저장하여 보관하는 방식의 저장소이다. 즉, 데이터 웨어하우스처럼 복잡한 변환(Transform)없이 바로 저장하는 구조이다.</p>
-<figure>
-<img src="/images/168.png" srcset="/img/loading.gif" lazyload alt="DL" /><figcaption aria-hidden="true">DL</figcaption>
-</figure>
+<h2 id="Data-Lake"><a href="#Data-Lake" class="headerlink" title="Data Lake"></a>Data Lake</h2><p>데이터 레이크(Data Lake, DL)는 운영 서비스에서 생성되는 원천 데이터를 정제 없이 저장하여 보관하는 방식의 저장소이다. 즉, 데이터 웨어하우스처럼 복잡한 변환(Transform)없이 바로 저장하는 구조이다.</p>
+<p><img src="/images/168.png" srcset="/img/loading.gif" lazyload alt="DL"></p>
 <p>위 그림처럼 원천에서 그대로 가져와서 저장되기에 수집이 간단하고 리소스 매니징만 제대로 이루어지면 적재에는 문제가 없다는 장점이 있다. 또한 데이터 변환을 사용자가 진행하기에 테이블 스키마나 비즈니스 로직이 자주 변경되는 환경에서는 사용하기 용이하다.</p>
 <p>하지만 DW에 비해 많은 양의 데이터가 저장되고 무슨 데이터인지 한번에 파악하기도 어렵다는 단점이 있다. 적재되는 데이터 타입이 다양하기에 데이터 관리도 어렵고 아무도 쓰지 않는 정크 데이터가 하드웨어 리소스만 차지하고 있는 경우도 존재하기 쉽다. 따라서 데이터 레이크를 보다 효율적으로 잘 운영하기 위해서는 데이터 거버넌스 툴을 통해 메타데이터를 잘 관리해야 한다.</p>
 <p>데이터 레이크는 사용자에게 많은 자유도를 제공함으로써 다양한 분석 및 머신러닝 설계가 가능하지만 그만큼 데이터 처리가 사용자의 역할로 넘어가기에 DW보다는 더 많은 개발 실력이 요구된다.</p>
-<h2 id="비교">비교</h2>
-<p>뭐든 장점이 있다면 단점도 있다. 표로 정리해보자.</p>
+<h2 id="비교"><a href="#비교" class="headerlink" title="비교"></a>비교</h2><p>뭐든 장점이 있다면 단점도 있다. 표로 정리해보자.</p>
+<div class="table-container">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>비교</th>
 <th>데이터 웨어하우스</th>
 <th>데이터 레이크</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>데이터 타입</td>
 <td>정형</td>
 <td>정형/비정형/반정형</td>
 </tr>
-<tr class="even">
+<tr>
 <td>스키마</td>
 <td>schema on write/read</td>
 <td>schema on read</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>데이터 처리</td>
 <td>필요</td>
 <td>불필요</td>
 </tr>
-<tr class="even">
+<tr>
 <td>데이터 양</td>
 <td>비교적 적음</td>
 <td>비교적 많음</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>데이터 관리</td>
 <td>용이</td>
 <td>난해</td>
 </tr>
 </tbody>
 </table>
-<h2 id="사용방식">사용방식</h2>
-<p>보통 대부분의 기업들이 둘 다 사용하는 것 같다. 먼저 데이터 레이크를 구축하여 원천 데이터들을 일괄 적재한 후에 ETL 작업을 거쳐서 데이터 웨어하우스를 구축하는 방식이다. 이를 도식화하면 아래 그림과 같다.</p>
-<figure>
-<img src="/images/169.png" srcset="/img/loading.gif" lazyload alt="DWDL" /><figcaption aria-hidden="true">DWDL</figcaption>
-</figure>
+</div>
+<h2 id="사용방식"><a href="#사용방식" class="headerlink" title="사용방식"></a>사용방식</h2><p>보통 대부분의 기업들이 둘 다 사용하는 것 같다. 먼저 데이터 레이크를 구축하여 원천 데이터들을 일괄 적재한 후에 ETL 작업을 거쳐서 데이터 웨어하우스를 구축하는 방식이다. 이를 도식화하면 아래 그림과 같다.</p>
+<p><img src="/images/169.png" srcset="/img/loading.gif" lazyload alt="DWDL"></p>
 <p>위 구조로 사용하는 이유는 데이터를 사용하는 유저들의 폭이 넓어졌기 때문이다. 마케팅팀이나 기획팀에서도 데이터 기반 의사결정을 위해 필요한 데이터를 간단한 쿼리를 통해 가져가기도 하며, 운영 서비스에 연동되는 추천시스템 등을 구축하기 위해 사용하기도 한다. 두 가지의 케이스를 모두 매니징하기 위해서는 위 구조가 가장 적합한 것 같다.</p>
 
                 
