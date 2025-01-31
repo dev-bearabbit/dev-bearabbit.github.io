@@ -256,7 +256,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          180 words
+          186 words
         
       </span>
     
@@ -349,8 +349,8 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다.<br><span id="more"></span></p>
-<hr>
+                <p>해당 시리즈는 라즈베리파이 3개를 연결하고 하둡(Hadoop)과 스파크(spark)를 사용하여 빅데이터를 다루는 과정을 보여줍니다. <span id="more"></span></p>
+<hr />
 <p>이번 글에서는 라즈베리 파이 초기 환경설정 하는 방법에 대해서 알아볼 것이다. 순서는 다음과 같다.</p>
 <ul>
 <li>라즈베리 파이 OS 설정하기</li>
@@ -360,34 +360,39 @@
 <li>파이썬 설치하기</li>
 <li>도커 설치하고 mariaDB 구축하기</li>
 </ul>
-<h2 id="라즈베리-파이-OS-설정하기"><a href="#라즈베리-파이-OS-설정하기" class="headerlink" title="라즈베리 파이 OS 설정하기"></a>라즈베리 파이 OS 설정하기</h2><p>처음 개봉한 라즈베리 파이는 운영체제부터 설정해야 한다. 키트에 제공되는 SD 메모리 카드를 사용하여 운영체제 이미지를 다운받는다. <a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/">해당 링크</a>로 들어가서 각 컴퓨터 운영체제에 맞는 소프트웨어를 다운받은 후 실행시키면 아래와 같은 화면이 보일 것이다.</p>
-<p><img src="/images/104.png" srcset="/img/loading.gif" lazyload alt="rasp2-1"></p>
+<h2 id="라즈베리-파이-os-설정하기">라즈베리 파이 OS 설정하기</h2>
+<p>처음 개봉한 라즈베리 파이는 운영체제부터 설정해야 한다. 키트에 제공되는 SD 메모리 카드를 사용하여 운영체제 이미지를 다운받는다. <a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/">해당 링크</a>로 들어가서 각 컴퓨터 운영체제에 맞는 소프트웨어를 다운받은 후 실행시키면 아래와 같은 화면이 보일 것이다.</p>
+<figure>
+<img src="/images/104.png" srcset="/img/loading.gif" lazyload alt="rasp2-1" /><figcaption aria-hidden="true">rasp2-1</figcaption>
+</figure>
 <p>헤당 화면이 보인다면 <code>Operating system</code>을 클릭하자. 그러면 다음과 같은 선택지가 반환된다.</p>
-<p><img src="/images/105.png" srcset="/img/loading.gif" lazyload alt="rasp2-2"></p>
+<figure>
+<img src="/images/105.png" srcset="/img/loading.gif" lazyload alt="rasp2-2" /><figcaption aria-hidden="true">rasp2-2</figcaption>
+</figure>
 <p>가장 위에 있는 OS는 일반 데스크탑처럼 사용할 수 있는 운영체제이다. 만약 라즈베리 파이를 모니터와 연결하여 테스크탑처럼 사용하려면 해당 사항을 선택해야 한다. 하지만 테스크탑이 아니라 터미널만 사용할 것이라면 아래에 있는 <code>other</code> 버전을 선택하자.</p>
-<p><img src="/images/106.png" srcset="/img/loading.gif" lazyload alt="rasp2-3"></p>
+<figure>
+<img src="/images/106.png" srcset="/img/loading.gif" lazyload alt="rasp2-3" /><figcaption aria-hidden="true">rasp2-3</figcaption>
+</figure>
 <p>그럼 위와 같은 화면이 반환될 것이다. 여기서 <code>lite</code>버전 이미지를 선택하면 된다. 그 다음 SD 메모리 카드를 해당 노트북에 삽입하여 이미지를 다운받으면 OS 설치가 완료된다.</p>
-<h2 id="초기-ssh-설정하기"><a href="#초기-ssh-설정하기" class="headerlink" title="초기 ssh 설정하기"></a>초기 ssh 설정하기</h2><p>라즈베리 파이를 안전하게 사용하기 위해서는 ssh가 설정되어 있어야 한다. ssh란 Secure Shell Protocol의 약자로 네트워크와 안전하게 통신하기 위해 사용하는 보안 프로토콜이다. 설정하는 방법은 아래와 같다.</p>
+<h2 id="초기-ssh-설정하기">초기 ssh 설정하기</h2>
+<p>라즈베리 파이를 안전하게 사용하기 위해서는 ssh가 설정되어 있어야 한다. ssh란 Secure Shell Protocol의 약자로 네트워크와 안전하게 통신하기 위해 사용하는 보안 프로토콜이다. 설정하는 방법은 아래와 같다.</p>
 <ul>
-<li><p>이미지를 다운받은 SD 메모리 카드를 한번 제거 했다가 다시 노트북에 삽입한다.</p>
-</li>
-<li><p>터미널에서 해당 노트북의 Volumes 디렉토리로 접속한다.</p>
-</li>
-<li><p>Volumes에 있는 boot(라즈베리 파이 SD card) 디렉토리로 접속한다.</p>
-</li>
-<li><p>아래의 코드를 입력하여 ssh 빈 파일을 생성한다.</p>
-</li>
+<li><p>이미지를 다운받은 SD 메모리 카드를 한번 제거 했다가 다시 노트북에 삽입한다.</p></li>
+<li><p>터미널에서 해당 노트북의 Volumes 디렉토리로 접속한다.</p></li>
+<li><p>Volumes에 있는 boot(라즈베리 파이 SD card) 디렉토리로 접속한다.</p></li>
+<li><p>아래의 코드를 입력하여 ssh 빈 파일을 생성한다.</p></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">touch</span> ssh<br></code></pre></td></tr></table></figure>
 <ul>
 <li>해당 경로에서 나온 후, SD 메모리 카드를 노트북으로부터 분리한다.</li>
 </ul>
 <p>이렇게 하면 라즈베리 파이의 기본 환경설정이 완료되었다. 나머지 부분들은 라즈베리 파이에 접속한 후 설정해야 한다.</p>
-<h2 id="라즈베리-파이-노트북에서-접속하기"><a href="#라즈베리-파이-노트북에서-접속하기" class="headerlink" title="라즈베리 파이 노트북에서 접속하기"></a>라즈베리 파이 노트북에서 접속하기</h2><p>이미지 및 ssh 파일이 포함된 SD 메모리 카드를 라즈베리 파이 개발 보드에 삽입한 후 해당 스위칭 허브에 연결한다.</p>
+<h2 id="라즈베리-파이-노트북에서-접속하기">라즈베리 파이 노트북에서 접속하기</h2>
+<p>이미지 및 ssh 파일이 포함된 SD 메모리 카드를 라즈베리 파이 개발 보드에 삽입한 후 해당 스위칭 허브에 연결한다.</p>
 <p>그 후, 라즈베리 파이에 접속할 컴퓨터도 동일한 스위칭 허브에 연결하고 노트북의 터미널을 연다.</p>
 <p>아래의 코드를 입력하여 노트북과 라즈베리 파이가 잘 연결되는지 확인해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ping raspberrypi.local<br></code></pre></td></tr></table></figure>
-<p>정상적으로 응답이 돌아온다면 이제 연결하면 된다. 아래의 코드를 입력하여 라즈베리 파이 접속으로 시도한다.<br>라즈베리 파이는 초기 비밀번호가 <code>raspberry</code>로 모두 동일하다.</p>
+<p>정상적으로 응답이 돌아온다면 이제 연결하면 된다. 아래의 코드를 입력하여 라즈베리 파이 접속으로 시도한다. 라즈베리 파이는 초기 비밀번호가 <code>raspberry</code>로 모두 동일하다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh pi@raspberrypi.local<br></code></pre></td></tr></table></figure>
 <p>만약 위 코드에서 permission denied 된다면 아래의 코드로 ssh를 초기화한 후 다시 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -R raspberrypi.local<br>ssh pi@raspberrypi.local<br></code></pre></td></tr></table></figure>
@@ -396,12 +401,15 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get update<br><span class="hljs-built_in">sudo</span> apt-get upgrade<br></code></pre></td></tr></table></figure>
 <p>해당 라즈베리 파이의 이름이나 비밀번호 변경은 아래의 코드를 입력하면 나오는 셋팅 창에서 할 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> raspi-config<br></code></pre></td></tr></table></figure>
-<h2 id="OpenJDK-8-설치하기"><a href="#OpenJDK-8-설치하기" class="headerlink" title="OpenJDK 8 설치하기"></a>OpenJDK 8 설치하기</h2><p>이후 설치할 하둡(Hadoop)이 Java를 기반으로 하고 있기에 Java를 미리 다운받자. 아래의 코드를 입력하면 Java 8의 오픈소스 버전이 다운된다.</p>
+<h2 id="openjdk-8-설치하기">OpenJDK 8 설치하기</h2>
+<p>이후 설치할 하둡(Hadoop)이 Java를 기반으로 하고 있기에 Java를 미리 다운받자. 아래의 코드를 입력하면 Java 8의 오픈소스 버전이 다운된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt install openjdk-8-jdk openjdk-8-jre<br></code></pre></td></tr></table></figure>
-<h2 id="파이썬-설치하기"><a href="#파이썬-설치하기" class="headerlink" title="파이썬 설치하기"></a>파이썬 설치하기</h2><p>라즈베리 파이에서 파이썬을 사용하려면 다운받아야 한다. 아래의 코드 한 줄로 간단하게 다운받을 수 있다.</p>
+<h2 id="파이썬-설치하기">파이썬 설치하기</h2>
+<p>라즈베리 파이에서 파이썬을 사용하려면 다운받아야 한다. 아래의 코드 한 줄로 간단하게 다운받을 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install python3<br></code></pre></td></tr></table></figure>
 <p>위 코드는 파이썬3 최신 버전을 설치한다.</p>
-<h2 id="도커-설치하고-mariaDB-구축하기"><a href="#도커-설치하고-mariaDB-구축하기" class="headerlink" title="도커 설치하고 mariaDB 구축하기"></a>도커 설치하고 mariaDB 구축하기</h2><p>아래의 코드를 입력하여 도커를 설치하자.</p>
+<h2 id="도커-설치하고-mariadb-구축하기">도커 설치하고 mariaDB 구축하기</h2>
+<p>아래의 코드를 입력하여 도커를 설치하자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> curl -fsSL https://get.docker.com/ | <span class="hljs-built_in">sudo</span> sh<br></code></pre></td></tr></table></figure>
 <p>도커 설치가 제대로 되었는지 확인하기 위해 간단히 버전을 확인해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> docker version<br></code></pre></td></tr></table></figure>
@@ -413,7 +421,8 @@
 <p>라즈베리 파이는 ARM의 CPU이기 때문에 해당 CPU에 맞는 이미지로 다운받아야 한다. ARM CPU에서도 사용가능한 여러 이미지가 있으며, 그 중 하나를 사용하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker pull linuxserver/mariadb<br></code></pre></td></tr></table></figure>
 <p>다음 과정은 위에서 소개한 글을 참고하기 바란다.</p>
-<h2 id="라즈베리-파이-종료하기"><a href="#라즈베리-파이-종료하기" class="headerlink" title="라즈베리 파이 종료하기"></a>라즈베리 파이 종료하기</h2><p>라즈베리 파이를 종료하려면 아래의 코드를 입력하면 된다. 주의할 점은 라즈베리 파이는 컴퓨터이기 때문에 종료하면 도커 컨테이너도 자동으로 종료된다. 또한 컨테이너가 종료되면 내부에 있던 데이터들도 유실된다.</p>
+<h2 id="라즈베리-파이-종료하기">라즈베리 파이 종료하기</h2>
+<p>라즈베리 파이를 종료하려면 아래의 코드를 입력하면 된다. 주의할 점은 라즈베리 파이는 컴퓨터이기 때문에 종료하면 도커 컨테이너도 자동으로 종료된다. 또한 컨테이너가 종료되면 내부에 있던 데이터들도 유실된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> shutdown -h now<br></code></pre></td></tr></table></figure>
 
                 

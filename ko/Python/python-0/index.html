@@ -31,10 +31,10 @@
 <meta property="article:modified_time" content="2024-12-29T18:37:07.988Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="python">
+<meta property="article:tag" content="review">
 <meta property="article:tag" content="Cleancode">
 <meta property="article:tag" content="클린코드">
 <meta property="article:tag" content="책리뷰">
-<meta property="article:tag" content="review">
 <meta property="article:tag" content="code">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          236 words
+          231 words
         
       </span>
     
@@ -344,50 +344,70 @@
             
               <div class="markdown-body">
                 
-                <p>글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="클린-코드의-의미"><a href="#클린-코드의-의미" class="headerlink" title="클린 코드의 의미"></a>클린 코드의 의미</h2><p>클린 코드에 대한 정확하고 엄격한 정의는 없다. 그렇다면 어떤 코드를 클린 코드라고 할 수 있을까? 이 질문을 살펴보기 전에 먼저 코드가 무엇인지 고민해보자.</p>
+                <p>글을 시작하기에 앞서 해당 글은 Mariano Anaya의 저서인 파이썬 클린 코드를 바탕으로 요약 및 정리한 글임을 알려드립니다. <span id="more"></span></p>
+<hr />
+<h2 id="클린-코드의-의미">클린 코드의 의미</h2>
+<p>클린 코드에 대한 정확하고 엄격한 정의는 없다. 그렇다면 어떤 코드를 클린 코드라고 할 수 있을까? 이 질문을 살펴보기 전에 먼저 코드가 무엇인지 고민해보자.</p>
 <p>흔히 코드라는 것은 개발자가 컴퓨터에게 원하는 내용을 전달하기 위한 언어로 생각되어 왔다. 이 정의를 바탕으로 클린 코드의 기준을 생각해본다면 컴퓨터가 이해함/이해하지 못함으로 구분할 수 있다. 하지만 저 기준은 코드가 올바른지 판단하는 기준으로 더 적절해 보인다. 좀 더 코드의 개념을 넓혀보자.</p>
 <p>코드가 가지는 또 다른 의미는 무엇인가? 바로 다른 개발자와의 의사소통 도구라는 점이다. 즉, 코드는 다른 개발자들이 보고 이해할 수 있는 언어로서의 개념도 포함되어 있다. 해당 정의에서 클린 코드의 기준을 생각해본다면 클린 코드란 다른 개발자들이 보고 쉽게 이해할 수 있는 코드라고 말할 수 있다.</p>
-<h2 id="클린-코드의-중요성"><a href="#클린-코드의-중요성" class="headerlink" title="클린 코드의 중요성"></a>클린 코드의 중요성</h2><p>클린 코드가 중요한 이유는 매우 많다. 유지보수성 향상, 기술부채의 감소, 효과적인 작업 진행, 쉬운 프로젝트 관리 등등. 하지만 이 모든 장점을 하나의 단어로 설명할 수 있다. 바로 “효율성”이다. 클린 코드는 개발자가 일하는 대부분의 상황에서 효율성을 증대한다.</p>
+<h2 id="클린-코드의-중요성">클린 코드의 중요성</h2>
+<p>클린 코드가 중요한 이유는 매우 많다. 유지보수성 향상, 기술부채의 감소, 효과적인 작업 진행, 쉬운 프로젝트 관리 등등. 하지만 이 모든 장점을 하나의 단어로 설명할 수 있다. 바로 "효율성"이다. 클린 코드는 개발자가 일하는 대부분의 상황에서 효율성을 증대한다.</p>
 <p>개인적으로 클린 코드는 단순히 코드의 로직만을 의미하는 것은 아닌 것 같다. 프로젝트에 필요한 파트들을 정하고 체계적으로 코드를 관리하는 능력 또한 클린 코드에 속하지 않을까? 만약 이런 생각 없이 프로젝트를 시작하면 아무리 코드를 간결하게 잘 짜도 파트가 늘어날 때마다 코드들이 뒤섞여 프로젝트가 혼란에 빠질 수도 있을 것 같다.</p>
-<h2 id="클린-코드에서-코드-포매팅의-역할"><a href="#클린-코드에서-코드-포매팅의-역할" class="headerlink" title="클린 코드에서 코드 포매팅의 역할"></a>클린 코드에서 코드 포매팅의 역할</h2><p>그런 의미에서 코드 포매팅은 비교적 세부적인 요소라고 생각된다. 하지만 코드를 이해해야 하는 개발자 입장에서 코드의 형식은 매우 중요하다. 컴퓨터는 공백이나 줄넘김 등을 인식하지 않는다. 즉, 코딩에서 그런 요소들은 대부분 코드를 읽는 다른 사람들을 위한 것이다. 각 언어마다 일반적으로 통용되는 코딩 가이드라인이 있다. 이를 지키기만 하면 클린 코드가 되는 것은 아니지만 그래도 중간은 갔다고 생각한다.</p>
-<h2 id="프로젝트-코딩-스타일-준수"><a href="#프로젝트-코딩-스타일-준수" class="headerlink" title="프로젝트 코딩 스타일 준수"></a>프로젝트 코딩 스타일 준수</h2><p>코딩 가이드라인은 품질 표준을 지키기 위해 프로젝트에서 따라야만 하는 최소한의 요구사항이다. 파이썬에서는 이를 ‘PEP-8(Python Enhancement Proposal)’이라고 한다. PEP-8은 파이썬 구문의 특수성을 고려하여 작성되었으며, 실제 파이썬 개발자가 만들어 이보다 좋은 표준을 찾기가 어렵다.</p>
+<h2 id="클린-코드에서-코드-포매팅의-역할">클린 코드에서 코드 포매팅의 역할</h2>
+<p>그런 의미에서 코드 포매팅은 비교적 세부적인 요소라고 생각된다. 하지만 코드를 이해해야 하는 개발자 입장에서 코드의 형식은 매우 중요하다. 컴퓨터는 공백이나 줄넘김 등을 인식하지 않는다. 즉, 코딩에서 그런 요소들은 대부분 코드를 읽는 다른 사람들을 위한 것이다. 각 언어마다 일반적으로 통용되는 코딩 가이드라인이 있다. 이를 지키기만 하면 클린 코드가 되는 것은 아니지만 그래도 중간은 갔다고 생각한다.</p>
+<h2 id="프로젝트-코딩-스타일-준수">프로젝트 코딩 스타일 준수</h2>
+<p>코딩 가이드라인은 품질 표준을 지키기 위해 프로젝트에서 따라야만 하는 최소한의 요구사항이다. 파이썬에서는 이를 'PEP-8(Python Enhancement Proposal)'이라고 한다. PEP-8은 파이썬 구문의 특수성을 고려하여 작성되었으며, 실제 파이썬 개발자가 만들어 이보다 좋은 표준을 찾기가 어렵다.</p>
 <p>PEP-8의 특징은 다음과 같다.</p>
 <ul>
-<li><p>검색 효율성 (grep)<br>: 명령어 <code>grep</code>은 특정 파일에서 특정 문자열을 찾는 기능이다. 파이썬에서는 함수의 파라미터 할당 시에는 <code>=</code>을 공백없이 입력하고, 변수 할당 시에는 공백을 주어 입력하는 등의 규칙을 가지고 있다. 따라서 같은 문자열이라도 공백의 유무로도 원하는 값을 찾을 수 있다.</p>
-</li>
-<li><p>일관성<br>: 코드가 일정한 포맷을 가지면 훨씬 쉽게 읽을 수 있다. 코드 레이아웃, 문서화, 이름 작명 규칙 등이 모든 저장소에서 동일하게 적용된다면 훨씬 쉽게 익숙해질 수 있다.</p>
-</li>
-<li><p>코드 품질<br>: 코드를 구조화하여 살펴보면 한 눈에 코드를 이해하고 버그와 실수를 쉽게 찾을 수 있다. 코드 품질 도구를 사용하면 잠재적인 버그까지 살펴볼 수 있다.</p>
-</li>
+<li><dl>
+<dt>검색 효율성 (grep)</dt>
+<dd>명령어 <code>grep</code>은 특정 파일에서 특정 문자열을 찾는 기능이다. 파이썬에서는 함수의 파라미터 할당 시에는 <code>=</code>을 공백없이 입력하고, 변수 할당 시에는 공백을 주어 입력하는 등의 규칙을 가지고 있다. 따라서 같은 문자열이라도 공백의 유무로도 원하는 값을 찾을 수 있다.
+</dd>
+</dl></li>
+<li><dl>
+<dt>일관성</dt>
+<dd>코드가 일정한 포맷을 가지면 훨씬 쉽게 읽을 수 있다. 코드 레이아웃, 문서화, 이름 작명 규칙 등이 모든 저장소에서 동일하게 적용된다면 훨씬 쉽게 익숙해질 수 있다.
+</dd>
+</dl></li>
+<li><dl>
+<dt>코드 품질</dt>
+<dd>코드를 구조화하여 살펴보면 한 눈에 코드를 이해하고 버그와 실수를 쉽게 찾을 수 있다. 코드 품질 도구를 사용하면 잠재적인 버그까지 살펴볼 수 있다.
+</dd>
+</dl></li>
 </ul>
-<h2 id="Docstring과-어노테이션"><a href="#Docstring과-어노테이션" class="headerlink" title="Docstring과 어노테이션"></a>Docstring과 어노테이션</h2><p>Docstring과 어노테이션은 파이썬 코드를 문서화하는 방법이다. 파이썬은 함수나 메서드를 거치면 변수나 객체의 값이 무엇인지 알기가 어려운 경우가 많다. 이런 정보들을 문서로 명시하면 향후 다른 개발자가 쉽게 이해하는 데 도움이 된다. 주의해야 할 점은 주석(Comment)은 문서화가 아니라는 것이다.</p>
-<h3 id="Docstring"><a href="#Docstring" class="headerlink" title="Docstring"></a>Docstring</h3><p>Docstring은 해당 코드의 설명을 글로 쓴 것이며, 모듈이나 클래스, 함수 등에 추가된다. 먼저 간단하게 Docstring의 예시를 살펴보자.</p>
+<h2 id="docstring과-어노테이션">Docstring과 어노테이션</h2>
+<p>Docstring과 어노테이션은 파이썬 코드를 문서화하는 방법이다. 파이썬은 함수나 메서드를 거치면 변수나 객체의 값이 무엇인지 알기가 어려운 경우가 많다. 이런 정보들을 문서로 명시하면 향후 다른 개발자가 쉽게 이해하는 데 도움이 된다. 주의해야 할 점은 주석(Comment)은 문서화가 아니라는 것이다.</p>
+<h3 id="docstring">Docstring</h3>
+<p>Docstring은 해당 코드의 설명을 글로 쓴 것이며, 모듈이나 클래스, 함수 등에 추가된다. 먼저 간단하게 Docstring의 예시를 살펴보자.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">my_function</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;임의의 계산 수행&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
-<p>위 코드에서 <code>&quot;&quot;&quot;</code>에 들어있는 글들이 Docstring이다. 이는 단순한 주석과는 다르다. 주석의 경우 스크립트 코드 소스에서만 확인할 수 있는 반면, Docstring은 동적 프로그래밍 환경에서도 찾아볼 수 있다. 위의 함수의 Docstring을 확인하는 방법은 아래와 같다.</p>
+<p>위 코드에서 <code>"""</code>에 들어있는 글들이 Docstring이다. 이는 단순한 주석과는 다르다. 주석의 경우 스크립트 코드 소스에서만 확인할 수 있는 반면, Docstring은 동적 프로그래밍 환경에서도 찾아볼 수 있다. 위의 함수의 Docstring을 확인하는 방법은 아래와 같다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">my_function.__doc__<br></code></pre></td></tr></table></figure>
 <p>그렇기에 주석보다는 Docstring을 사용하는 것이 개발자들에게도 훨씬 간편하다. 하지만 Docstring의 유일한 단점이 있다. 바로 코드가 변경되면 Docstring 또한 직접 수정해야 한다는 점이다. 변경되는 코드마다 문서를 알맞게 수정하는 것은 생각보다 귀찮은 일이다.</p>
-<h3 id="어노테이션"><a href="#어노테이션" class="headerlink" title="어노테이션"></a>어노테이션</h3><p>어노테이션의 기본적인 아이디어는 코드 사용자에게 함수 인자로 어떤 값이 와야하는지 힌트를 주자는 것이다. 어노테이션을 사용해 변수의 예상 타입을 지정할 수 있다.</p>
+<h3 id="어노테이션">어노테이션</h3>
+<p>어노테이션의 기본적인 아이디어는 코드 사용자에게 함수 인자로 어떤 값이 와야하는지 힌트를 주자는 것이다. 어노테이션을 사용해 변수의 예상 타입을 지정할 수 있다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, lat, long</span>):<br>        <span class="hljs-variable language_">self</span>.lat = lat<br>        <span class="hljs-variable language_">self</span>.long = long<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">locate</span>(<span class="hljs-params">latitude:<span class="hljs-built_in">float</span>, longitude:<span class="hljs-built_in">float</span></span>) -&gt; Point:<br>    <span class="hljs-string">&quot;&quot;&quot;앱에서 좌표에 해당하는 객체를 검섹&quot;&quot;&quot;</span><br></code></pre></td></tr></table></figure>
 <p>위의 예시는 함수 <code>locate()</code> 파라미터들의 데이터 타입을 미리 설정하였으며, 동시에 반환값의 타입 또한 지정하였다.</p>
 <p>이렇게 설정해두면 해당 함수를 사용하는 다른 개발자들은 파라미터 데이터 형태의 힌트를 얻을 수 있다. 만약 동적 개발을 하고 있던 도중이었다면 아래와 같이 입력하면 설정한 어노테이션이 보인다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">locate.__annotations__<br> &#123;<span class="hljs-string">&#x27;latitude&#x27;</span>:<span class="hljs-built_in">float</span>, <span class="hljs-string">&#x27;longitude&#x27;</span>:<span class="hljs-built_in">float</span>, <span class="hljs-string">&#x27;return&#x27;</span>:__main__.Point&#125;<br></code></pre></td></tr></table></figure>
 <p>어노테이션을 사용하면 타입 힌팅을 통해 적절하지 못한 타입이 들어간 경우를 찾아낼 수 있으며, 이후 테스트 시 디버깅에도 도움이 된다.</p>
-<h2 id="기본-품질을-위한-도구-설정"><a href="#기본-품질을-위한-도구-설정" class="headerlink" title="기본 품질을 위한 도구 설정"></a>기본 품질을 위한 도구 설정</h2><p>코드의 기본 품질은 무엇일까? 일단 코드는 컴퓨터 뿐만 아니라 다른 개발자도 이해해야 한다는 것을 명심하자. 그러면 기본 품질은 아래와 같이 정의할 수 있다.</p>
+<h2 id="기본-품질을-위한-도구-설정">기본 품질을 위한 도구 설정</h2>
+<p>코드의 기본 품질은 무엇일까? 일단 코드는 컴퓨터 뿐만 아니라 다른 개발자도 이해해야 한다는 것을 명심하자. 그러면 기본 품질은 아래와 같이 정의할 수 있다.</p>
 <ul>
 <li>해당 코드를 다른 개발자들도 쉽게 이해하고 따라갈 수 있는가?</li>
 <li>업무 도메인에 대해서 말하고 있는가?</li>
 <li>팀에 새로 합류하는 사람도 효과적으로 작업할 수 있는가?</li>
 </ul>
 <p>이런 부분들을 매번 사람이 직접 체크하는 것은 매우 번거로운 일이다. 따라서 우리는 자동으로 코드의 품질을 관리해주는 도구들을 살펴볼 것이다.</p>
-<h3 id="Mypy"><a href="#Mypy" class="headerlink" title="Mypy"></a>Mypy</h3><p>Mypy는 파이썬에서 가장 일반적으로 사용하는 정적 타입 검사 도구이다. Mypy를 설치하면 프로젝트의 모든 파일을 분석하여 타입 불일치를 검사해준다. 설치하는 코드는 아래와 같다.</p>
+<h3 id="mypy">Mypy</h3>
+<p>Mypy는 파이썬에서 가장 일반적으로 사용하는 정적 타입 검사 도구이다. Mypy를 설치하면 프로젝트의 모든 파일을 분석하여 타입 불일치를 검사해준다. 설치하는 코드는 아래와 같다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">pip install mypy<br></code></pre></td></tr></table></figure>
 <p>사용방법은 설치 후 <code>mypy&#123;파일 명&#125;</code>을 입력하면 검사 결과가 나오는 방식이다. 잘못 탐지한 경우 해당 문장 끝에 <code>#type: ignore</code>를 추가하여 Mypy가 무시하도록 할 수 있다.</p>
-<h3 id="Pylint"><a href="#Pylint" class="headerlink" title="Pylint"></a>Pylint</h3><p>Pylint는 가장 엄격하게 코드를 검사하는 도구이다. VScode에 기본적으로 내장되어 있으며, 빨간색은 버그, 노란색은 필요없는 코드, 하늘색은 PEP-8에 맞지 않는 코드를 반환한다. 만약 직접 설치하여 사용하고 싶다면 아래의 코드를 입력하자.</p>
+<h3 id="pylint">Pylint</h3>
+<p>Pylint는 가장 엄격하게 코드를 검사하는 도구이다. VScode에 기본적으로 내장되어 있으며, 빨간색은 버그, 노란색은 필요없는 코드, 하늘색은 PEP-8에 맞지 않는 코드를 반환한다. 만약 직접 설치하여 사용하고 싶다면 아래의 코드를 입력하자.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">pip install pylint<br></code></pre></td></tr></table></figure>
 <p>Pylintsms <code>.pylintrc</code> 파일에서 설정 값들을 변경할 수 있다.</p>
-<h3 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h3><p>Makefile은 리눅스 환경에서 프로젝트를 컴파일하고 실행하기 위한 설정을 도와주는 파워풀한 도구이다. 빌드 외에도 포매팅 검사나 코딩 컨벤션 검사를 자동화하기 위해서도 사용된다. 예시를 살펴보자.</p>
+<h3 id="makefile">Makefile</h3>
+<p>Makefile은 리눅스 환경에서 프로젝트를 컴파일하고 실행하기 위한 설정을 도와주는 파워풀한 도구이다. 빌드 외에도 포매팅 검사나 코딩 컨벤션 검사를 자동화하기 위해서도 사용된다. 예시를 살펴보자.</p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">typehint:</span><br>mypy src/tests/<br><br><span class="hljs-section">test:</span><br>pytest tests/<br><br><span class="hljs-section">lint:</span><br>pylint src/tests/<br><br><span class="hljs-section">chechlist: lint typehint test</span><br><br><span class="hljs-meta"><span class="hljs-keyword">.PHONY</span>: typehint test lint chechlist</span><br></code></pre></td></tr></table></figure>
 <p>위의 설정은 pylint로 PHP-8을 검사하고, mypy로 타입을 확인한 후 최종적으로 test를 진행하라는 명령 모음이다. 이렇게 저장해두면 단 한 줄의 코드로 모든 검사를 한번에 진행할 수 있다. 한 줄의 코드는 아래와 같다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">make checklist<br></code></pre></td></tr></table></figure>
@@ -433,13 +453,13 @@
       
         <a href="/tags/python/" class="print-no-link">#python</a>
       
+        <a href="/tags/review/" class="print-no-link">#review</a>
+      
         <a href="/tags/cleancode/" class="print-no-link">#Cleancode</a>
       
         <a href="/tags/%ED%81%B4%EB%A6%B0%EC%BD%94%EB%93%9C/" class="print-no-link">#클린코드</a>
       
         <a href="/tags/%EC%B1%85%EB%A6%AC%EB%B7%B0/" class="print-no-link">#책리뷰</a>
-      
-        <a href="/tags/review/" class="print-no-link">#review</a>
       
         <a href="/tags/code/" class="print-no-link">#code</a>
       

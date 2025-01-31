@@ -343,17 +343,26 @@
             
               <div class="markdown-body">
                 
-                <p>클라우드 컴퓨팅 종류에 대해 알아보고 AWS의 기본 서비스들을 정리합니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="Cloud-Computing"><a href="#Cloud-Computing" class="headerlink" title="Cloud Computing"></a>Cloud Computing</h2><p>클라우드 컴퓨팅이란 클라우드에서 가상 서버, 데이터 스토리지, 소프트웨어 등 필요한 IT 자원을 임대하여 사용하는 기술이다. 클라우드 컴퓨팅 서비스는 크게 3가지 종류로 나뉜다.</p>
-<h3 id="IaaS-Infrastructure-as-a-Service"><a href="#IaaS-Infrastructure-as-a-Service" class="headerlink" title="IaaS (Infrastructure as a Service)"></a>IaaS (Infrastructure as a Service)</h3><p>IaaS (Infrastructure as a Service)는 실제 하드웨어로 마련해야 하는 서버나, 데이터 스토리지 등의 자원들을 가상으로 제공해주는 서비스이다. 이를 사용하면 물리적인 GPU나 SDD 없이도 무거운 딥러닝 모델을 훈련시킬 수 있다. 해당 프로젝트에서 우리는 이 서비스를 사용할 예정이다.</p>
-<h3 id="PaaS-Platform-as-a-Service"><a href="#PaaS-Platform-as-a-Service" class="headerlink" title="PaaS (Platform as a Service)"></a>PaaS (Platform as a Service)</h3><p>PaaS (Platform as a Service)는 IaaS에서 제공하는 하드웨어와 사용자가 원하는 서비스를 개발할 수 있는 환경을 모두 제공하는 서비스이다. 즉, “IaaS + Platform” 이라고도 할 수 있다. 보통 웹을 구축하기 위해서는 물리적인 하드웨어인 서버를 사고 해당 서버 위에 운영체제 등을 설치해야 서비스를 개발할 수 있지만, 이 서비스를 이용하면 바로 서비스 개발에 들어갈 수 있다.</p>
-<h3 id="SaaS-Software-as-a-Service"><a href="#SaaS-Software-as-a-Service" class="headerlink" title="SaaS (Software as a Service)"></a>SaaS (Software as a Service)</h3><p>SaaS (Software as a Service)는 클라우드 기반의 프로그램을 제공하는 서비스이다. 해당 클라우드는 소프트웨어를 앱처럼 다운받아서 사용하거나 데스크탑에서 바로 저장소로도 사용할 수 있다. 일반적으로 사용하는 네이버 클라우드나 구글 드라이브 등이 이 서비스에 해당한다.</p>
-<h2 id="Amazon-Web-Services-AWS"><a href="#Amazon-Web-Services-AWS" class="headerlink" title="Amazon Web Services (AWS)"></a>Amazon Web Services (AWS)</h2><p>클라우드 서비스를 제공하는 기업은 크게 아마존(Amazon), 구글(Google), 마이크로소프트(MS), IBM 등이 있다. 우리는 이중에서 현재 업계 1위인 아마존을 사용할 것이다. 프로젝트를 진행해가면서 자세하게 다루겠지만, 먼저 AWS에서 우리가 사용할 서비스에 대해서 간단하게 살펴보자.</p>
-<h3 id="Elastic-Compute-Cloud-EC2"><a href="#Elastic-Compute-Cloud-EC2" class="headerlink" title="Elastic Compute Cloud (EC2)"></a>Elastic Compute Cloud (EC2)</h3><p>EC2는 클라우드 기반의 가상 서버를 제공하는 서비스이다. 보통 EC2의 인스턴스를 만들어 가상 서버 환경을 구축한다. EC2를 통해 가상 환경을 구축하기 위해서는 AMI를 선택하고, 해당 서버에서 운용할 데이터를 넣어둘 저장장치(볼륨)를 선택해야 한다.</p>
-<h3 id="Amazon-Machine-Image-AMI"><a href="#Amazon-Machine-Image-AMI" class="headerlink" title="Amazon Machine Image (AMI)"></a>Amazon Machine Image (AMI)</h3><p>AMI는 서버 바로 위에 구축해야 하는 환경들을 조합해둔 템플릿이다. 아마존에는 딥러닝을 위한 이미지(Deep Learning AMI)도 존재하며, 해당 이미지에는 텐서플로우, 파이토치 등 구현에 필요한 프레임워크까지 모두 포함되어 있다. 즉, 해당 이미지를 선택하여 EC2에 올리면 바로 딥러닝 모델 학습을 시작할 수 있는 것이다.</p>
-<h3 id="Elastic-Block-Storage-EBS"><a href="#Elastic-Block-Storage-EBS" class="headerlink" title="Elastic Block Storage (EBS)"></a>Elastic Block Storage (EBS)</h3><p>EBS는 EC2에서 사용될 데이터나 학습 이후의 결과물 등을 저장하고 사용할 수 있는 임시 저장장치이다. 흔히 하드웨어에서 HDD나 SSD와 같은 역할을 한다. 다만, 가상 서버인 EC2가 멈추면 EBS에 있던 자료도 제거되기 때문에 주의해야 한다. 물론 EBS도 영구적으로 만들어 사용할 수는 있지만 있지만, 가격이 비싸기 때문에 보통 가상 서버에서만 사용한다.</p>
-<h3 id="Simple-Storage-Service-S3"><a href="#Simple-Storage-Service-S3" class="headerlink" title="Simple Storage Service (S3)"></a>Simple Storage Service (S3)</h3><p>S3 또한 데이터를 저장할 수 있는 저장장치이며, EBS보다 저렴하고 데이터를 무한대로 저장할 수 있다는 장점이 있다. S3는 데이터를 저장한 용량에 대비하여 저렴한 비용이 청구되지만 EBS는 선택한 용량 전체에 대해서 비용이 청구되기 때문에 가상 서버를 돌리지 않을 때에는 데이터들을 S3에 저장해두는 것이 훨씬 저렴하다.</p>
+                <p>클라우드 컴퓨팅 종류에 대해 알아보고 AWS의 기본 서비스들을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="cloud-computing">Cloud Computing</h2>
+<p>클라우드 컴퓨팅이란 클라우드에서 가상 서버, 데이터 스토리지, 소프트웨어 등 필요한 IT 자원을 임대하여 사용하는 기술이다. 클라우드 컴퓨팅 서비스는 크게 3가지 종류로 나뉜다.</p>
+<h3 id="iaas-infrastructure-as-a-service">IaaS (Infrastructure as a Service)</h3>
+<p>IaaS (Infrastructure as a Service)는 실제 하드웨어로 마련해야 하는 서버나, 데이터 스토리지 등의 자원들을 가상으로 제공해주는 서비스이다. 이를 사용하면 물리적인 GPU나 SDD 없이도 무거운 딥러닝 모델을 훈련시킬 수 있다. 해당 프로젝트에서 우리는 이 서비스를 사용할 예정이다.</p>
+<h3 id="paas-platform-as-a-service">PaaS (Platform as a Service)</h3>
+<p>PaaS (Platform as a Service)는 IaaS에서 제공하는 하드웨어와 사용자가 원하는 서비스를 개발할 수 있는 환경을 모두 제공하는 서비스이다. 즉, "IaaS + Platform" 이라고도 할 수 있다. 보통 웹을 구축하기 위해서는 물리적인 하드웨어인 서버를 사고 해당 서버 위에 운영체제 등을 설치해야 서비스를 개발할 수 있지만, 이 서비스를 이용하면 바로 서비스 개발에 들어갈 수 있다.</p>
+<h3 id="saas-software-as-a-service">SaaS (Software as a Service)</h3>
+<p>SaaS (Software as a Service)는 클라우드 기반의 프로그램을 제공하는 서비스이다. 해당 클라우드는 소프트웨어를 앱처럼 다운받아서 사용하거나 데스크탑에서 바로 저장소로도 사용할 수 있다. 일반적으로 사용하는 네이버 클라우드나 구글 드라이브 등이 이 서비스에 해당한다.</p>
+<h2 id="amazon-web-services-aws">Amazon Web Services (AWS)</h2>
+<p>클라우드 서비스를 제공하는 기업은 크게 아마존(Amazon), 구글(Google), 마이크로소프트(MS), IBM 등이 있다. 우리는 이중에서 현재 업계 1위인 아마존을 사용할 것이다. 프로젝트를 진행해가면서 자세하게 다루겠지만, 먼저 AWS에서 우리가 사용할 서비스에 대해서 간단하게 살펴보자.</p>
+<h3 id="elastic-compute-cloud-ec2">Elastic Compute Cloud (EC2)</h3>
+<p>EC2는 클라우드 기반의 가상 서버를 제공하는 서비스이다. 보통 EC2의 인스턴스를 만들어 가상 서버 환경을 구축한다. EC2를 통해 가상 환경을 구축하기 위해서는 AMI를 선택하고, 해당 서버에서 운용할 데이터를 넣어둘 저장장치(볼륨)를 선택해야 한다.</p>
+<h3 id="amazon-machine-image-ami">Amazon Machine Image (AMI)</h3>
+<p>AMI는 서버 바로 위에 구축해야 하는 환경들을 조합해둔 템플릿이다. 아마존에는 딥러닝을 위한 이미지(Deep Learning AMI)도 존재하며, 해당 이미지에는 텐서플로우, 파이토치 등 구현에 필요한 프레임워크까지 모두 포함되어 있다. 즉, 해당 이미지를 선택하여 EC2에 올리면 바로 딥러닝 모델 학습을 시작할 수 있는 것이다.</p>
+<h3 id="elastic-block-storage-ebs">Elastic Block Storage (EBS)</h3>
+<p>EBS는 EC2에서 사용될 데이터나 학습 이후의 결과물 등을 저장하고 사용할 수 있는 임시 저장장치이다. 흔히 하드웨어에서 HDD나 SSD와 같은 역할을 한다. 다만, 가상 서버인 EC2가 멈추면 EBS에 있던 자료도 제거되기 때문에 주의해야 한다. 물론 EBS도 영구적으로 만들어 사용할 수는 있지만 있지만, 가격이 비싸기 때문에 보통 가상 서버에서만 사용한다.</p>
+<h3 id="simple-storage-service-s3">Simple Storage Service (S3)</h3>
+<p>S3 또한 데이터를 저장할 수 있는 저장장치이며, EBS보다 저렴하고 데이터를 무한대로 저장할 수 있다는 장점이 있다. S3는 데이터를 저장한 용량에 대비하여 저렴한 비용이 청구되지만 EBS는 선택한 용량 전체에 대해서 비용이 청구되기 때문에 가상 서버를 돌리지 않을 때에는 데이터들을 S3에 저장해두는 것이 훨씬 저렴하다.</p>
 
                 
               </div>

@@ -260,7 +260,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          627 words
+          626 words
         
       </span>
     
@@ -353,32 +353,33 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.<br><span id="more"></span></p>
-<hr>
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
 <p>우리는 이전 장에서 활성화 함수로 시그모이드를 사용한 2층 신경망 학습을 구현하였다. 그렇다면 ReLU를 기반으로 한 신경망과 어떤 차이가 있을까? 이번 글에서는 두 활성화 함수의 성능을 비교할 것이다. 만약 활성화 함수에 대해서 더 공부하고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/29/DeeplearningJulia/Deeplearning-2/">이 글</a>을 참고하면 된다.</p>
 <p>먼저 간단하게 시그모이드와 ReLU 함수를 복습해보자.</p>
-<h2 id="시그모이드-함수"><a href="#시그모이드-함수" class="headerlink" title="시그모이드 함수"></a>시그모이드 함수</h2><p>시그모이드 함수는 입력값들을 $0$과 $1$사이의 수로 변환해주는 함수이다. 수식은 아래와 같다.</p>
-<script type="math/tex; mode=display">h(x)=\frac{1}{1+e^{-x}}</script><p>위의 수식에서 볼 수 있듯이 시그모이드는 지수 함수로 이루어져 있다. 그래서 비교적 계산이 복잡하며, 계산량이 많을수록 느려질 수밖에 없다. 만약 지수함수가 왜 느린지 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/19/Algorithms/Algorithms-0/">이 글</a>에서 자세히 살펴볼 수 있다.</p>
-<h2 id="ReLU-함수"><a href="#ReLU-함수" class="headerlink" title="ReLU 함수"></a>ReLU 함수</h2><p>ReLU 함수는 음수를 모두 $0$으로 바꾸고 양수는 그대로 출력하는 함수이다. 수식은 다음과 같다.</p>
-<script type="math/tex; mode=display">
+<h2 id="시그모이드-함수">시그모이드 함수</h2>
+<p>시그모이드 함수는 입력값들을 <span class="math inline">\(0\)</span>과 <span class="math inline">\(1\)</span>사이의 수로 변환해주는 함수이다. 수식은 아래와 같다.</p>
+<p><span class="math display">\[h(x)=\frac{1}{1+e^{-x}}\]</span></p>
+<p>위의 수식에서 볼 수 있듯이 시그모이드는 지수 함수로 이루어져 있다. 그래서 비교적 계산이 복잡하며, 계산량이 많을수록 느려질 수밖에 없다. 만약 지수함수가 왜 느린지 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/19/Algorithms/Algorithms-0/">이 글</a>에서 자세히 살펴볼 수 있다.</p>
+<h2 id="relu-함수">ReLU 함수</h2>
+<p>ReLU 함수는 음수를 모두 <span class="math inline">\(0\)</span>으로 바꾸고 양수는 그대로 출력하는 함수이다. 수식은 다음과 같다.</p>
+<p><span class="math display">\[
 h(x) =
  \begin{cases}
-0 & \text{(x≤0)$$}\\
-x & \text{(x>0) $$}\\
-\end{cases}</script><p>ReLU 함수는 x값을 그대로 보내거나 0을 보낸다는 점에서 복잡한 계산은 없다. 그렇기에 같은 조건에서 계산을 진행한다면 시그모이드 함수보다는 빠르며, 최근 많이 사용하는 활성화 함수 중 하나이다.</p>
-<h2 id="성능-비교"><a href="#성능-비교" class="headerlink" title="성능 비교"></a>성능 비교</h2><p>활성화 함수에 대해 간단하게 복습을 했으니 이제 두 함수를 비교해보자. 우리는 이번 시간에 세 가지의 항목을 기준으로 비교할 것이다. 바로 정확도(accuracy), 손실함수 값(loss value) 그리고 시간이다. 정확도는 높을 수록, 손실 함수 값은 낮을 수록, 시간은 적게 소요될수록 좋은 것이라고 판단할 것이다.</p>
-<p><strong>WARNING</strong><br>이 글에서 진행하는 성능 비교는 2층 신경망이며, MNIST데이터를 기반으로 한 분류 모델이다. 다른 모델에서 성능은 이 글의 결과와 차이가 있을 수 있다.</p>
+0 &amp; \text{(x≤0)\]</span>}\ x &amp; \ \end{cases} $$</p>
+<p>ReLU 함수는 x값을 그대로 보내거나 0을 보낸다는 점에서 복잡한 계산은 없다. 그렇기에 같은 조건에서 계산을 진행한다면 시그모이드 함수보다는 빠르며, 최근 많이 사용하는 활성화 함수 중 하나이다.</p>
+<h2 id="성능-비교">성능 비교</h2>
+<p>활성화 함수에 대해 간단하게 복습을 했으니 이제 두 함수를 비교해보자. 우리는 이번 시간에 세 가지의 항목을 기준으로 비교할 것이다. 바로 정확도(accuracy), 손실함수 값(loss value) 그리고 시간이다. 정확도는 높을 수록, 손실 함수 값은 낮을 수록, 시간은 적게 소요될수록 좋은 것이라고 판단할 것이다.</p>
+<p><strong>WARNING</strong> 이 글에서 진행하는 성능 비교는 2층 신경망이며, MNIST데이터를 기반으로 한 분류 모델이다. 다른 모델에서 성능은 이 글의 결과와 차이가 있을 수 있다.</p>
 <p>먼저 비교를 위해서 활성화 함수를 제외한 나머지 조건들은 모두 동일하게 셋팅한다. 우리가 비교에 사용할 신경망은 2층 구조이며, 데이터는 이전 글에서도 사용한 <code>MNIST</code> 데이터를 사용한다. 또한 입력층은 <code>784</code>, 은닉층은 <code>50</code>, 출력층은 <code>10</code>으로 설정한다. 마지막으로 배치 사이즈는 <code>100</code>으로, 학습률은 <code>0.1</code>로 설정하여 기본 셋팅을 완료한다. 해당 케이스에서 1에폭은 600번이다. 기본 셋팅에 대해서 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">이 글</a>에서 살펴볼 수 있다.</p>
 <p>성능을 비교하는 과정은 다음과 같다.</p>
-<ol>
-<li><p>각각 활성화 함수로 이루어진 2층 인공신경망을 1에폭 학습한다.</p>
-</li>
-<li><p>한 번 학습할 때마다 해당 신경망이 <code>test</code>데이터 10000개 중 몇 개를 맞추는지 파악하여 정확도를 측정한다.</p>
-</li>
-<li><p>손실 함수와 정확도를 그래프로 나타낸다.</p>
-</li>
+<ol type="1">
+<li><p>각각 활성화 함수로 이루어진 2층 인공신경망을 1에폭 학습한다.</p></li>
+<li><p>한 번 학습할 때마다 해당 신경망이 <code>test</code>데이터 10000개 중 몇 개를 맞추는지 파악하여 정확도를 측정한다.</p></li>
+<li><p>손실 함수와 정확도를 그래프로 나타낸다.</p></li>
 </ol>
-<h3 id="비교-in-순전파-알고리즘"><a href="#비교-in-순전파-알고리즘" class="headerlink" title="비교 in 순전파 알고리즘"></a>비교 in 순전파 알고리즘</h3><p>첫 번째로는 순전파 알고리즘을 학습에 사용한 신경망이다. 순전파 알고리즘 구현 방법에 대해서 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">인공신경망 구현 - 순전파 알고리즘</a>에서 살펴볼 수 있다.</p>
+<h3 id="비교-in-순전파-알고리즘">비교 in 순전파 알고리즘</h3>
+<p>첫 번째로는 순전파 알고리즘을 학습에 사용한 신경망이다. 순전파 알고리즘 구현 방법에 대해서 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">인공신경망 구현 - 순전파 알고리즘</a>에서 살펴볼 수 있다.</p>
 <p>두 활성화 함수를 비교하기 위해서는 신경망 모델 생성에 필요한 함수와 구조체들을 정의해야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/MLP">깃허브 페이지</a>에 들어가면 코드를 확인할 수 있다. 참고로 순전파 알고리즘을 작동시키기 위해서는 <code>MNSIT_data.jl</code>과 <code>forward_propagation.jl</code>에 있는 코드를 정의해야 한다.</p>
 <p>순전파에서 활성화 함수를 바꿔주기 위해서는 <code>predict()</code>를 변경해주면 된다. 나머지는 모두 동일하게 사용된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> predict(x)<br>    a1 = (x * params[<span class="hljs-string">&quot;W1&quot;</span>]) .+ params[<span class="hljs-string">&quot;b1&quot;</span>]<br>    z1 = sigmoid.(a1)<br>    a2 = (z1 * params[<span class="hljs-string">&quot;W2&quot;</span>]) .+ params[<span class="hljs-string">&quot;b2&quot;</span>]<br>    <span class="hljs-keyword">return</span> softmax(a2)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
@@ -393,12 +394,17 @@ x & \text{(x>0) $$}\\
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 시그모이드 기반 신경망 학습 후 저장</span><br>sig_forward_acc = vcat(accuracy)<br>sig_forward_loss = vcat(train_loss_list)<br><br><span class="hljs-comment"># ReLU 기반 신경망 학습 후 저장</span><br>relu_forward_acc = vcat(accuracy)<br>relu_forward_loss = vcat(train_loss_list)<br></code></pre></td></tr></table></figure>
 <p>이후 <code>Plots</code>를 사용하여 그래프를 그리면 아래와 같은 결과가 도출된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x = range(<span class="hljs-number">1</span>,length(relu_forward_acc),step=<span class="hljs-number">1</span>)<br>data = [relu_forward_acc sig_forward_acc]<br>labels = [<span class="hljs-string">&quot;ReLU_acc&quot;</span> <span class="hljs-string">&quot;sigmoid_acc&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x,<br>    data,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Accuracy in Forward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
-<p><img src="/images/52.png" srcset="/img/loading.gif" lazyload alt="순전파 정확도"></p>
+<figure>
+<img src="/images/52.png" srcset="/img/loading.gif" lazyload alt="순전파 정확도" /><figcaption aria-hidden="true">순전파 정확도</figcaption>
+</figure>
 <p>정확도를 비교해보면 ReLU 함수가 더 높은 것을 확인할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x1 = range(<span class="hljs-number">1</span>,length(relu_forward_loss),step=<span class="hljs-number">1</span>)<br>data1 = [relu_forward_loss sig_forward_loss]<br>labels = [<span class="hljs-string">&quot;ReLU_loss&quot;</span> <span class="hljs-string">&quot;sigmoid_loss&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x3,<br>    data3,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Loss in Forward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
-<p><img src="/images/53.png" srcset="/img/loading.gif" lazyload alt="순전파 손실함수"></p>
+<figure>
+<img src="/images/53.png" srcset="/img/loading.gif" lazyload alt="순전파 손실함수" /><figcaption aria-hidden="true">순전파 손실함수</figcaption>
+</figure>
 <p>손실함수 또한 ReLU가 더 낮다. 즉 순전파에서 ReLU의 완벽한 승리이다.</p>
-<h3 id="비교-in-역전파-알고리즘"><a href="#비교-in-역전파-알고리즘" class="headerlink" title="비교 in 역전파 알고리즘"></a>비교 in 역전파 알고리즘</h3><p>지금부터는 이전 글에서 만들었던 역전파 알고리즘을 사용하여 신경망 모델을 학습시킬 것이다. 역전파 알고리즘 구현 방법에 대해서 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/20/DeeplearningJulia/Deeplearning-9/">인공신경망 구현 - 역전파 알고리즘</a>에서 살펴볼 수 있다. 또한 역전파의 경우 개념이 추상적이라서 원리를 더 정확히 이해하고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/15/DeeplearningJulia/Deeplearning-8/">인공신경망 구현 - 역전파 설명</a>을 읽어보기를 추천한다.</p>
+<h3 id="비교-in-역전파-알고리즘">비교 in 역전파 알고리즘</h3>
+<p>지금부터는 이전 글에서 만들었던 역전파 알고리즘을 사용하여 신경망 모델을 학습시킬 것이다. 역전파 알고리즘 구현 방법에 대해서 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/20/DeeplearningJulia/Deeplearning-9/">인공신경망 구현 - 역전파 알고리즘</a>에서 살펴볼 수 있다. 또한 역전파의 경우 개념이 추상적이라서 원리를 더 정확히 이해하고 싶다면 <a href="https://dev-bearabbit.github.io/2020/04/15/DeeplearningJulia/Deeplearning-8/">인공신경망 구현 - 역전파 설명</a>을 읽어보기를 추천한다.</p>
 <p>순전파와 마찬가지로 두 활성화 함수를 비교하기 위해서는 신경망 모델 생성에 필요한 함수와 구조체들을 정의해야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Machine_Learning_in_Julia/tree/master/MLP">깃허브 페이지</a>에 들어가면 코드를 확인할 수 있다. 역전파 알고리즘 또한 작동시키기 위해서는 <code>MNSIT_data.jl</code>과 <code>backward_propagation.jl</code>에 있는 코드를 정의해야 한다.</p>
 <p>역전파 알고리즘에서 활성화 함수를 변경하기 위해서는 3가지를 체크해야 한다.</p>
 <ul>
@@ -416,12 +422,17 @@ x & \text{(x>0) $$}\\
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 시그모이드</span><br>sig_backward_acc = vcat(accuracy)<br>sig_backward_loss = vcat(train_loss_list)<br><br><span class="hljs-comment"># ReLU</span><br>relu_backward_acc = vcat(accuracy)<br>relu_backward_loss = vcat(train_loss_list)<br></code></pre></td></tr></table></figure>
 <p>이후 <code>Plots</code>를 사용하여 그래프를 그리면 아래와 같은 결과가 도출된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x2 = range(<span class="hljs-number">1</span>,length(relu_backward_acc),step=<span class="hljs-number">1</span>)<br>data2 = [relu_backward_acc sig_backward_acc ]<br>labels = [<span class="hljs-string">&quot;ReLU_acc&quot;</span> <span class="hljs-string">&quot;sigmoid_acc&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x2,<br>    data2,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Accuracy in Backward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
-<p><img src="/images/54.png" srcset="/img/loading.gif" lazyload alt="순전파 정확도"></p>
+<figure>
+<img src="/images/54.png" srcset="/img/loading.gif" lazyload alt="순전파 정확도" /><figcaption aria-hidden="true">순전파 정확도</figcaption>
+</figure>
 <p>정확도를 비교해보면 ReLU 함수가 더 높은 것을 확인할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Julia">x3 = range(<span class="hljs-number">1</span>,length(relu_backward_loss),step=<span class="hljs-number">1</span>)<br>data3 = [relu_backward_loss  sig_backward_loss]<br>labels = [<span class="hljs-string">&quot;ReLU_loss&quot;</span> <span class="hljs-string">&quot;sigmoid_loss&quot;</span>]<br>markercolors = [:red :blue]<br><br>for_acc=plot(<br>    x3,<br>    data3,<br>    label = labels,<br>    color = markercolors,<br>    markersize = <span class="hljs-number">2</span>,<br>    title = <span class="hljs-string">&quot;Loss in Backward propagation&quot;</span>)<br></code></pre></td></tr></table></figure>
-<p><img src="/images/55.png" srcset="/img/loading.gif" lazyload alt="순전파 손실함수"></p>
+<figure>
+<img src="/images/55.png" srcset="/img/loading.gif" lazyload alt="순전파 손실함수" /><figcaption aria-hidden="true">순전파 손실함수</figcaption>
+</figure>
 <p>손실함수 또한 ReLU가 더 낮다. 역전파에서도 ReLU의 완벽한 승리이다.</p>
-<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>지금까지 순전파와 역전파 알고리즘에서 어떤 활성화 함수가 학습을 잘 진행하는지, 또 실제 모델로서 잘 예측하는지를 비교해보았다. 결론은 간단한다.</p>
+<h2 id="결론">결론</h2>
+<p>지금까지 순전파와 역전파 알고리즘에서 어떤 활성화 함수가 학습을 잘 진행하는지, 또 실제 모델로서 잘 예측하는지를 비교해보았다. 결론은 간단한다.</p>
 <blockquote><p>ReLU가 짱이다!</p>
 </blockquote>
 

@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/5.png">
 <meta property="article:published_time" content="2025-01-27T11:48:47.000Z">
-<meta property="article:modified_time" content="2025-01-27T19:44:50.161Z">
+<meta property="article:modified_time" content="2025-01-31T16:38:28.204Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="BigData">
 <meta property="article:tag" content="DataWarehouse">
@@ -382,10 +382,11 @@
 <p>A data warehouse plays a central role in managing data quality and maintaining efficient code. For example, when defining GMV for our company, some people calculated it using <code>pay_time</code>, while others used <code>create_time</code>. Such inconsistencies erode trust and reliability in the data. By defining a standard GMV formula and adding a GMV column to a warehouse table, we ensured all products pulled the value from the same source. Later, if the GMV calculation formula changes, updating the warehouse pipeline alone ensures consistency across all metrics.</p>
 <p>Additionally, when backend logic changes or server issues cause data integrity problems, the warehouse manager can quickly address them. Without this centralization, different data products with independent pipelines create an exponential increase in maintenance tasks, rendering the system unmanageable. Over time, this results in significant legacy systems—akin to museum relics—that exist solely for troubleshooting. A data warehouse prevents such issues and provides an excellent solution.</p>
 <p>Our company decided to address these challenges by building a proper data warehouse.</p>
-<h2 id="How-to-Build-a-Data-Warehouse"><a href="#How-to-Build-a-Data-Warehouse" class="headerlink" title="How to Build a Data Warehouse"></a>How to Build a Data Warehouse</h2><p>So, how do you get started with building a data warehouse? The first step is to <code>understand the service domains</code>.<br>In our company, multiple domains exist within a single large service, each with distinct business logic. Understanding these business rules is essential to define the scope during data modeling.</p>
-<p>The next step is to <code>understand the operational data</code> tied to the business logic.<br>Analytical data is fundamentally derived from service-generated data. Without understanding the service database logic, building a warehouse is impossible. This involves consulting with the backend team, reading historical documentation, and directly querying and exploring the schemas.</p>
+<h2 id="How-to-Build-a-Data-Warehouse"><a href="#How-to-Build-a-Data-Warehouse" class="headerlink" title="How to Build a Data Warehouse"></a>How to Build a Data Warehouse</h2><p>So, how do you get started with building a data warehouse? The first step is to <code>understand the service domains</code>. In our company, multiple domains exist within a single large service, each with distinct business logic. Understanding these business rules is essential to define the scope during data modeling.</p>
+<p>The next step is to <code>understand the operational data</code> tied to the business logic. Analytical data is fundamentally derived from service-generated data. Without understanding the service database logic, building a warehouse is impossible. This involves consulting with the backend team, reading historical documentation, and directly querying and exploring the schemas.</p>
 <p>Once you’ve studied the data, you can move to the development phase.</p>
-<p>The third step is to <code>design your data modeling</code>. This involves choosing between a star schema and a snowflake schema based on the business logic and data. For more details on these schema structures, check out <a href="https://dev-bearabbit.github.io/en/en/Engineering/engineering-0/">this post</a>.<br>Some tips to keep in mind during modeling:</p>
+<p>The third step is to <code>design your data modeling</code>. This involves choosing between a star schema and a snowflake schema based on the business logic and data. For more details on these schema structures, check out <a href="https://dev-bearabbit.github.io/en/en/Engineering/engineering-0/">this post</a>.</p>
+<p>Some tips to keep in mind during modeling:</p>
 <ul>
 <li>Define common metrics first and modeling around them.</li>
 <li>Use logical primary keys for table integration.</li>
@@ -393,16 +394,16 @@
 <li>Document your data model thoroughly.</li>
 <li>Include separate columns for INSERT and UPDATE timestamps.</li>
 </ul>
-<p>Once you’re done modeling your data, the next step is to <code>design your ETL/ELT pipeline</code>.<br>The pipeline should reflect the modeling results, supporting either INSERT or UPDATE operations. Choosing a platform that supports UPSERT is ideal. Our team uses Spark with the open-source Delta Lake library to implement UPSERT operations. Additionally, we set up Airflow to run daily batches, ensuring that the latest data is regularly updated or added. Creating pipeline templates can save time when configuring DAGs repeatedly.</p>
-<p>Next, you need to configure an environment to <code>organize and share the table schemas in your warehouse</code>.<br>Organizing and sharing table schemas within the warehouse is essential. Usually, a data catalog platform is used for this purpose. Our team uses DataHub to manage and share schemas. Without documenting tables during modeling, you’ll face a mountain of overdue documentation tasks later.</p>
-<p>The final step is to <code>organize your quality control and testing system</code>.<br>The warehouse assumes its data is high-quality by default, so maintaining quality control is crucial. Engineers responsible for the warehouse should continually think about quality and testing. This includes:</p>
+<p>Once you’re done modeling your data, the next step is to <code>design your ETL/ELT pipeline</code>. The pipeline should reflect the modeling results, supporting either INSERT or UPDATE operations. Choosing a platform that supports UPSERT is ideal. Our team uses Spark with the open-source Delta Lake library to implement UPSERT operations. Additionally, we set up Airflow to run daily batches, ensuring that the latest data is regularly updated or added. Creating pipeline templates can save time when configuring DAGs repeatedly.</p>
+<p>Next, you need to configure an environment to <code>organize and share the table schemas in your warehouse</code>. Organizing and sharing table schemas within the warehouse is essential. Usually, a data catalog platform is used for this purpose. Our team uses DataHub to manage and share schemas. Without documenting tables during modeling, you’ll face a mountain of overdue documentation tasks later.</p>
+<p>The final step is to <code>organize your quality control and testing system</code>. The warehouse assumes its data is high-quality by default, so maintaining quality control is crucial. Engineers responsible for the warehouse should continually think about quality and testing. This includes:</p>
 <ul>
 <li>Data integrity tests</li>
 <li>NULL value checks</li>
 <li>Duplicate data removal</li>
 <li>Monitoring historical changes and outliers</li>
 </ul>
-<p>In reality, business logic and operational data logic constantly evolve as services grow and change.<br>Ultimately, data quality management involves recognizing, understanding, and consistently reflecting these changes.<br>For this reason, building and maintaining a data warehouse requires significant resources.<br>But if you build a product without these filters in place, you’re more likely to become a mass-production shop that accumulates technical debt that’s hard to reverse at scale.</p>
+<p>In reality, business logic and operational data logic constantly evolve as services grow and change. Ultimately, data quality management involves recognizing, understanding, and consistently reflecting these changes. For this reason, building and maintaining a data warehouse requires significant resources. But if you build a product without these filters in place, you’re more likely to become a mass-production shop that accumulates technical debt that’s hard to reverse at scale.</p>
 <p>To summarize, the process can be broken down as follows:</p>
 <ol>
 <li><p>Learning Phase</p>

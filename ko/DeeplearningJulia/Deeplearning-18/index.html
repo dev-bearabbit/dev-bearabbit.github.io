@@ -259,7 +259,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          612 words
+          614 words
         
       </span>
     
@@ -352,21 +352,26 @@
             
               <div class="markdown-body">
                 
-                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다.<br><span id="more"></span></p>
-<hr>
+                <p>해당 시리즈는 프로그래밍 언어 중 하나인 줄리아(Julia)로 딥러닝(Deep learning)을 구현하면서 원리를 설명합니다. <span id="more"></span></p>
+<hr />
 <p>지금까지 <code>im2col()</code>, <code>col2im()</code>을 적용한 새로운 합성곱과 풀링에 대해 알아보았다. 이번 글에서는 새로운 합성곱과 풀링을 사용하여 새로운 <code>simpleNet</code>을 구현할 것이다. <code>im2col()</code>, <code>col2im()</code>을 적용하지 않은 기존 <code>simpleNet</code>은 1에폭에 1시간이 걸린 반면 새로운 <code>simpleNet</code>은 1에폭에 5분이면 학습이 완료된다.</p>
-<h2 id="CNN-모델-구현"><a href="#CNN-모델-구현" class="headerlink" title="CNN 모델 구현"></a>CNN 모델 구현</h2><h3 id="준비-단계"><a href="#준비-단계" class="headerlink" title="준비 단계"></a>준비 단계</h3><p>이제 설계한 모델을 직접 구현해보자. 먼저 모델을 생성하고 학습하는데 필요한 재료들을 가져와야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia">해당 깃허브 사이트</a>에 가서 코드를 다운받으면 바로 학습을 진행할 수 있다. 만약 다운받기 싫다면 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/CNN">이 사이트</a>에서 아래의 파일들의 코드를 모두 복사해서 사용해도 된다.</p>
+<h2 id="cnn-모델-구현">CNN 모델 구현</h2>
+<h3 id="준비-단계">준비 단계</h3>
+<p>이제 설계한 모델을 직접 구현해보자. 먼저 모델을 생성하고 학습하는데 필요한 재료들을 가져와야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia">해당 깃허브 사이트</a>에 가서 코드를 다운받으면 바로 학습을 진행할 수 있다. 만약 다운받기 싫다면 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/CNN">이 사이트</a>에서 아래의 파일들의 코드를 모두 복사해서 사용해도 된다.</p>
 <p>깃허브 데스크탑에 코드를 클론하거나 저장한 분들은 현재 사용하고 있는 커맨드의 경로를 <code>CNN</code> 파일로 변경해야 한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">pwd <span class="hljs-comment"># 현재 경로 확인</span><br>cd 코드가 있는 파일 경로 입력/Deep_Learning_in_Julia/CNN<br></code></pre></td></tr></table></figure>
 <p>다시 <code>pwd</code>를 입력했을 때 아래와 같이 변경되어 있으면 변경이 완료된 것이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">/Users/코드가 있는 파일 경로/Deep_Learning_in_Julia/CNN<br></code></pre></td></tr></table></figure>
 <p>변경이 완료된 후 아래의 코드를 입력하자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">include(<span class="hljs-string">&quot;MNIST_data.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;functions.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;layers.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;making_network.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;optimizers.jl&quot;</span>)<br></code></pre></td></tr></table></figure>
-<p><strong>Note</strong><br>만약 터미널 변경에는 성공했는데 위 코드가 작동하지 않는다면 해당 터미널이 줄리아 언어로 세팅되어 있는지를 확인해보자. 줄리아 언어로 변경하는 방법은 줄리아가 저장되어 있는 경로를 찾아서 입력하면 사용할 수 있다.</p>
+<p><strong>Note</strong> 만약 터미널 변경에는 성공했는데 위 코드가 작동하지 않는다면 해당 터미널이 줄리아 언어로 세팅되어 있는지를 확인해보자. 줄리아 언어로 변경하는 방법은 줄리아가 저장되어 있는 경로를 찾아서 입력하면 사용할 수 있다.</p>
 <p>위 코드는 파일에 들어 있는 모든 코드들을 작동시킨다. 만약 코드를 복사하여 사용할 분들은 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/CNN">해당 페이지</a>에서 위의 파일들의 코드를 복사하여 입력해주면 된다.</p>
 <p>이제 간단한 CNN 모델을 만들 준비가 끝났다.</p>
-<h3 id="CNN-모델-설계"><a href="#CNN-모델-설계" class="headerlink" title="CNN 모델 설계"></a>CNN 모델 설계</h3><p><code>MNIST</code> 데이터는 간단하게 손글씨로 쓴 숫자이기에 비교적 얕은 모델로도 높은 성능의 분류기를 만들 수 있다. 아래의 그림을 참고해보자.</p>
-<p><img src="/images/81.png" srcset="/img/loading.gif" lazyload alt="model"></p>
+<h3 id="cnn-모델-설계">CNN 모델 설계</h3>
+<p><code>MNIST</code> 데이터는 간단하게 손글씨로 쓴 숫자이기에 비교적 얕은 모델로도 높은 성능의 분류기를 만들 수 있다. 아래의 그림을 참고해보자.</p>
+<figure>
+<img src="/images/81.png" srcset="/img/loading.gif" lazyload alt="model" /><figcaption aria-hidden="true">model</figcaption>
+</figure>
 <p>위의 각 계층들에 대한 세부적인 정보는 아래와 같다.</p>
 <ul>
 <li>input data: MNIST, batch = 100, data_shape = 28 x 28 x 1 x 100</li>
@@ -387,7 +392,8 @@
 <li>optimizer: Adam</li>
 <li>weight initialization: std</li>
 </ul>
-<h3 id="학습-구현"><a href="#학습-구현" class="headerlink" title="학습 구현"></a>학습 구현</h3><p>학습을 구현하기 위해서는 총 3가지의 과정을 거쳐야 한다.</p>
+<h3 id="학습-구현">학습 구현</h3>
+<p>학습을 구현하기 위해서는 총 3가지의 과정을 거쳐야 한다.</p>
 <ul>
 <li><code>predict()</code> 및 저장소 설정</li>
 <li>가중치와 편향 초기값 설정</li>
@@ -403,10 +409,13 @@
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-meta">@time</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">600</span><br><br>        batch_size = rand(<span class="hljs-number">1</span>:size(train_x)[<span class="hljs-number">4</span>],<span class="hljs-number">100</span>)<br>        train_x_batch = train_x[:,:,:,batch_size]<br>        t_batch = reshape(t[batch_size,:],<span class="hljs-number">100</span>,<span class="hljs-number">10</span>)<br><br>        <span class="hljs-comment">#신경망 계산</span><br>        conv_1 = convolution2D_forward(dense1,train_x_batch,params[<span class="hljs-string">&quot;W1&quot;</span>],params[<span class="hljs-string">&quot;b1&quot;</span>],<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)<br>        conv_Re = relu_forward(Relu1, conv_1)<br>        pool_1 = Maxpooling_forward(pool1, conv_Re, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)<br>        flatten_1 = flatten_forward_batch(flatten1, pool_1)<br>        dense_1 = dense_layer_forward(dense2,flatten_1,params[<span class="hljs-string">&quot;W2&quot;</span>],params[<span class="hljs-string">&quot;b2&quot;</span>])<br>        dense_relu = relu_forward(Relu2, dense_1)<br>        dense_2 = dense_layer_forward(dense3,dense_relu,params[<span class="hljs-string">&quot;W3&quot;</span>],params[<span class="hljs-string">&quot;b3&quot;</span>])<br>        num = SoftmaxwithLoss_forward(dense_2,t_batch)<br><br>        <span class="hljs-comment">#역전파 알고리즘</span><br>        last_layer = SoftmaxwithLoss_backward(result)<br>        dense_2_back = dense_layer_backward(dense3, last_layer)<br>        grads[<span class="hljs-string">&quot;W3&quot;</span>] = dense3.dw<br>        grads[<span class="hljs-string">&quot;b3&quot;</span>] = dense3.db<br>        dense_relu_back = relu_backward(Relu2, dense_2_back)<br>        dense_1_back = dense_layer_backward(dense2, dense_relu_back)<br>        grads[<span class="hljs-string">&quot;W2&quot;</span>] = dense2.dw<br>        grads[<span class="hljs-string">&quot;b2&quot;</span>] = dense2.db<br>        flatten_1_back = flatten_backward_batch(flatten1,dense_1_back)<br>        pool_1_back = Maxpooling_backward(pool1, flatten_1_back, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>)<br>        conv_Re_back = relu_backward(Relu1, pool_1_back)<br>        conv_back = convolution2D_backward(dense1,conv_Re_back,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)<br>        grads[<span class="hljs-string">&quot;W1&quot;</span>] = dense1.dw<br>        grads[<span class="hljs-string">&quot;b1&quot;</span>] = dense1.db<br><br>        <span class="hljs-comment">#가중치 갱신</span><br>        Adam(params,grads)<br><br>        temp_loss = loss_CNN_batch(train_x_batch,t_batch)<br>        print(<span class="hljs-string">&quot;NO.<span class="hljs-variable">$i</span>: &quot;</span>)<br>        println(temp_loss)<br>        append!(train_loss_list, temp_loss)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>이제 마지막으로 모델 설계에 알맞게 계층을 쌓아 학습을 시작한다. 위 코드는 한번 학습할 때마다 입력 데이터 100개가 입력되며, 1에폭은 600번이다. 따라서 위 코드를 그래도 사용하면 1에폭을 학습한다. 학습 종료 후 정확도를 확인하고 싶다면 아래의 코드를 입력해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 테스트셋 정확도 계산</span><br>evaluate_CNN_batch(test_x, test_y)<br></code></pre></td></tr></table></figure>
-<h2 id="결과"><a href="#결과" class="headerlink" title="결과"></a>결과</h2><p>위 코드를 사용하여 총 5에폭(3000번)을 학습시켰으며, 그 결과 정확도를 아래와 같이 증가하였다.</p>
+<h2 id="결과">결과</h2>
+<p>위 코드를 사용하여 총 5에폭(3000번)을 학습시켰으며, 그 결과 정확도를 아래와 같이 증가하였다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-comment"># 1에폭: 96.37</span><br><span class="hljs-comment"># 2에폭: 97.22</span><br><span class="hljs-comment"># 3에폭: 98.1</span><br><span class="hljs-comment"># 4에폭: 98.46000000000001</span><br><span class="hljs-comment"># 5에폭: 98.57000000000001</span><br></code></pre></td></tr></table></figure>
 <p><code>im2col()</code>, <code>col2im()</code>을 적용하지 않았던 모델과 비교해봤을 때 초기값의 랜덤 설정을 고려한다면 같은 결과를 얻었다고 볼 수 있다. 손실값의 그래프를 확인해도 잘 학습되는 것을 확인할 수 있다.</p>
-<p><img src="/images/82.png" srcset="/img/loading.gif" lazyload alt="loss"></p>
+<figure>
+<img src="/images/82.png" srcset="/img/loading.gif" lazyload alt="loss" /><figcaption aria-hidden="true">loss</figcaption>
+</figure>
 <p>하지만 5에폭을 진행하는데 걸린 시간은 고작 약 25분 정도이다. 기존의 <code>simpleNet</code>은 1에폭에 1시간이었다는 것을 떠올려보면 엄청난 발전이라고 볼 수 있다. 하지만 <code>simpleNet</code>은 테스트셋의 정확도 99%를 넘기지는 못한다. 만약 99% 정확도를 달성해보고 싶다면 tensorflow에서 MNIST의 예제로 제공하는 <code>convNet</code>을 살펴보고 이와 동일하게 모델을 설계하여 도전해볼 수도 있다.</p>
 
                 

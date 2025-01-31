@@ -35,8 +35,8 @@
 <meta property="article:tag" content="data">
 <meta property="article:tag" content="KBO">
 <meta property="article:tag" content="package">
-<meta property="article:tag" content="패키지">
 <meta property="article:tag" content="pypi">
+<meta property="article:tag" content="패키지">
 <meta property="article:tag" content="한국프로야구">
 <meta property="article:tag" content="야구데이터">
 <meta name="twitter:card" content="summary_large_image">
@@ -350,34 +350,42 @@
                 
                 <p>이 글은 한국프로야구(Korea Baseball Organization) 웹사이트에서 데이터를 스크래핑하는 패키지 만드는 과정을 정리합니다.</p>
 <span id="more"></span>
-<h2 id="시작하며"><a href="#시작하며" class="headerlink" title="시작하며"></a>시작하며</h2><p>이 프로젝트의 목표는 크게 2가지아다.</p>
+<h2 id="시작하며">시작하며</h2>
+<p>이 프로젝트의 목표는 크게 2가지아다.</p>
 <ul>
 <li>KBO 데이터를 가져오는 패키지 생성</li>
 <li>파이썬 패키지를 생성하는 방법 공부</li>
 </ul>
 <p>해당 시리즈는 작업 중에 필요한 정보들을 정리할 예정이다.</p>
-<h2 id="KBO-data"><a href="#KBO-data" class="headerlink" title="KBO-data"></a>KBO-data</h2><p>KBO-data는 KBO 공식 사이트에서 경기 정보들을 스크래핑하는 패키지이다. 해당 패키지는 <a target="_blank" rel="noopener" href="https://www.koreabaseball.com/Default.aspx">KBO 공식 사이트</a>에 있는 데이터들을 가져와 사용하기 편한 구조로 변형해준다. 패키지에 대한 자세한 설명은 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/kbo-data">깃허브</a>의 README에서 확인할 수 있다.</p>
+<h2 id="kbo-data">KBO-data</h2>
+<p>KBO-data는 KBO 공식 사이트에서 경기 정보들을 스크래핑하는 패키지이다. 해당 패키지는 <a target="_blank" rel="noopener" href="https://www.koreabaseball.com/Default.aspx">KBO 공식 사이트</a>에 있는 데이터들을 가져와 사용하기 편한 구조로 변형해준다. 패키지에 대한 자세한 설명은 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/kbo-data">깃허브</a>의 README에서 확인할 수 있다.</p>
 <p>먼저 패키지를 사용하기 위해서는 설치를 해주어야 한다. 아래의 코드로 설치를 진행하자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install kbodata<br></code></pre></td></tr></table></figure>
 <p>설치 후 파이썬 환경에서 임포트 하면 바로 사용할 수 있다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> kbodata<br></code></pre></td></tr></table></figure>
 <p>패키지는 크게 3가지로 나누어진다.</p>
-<h3 id="1-경기-스케쥴-가져오기"><a href="#1-경기-스케쥴-가져오기" class="headerlink" title="1. 경기 스케쥴 가져오기"></a>1. 경기 스케쥴 가져오기</h3><p>먼저 요청한 날짜에 맞춰서 스케쥴을 가져와야 한다. 스케쥴은 특정 날짜, 특정 월, 특정 년도를 선택하여 받을 수 있디. 스케쥴을 가져오는 함수는 아래와 같다.</p>
+<h3 id="경기-스케쥴-가져오기">1. 경기 스케쥴 가져오기</h3>
+<p>먼저 요청한 날짜에 맞춰서 스케쥴을 가져와야 한다. 스케쥴은 특정 날짜, 특정 월, 특정 년도를 선택하여 받을 수 있디. 스케쥴을 가져오는 함수는 아래와 같다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 2021년 4월 20일의 KBO 경기 스케쥴을 가져온다.</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>day = kbodata.get_daily_schedule(<span class="hljs-number">2021</span>,<span class="hljs-number">4</span>,<span class="hljs-number">20</span>,<span class="hljs-string">&#x27;chromedriver_path&#x27;</span>)<br><br><span class="hljs-comment"># 2021년 4월 KBO 경기 스케쥴을 가져온다.</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>month = kbodata.get_monthly_schedule(<span class="hljs-number">2021</span>,<span class="hljs-number">4</span>,<span class="hljs-string">&#x27;chromedriver_path&#x27;</span>)<br><br><span class="hljs-comment"># 2021년 KBO 경기 스케쥴을 가져온다.</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>year = kbodata.get_yearly_schedule(<span class="hljs-number">2021</span>,<span class="hljs-string">&#x27;chromedriver_path&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <p>이렇게 스케쥴을 받으면 Pandas의 DataFrame 형태로 결과가 반환된다. 결과는 아래와 같다.</p>
-<p><img src="/images/150.png" srcset="/img/loading.gif" lazyload alt="KBO"></p>
-<h3 id="2-경기-자료-가져오기"><a href="#2-경기-자료-가져오기" class="headerlink" title="2. 경기 자료 가져오기"></a>2. 경기 자료 가져오기</h3><p>경기 결과를 받는 함수는 스케쥴 데이터에 있는 날짜와 게임 ID를 바탕으로 경기 결과들을 가져오기 때문에 스케쥴 데이터가 필요하다. 따라서 원하는 기간의 스케쥴들을 먼저 가져와야 한다. 그다음 아래의 함수를 사용하여 경기 데이터를 가져온다. 경기 데이터는 크게 스코어보드, 경기 정보, 타자 정보, 투수 정보를 가져온다.</p>
+<figure>
+<img src="/images/150.png" srcset="/img/loading.gif" lazyload alt="KBO" /><figcaption aria-hidden="true">KBO</figcaption>
+</figure>
+<h3 id="경기-자료-가져오기">2. 경기 자료 가져오기</h3>
+<p>경기 결과를 받는 함수는 스케쥴 데이터에 있는 날짜와 게임 ID를 바탕으로 경기 결과들을 가져오기 때문에 스케쥴 데이터가 필요하다. 따라서 원하는 기간의 스케쥴들을 먼저 가져와야 한다. 그다음 아래의 함수를 사용하여 경기 데이터를 가져온다. 경기 데이터는 크게 스코어보드, 경기 정보, 타자 정보, 투수 정보를 가져온다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 2021년 4월 20일의 KBO 경기 정보를 가져온다.</span><br>day_data = kbodata.get_game_data(day,<span class="hljs-string">&#x27;chromedriver_path&#x27;</span>)<br><br><span class="hljs-comment"># 2021년 4월 KBO 경기 정보를 가져온다.</span><br>month_data = kbodata.get_game_data(month,<span class="hljs-string">&#x27;chromedriver_path&#x27;</span>)<br><br><span class="hljs-comment"># 2021년 KBO 경기 정보를 가져온다.</span><br>year_data = kbodata.get_game_data(year,<span class="hljs-string">&#x27;chromedriver_path&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <p>경기 정보를 가져오면 아래 구조의 JSON 형태로 반환된다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">&#123; <span class="hljs-built_in">id</span>: date_gameid,<br>contents: &#123;<br>  <span class="hljs-string">&#x27;scoreboard&#x27;</span>: []<br>  <span class="hljs-string">&#x27;ETC_info&#x27;</span>: &#123;&#125;<br>  <span class="hljs-string">&#x27;away_batter&#x27;</span>: []<br>  <span class="hljs-string">&#x27;home_batter&#x27;</span>: []<br>  <span class="hljs-string">&#x27;away_pitcher&#x27;</span>: []<br>  <span class="hljs-string">&#x27;home_pitcher&#x27;</span>: []<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="3-경기-데이터-타입-변형하기"><a href="#3-경기-데이터-타입-변형하기" class="headerlink" title="3. 경기 데이터 타입 변형하기"></a>3. 경기 데이터 타입 변형하기</h3><p>가져온 경기 자료는 복잡한 구조로 구성되어 있다. 따라서 좀 더 사용하기 편한 형태로 변환하는 함수를 구현했다. 변환하는 함수는 스코어보드, 타자, 투수 자료 총 3개로 정리하며, 변환하는 파일 포맷은 아래와 같다.</p>
+<h3 id="경기-데이터-타입-변형하기">3. 경기 데이터 타입 변형하기</h3>
+<p>가져온 경기 자료는 복잡한 구조로 구성되어 있다. 따라서 좀 더 사용하기 편한 형태로 변환하는 함수를 구현했다. 변환하는 함수는 스코어보드, 타자, 투수 자료 총 3개로 정리하며, 변환하는 파일 포맷은 아래와 같다.</p>
 <ul>
 <li>DataFrame</li>
 <li>Dict</li>
 </ul>
 <p>또한 각각 함수의 사용법은 다음과 같다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 팀 경기 정보만을 정리하여 DataFrame으로 변환한다.</span><br>scoreboard = kbodata.scoreboard_to_DataFrame(day_data)<br><span class="hljs-comment"># 타자 정보만을 정리하여 DataFrame으로 변환한다.</span><br>batter = kbodata.batter_to_DataFrame(day_data)<br><span class="hljs-comment"># 투수 정보만을 정리하여 DataFrame으로 변환한다.</span><br>pitcher = kbodata.pitcher_to_DataFrame(day_data)<br><br><span class="hljs-comment"># 팀 경기 정보만을 정리하여 Dict으로 변환한다.</span><br>scoreboard = kbodata.scoreboard_to_Dict(day_data)<br><span class="hljs-comment"># 타자 정보만을 정리하여 Dict으로 변환한다.</span><br>batter = kbodata.batter_to_Dict(day_data)<br><span class="hljs-comment"># 투수 정보만을 정리하여 Dict으로 변환한다.</span><br>pitcher = kbodata.pitcher_to_Dict(day_data)<br></code></pre></td></tr></table></figure>
-<h2 id="패키지-작업"><a href="#패키지-작업" class="headerlink" title="패키지 작업"></a>패키지 작업</h2><p>이 프로젝트에서는 KBO 데이터를 스크래핑하는 패키지를 만들어 파이썬 패키지 사이트인 <a target="_blank" rel="noopener" href="https://pypi.org">PyPI</a>에 업로드할 예정이다. PyPI에 업로드된 패키지는 python 패키지 관리 시스템인 Pip로 바로 다운받을 수 있다. 좀 더 편리한 패키지 작업을 위해서 Poetry를 사용하여 진행할 예정이다. Poetry에 대한 자세한 내용은 <a target="_blank" rel="noopener" href="https://python-poetry.org">이 사이트</a>에서 확인할 수 있다. 가능하다면 Poetry에 대한 글도 작성할 예정이다.</p>
+<h2 id="패키지-작업">패키지 작업</h2>
+<p>이 프로젝트에서는 KBO 데이터를 스크래핑하는 패키지를 만들어 파이썬 패키지 사이트인 <a target="_blank" rel="noopener" href="https://pypi.org">PyPI</a>에 업로드할 예정이다. PyPI에 업로드된 패키지는 python 패키지 관리 시스템인 Pip로 바로 다운받을 수 있다. 좀 더 편리한 패키지 작업을 위해서 Poetry를 사용하여 진행할 예정이다. Poetry에 대한 자세한 내용은 <a target="_blank" rel="noopener" href="https://python-poetry.org">이 사이트</a>에서 확인할 수 있다. 가능하다면 Poetry에 대한 글도 작성할 예정이다.</p>
 
                 
               </div>
@@ -426,9 +434,9 @@
       
         <a href="/tags/package/" class="print-no-link">#package</a>
       
-        <a href="/tags/%ED%8C%A8%ED%82%A4%EC%A7%80/" class="print-no-link">#패키지</a>
-      
         <a href="/tags/pypi/" class="print-no-link">#pypi</a>
+      
+        <a href="/tags/%ED%8C%A8%ED%82%A4%EC%A7%80/" class="print-no-link">#패키지</a>
       
         <a href="/tags/%ED%95%9C%EA%B5%AD%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC/" class="print-no-link">#한국프로야구</a>
       

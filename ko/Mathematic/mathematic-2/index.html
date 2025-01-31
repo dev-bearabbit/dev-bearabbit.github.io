@@ -344,55 +344,52 @@
             
               <div class="markdown-body">
                 
-                <p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="벡터-공간-Vector-Spaces"><a href="#벡터-공간-Vector-Spaces" class="headerlink" title="벡터 공간 (Vector Spaces)"></a>벡터 공간 (Vector Spaces)</h2><p>이전 글에서도 봤듯이, 선형 방정식은 매트릭스-벡터 형태로도 표현될 수 있다. 이번 글에서는 벡터들이 존재하는 벡터 공간에 대해서 알아볼 것이다.</p>
+                <p>글을 시작하기에 앞서 해당 글은 Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong의 저서인 mathematics for machine learning을 바탕으로 요약 및 정리한 글임을 알려드립니다. <span id="more"></span></p>
+<hr />
+<h2 id="벡터-공간-vector-spaces">벡터 공간 (Vector Spaces)</h2>
+<p>이전 글에서도 봤듯이, 선형 방정식은 매트릭스-벡터 형태로도 표현될 수 있다. 이번 글에서는 벡터들이 존재하는 벡터 공간에 대해서 알아볼 것이다.</p>
 <p>시작하기에 앞서 벡터의 특징을 간단하게 정리해보자. 벡터는 서로 더할 수 있으며, 스칼라를 곱할 수 있다. 또한 사칙연산 이후 결과도 벡터로 도출된다. 이런 벡터들의 연산이 가능한 공간을 벡터 공간이라고 한다. 기본 지식은 이 정도면 충분하다. 지금부터는 요소들(elements)의 집합인 군(group)의 개념과 요소들의 구조를 저장하는 작업에 대해서 살펴볼 것이다.</p>
-<h3 id="군-Groups"><a href="#군-Groups" class="headerlink" title="군 (Groups)"></a>군 (Groups)</h3><p>군(group)은 컴퓨터 과학에서 중요한 역할을 한다. 집합 작업에 대한 프레임 워크를 제공할 뿐만 아니라 암호기법, 코딩 이론, 그래픽에서도 많이 사용된다.</p>
-<p>집합 $\mathcal G$와 연산자 $\otimes$를 사용하여 생각해보자. $\mathcal G \times \mathcal G \rightarrow \mathcal G$의 수식은 $\mathcal G$로 정의된다. 이와 같이 아래의 조건들을 모두 만족한다면 $G := (\mathcal G, \otimes)$를 군(group)이라고 정의한다.</p>
+<h3 id="군-groups">군 (Groups)</h3>
+<p>군(group)은 컴퓨터 과학에서 중요한 역할을 한다. 집합 작업에 대한 프레임 워크를 제공할 뿐만 아니라 암호기법, 코딩 이론, 그래픽에서도 많이 사용된다.</p>
+<p>집합 <span class="math inline">\(\mathcal G\)</span>와 연산자 <span class="math inline">\(\otimes\)</span>를 사용하여 생각해보자. <span class="math inline">\(\mathcal G \times \mathcal G \rightarrow \mathcal G\)</span>의 수식은 <span class="math inline">\(\mathcal G\)</span>로 정의된다. 이와 같이 아래의 조건들을 모두 만족한다면 <span class="math inline">\(G := (\mathcal G, \otimes)\)</span>를 군(group)이라고 정의한다.</p>
 <ul>
-<li><p>집합 $\mathcal G$는 연산자 $\otimes$에 닫혀 있다.<br>: $\forall x, y \in \mathcal G : x \otimes y \in \mathcal G$</p>
-</li>
-<li><p>결합 법칙 : $\forall x,y,z \in \mathcal G: (x\otimes y)\otimes z = x\otimes (y\otimes z)$</p>
-</li>
-<li><p>항등원(neutral element): $\forall x \in \mathcal G \exists e \in \mathcal G: x \otimes e = x \ and \ e \otimes x = x$</p>
-</li>
-<li><p>역원(inverse element): $\forall x \in \mathcal G \exists y \in \mathcal G: x \otimes y = e \ and \ y \otimes x = e$</p>
-</li>
+<li><dl>
+<dt>집합 <span class="math inline">\(\mathcal G\)</span>는 연산자 <span class="math inline">\(\otimes\)</span>에 닫혀 있다.</dt>
+<dd><span class="math inline">\(\forall x, y \in \mathcal G : x \otimes y \in \mathcal G\)</span>
+</dd>
+</dl></li>
+<li><p>결합 법칙 : <span class="math inline">\(\forall x,y,z \in \mathcal G: (x\otimes y)\otimes z = x\otimes (y\otimes z)\)</span></p></li>
+<li><p>항등원(neutral element): <span class="math inline">\(\forall x \in \mathcal G \exists e \in \mathcal G: x \otimes e = x \ and \ e \otimes x = x\)</span></p></li>
+<li><p>역원(inverse element): <span class="math inline">\(\forall x \in \mathcal G \exists y \in \mathcal G: x \otimes y = e \ and \ y \otimes x = e\)</span></p></li>
 </ul>
-<p><strong>Note</strong><br>역원은 연산자 곱($\otimes$)에 대해서만 정의되었기에 $\frac{1}{x}$가 필요하지는 않다. 또한 만약 ‘교환 법칙(commutative)’인 $\forall x,y \in \mathcal G : x \otimes y = y \otimes x$를 추가적으로 포함한다면, $G := (\mathcal G, \otimes)$은 ‘아벨군(isanAbelian group)’이라고 한다.</p>
+<p><strong>Note</strong> 역원은 연산자 곱(<span class="math inline">\(\otimes\)</span>)에 대해서만 정의되었기에 <span class="math inline">\(\frac{1}{x}\)</span>가 필요하지는 않다. 또한 만약 '교환 법칙(commutative)'인 <span class="math inline">\(\forall x,y \in \mathcal G : x \otimes y = y \otimes x\)</span>를 추가적으로 포함한다면, <span class="math inline">\(G := (\mathcal G, \otimes)\)</span>은 '아벨군(isanAbelian group)'이라고 한다.</p>
 <p>지금까지 군의 정의에 대해서 살펴보았다. 이제 아래의 예시들이 그룹인지 아닌지 구분해보자.</p>
-<p>$\mathbb{Z}$ : 정수, $\mathbb{N}$ : 자연수, $\mathbb{R}$ : 실수</p>
+<p><span class="math inline">\(\mathbb{Z}\)</span> : 정수, <span class="math inline">\(\mathbb{N}\)</span> : 자연수, <span class="math inline">\(\mathbb{R}\)</span> : 실수</p>
 <ul>
-<li><p>$(\mathbb{Z}, +)$는 그룹이다. $\rightarrow$ 모든 정수의 합은 정수이다.</p>
-</li>
-<li><p>$(\mathbb{N}_0, +)$은 그룹이 아니다. $\rightarrow$ 항등원 0은 포함하지만 역원이 포함되지 않았다.</p>
-</li>
-<li><p>$(\mathbb{Z},\cdot)$은 그룹이 아니다. $\rightarrow$ 항등원 1은 포함하지만 결과값 1을 반환하는 역원이 포함되지 않았다.</p>
-</li>
-<li><p>$(\mathbb{R},\cdot)$은 그룹이 아니다. $\rightarrow$ 실수 중 하나인 0은 역원을 포함하지 않는다.</p>
-</li>
-<li><p>$(\mathbb{R}$ \ {0}, $\cdot)$은 아벨군이다. $\rightarrow$ 0을 제외한 실수는 아벨군의 모든 요건을 충족한다.</p>
-</li>
-<li><p>$(\mathbb{R}^n, +),(\mathbb{Z}^n, +),n \in \mathbb{N}$은 $+$가 성분별로 정의된 경우에 아벨군이다.</p>
-</li>
-<li><p>$(\mathbb{R}^{m \times n},+)$, $m \times n$ 행렬은 성분별로 더했을 때 아벨군이다.</p>
-</li>
-<li><p>$(\mathbb{R}^{n\times n}, \cdot)$인 경우를 예시를 통해 확인하자.<br>$n \times n$ 행렬의 곱은 다음 식으로 정의된다.</p>
-<script type="math/tex; mode=display">c_{ij} = \sum_{l=1}^n a_{il}b_{lj}, \qquad i = 1,\dots,n,\quad j = 1,\dots,n.</script><p>위 식에 따르면, $n \times n$ 행렬의 곱은 $n \times n$ 행렬의 형태이기에 곱셈에 닫혀 있고 결합 법칙도 성립한다. 또한 항등 행렬인 $I_n$ 또한 곱셈 결과가 $n \times n$ 행렬을 만족하기에 성립한다. 마지막으로 해당 행렬이 가역행렬이라서 역행렬이 존재한다면, 그 역행렬 또한 $n \times n$ 행렬형태이다. 위 조건을 모두 만족하기에 $(\mathbb{R}^{n\times n}, \cdot)$는 군이라고 할 수 있으며, 이를 ‘일반선형군(general linear group)’이라고 부른다.</p>
-</li>
+<li><p><span class="math inline">\((\mathbb{Z}, +)\)</span>는 그룹이다. <span class="math inline">\(\rightarrow\)</span> 모든 정수의 합은 정수이다.</p></li>
+<li><p><span class="math inline">\((\mathbb{N}_0, +)\)</span>은 그룹이 아니다. <span class="math inline">\(\rightarrow\)</span> 항등원 0은 포함하지만 역원이 포함되지 않았다.</p></li>
+<li><p><span class="math inline">\((\mathbb{Z},\cdot)\)</span>은 그룹이 아니다. <span class="math inline">\(\rightarrow\)</span> 항등원 1은 포함하지만 결과값 1을 반환하는 역원이 포함되지 않았다.</p></li>
+<li><p><span class="math inline">\((\mathbb{R},\cdot)\)</span>은 그룹이 아니다. <span class="math inline">\(\rightarrow\)</span> 실수 중 하나인 0은 역원을 포함하지 않는다.</p></li>
+<li><p><span class="math inline">\((\mathbb{R}\)</span>  {0}, <span class="math inline">\(\cdot)\)</span>은 아벨군이다. <span class="math inline">\(\rightarrow\)</span> 0을 제외한 실수는 아벨군의 모든 요건을 충족한다.</p></li>
+<li><p><span class="math inline">\((\mathbb{R}^n, +),(\mathbb{Z}^n, +),n \in \mathbb{N}\)</span>은 <span class="math inline">\(+\)</span>가 성분별로 정의된 경우에 아벨군이다.</p></li>
+<li><p><span class="math inline">\((\mathbb{R}^{m \times n},+)\)</span>, <span class="math inline">\(m \times n\)</span> 행렬은 성분별로 더했을 때 아벨군이다.</p></li>
+<li><p><span class="math inline">\((\mathbb{R}^{n\times n}, \cdot)\)</span>인 경우를 예시를 통해 확인하자. <span class="math inline">\(n \times n\)</span> 행렬의 곱은 다음 식으로 정의된다.</p></li>
 </ul>
-<p>일반선형군(general linear group)은 가역행렬 A가 $\mathbb{R}^{n \times n}$에 포함될 때, 행렬곱셈에 대한 군을 의미하며, 기호는 $GL(n,\mathbb{R})$을 사용한다. 행렬곱은 교환법칙이 성립하지 않기 때문에 일반선형군은 아벨군이 아니라는 점을 기억하자.</p>
-<h3 id="벡터-공간-Vector-spaces"><a href="#벡터-공간-Vector-spaces" class="headerlink" title="벡터 공간 (Vector spaces)"></a>벡터 공간 (Vector spaces)</h3><p>이전까지는 집합 $\mathcal G$와 $\mathcal G$ 요소끼리의 내부 연산에 대해서 알아보았다. 지금부터는 집합 ‘내부 연산자(inner operation)’와 집합끼리의 ‘외부 연산자(outer operation)’ 모두 살펴볼 것이다.</p>
-<p>먼저 벡터 $x \in \mathcal G$가 내부 연산자로 $+$이 사용하고, 외부 연산자로 $\cdot$을 사용하여 $\lambda \in \mathbb{R}$과 곱한다고 가정하자. 이때 우리는 내부 연산을 덧셈의 형태로, 또 외부 연산을 스케일링(스칼라 곱)으로 생각할 수 있다. 각 연산들은 서로의 결과에 어떠한 영향도 주지않는다는 점을 기억하자.</p>
-<p>실제 값의 벡터 공간 $V = (V,+,\cdot)$은 집합 $V$와 두 연산자를 의미한다.</p>
-<script type="math/tex; mode=display">+: V \times V \rightarrow V</script><script type="math/tex; mode=display">\cdot : \mathbb{R} \times V \rightarrow V</script><ul>
-<li>$(V,+)$은 아벨군이다. (교환 법칙 성립)</li>
-<li>분배 법칙:<br>$\forall \lambda \in \mathbb{R}, x,y \in V: \lambda\cdot(x+y) = \lambda\cdot x + \lambda\cdot y$<br>$\forall\lambda,\psi \in \mathbb{R}, x \in V (\lambda + \psi)\cdot x = \lambda\cdot x + \psi\cdot x$</li>
-<li>결합 법칙 (외부 연산자): $\forall\lambda \in \mathbb{R}, x \in V: \lambda\cdot(\psi\cdot x) = (\lambda\psi)\cdot x$</li>
-<li>외부연산자에 대해서는 항등원이 존재한다: $\forall x \in V: 1 \cdot x = x$</li>
+<p><span class="math display">\[ c_{ij} = \sum_{l=1}^n a_{il}b_{lj}, \qquad i = 1,\dots,n,\quad j = 1,\dots,n.\]</span></p>
+<p>위 식에 따르면, <span class="math inline">\(n \times n\)</span> 행렬의 곱은 <span class="math inline">\(n \times n\)</span> 행렬의 형태이기에 곱셈에 닫혀 있고 결합 법칙도 성립한다. 또한 항등 행렬인 <span class="math inline">\(I_n\)</span> 또한 곱셈 결과가 <span class="math inline">\(n \times n\)</span> 행렬을 만족하기에 성립한다. 마지막으로 해당 행렬이 가역행렬이라서 역행렬이 존재한다면, 그 역행렬 또한 <span class="math inline">\(n \times n\)</span> 행렬형태이다. 위 조건을 모두 만족하기에 <span class="math inline">\((\mathbb{R}^{n\times n}, \cdot)\)</span>는 군이라고 할 수 있으며, 이를 '일반선형군(general linear group)'이라고 부른다.</p>
+<p>일반선형군(general linear group)은 가역행렬 A가 <span class="math inline">\(\mathbb{R}^{n \times n}\)</span>에 포함될 때, 행렬곱셈에 대한 군을 의미하며, 기호는 <span class="math inline">\(GL(n,\mathbb{R})\)</span>을 사용한다. 행렬곱은 교환법칙이 성립하지 않기 때문에 일반선형군은 아벨군이 아니라는 점을 기억하자.</p>
+<h3 id="벡터-공간-vector-spaces-1">벡터 공간 (Vector spaces)</h3>
+<p>이전까지는 집합 <span class="math inline">\(\mathcal G\)</span>와 <span class="math inline">\(\mathcal G\)</span> 요소끼리의 내부 연산에 대해서 알아보았다. 지금부터는 집합 '내부 연산자(inner operation)'와 집합끼리의 '외부 연산자(outer operation)' 모두 살펴볼 것이다.</p>
+<p>먼저 벡터 <span class="math inline">\(x \in \mathcal G\)</span>가 내부 연산자로 <span class="math inline">\(+\)</span>이 사용하고, 외부 연산자로 <span class="math inline">\(\cdot\)</span>을 사용하여 <span class="math inline">\(\lambda \in \mathbb{R}\)</span>과 곱한다고 가정하자. 이때 우리는 내부 연산을 덧셈의 형태로, 또 외부 연산을 스케일링(스칼라 곱)으로 생각할 수 있다. 각 연산들은 서로의 결과에 어떠한 영향도 주지않는다는 점을 기억하자.</p>
+<p>실제 값의 벡터 공간 <span class="math inline">\(V = (V,+,\cdot)\)</span>은 집합 <span class="math inline">\(V\)</span>와 두 연산자를 의미한다.</p>
+<p><span class="math display">\[+: V \times V \rightarrow V\]</span> <span class="math display">\[\cdot : \mathbb{R} \times V \rightarrow V\]</span></p>
+<ul>
+<li><span class="math inline">\((V,+)\)</span>은 아벨군이다. (교환 법칙 성립)</li>
+<li>분배 법칙: <span class="math inline">\(\forall \lambda \in \mathbb{R}, x,y \in V: \lambda\cdot(x+y) = \lambda\cdot x + \lambda\cdot y\)</span> <span class="math inline">\(\forall\lambda,\psi \in \mathbb{R}, x \in V (\lambda + \psi)\cdot x = \lambda\cdot x + \psi\cdot x\)</span></li>
+<li>결합 법칙 (외부 연산자): <span class="math inline">\(\forall\lambda \in \mathbb{R}, x \in V: \lambda\cdot(\psi\cdot x) = (\lambda\psi)\cdot x\)</span></li>
+<li>외부연산자에 대해서는 항등원이 존재한다: <span class="math inline">\(\forall x \in V: 1 \cdot x = x\)</span></li>
 </ul>
-<p>집합 $V$에 속하는 요소인 $x$는 벡터이다. 따라서 $(V,+)$의 항등원 또한 영벡터 $[0,\dots,0^T ]$이다.</p>
+<p>집합 <span class="math inline">\(V\)</span>에 속하는 요소인 <span class="math inline">\(x\)</span>는 벡터이다. 따라서 <span class="math inline">\((V,+)\)</span>의 항등원 또한 영벡터 <span class="math inline">\([0,\dots,0^T ]\)</span>이다.</p>
 
                 
               </div>

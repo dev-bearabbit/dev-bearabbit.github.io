@@ -347,12 +347,18 @@
                 
                 <p>리눅스에 대해 간단하게 설명한 후, 리눅스의 기초적인 명령어를 정리합니다.</p>
 <span id="more"></span>
-<h2 id="Linux란"><a href="#Linux란" class="headerlink" title="Linux란"></a>Linux란</h2><p>리눅스는 운영체제(OS, Operating System) 중 하나로 보통 서버에서 많이 사용된다. 운영체제의 원조라고 할 수 있는 유닉스를 본따 구현되었으며, GNU에 속해있기에 모든 소스가 오픈되어 있다. (여기서 GNU란 소스를 모두 공개해야 하는 규약인데, 어떤 프로그램을 만들 때 GNU에 속한 소프트웨어를 사용한다면 해당 코드도 모두 공개헤야 한다.)</p>
-<h2 id="Linux-종류"><a href="#Linux-종류" class="headerlink" title="Linux 종류"></a>Linux 종류</h2><p>오픈소스인 리눅스는 누구나 코드를 수정하고 배포할 수 있기에 수많은 버전들이 존재한다. 그 중에서 보편적으로 가장 많이 쓰이는 종류들만 살펴보자.</p>
-<h3 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h3><p>센토스(CentOS)는 레드햇 계열에 속하는 리눅스이다. 레드햇 계열이란 레드햇이라는 회사에서 배포한 리눅스들을 통칭하는 말인데, 센토스는 레드햇에서 제공한 오픈소스를 그대로 가져와 브랜드만 제거한 형태라고 볼 수 있다. 이런 센토스 계열은 명령어 yum을 사용하여 내부 패키지들을 관리한다.</p>
-<h3 id="Debian"><a href="#Debian" class="headerlink" title="Debian"></a>Debian</h3><p>데비안(Debian)은 온라인 커뮤니티에서 레드햇보다 먼저 배포한 리눅스이다. 해당 리눅스를 기반으로 수정된 리눅스들을 모두 데비안 계열이라고 통칭한다. 초반에는 레드햇 계열에 비해 내장 유틸리티나 사후 관리 등이 부족하여 외면받았었지만 최근에는 지속적인 업데이트 등으로 레드햇 계열과 동일한 성능을 보여 인기를 얻고 있다. 이런 데비안 계열은 apt를 사용하여 내부 패키지들을 관리한다.</p>
-<h3 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h3><p>우분투(Ubuntu)는 데비안 계열 중 하나로 데스크탑 환경을 지원한다. 위에서 설명한 리눅스들은 터미널만 제공되는 서버용이라면, 우분투는 테스크탑 UI를 지원하는 등 클라이언트용 운영체제라고도 볼 수 있다. 서버용 우분투도 있긴 하지만 대부분 개인용 데스크탑에서 많이 사용된다. 우분투 또한 데비안 계열이기에 apt로 패키지들을 관리한다.</p>
-<h2 id="간단한-용어-정리"><a href="#간단한-용어-정리" class="headerlink" title="간단한 용어 정리"></a>간단한 용어 정리</h2><ul>
+<h2 id="linux란">Linux란</h2>
+<p>리눅스는 운영체제(OS, Operating System) 중 하나로 보통 서버에서 많이 사용된다. 운영체제의 원조라고 할 수 있는 유닉스를 본따 구현되었으며, GNU에 속해있기에 모든 소스가 오픈되어 있다. (여기서 GNU란 소스를 모두 공개해야 하는 규약인데, 어떤 프로그램을 만들 때 GNU에 속한 소프트웨어를 사용한다면 해당 코드도 모두 공개헤야 한다.)</p>
+<h2 id="linux-종류">Linux 종류</h2>
+<p>오픈소스인 리눅스는 누구나 코드를 수정하고 배포할 수 있기에 수많은 버전들이 존재한다. 그 중에서 보편적으로 가장 많이 쓰이는 종류들만 살펴보자.</p>
+<h3 id="centos">CentOS</h3>
+<p>센토스(CentOS)는 레드햇 계열에 속하는 리눅스이다. 레드햇 계열이란 레드햇이라는 회사에서 배포한 리눅스들을 통칭하는 말인데, 센토스는 레드햇에서 제공한 오픈소스를 그대로 가져와 브랜드만 제거한 형태라고 볼 수 있다. 이런 센토스 계열은 명령어 yum을 사용하여 내부 패키지들을 관리한다.</p>
+<h3 id="debian">Debian</h3>
+<p>데비안(Debian)은 온라인 커뮤니티에서 레드햇보다 먼저 배포한 리눅스이다. 해당 리눅스를 기반으로 수정된 리눅스들을 모두 데비안 계열이라고 통칭한다. 초반에는 레드햇 계열에 비해 내장 유틸리티나 사후 관리 등이 부족하여 외면받았었지만 최근에는 지속적인 업데이트 등으로 레드햇 계열과 동일한 성능을 보여 인기를 얻고 있다. 이런 데비안 계열은 apt를 사용하여 내부 패키지들을 관리한다.</p>
+<h3 id="ubuntu">Ubuntu</h3>
+<p>우분투(Ubuntu)는 데비안 계열 중 하나로 데스크탑 환경을 지원한다. 위에서 설명한 리눅스들은 터미널만 제공되는 서버용이라면, 우분투는 테스크탑 UI를 지원하는 등 클라이언트용 운영체제라고도 볼 수 있다. 서버용 우분투도 있긴 하지만 대부분 개인용 데스크탑에서 많이 사용된다. 우분투 또한 데비안 계열이기에 apt로 패키지들을 관리한다.</p>
+<h2 id="간단한-용어-정리">간단한 용어 정리</h2>
+<ul>
 <li>커널(kernel): 하드웨어를 직접적으로 통제하는 프로그램이며, 운영체제의 핵심이다.</li>
 <li>쉘(shell): 사용자가 입력한 명령어를 기계어로 변환하여 커널에 전달하는 소프트웨어이다.</li>
 <li>콘솔(console): 서버 장치에 물리적으로 연결되어 직접 명령어를 입출력할 수 있는 장치이다.</li>
@@ -360,33 +366,60 @@
 <li>절대경로(absolute path): 어떤 디렉토리나 파일의 경로를 root부터 전부 나타낸 경로</li>
 <li>상대경로(relative path): 현재 위치를 바탕으로 나머지만 나타낸 경로</li>
 </ul>
-<h2 id="Linux-기초-명령어"><a href="#Linux-기초-명령어" class="headerlink" title="Linux 기초 명령어"></a>Linux 기초 명령어</h2><p>리눅스에서 많이 사용되는 기초 명령어를 정리하였다.</p>
-<h3 id="echo-코드"><a href="#echo-코드" class="headerlink" title="echo (코드)"></a>echo (코드)</h3><p>코드에 들어가는 것들을 프린트 한다. 예를 들어 코드에 $HOME을 넣는다면 홈 디렉토리 경로를 프린트 한다.</p>
-<h3 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h3><p>해당 운영체제의 작동시간이나 사용자 수 등을 보여준다. 여기서 사용자란 터미널 오픈 개수를 의미한다.</p>
-<h3 id="tpye-명령어"><a href="#tpye-명령어" class="headerlink" title="tpye (명령어)"></a>tpye (명령어)</h3><p>어떤 명령어가 내장된 것인지 외부 디렉토리에 저장된 것인지 확인할 수 있다. 내장된 명령어는 echo, cd, pwd, set, mkdir 등이며, 외장된 명령어는 mv, date, uptime, cp 등이 있다.</p>
-<h3 id="mkdir-디렉토리-이름"><a href="#mkdir-디렉토리-이름" class="headerlink" title="mkdir (디렉토리 이름)"></a>mkdir (디렉토리 이름)</h3><p>make directory. 디렉토리를 생성하는 명령어이다. 해당 명령어 뒤에 디렉토리 이름을 여러 개 넣어 한번에 여러 개의 디렉토리를 생성할 수 있다.</p>
-<h3 id="mkdir-p-디렉토리-경로"><a href="#mkdir-p-디렉토리-경로" class="headerlink" title="mkdir -p (디렉토리 경로)"></a>mkdir -p (디렉토리 경로)</h3><p>mkdir에 옵션 -p가 붙으면 상하위 디렉토리를 한번에 생성할 수 있다. 예를 들어 home-user(생성필요)-data(생성필요)의 상황이라면 <code>mkdir -p /home/user/data</code>를 입력하여 user과 data를 한번에 생성할 수 있는 것이다.</p>
-<h3 id="cd-디렉토리-경로"><a href="#cd-디렉토리-경로" class="headerlink" title="cd (디렉토리 경로)"></a>cd (디렉토리 경로)</h3><p>change directory. 디렉토리 변경하는 명령어이다.</p>
-<h3 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h3><p>print present working directory. 현재 위치한 디렉토리 경로를 프린트 한다.</p>
-<h3 id="pushd-디렉토리-경로"><a href="#pushd-디렉토리-경로" class="headerlink" title="pushd (디렉토리 경로)"></a>pushd (디렉토리 경로)</h3><p>입력한 디렉토리를 스택 구조로 메모리에 저장한 후 해당 디렉토리로 이동한다. <code>dirs</code>를 입력하면 저장된 스택을 확인할 수 있다.</p>
-<h3 id="popd"><a href="#popd" class="headerlink" title="popd"></a>popd</h3><p>명령어 pushd로 저장했던 디텍토리 경로로 이동한다. 스택 구조이기에 최근에 저장했던 디렉토리로 이동한다. 웹페이지에서 뒤로가기와 같은 기능이라고 볼 수 있다.</p>
-<h3 id="mv-현재-경로-이동할-경로"><a href="#mv-현재-경로-이동할-경로" class="headerlink" title="mv (현재 경로) (이동할 경로)"></a>mv (현재 경로) (이동할 경로)</h3><p>파일이나 디렉토리를 이동할 때 사용한다. 참고로 이름을 변경할 때도 사용할 수 있다. 예를 들어 bird를 birds로 변경해야 한다면 <code>mv /home/user/bird /home/user/birds</code>를 입력하면 된다.</p>
-<h3 id="cp-현재-경로-이동할-경로"><a href="#cp-현재-경로-이동할-경로" class="headerlink" title="cp (현재 경로) (이동할 경로)"></a>cp (현재 경로) (이동할 경로)</h3><p>copy file. 현재 경로의 파일을 복사하여 이동할 경로에 붙여 넣는다.</p>
-<h3 id="cp-r-현재-경로-이동할-경로"><a href="#cp-r-현재-경로-이동할-경로" class="headerlink" title="cp -r (현재 경로) (이동할 경로)"></a>cp -r (현재 경로) (이동할 경로)</h3><p>copy directory. 옵션 <code>-r</code>이 붙어 디렉토리를 복사하여 붙여 넣는다.</p>
-<h3 id="rm-파일-경로"><a href="#rm-파일-경로" class="headerlink" title="rm (파일 경로)"></a>rm (파일 경로)</h3><p>remove의 약자. 파일이나 빈 디렉토리를 삭제한다. 내용물이 든 디렉토리는 삭제가 안된다.</p>
-<h3 id="rm-r-경로"><a href="#rm-r-경로" class="headerlink" title="rm -r (경로)"></a>rm -r (경로)</h3><p>옵션 <code>-r</code>이 추가되어 내용물이 든 디렉토리도 삭제할 수 있다.</p>
-<h3 id="touch-파일-경로"><a href="#touch-파일-경로" class="headerlink" title="touch (파일 경로)"></a>touch (파일 경로)</h3><p>입력한 경로에 해당 파일을 생성해준다. 예를 들어 <code>/home/user</code> 디렉토리에 <code>id.txt</code>라는 파일을 만들어야 한다면 <code>touch /home/user/id.txt</code>로 입력하면 된다.</p>
-<h3 id="cat-파일-경로"><a href="#cat-파일-경로" class="headerlink" title="cat (파일 경로)"></a>cat (파일 경로)</h3><p>파일의 내용을 프린트 한다. 해당 명령어는 오로지 파일의 내용물만 프린트하며, 디렉토리의 리스트는 반환하지 않는다.</p>
-<h3 id="cat-gt-파일-경로"><a href="#cat-gt-파일-경로" class="headerlink" title="cat &gt; (파일 경로)"></a>cat &gt; (파일 경로)</h3><p><code>&gt;</code>가 추가되면 파일의 내용을 변경할 수 있다. 해당 명령어를 입력한 후, 변경할 내용을 입력하고 <code>ctrl+d</code>을 누르면 파일 내용이 변경된다. 참고로 파일 내용을 수정할 때 줄바꿈이 필요하다면 <code>shift+enter</code>를 입력하면 된다.</p>
-<h3 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h3><p>현재 위치한 디렉토리의 파일 리스트를 보여준다.</p>
-<h3 id="ls-l"><a href="#ls-l" class="headerlink" title="ls -l"></a>ls -l</h3><p>현재 디렉토리에 위치한 파일들의 정보(ownership과 같은)를 더 자세하게 보여준다.</p>
-<h3 id="ls-a"><a href="#ls-a" class="headerlink" title="ls -a"></a>ls -a</h3><p>all을 의미하는 옵션 <code>-a</code>를 붙여 현재 디렉토리의 히든파일까지 모두 보여준다.</p>
-<h3 id="ls-lt"><a href="#ls-lt" class="headerlink" title="ls -lt"></a>ls -lt</h3><p>현재 디렉토리에 위치한 파일들을 생성 시간별로 보여준다. (최근 생성파일이 상단에 나온다)</p>
-<h3 id="ls-ltr"><a href="#ls-ltr" class="headerlink" title="ls -ltr"></a>ls -ltr</h3><p>현재 디렉토리에 위치한 파일들을 생성 시간별로 보여준다. 다만 뒤에 붙은 옵션 <code>-r</code>이 reverse를 의미하여 최근 생성파일이 하단에 나온다.</p>
-<h3 id="와"><a href="#와" class="headerlink" title=".와 .."></a><code>.</code>와 <code>..</code></h3><p><code>.</code>은 현재 디렉토리를 나타내고 <code>..</code>은 상위 디렉토리를 나타낸다. 예를 들어 현재 <code>/home/user/</code>에 있고 <code>/home/user/data</code>를 입력하고 싶다면 <code>./data</code>로 입력할 수 있다. 또한 <code>/home/admin/data</code>을 입력해야 한다면 <code>../admin/data</code>로 쓰면 된다. 해당 기호는 디렉토리 이름이 달라 생기는 오류들을 방지할 수 있어 패키지나 모듈을 만들 때 많이 쓰인다.</p>
-<h3 id="whatis-명령어"><a href="#whatis-명령어" class="headerlink" title="whatis (명령어)"></a>whatis (명령어)</h3><p>명령어에 대한 설명을 한문장으로 보여준다.</p>
-<h3 id="man-명령어"><a href="#man-명령어" class="headerlink" title="man (명령어)"></a>man (명령어)</h3><p>명령어에 대한 설명을 자세하게 보여준다.</p>
-<h3 id="apropos-키워드"><a href="#apropos-키워드" class="headerlink" title="apropos (키워드)"></a>apropos (키워드)</h3><p>키워드가 들어간 명령어를 찾아서 리스트업 해준다.</p>
+<h2 id="linux-기초-명령어">Linux 기초 명령어</h2>
+<p>리눅스에서 많이 사용되는 기초 명령어를 정리하였다.</p>
+<h3 id="echo-코드">echo (코드)</h3>
+<p>코드에 들어가는 것들을 프린트 한다. 예를 들어 코드에 $HOME을 넣는다면 홈 디렉토리 경로를 프린트 한다.</p>
+<h3 id="uptime">uptime</h3>
+<p>해당 운영체제의 작동시간이나 사용자 수 등을 보여준다. 여기서 사용자란 터미널 오픈 개수를 의미한다.</p>
+<h3 id="tpye-명령어">tpye (명령어)</h3>
+<p>어떤 명령어가 내장된 것인지 외부 디렉토리에 저장된 것인지 확인할 수 있다. 내장된 명령어는 echo, cd, pwd, set, mkdir 등이며, 외장된 명령어는 mv, date, uptime, cp 등이 있다.</p>
+<h3 id="mkdir-디렉토리-이름">mkdir (디렉토리 이름)</h3>
+<p>make directory. 디렉토리를 생성하는 명령어이다. 해당 명령어 뒤에 디렉토리 이름을 여러 개 넣어 한번에 여러 개의 디렉토리를 생성할 수 있다.</p>
+<h3 id="mkdir--p-디렉토리-경로">mkdir -p (디렉토리 경로)</h3>
+<p>mkdir에 옵션 -p가 붙으면 상하위 디렉토리를 한번에 생성할 수 있다. 예를 들어 home-user(생성필요)-data(생성필요)의 상황이라면 <code>mkdir -p /home/user/data</code>를 입력하여 user과 data를 한번에 생성할 수 있는 것이다.</p>
+<h3 id="cd-디렉토리-경로">cd (디렉토리 경로)</h3>
+<p>change directory. 디렉토리 변경하는 명령어이다.</p>
+<h3 id="pwd">pwd</h3>
+<p>print present working directory. 현재 위치한 디렉토리 경로를 프린트 한다.</p>
+<h3 id="pushd-디렉토리-경로">pushd (디렉토리 경로)</h3>
+<p>입력한 디렉토리를 스택 구조로 메모리에 저장한 후 해당 디렉토리로 이동한다. <code>dirs</code>를 입력하면 저장된 스택을 확인할 수 있다.</p>
+<h3 id="popd">popd</h3>
+<p>명령어 pushd로 저장했던 디텍토리 경로로 이동한다. 스택 구조이기에 최근에 저장했던 디렉토리로 이동한다. 웹페이지에서 뒤로가기와 같은 기능이라고 볼 수 있다.</p>
+<h3 id="mv-현재-경로-이동할-경로">mv (현재 경로) (이동할 경로)</h3>
+<p>파일이나 디렉토리를 이동할 때 사용한다. 참고로 이름을 변경할 때도 사용할 수 있다. 예를 들어 bird를 birds로 변경해야 한다면 <code>mv /home/user/bird /home/user/birds</code>를 입력하면 된다.</p>
+<h3 id="cp-현재-경로-이동할-경로">cp (현재 경로) (이동할 경로)</h3>
+<p>copy file. 현재 경로의 파일을 복사하여 이동할 경로에 붙여 넣는다.</p>
+<h3 id="cp--r-현재-경로-이동할-경로">cp -r (현재 경로) (이동할 경로)</h3>
+<p>copy directory. 옵션 <code>-r</code>이 붙어 디렉토리를 복사하여 붙여 넣는다.</p>
+<h3 id="rm-파일-경로">rm (파일 경로)</h3>
+<p>remove의 약자. 파일이나 빈 디렉토리를 삭제한다. 내용물이 든 디렉토리는 삭제가 안된다.</p>
+<h3 id="rm--r-경로">rm -r (경로)</h3>
+<p>옵션 <code>-r</code>이 추가되어 내용물이 든 디렉토리도 삭제할 수 있다.</p>
+<h3 id="touch-파일-경로">touch (파일 경로)</h3>
+<p>입력한 경로에 해당 파일을 생성해준다. 예를 들어 <code>/home/user</code> 디렉토리에 <code>id.txt</code>라는 파일을 만들어야 한다면 <code>touch /home/user/id.txt</code>로 입력하면 된다.</p>
+<h3 id="cat-파일-경로">cat (파일 경로)</h3>
+<p>파일의 내용을 프린트 한다. 해당 명령어는 오로지 파일의 내용물만 프린트하며, 디렉토리의 리스트는 반환하지 않는다.</p>
+<h3 id="cat-파일-경로-1">cat &gt; (파일 경로)</h3>
+<p><code>&gt;</code>가 추가되면 파일의 내용을 변경할 수 있다. 해당 명령어를 입력한 후, 변경할 내용을 입력하고 <code>ctrl+d</code>을 누르면 파일 내용이 변경된다. 참고로 파일 내용을 수정할 때 줄바꿈이 필요하다면 <code>shift+enter</code>를 입력하면 된다.</p>
+<h3 id="ls">ls</h3>
+<p>현재 위치한 디렉토리의 파일 리스트를 보여준다.</p>
+<h3 id="ls--l">ls -l</h3>
+<p>현재 디렉토리에 위치한 파일들의 정보(ownership과 같은)를 더 자세하게 보여준다.</p>
+<h3 id="ls--a">ls -a</h3>
+<p>all을 의미하는 옵션 <code>-a</code>를 붙여 현재 디렉토리의 히든파일까지 모두 보여준다.</p>
+<h3 id="ls--lt">ls -lt</h3>
+<p>현재 디렉토리에 위치한 파일들을 생성 시간별로 보여준다. (최근 생성파일이 상단에 나온다)</p>
+<h3 id="ls--ltr">ls -ltr</h3>
+<p>현재 디렉토리에 위치한 파일들을 생성 시간별로 보여준다. 다만 뒤에 붙은 옵션 <code>-r</code>이 reverse를 의미하여 최근 생성파일이 하단에 나온다.</p>
+<h3 id="와-.."><code>.</code>와 <code>..</code></h3>
+<p><code>.</code>은 현재 디렉토리를 나타내고 <code>..</code>은 상위 디렉토리를 나타낸다. 예를 들어 현재 <code>/home/user/</code>에 있고 <code>/home/user/data</code>를 입력하고 싶다면 <code>./data</code>로 입력할 수 있다. 또한 <code>/home/admin/data</code>을 입력해야 한다면 <code>../admin/data</code>로 쓰면 된다. 해당 기호는 디렉토리 이름이 달라 생기는 오류들을 방지할 수 있어 패키지나 모듈을 만들 때 많이 쓰인다.</p>
+<h3 id="whatis-명령어">whatis (명령어)</h3>
+<p>명령어에 대한 설명을 한문장으로 보여준다.</p>
+<h3 id="man-명령어">man (명령어)</h3>
+<p>명령어에 대한 설명을 자세하게 보여준다.</p>
+<h3 id="apropos-키워드">apropos (키워드)</h3>
+<p>키워드가 들어간 명령어를 찾아서 리스트업 해준다.</p>
 
                 
               </div>

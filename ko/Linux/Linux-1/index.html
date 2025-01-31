@@ -346,33 +346,40 @@
                 
                 <p>리눅스에서 사용되는 shell의 종류와 bash에 대해 정리합니다.</p>
 <span id="more"></span>
-<h2 id="shell이란"><a href="#shell이란" class="headerlink" title="shell이란"></a>shell이란</h2><p>셀(shell)이란 사람이 사용하는 명령어를 프로그램이 실행할 수 있도록 만들어주는 인터페이스이다. 좀 더 쉽게 설명하면 터미널에서 사용하는 명령어들은 전부 쉘 언어이다. 쉘에서는 프로그램에 직접 명령어를 전달할 수도 있고, 내부에서 함수도 짤 수 있으며, 또 초기 환경 셋팅도 가능하다.</p>
-<h2 id="shell-종류"><a href="#shell-종류" class="headerlink" title="shell 종류"></a>shell 종류</h2><p>요즘은 대부분 bash를 쓰지만, 쉘에는 생각보다 종류가 많다. 각 이름들은 다음과 같다.</p>
+<h2 id="shell이란">shell이란</h2>
+<p>셀(shell)이란 사람이 사용하는 명령어를 프로그램이 실행할 수 있도록 만들어주는 인터페이스이다. 좀 더 쉽게 설명하면 터미널에서 사용하는 명령어들은 전부 쉘 언어이다. 쉘에서는 프로그램에 직접 명령어를 전달할 수도 있고, 내부에서 함수도 짤 수 있으며, 또 초기 환경 셋팅도 가능하다.</p>
+<h2 id="shell-종류">shell 종류</h2>
+<p>요즘은 대부분 bash를 쓰지만, 쉘에는 생각보다 종류가 많다. 각 이름들은 다음과 같다.</p>
 <ul>
 <li>Bourne shell (sh) : 최초로 쓰인 쉘, 스크립트만 지원</li>
 <li>C shell (csh or tcsh): C 언어 위주의 쉘</li>
 <li>korn shell (ksh): sh을 확장한 쉘, sh의 명령어 + 히스토리, 작업제어, alias 등이 추가</li>
-<li>Z shell (zsh): ksh보다 개선된 기능을  가진 쉘</li>
+<li>Z shell (zsh): ksh보다 개선된 기능을 가진 쉘</li>
 <li>Bourne again shell (bash): 가장 많이 쓰이는 쉘, sh 호환 가능</li>
 </ul>
-<h2 id="chsh"><a href="#chsh" class="headerlink" title="chsh"></a>chsh</h2><p>만약 쉘을 변경하여 사용하고 싶다면 터미널에 <code>chsh</code>를 입력하면 된다. 뒤에  <code>-s</code> 옵션을 붙인 후  바꾸려는 쉘을 입력하면 바로 변경 가능하다. 쉘을 바꿀 때는 해당 서버의 비밀번호가 요구된다. 예시는 아래와 같다.</p>
+<h2 id="chsh">chsh</h2>
+<p>만약 쉘을 변경하여 사용하고 싶다면 터미널에 <code>chsh</code>를 입력하면 된다. 뒤에 <code>-s</code> 옵션을 붙인 후 바꾸려는 쉘을 입력하면 바로 변경 가능하다. 쉘을 바꿀 때는 해당 서버의 비밀번호가 요구된다. 예시는 아래와 같다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ chsh -s /bin/sh<br>암호 : *******<br>Shell changed<br></code></pre></td></tr></table></figure>
-<h2 id="alias-별명-기존명령어"><a href="#alias-별명-기존명령어" class="headerlink" title="alias 별명=기존명령어"></a>alias 별명=기존명령어</h2><p>해당 명령어는 별칭으로 사용하고자 하는 명령어를 설정하며, 쉘 중에서 bash, sh에서만 가능하다. 예시를 보자.</p>
+<h2 id="alias-별명기존명령어">alias 별명=기존명령어</h2>
+<p>해당 명령어는 별칭으로 사용하고자 하는 명령어를 설정하며, 쉘 중에서 bash, sh에서만 가능하다. 예시를 보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">alias</span> up=<span class="hljs-built_in">uptime</span><br></code></pre></td></tr></table></figure>
 <p>위의 명령어를 터미널에 입력하면 <code>uptime</code>이라는 명령어는 <code>up</code>만 입력해도 사용 가능하다.</p>
-<h2 id="prompt-설정"><a href="#prompt-설정" class="headerlink" title="prompt 설정"></a>prompt 설정</h2><p>터미널에서 사용하는 리눅스 프롬프트도 원하는 형태로 변경할 수 있다. 터미널에 아래와 같이 입력해보자.</p>
+<h2 id="prompt-설정">prompt 설정</h2>
+<p>터미널에서 사용하는 리눅스 프롬프트도 원하는 형태로 변경할 수 있다. 터미널에 아래와 같이 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ PS1=<span class="hljs-string">&#x27;[\d]\u@\h:\w&#x27;</span><br></code></pre></td></tr></table></figure>
-<p>위 패턴은 정규표현식이며, 해석하면 다음과 같다. <code>[날짜]사용자@호스트:지금 사용중인 디렉토리</code><br>만약 터미널을 다시 껐다가 켜도 해당 프롬프트를 유지하고 싶다면 환경변수로 셋팅하면 된다.</p>
+<p>위 패턴은 정규표현식이며, 해석하면 다음과 같다. <code>[날짜]사용자@호스트:지금 사용중인 디렉토리</code> 만약 터미널을 다시 껐다가 켜도 해당 프롬프트를 유지하고 싶다면 환경변수로 셋팅하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ vi /etc/bashrc<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;PS1=[\d]\u@\h:\w&#x27;</span><br></code></pre></td></tr></table></figure>
-<h2 id="enviroment-variable"><a href="#enviroment-variable" class="headerlink" title="enviroment variable"></a>enviroment variable</h2><p>환경 변수는 해당 서버의 운영체제에서 명령어를 실행할 때 참조하는 변수이다. 지정된 변수들은 <code>$변수이름</code>으로 사용된다.<br>현재 서버에서 지정된 환경 변수는 아래의 명령어를 입력하여 볼 수 있다.</p>
+<h2 id="enviroment-variable">enviroment variable</h2>
+<p>환경 변수는 해당 서버의 운영체제에서 명령어를 실행할 때 참조하는 변수이다. 지정된 변수들은 <code>$변수이름</code>으로 사용된다. 현재 서버에서 지정된 환경 변수는 아래의 명령어를 입력하여 볼 수 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">env</span><br>TERM_PROGRAM=터미널 프로그램 종류<br>USER=사용자 이름<br>PATH=저장된 실행파일 경로들<br>LANG=지원되는 언어<br>SHELL=사용되는 쉘 이름<br>HOME=사용자 홈 디렉토리<br>OSTYPE=운영체제 종류<br></code></pre></td></tr></table></figure>
-<p>위의 예시는 환경 변수들 중에 몇 가지만 가져온 것이며, <code>env</code>를 입력하면 위와 같이 환경 변수들을 볼 수 있다.<br>만약 환경 변수를 새로 지정하려면 어떻게 해야 할까? 바로 <code>export</code>를 사용하여 선언한다.</p>
+<p>위의 예시는 환경 변수들 중에 몇 가지만 가져온 것이며, <code>env</code>를 입력하면 위와 같이 환경 변수들을 볼 수 있다. 만약 환경 변수를 새로 지정하려면 어떻게 해야 할까? 바로 <code>export</code>를 사용하여 선언한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">export</span> 변수이름=변수 값<br></code></pre></td></tr></table></figure>
-<p>하지만 위 방법은 해당 서버가 재부팅되면 변수가 사라진다. 재부팅되어도 계속 변수를 유지하려면 어떻게 하면 될까?<br><code>bashrc</code>에서 변수를 해당 명령어를 추가한 후 적용하면 된다. 적용은 재부팅을 하거나 <code>source</code>라는 명령어를 사용한다.</p>
+<p>하지만 위 방법은 해당 서버가 재부팅되면 변수가 사라진다. 재부팅되어도 계속 변수를 유지하려면 어떻게 하면 될까? <code>bashrc</code>에서 변수를 해당 명령어를 추가한 후 적용하면 된다. 적용은 재부팅을 하거나 <code>source</code>라는 명령어를 사용한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ vi ~/.bashrc<br><span class="hljs-built_in">export</span> 변수이름=변수 값<br>$ <span class="hljs-built_in">source</span> ~/.bashrc<br></code></pre></td></tr></table></figure>
-<h2 id="path-variable"><a href="#path-variable" class="headerlink" title="path variable"></a>path variable</h2><p><code>path</code>는 해당 서버에 깔려 있는 프로그램이 어디 디렉토리에 존재하는지 경로를 설정하는 변수이다. 현재 추가되어 있는 경로를 보고 싶다면 아래의 명령어를 입력해보자.</p>
+<h2 id="path-variable">path variable</h2>
+<p><code>path</code>는 해당 서버에 깔려 있는 프로그램이 어디 디렉토리에 존재하는지 경로를 설정하는 변수이다. 현재 추가되어 있는 경로를 보고 싶다면 아래의 명령어를 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">echo</span> <span class="hljs-variable">$PATH</span><br>:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin<br></code></pre></td></tr></table></figure>
-<p>각 경로들은 콜론(:)으로 나눠져 있으며, 해당 경로에 존재하는 프로그램은 절대경로를 쓰지 않고도 바로 실행이 가능하다.<br>만약 프로그램의 path를 알고 싶다면 아래와 같이 입력해보자.</p>
+<p>각 경로들은 콜론(:)으로 나눠져 있으며, 해당 경로에 존재하는 프로그램은 절대경로를 쓰지 않고도 바로 실행이 가능하다. 만약 프로그램의 path를 알고 싶다면 아래와 같이 입력해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">which</span> java<br>/usr/bin/java<br></code></pre></td></tr></table></figure>
 <p>위의 결과는 명령어 <code>which</code>를 통해서 java 실행파일의 절대 경로를 보여준 예시이다. <code>which</code>는 경로가 있는 실행파일들의 위치를 보여준다.</p>
 

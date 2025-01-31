@@ -345,20 +345,22 @@
             
               <div class="markdown-body">
                 
-                <p>터미널에서 코드만을 사용하여 AWS에 접속하는 과정을 정리합니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="download-awscli"><a href="#download-awscli" class="headerlink" title="download awscli"></a>download awscli</h2><p>awscli(AWS command line interface)는 커맨드라인에서 AWS의 API를 직접 호출할 수 있도록 도와주는 도구이다. 커맨드라인에 아래의 코드를 입력하여 해당 툴을 다운받아보자.</p>
+                <p>터미널에서 코드만을 사용하여 AWS에 접속하는 과정을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="download-awscli">download awscli</h2>
+<p>awscli(AWS command line interface)는 커맨드라인에서 AWS의 API를 직접 호출할 수 있도록 도와주는 도구이다. 커맨드라인에 아래의 코드를 입력하여 해당 툴을 다운받아보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip3 install awscli<br></code></pre></td></tr></table></figure>
 <p>다운이 완료되었다면 로컬에 엑세스 키를 등록해야 한다. 그렇다면 엑세스 키는 무엇이고 어디서 받을 수 있을까? 이에 대해 잠깐 살펴보고 넘어가자.</p>
-<h2 id="Use-Access-Key"><a href="#Use-Access-Key" class="headerlink" title="Use Access Key"></a>Use Access Key</h2><p>엑세스 키(Access Key)는 IAM 사용자 계정을 해당 컴퓨터와 연결할 때 사용되는 정보이다. 즉, 각 IAM 사용자 계정에는 고유한 엑세스 키가 있으며, 이를 등록해야 해당 커맨드라인에서 AWS로 접속이 가능하다. 본인의 엑세스 키는 해당 계정을 생성한 직후에만 공개되기 때문에 미리 다른 곳에 적어두어야 한다. 그럼 이제 엑세스 키를 이용하여 AWS에 접속해보자.</p>
+<h2 id="use-access-key">Use Access Key</h2>
+<p>엑세스 키(Access Key)는 IAM 사용자 계정을 해당 컴퓨터와 연결할 때 사용되는 정보이다. 즉, 각 IAM 사용자 계정에는 고유한 엑세스 키가 있으며, 이를 등록해야 해당 커맨드라인에서 AWS로 접속이 가능하다. 본인의 엑세스 키는 해당 계정을 생성한 직후에만 공개되기 때문에 미리 다른 곳에 적어두어야 한다. 그럼 이제 엑세스 키를 이용하여 AWS에 접속해보자.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">aws configure<br></code></pre></td></tr></table></figure>
 <p>커맨드라인에 위의 코드를 입력하면 총 4개의 입력란이 등장한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">AWS Access Key ID [None]: <span class="hljs-comment"># IAM 사용자 계정 키 입력</span><br>AWS Secret Access Key [None]: <span class="hljs-comment"># IAM 사용자 계정 비밀 키 입력</span><br>Default region name [None]: <span class="hljs-comment"># 지역 (서울: ap-northeast-2) 입력</span><br>Default output format [None]:<br></code></pre></td></tr></table></figure>
 <p>위의 설명에 따라 값들을 입력한 후 엔터를 누르면 AWS와 연결된다.</p>
-<p>$\bullet$ AWS Access Key ID<br>IAM 계정 만들 당시 시크릿 키와 같이 제공된다. 해당 키는 IAM 콘솔에서 다시 확인할 수 있다.</p>
-<p>$\bullet$ AWS Secret Access Key<br>해당 키는 계정을 생성한 직후에만 볼 수 있기 때문에 꼭 잊지 말고 복사해두어야 한다.</p>
-<p>$\bullet$ Default region name<br>API를 가져오는 지역을 설정하는 것이다. 서울은 <code>ap-northeast-2</code>를 입력하면 된다. 다른 지역은 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/about-aws/global-infrastructure/regional-product-services/">지역 표</a>에서 확인할 수 있다.</p>
-<p>$\bullet$ Default output format<br>AWS에서 도출한 결과를 어떤 형태로 저장할지 설정한다. text, json, table 중에 하나를 선택할 수 있다.</p>
+<p><span class="math inline">\(\bullet\)</span> AWS Access Key ID IAM 계정 만들 당시 시크릿 키와 같이 제공된다. 해당 키는 IAM 콘솔에서 다시 확인할 수 있다.</p>
+<p><span class="math inline">\(\bullet\)</span> AWS Secret Access Key 해당 키는 계정을 생성한 직후에만 볼 수 있기 때문에 꼭 잊지 말고 복사해두어야 한다.</p>
+<p><span class="math inline">\(\bullet\)</span> Default region name API를 가져오는 지역을 설정하는 것이다. 서울은 <code>ap-northeast-2</code>를 입력하면 된다. 다른 지역은 <a target="_blank" rel="noopener" href="https://aws.amazon.com/ko/about-aws/global-infrastructure/regional-product-services/">지역 표</a>에서 확인할 수 있다.</p>
+<p><span class="math inline">\(\bullet\)</span> Default output format AWS에서 도출한 결과를 어떤 형태로 저장할지 설정한다. text, json, table 중에 하나를 선택할 수 있다.</p>
 <p>설명한 기본적인 지식 외에도 AWS 명령어에 대해 자세히 알고 싶다면 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-options.html">AWS 명령줄 옵션</a>에서 확인하면 된다.</p>
 <p>이제 커맨드라인에서 AWS를 실행할 준비가 모두 완료되었다.</p>
 

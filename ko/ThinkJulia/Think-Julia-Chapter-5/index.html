@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          858 words
+          854 words
         
       </span>
     
@@ -345,28 +345,32 @@
                 <blockquote>
 <p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
 </blockquote>
-<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap06">Fruitful Functions</a>를 한글로 요약 정리한 글입니다.<br><span id="more"></span></p>
-<h2 id="결과-있는-함수-Fruitful-Functions"><a href="#결과-있는-함수-Fruitful-Functions" class="headerlink" title="결과 있는 함수 (Fruitful Functions)"></a>결과 있는 함수 (Fruitful Functions)</h2><p>줄리아가 제공하는 많은 함수들은 반환 값을 생성한다. 하지만 우리가 사용했던 <code>Turtle()</code>과 같은 결과 없는 함수(void function)는 명령을 수행하기만 하고 반환 값을 제공하지는 않는다. 이번 장에서는 결과 있는 함수를 작성하는 법을 알아볼 것이다.</p>
-<h3 id="반환-값"><a href="#반환-값" class="headerlink" title="반환 값"></a>반환 값</h3><p>함수를 호출하면 일반적으로 변수에 할당하거나 표현식의 일부로 사용하는 반환 값이 생성된다.</p>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap06">Fruitful Functions</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="결과-있는-함수-fruitful-functions">결과 있는 함수 (Fruitful Functions)</h2>
+<p>줄리아가 제공하는 많은 함수들은 반환 값을 생성한다. 하지만 우리가 사용했던 <code>Turtle()</code>과 같은 결과 없는 함수(void function)는 명령을 수행하기만 하고 반환 값을 제공하지는 않는다. 이번 장에서는 결과 있는 함수를 작성하는 법을 알아볼 것이다.</p>
+<h3 id="반환-값">반환 값</h3>
+<p>함수를 호출하면 일반적으로 변수에 할당하거나 표현식의 일부로 사용하는 반환 값이 생성된다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">e = exp(<span class="hljs-number">1.0</span>)<br>height = radius * sin(radians)<br></code></pre></td></tr></table></figure>
 <p>결과 없는 함수는 반환 값을 가지고 있지 않다. 정확하게는 반환 값으로 <code>nothing</code>을 가지고 있다. 결과 있는 함수의 첫 번째 예시로 원의 넓이를 반환하는 <code>area()</code>를 살펴볼 것이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> area(radius)<br>    a = <span class="hljs-literal">π</span> * radius^<span class="hljs-number">2</span><br>    <span class="hljs-keyword">return</span> a<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위의 코드는 <code>return</code>문을 사용하여 값을 보여준다. <code>return</code>문은 함수의 결괏값을 다음의 반환 값으로 사용하게 만들어주는 명령문이다. 결과 있는 함수는 <code>return</code>문을 내장하고 있기 때문에 쓸 필요가 없다. 따라서 수정된 코드는 아래와 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> area(radius)<br>    <span class="hljs-literal">π</span> * radius^<span class="hljs-number">2</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>함수 본문의 마지막에 위치해 있는 표현식의 결과가 값으로 반환된다.<br>반면에 함수 내부에서 정의되는 임시 변수 <code>a</code>의 경우는 <code>return</code>문을 사용해야 디버깅하기 쉽다.<br>때때로 조건문의 조건마다 <code>return</code>문을 가지는 것은 유용하다.</p>
+<p>함수 본문의 마지막에 위치해 있는 표현식의 결과가 값으로 반환된다. 반면에 함수 내부에서 정의되는 임시 변수 <code>a</code>의 경우는 <code>return</code>문을 사용해야 디버깅하기 쉽다. 때때로 조건문의 조건마다 <code>return</code>문을 가지는 것은 유용하다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> absvalue(x)<br>    <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> -x<br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> x<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>이런 <code>return</code>문들은 각각의 대체 조건문에 들어가 있으며, 조건에 따라 작동된다.<br><code>return</code>문이 실행되면 뒤의 명령문들은 실행되지 않고 종료되는데, 이때 뒤에 있던 명령문들을 데드 코드(dead code)이라고 한다.</p>
-<p>결과 있는 함수에서는 프로그램의 모든 경로가  <code>return</code>문으로 끝나게 작성하는 것이 좋다. 아래 예시를 확인해보자.</p>
+<p>이런 <code>return</code>문들은 각각의 대체 조건문에 들어가 있으며, 조건에 따라 작동된다. <code>return</code>문이 실행되면 뒤의 명령문들은 실행되지 않고 종료되는데, 이때 뒤에 있던 명령문들을 데드 코드(dead code)이라고 한다.</p>
+<p>결과 있는 함수에서는 프로그램의 모든 경로가 <code>return</code>문으로 끝나게 작성하는 것이 좋다. 아래 예시를 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> absvalue(x)<br>    <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> -x<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">if</span> x &gt; <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> x<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위의 함수는 <code>x</code>가 0이 되면 어떤 조건도 참이 아니고 반환할 <code>return</code>문도 없기 때문에 올바른 함수가 아니다. 만약 <code>x</code>가 0인채로 함수가 진행된다면 반환 값으로 <code>nothing</code>을 준다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; show(absvalue(<span class="hljs-number">0</span>))<br><span class="hljs-literal">nothing</span><br></code></pre></td></tr></table></figure>
-<p><strong>Tip</strong><br>줄리아는 절대값을 반환해주는 <code>abs()</code>를 내장하고 있다.</p>
-<h3 id="점진적인-개발-Incremental-Development"><a href="#점진적인-개발-Incremental-Development" class="headerlink" title="점진적인 개발 (Incremental Development)"></a>점진적인 개발 (Incremental Development)</h3><p>크고 복잡한 함수들을 작성할수록 디버깅에 많은 시간을 쏟아야 할 것이다.<br>복잡한 프로그램들을 점점 향상시키기 위해서, 점진적인 개발이라는 과정을 배우는 것은 중요하다.<br>점진적인 개발의 목표는 작은 단위의 코드들을 계속 테스트해야하고 수정해야하는 디버깅에 소요되는 시간을 줄이는 것이다.<br>예로 두 점인 (x1,y1)와 (x2,y2)의 거리를 구하려고 한다. 피타고라스 정리에 따르면 수학식은 다음과 같다.</p>
-<script type="math/tex; mode=display">\begin{equation} \label{eq1}
+<p><strong>Tip</strong> 줄리아는 절대값을 반환해주는 <code>abs()</code>를 내장하고 있다.</p>
+<h3 id="점진적인-개발-incremental-development">점진적인 개발 (Incremental Development)</h3>
+<p>크고 복잡한 함수들을 작성할수록 디버깅에 많은 시간을 쏟아야 할 것이다. 복잡한 프로그램들을 점점 향상시키기 위해서, 점진적인 개발이라는 과정을 배우는 것은 중요하다. 점진적인 개발의 목표는 작은 단위의 코드들을 계속 테스트해야하고 수정해야하는 디버깅에 소요되는 시간을 줄이는 것이다. 예로 두 점인 (x1,y1)와 (x2,y2)의 거리를 구하려고 한다. 피타고라스 정리에 따르면 수학식은 다음과 같다.</p>
+<p><span class="math display">\[\begin{equation} \label{eq1}
 d= \sqrt{(x2-x1)^2+(y2-y1)^2}
-\end{equation}</script><p>위의 수학식을 줄리아에서 구현하기 위해서는 어떻게 해야할까? 첫 번째로는 무엇을 인수로 제공하며, 얻으려는 반환 값은 무엇인지 정하는 것이다.<br>위의 사례에서는 두 점인 (x1,y1)와 (x2,y2)을 인수로 제공하면 된다. 반환 값의 경우는 소수로 표현된 거리를 얻을 것이다.<br>인수와 반환 값을 결정하면 바로 아래와 같은 코드를 완성할 수 있다.</p>
+\end{equation}\]</span></p>
+<p>위의 수학식을 줄리아에서 구현하기 위해서는 어떻게 해야할까? 첫 번째로는 무엇을 인수로 제공하며, 얻으려는 반환 값은 무엇인지 정하는 것이다. 위의 사례에서는 두 점인 (x1,y1)와 (x2,y2)을 인수로 제공하면 된다. 반환 값의 경우는 소수로 표현된 거리를 얻을 것이다. 인수와 반환 값을 결정하면 바로 아래와 같은 코드를 완성할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> distance(x₁, y₁, x₂, y₂)<br>    <span class="hljs-number">0.0</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>위의 코드는 거리를 계산하지는 않으며, 본문에 따라 항상 0을 반환한다. 그러나 본문에 다른 명령문을 추가하기 전에 코드가 작동하는지 확인할 수 있다.<br>작동을 확인하기 위해 아래의 코드를 입력해보자.</p>
+<p>위의 코드는 거리를 계산하지는 않으며, 본문에 따라 항상 0을 반환한다. 그러나 본문에 다른 명령문을 추가하기 전에 코드가 작동하는지 확인할 수 있다. 작동을 확인하기 위해 아래의 코드를 입력해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">distance(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>)<br></code></pre></td></tr></table></figure>
 <p>위의 코드에서 두 점은 수평 거리가 3이 되고 수직 거리가 4가 되도록 선택하였다. 그 결과 두 점의 거리 값은 5이며, 반환 값도 5가 되어야 한다. 이와 같이 코드를 테스트할 때는 정답을 알고 있는 상태에서 해야 올바르게 작동하고 있는지 확인할 수 있다.</p>
 <p>위의 테스트를 통해서 해당 함수가 문법적으로는 문제가 없다고 확인하였다. 그러면 이제부터는 본문에 명령문들을 추가해보자. 다음 단계는 <code>x2−x1</code> 과 <code>y2−y1</code> 을 설정하는 것이다. 함수 내부에 임시 변수로서 두 식의 값을 저장하도록 설정해보자. 그 다음 <code>@show</code>를 사용하여 임시 변수가 올바르게 생성되는지 확인해보자.</p>
@@ -385,7 +389,8 @@ d= \sqrt{(x2-x1)^2+(y2-y1)^2}
 <li>함수 내부에 임시 변수를 사용하여 값들을 저장하면서 값이 올바른지 확인하자.</li>
 <li>프로그램이 작동하면 스캐폴딩을 제거하고, 명령문들을 복합 표현식으로 사용하는 등 코드를 간단하게 수정하자.</li>
 </ul>
-<h3 id="컴포지션-composition"><a href="#컴포지션-composition" class="headerlink" title="컴포지션 (composition)"></a>컴포지션 (composition)</h3><p>함수를 작성할 때, 필요하다면 미리 작성한 함수를 가져와 사용할 수 있다. 예를 들어 원의 중심과 둘레의 점을 두 점으로 하여 원의 면적을 계산하는 함수를 살펴 보자.</p>
+<h3 id="컴포지션-composition">컴포지션 (composition)</h3>
+<p>함수를 작성할 때, 필요하다면 미리 작성한 함수를 가져와 사용할 수 있다. 예를 들어 원의 중심과 둘레의 점을 두 점으로 하여 원의 면적을 계산하는 함수를 살펴 보자.</p>
 <p>중심점을 변수 <code>xc</code>와 <code>yc</code>로 표현하고, 둘레점을 <code>xp</code>와 <code>yp</code>로 표현한다. 그 이후 첫 번째 단계로 두 지점 사이의 거리인 원의 반경을 찾기로 한다. 우리는 윗 장에서 두 점의 거리를 구하는 <code>distance()</code>를 작성했기 때문에 이를 이용할 것이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia">radius = distance(xc, yc, xp, yp)<br></code></pre></td></tr></table></figure>
 <p>다음 단계로는 우리가 만들었던 <code>area()</code>를 사용하여 원의 면적을 구한다.</p>
@@ -394,7 +399,8 @@ d= \sqrt{(x2-x1)^2+(y2-y1)^2}
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circlearea(xc, yc, xp, yp)<br>    radius = distance(xc, yc, xp, yp)<br>    result = area(radius)<br>    <span class="hljs-keyword">return</span> result<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>임시 변수인 <code>radius</code>와 <code>result</code>는 디버깅을 할 때 유용하지만, 굳이 임시 변수를 사용하지 않고 인수 자리에 함수를 바로 입력하여 더 간결하게 표현할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> circlearea(xc, yc, xp, yp)<br>    area(distance(xc, yc, xp, yp))<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<h3 id="불-함수-Boolean-Functions"><a href="#불-함수-Boolean-Functions" class="headerlink" title="불 함수 (Boolean Functions)"></a>불 함수 (Boolean Functions)</h3><p>함수는 불(true or false)를 반환할 수 있으며, 이는 종종 복잡한 테스트를 함수 내부에 숨기는데 유용하다. 예는 다음과 같다.</p>
+<h3 id="불-함수-boolean-functions">불 함수 (Boolean Functions)</h3>
+<p>함수는 불(true or false)를 반환할 수 있으며, 이는 종종 복잡한 테스트를 함수 내부에 숨기는데 유용하다. 예는 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> isdivisible(x, y)<br>    <span class="hljs-keyword">if</span> x % y == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>이것은 yes/no 질문이라고 불리는 전형적인 불 함수이다. <code>isdivisible()</code>은 x값을 y값으로 나눈 나머지 값에 따라 <code>true</code> 또는 <code>false</code>를 반환한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; isdivisible(<span class="hljs-number">6</span>, <span class="hljs-number">4</span>)<br><span class="hljs-literal">false</span><br>julia&gt; isdivisible(<span class="hljs-number">6</span>, <span class="hljs-number">3</span>)<br><span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
@@ -405,18 +411,18 @@ d= \sqrt{(x2-x1)^2+(y2-y1)^2}
 <p>또는 다음과 같이 작성할 수도 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">if</span> isdivisible(x, y) == <span class="hljs-literal">true</span><br>    println(<span class="hljs-string">&quot;x is divisible by y&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>하지만 위의 코드에서 <code>true</code>는 불필요하다.</p>
-<h3 id="재귀-정의-More-Recursion"><a href="#재귀-정의-More-Recursion" class="headerlink" title="재귀 정의 (More Recursion)"></a>재귀 정의 (More Recursion)</h3><p>우리는 고작 줄리아의 작은 서브셋(subset)들을 배웠지만, 사실 이 서브셋들은 완벽한 프로그래밍 언어이다. 지금까지 습득한 언어로 대부분의 수학 계산식들을 표현할 수 있다. 즉, 프로그램을 작성하는데 어려움이 없다는 것이다.</p>
+<h3 id="재귀-정의-more-recursion">재귀 정의 (More Recursion)</h3>
+<p>우리는 고작 줄리아의 작은 서브셋(subset)들을 배웠지만, 사실 이 서브셋들은 완벽한 프로그래밍 언어이다. 지금까지 습득한 언어로 대부분의 수학 계산식들을 표현할 수 있다. 즉, 프로그램을 작성하는데 어려움이 없다는 것이다.</p>
 <p>프로그래밍 언어가 수학 계산식을 표현할 수 있다는 사실은 수학자 앨런 튜링(Alan Turing)에 의해서 증명되었으며, 해당 이론을 튜링 이론이라고 한다. 만약 튜링 이론에 관심이 있다면 Michael Sipser의 저서인 Introduction to the Theory of Computation을 추천한다.</p>
-<p>지금부터는 우리가 배운 도구들을 사용하여 만들어진 몇 가지 재귀 함수를 살펴볼 것이다.<br>재귀 정의는 어떤 단어를 설명하는데 있어 그 단어를 선택한다는 점에서 순환 정의와 유사하다.</p>
-<p><strong>vorpal</strong><br>An adjective used to describe something that is vorpal.</p>
+<p>지금부터는 우리가 배운 도구들을 사용하여 만들어진 몇 가지 재귀 함수를 살펴볼 것이다. 재귀 정의는 어떤 단어를 설명하는데 있어 그 단어를 선택한다는 점에서 순환 정의와 유사하다.</p>
+<p><strong>vorpal</strong> An adjective used to describe something that is vorpal.</p>
 <p>위의 예시를 보면 vorpal이란 단어를 정의하는데 vorpal이란 단어가 쓰이는 것을 볼 수 있다. 재귀함수도 이와 유사한 구조를 가지고 있다. 재귀 함수의 예로 계승 함수(factorial function)을 살펴보자.</p>
-<script type="math/tex; mode=display">
+<p><span class="math display">\[
 n! =
  \begin{cases}
-1 & \text{if n=0 $$}\\
-n(n-1)! & \text{if n>0 $$}\\
-\end{cases}</script><p>위의 정의는 <code>n</code>이 0이면 1을 반환하고, 만약 <code>n</code>이 0이상이라면 <code>n</code>과 <code>(n-1)!</code>을 곱하라고 설명한다.</p>
-<p>예를 들면 3!은 3과 2!를 곱하고, 2!는 2와 1!을 곱하며, 1!는 1과 0을 곱한다.<br>따라서 3!는 3<em>2</em>1<em>1</em>0이기에 6인 것이다.</p>
+1 &amp; \text{if n=0 \]</span>}\ n(n-1)! &amp; \ \end{cases} $$</p>
+<p>위의 정의는 <code>n</code>이 0이면 1을 반환하고, 만약 <code>n</code>이 0이상이라면 <code>n</code>과 <code>(n-1)!</code>을 곱하라고 설명한다.</p>
+<p>예를 들면 3!은 3과 2!를 곱하고, 2!는 2와 1!을 곱하며, 1!는 1과 0을 곱한다. 따라서 3!는 3<em>2</em>1<em>1</em>0이기에 6인 것이다.</p>
 <p>재귀 정의를 이용하여 위의 수학식을 함수로 작성할 수 있다. 첫 번째 단계는 인수가 무엇인지 결정하는 것이다. 이 경우에서는 정수가 인수로 사용된다는 것이 명확하다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n) <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>만약 인수가 0이라면, 1을 반환해야 하므로 조건문을 사용한다.</p>
@@ -434,22 +440,23 @@ n(n-1)! & \text{if n>0 $$}\\
 <li><code>2!</code>가 <code>2</code>을 반환했기 때문에 <code>3</code>과 곱해져 <code>6</code>을 반환한다.</li>
 </ul>
 <p>결국 마지막으로 작동된 명령문의 결과값인 6이 반환 값으로 보여준다. 또한 로컬 변수인 <code>result</code>나 <code>recurse</code>도 함수가 작동을 멈추는 동시에 사라진다.</p>
-<p><strong>Tip</strong><br>줄리아는 계승 함수(factorial function)를 제공한다.</p>
-<h3 id="믿음의-도약-Leap-of-Faith"><a href="#믿음의-도약-Leap-of-Faith" class="headerlink" title="믿음의 도약 (Leap of Faith)"></a>믿음의 도약 (Leap of Faith)</h3><p>실행 흐름을 따르는 것은 프로그램을 읽는 하나의 방법이다. 그러나 때에 따라선 믿음의 도약이라고 부르는 방법도 사용할 수 있다. 믿음의 도약이란 함수가 어떻게 작동하는지를 파악하기 전에 함수를 호출하여 올바른 결괏값을 도출하는지 확인하여 그 함수가 잘 작동하고 있다고 믿는 것이다. 즉, 프로그램의 실행 흐름을 보는 것이 아니라 결괏값만을 보고 프로그램이 올바르게 작동하고 있는지 파악하는 것이다.</p>
+<p><strong>Tip</strong> 줄리아는 계승 함수(factorial function)를 제공한다.</p>
+<h3 id="믿음의-도약-leap-of-faith">믿음의 도약 (Leap of Faith)</h3>
+<p>실행 흐름을 따르는 것은 프로그램을 읽는 하나의 방법이다. 그러나 때에 따라선 믿음의 도약이라고 부르는 방법도 사용할 수 있다. 믿음의 도약이란 함수가 어떻게 작동하는지를 파악하기 전에 함수를 호출하여 올바른 결괏값을 도출하는지 확인하여 그 함수가 잘 작동하고 있다고 믿는 것이다. 즉, 프로그램의 실행 흐름을 보는 것이 아니라 결괏값만을 보고 프로그램이 올바르게 작동하고 있는지 파악하는 것이다.</p>
 <p>실제로 내장 함수를 사용할 때 우리는 이 방법을 많이 사용한다. 예를 들어 <code>cos()</code>나 <code>exp()</code>를 사용할 때, 해당 함수의 본문을 검사하지 않으며, 결괏값만 보고 믿음을 주는 것이다. 재귀 프로그램 또한 실행 흐름을 따르는 대신에 재귀 호출이 되었다고 가정하여 결괏값을 확인한다.</p>
-<h3 id="연습해보기"><a href="#연습해보기" class="headerlink" title="연습해보기"></a>연습해보기</h3><p>가장 재귀적으로 정의된 가장 보편적인 수학 표현식 중 하나인 피보나치를 작성해보자. 피보나치에 대한 정의는 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Fibonacci_number">이 링크</a>를 확인하면 된다.</p>
-<script type="math/tex; mode=display">
+<h3 id="연습해보기">연습해보기</h3>
+<p>가장 재귀적으로 정의된 가장 보편적인 수학 표현식 중 하나인 피보나치를 작성해보자. 피보나치에 대한 정의는 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Fibonacci_number">이 링크</a>를 확인하면 된다.</p>
+<p><span class="math display">\[
 fib(n) =
  \begin{cases}
-0 & \text{if n=0 $$}\\
-1 & \text{if n=1 $$}\\
-fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
-\end{cases}</script><p>위 식을 줄리아 코드로 표현하면 다음과 같다.</p>
+0 &amp; \text{if n=0 \]</span>}\ 1 &amp; \ fib(n-1)+fib(n-2) &amp; \ \end{cases} $$</p>
+<p>위 식을 줄리아 코드로 표현하면 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fib(n)<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    <span class="hljs-keyword">elseif</span> n == <span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> fib(n-<span class="hljs-number">1</span>) + fib(n-<span class="hljs-number">2</span>)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>이 함수에서 실행 흐름대로 파악하려면 <code>n</code>이 아주 작은 경우에도 머리가 복잡하다. 그렇기 때문에 믿음의 도약에 따라 재귀 함수가 올바르게 작동한다고 가정한후 <code>n</code>에 3 정도를 넣어보면 빠르게 좋은 결과를 얻을 수 있다.</p>
-<h3 id="데이터-타입-확인하기"><a href="#데이터-타입-확인하기" class="headerlink" title="데이터 타입 확인하기"></a>데이터 타입 확인하기</h3><p>민약에 <code>fact()</code>에 인수로 <code>1.5</code>를 넣으면 어떻게 될까?</p>
+<h3 id="데이터-타입-확인하기">데이터 타입 확인하기</h3>
+<p>민약에 <code>fact()</code>에 인수로 <code>1.5</code>를 넣으면 어떻게 될까?</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fact(<span class="hljs-number">1.5</span>)<br>ERROR: <span class="hljs-built_in">StackOverflowError</span>:<br>Stacktrace:<br> [<span class="hljs-number">1</span>] fact(::<span class="hljs-built_in">Float64</span>) at ./REPL[<span class="hljs-number">3</span>]:<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
-<p>무한 재귀로 작동된 에러 결과가 나왔다. 어떻게 그게 가능할까?<br><code>fact()</code>는 <code>n</code>이 <code>0</code>일때 함수 작동이 끝나는 재귀 정의를 가지고 있다. <code>1.5</code>는 <code>0</code>이 아니기 때문에 <code>else</code>문으로 실행되며 첫 번째 실행 이후 <code>n</code>값이 <code>0.5</code>가 된다. 그 다음 두 번째 실행에서는 <code>n</code>값이 <code>-0.5</code>가 된다. 결국 <code>n</code>값이 <code>0</code>이 되지 못하기 때문에 무한대로 재귀가 작동하는 결과가 초래된 것이다.</p>
+<p>무한 재귀로 작동된 에러 결과가 나왔다. 어떻게 그게 가능할까? <code>fact()</code>는 <code>n</code>이 <code>0</code>일때 함수 작동이 끝나는 재귀 정의를 가지고 있다. <code>1.5</code>는 <code>0</code>이 아니기 때문에 <code>else</code>문으로 실행되며 첫 번째 실행 이후 <code>n</code>값이 <code>0.5</code>가 된다. 그 다음 두 번째 실행에서는 <code>n</code>값이 <code>-0.5</code>가 된다. 결국 <code>n</code>값이 <code>0</code>이 되지 못하기 때문에 무한대로 재귀가 작동하는 결과가 초래된 것이다.</p>
 <p>따라서 이 문제를 해결하기 위해서는 소수점 숫자도 인수로 받을 수 있게 <code>fact()</code>를 일반화하거나, 데이터 타입을 미리 확인하라는 명령문을 추가할 수 있다. 첫 번째 방법은 <strong>감마 함수</strong>라고 하며 이 책의 범위를 벗어나기 때문에, 우리는 두 번째 방법을 선택할 것이다.</p>
 <p>내장 연산자인 <code>isa</code>를 이용하여 인수 유형을 확인할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n)<br>    <span class="hljs-keyword">if</span> !(n <span class="hljs-keyword">isa</span> <span class="hljs-built_in">Int64</span>)<br>        error(<span class="hljs-string">&quot;Factorial is only defined for integers.&quot;</span>)<br>    <span class="hljs-keyword">elseif</span> n &lt; <span class="hljs-number">0</span><br>        error(<span class="hljs-string">&quot;Factorial is not defined for negative integers.&quot;</span>)<br>    <span class="hljs-keyword">elseif</span> n == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> n * fact(n-<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
@@ -457,13 +464,14 @@ fib(n-1)+fib(n-2) & \text{if n>1 $$}\\
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fact(<span class="hljs-string">&quot;fred&quot;</span>)<br>ERROR: Factorial is only defined <span class="hljs-keyword">for</span> integers.<br>julia&gt; fact(-<span class="hljs-number">2</span>)<br>ERROR: Factorial is not defined <span class="hljs-keyword">for</span> negative integers.<br></code></pre></td></tr></table></figure>
 <p>두 검사를 모두 통과하면 <code>n</code>이 양수이거나 0임이 증명되기 때문에, 바로 재귀 함수로 넘어갈 수 있다.</p>
 <p>이런 프로그램 구조는 가이드라인을 보여준다. 처음 두 조건이 가이드 역할을 하여 오류를 일으킬 수 있는 값에서 구출하고 오류를 막아준다.</p>
-<h3 id="디버깅"><a href="#디버깅" class="headerlink" title="디버깅"></a>디버깅</h3><p>큰 프로그램들을 작은 함수들로 분해하는 것은 자연스러운 디버깅 포인트들을 만들어준다. 만약 함수가 작동하고 있지 않다면, 아래의 세 가지 가능성을 고려야봐야 한다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>큰 프로그램들을 작은 함수들로 분해하는 것은 자연스러운 디버깅 포인트들을 만들어준다. 만약 함수가 작동하고 있지 않다면, 아래의 세 가지 가능성을 고려야봐야 한다.</p>
 <ul>
 <li>함수의 인수가 잘못 배정된 경우 (전제조건 오류)</li>
 <li>함수 자체에 오류가 있는 경우 (사후조건 오류)</li>
 <li>반환 값이나 사용되는 방식에 문제가 있는 경우 (함수의 연결부분)</li>
 </ul>
-<p>첫 번째의 가능성을 배제하기 위해, <code>println()</code>을 추가하고 나오는 결괏값을 확인하여 데이터 타입을 정확히 확인하라. 아니면 해당 함수의 전제 조건을 다시 정확히 확인하라.<br>인수가 양호하다면 각 <code>return</code>문 앞에 <code>println()</code>을 추가하고 반환 값을 표시해서 가능하면 결과값을 확인하라. 옳은 결과인지 확인하기 쉬운 값을 인수로 주는 것이 좋다.<br>함수가 작동하는 것 같으면 함수 호출을 보고 반환 값이 올바르게 사용되는지 확인하라. 함수의 시작과 끝에 <code>println()</code>을 추가하면 실행 흐름을 더 잘 볼 수 있다.<br>예로 아래의 함수는 <code>println()</code>문이 포함된 <code>fact()</code> 코드 이다.</p>
+<p>첫 번째의 가능성을 배제하기 위해, <code>println()</code>을 추가하고 나오는 결괏값을 확인하여 데이터 타입을 정확히 확인하라. 아니면 해당 함수의 전제 조건을 다시 정확히 확인하라. 인수가 양호하다면 각 <code>return</code>문 앞에 <code>println()</code>을 추가하고 반환 값을 표시해서 가능하면 결과값을 확인하라. 옳은 결과인지 확인하기 쉬운 값을 인수로 주는 것이 좋다. 함수가 작동하는 것 같으면 함수 호출을 보고 반환 값이 올바르게 사용되는지 확인하라. 함수의 시작과 끝에 <code>println()</code>을 추가하면 실행 흐름을 더 잘 볼 수 있다. 예로 아래의 함수는 <code>println()</code>문이 포함된 <code>fact()</code> 코드 이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> fact(n)<br>    space = <span class="hljs-string">&quot; &quot;</span> ^ (<span class="hljs-number">4</span> * n)<br>    println(space, <span class="hljs-string">&quot;factorial &quot;</span>, n)<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span><br>        println(space, <span class="hljs-string">&quot;returning 1&quot;</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span><br>        recurse = fact(n-<span class="hljs-number">1</span>)<br>        result = n * recurse<br>        println(space, <span class="hljs-string">&quot;returning &quot;</span>, result)<br>        <span class="hljs-keyword">return</span> result<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p><code>space</code>는 출력의 들여 쓰기를 제어하는 공백 문자열이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; fact(<span class="hljs-number">4</span>)<br>                factorial <span class="hljs-number">4</span><br>            factorial <span class="hljs-number">3</span><br>        factorial <span class="hljs-number">2</span><br>    factorial <span class="hljs-number">1</span><br>factorial <span class="hljs-number">0</span><br>returning <span class="hljs-number">1</span><br>    returning <span class="hljs-number">1</span><br>        returning <span class="hljs-number">2</span><br>            returning <span class="hljs-number">6</span><br>                returning <span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>

@@ -256,7 +256,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          278 words
+          280 words
         
       </span>
     
@@ -349,44 +349,51 @@
             
               <div class="markdown-body">
                 
-                <p>터미널에서 코드만을 사용하여 AWS S3 버킷에 접속하는 방법을 정리합니다.<br><span id="more"></span></p>
-<hr>
-<h2 id="AWS-S3"><a href="#AWS-S3" class="headerlink" title="AWS S3"></a>AWS S3</h2><p>S3(Simple Storage Service)는 AWS에서 제공하는 데이터 저장소이다. S3는 웹 기반으로 이루어져 있기 때문에 정적 휍 호스팅을 직접 관리할 수 있으며, 가상 서버인 EC2와도 데이터를 주고 받을 수 있다. 또한 데이터 저장량을 미리 결정해야 하는 EBS와 달리 S3는 무제한으로 데이터를 저장할 수 있다. 경제적인 이점을 제외하고서도 이런 장점들로 인해서 S3는 많이 사용된다.</p>
-<h3 id="객체-object"><a href="#객체-object" class="headerlink" title="객체 (object)"></a>객체 (object)</h3><p>객체는 S3에 데이터가 저장되는 기본 단위이다. 객체 종류로는 파일과 메타데이터가 있다. 일반적인 파일은 1개당 1Byte부터 5TB 까지 저장 가능하며, 메타데이터는 MIME 형식으로 파일 확장자를 자동으로 변경하여 저장된다. 메타데이터의 확장자는 사용자가 임의로 설정할 수도 있다.</p>
-<h3 id="버킷-bucket"><a href="#버킷-bucket" class="headerlink" title="버킷 (bucket)"></a>버킷 (bucket)</h3><p>버킷 (bucket)은 S3에서 데이터를 저장하는 최상위 저장소이다. 모든 데이터들은 버킷 안에 저장할 수 있으며, 버킷 없이 데이터를 업로드하는 것은 불가능하다. 각 AWS 계정별로 100개까지 생성할 수 있으며, 각 버킷에는 무제한으로 객체들을 저장할 수 있다.</p>
-<h2 id="boto3-library"><a href="#boto3-library" class="headerlink" title="boto3 library"></a>boto3 library</h2><p><code>boto3</code>는 파이썬에서 S3를 사용할 수 있도록 해주는 라이브러리이다. 아직 다운받지 않았다면 아래의 코드를 입력하면 된다.</p>
+                <p>터미널에서 코드만을 사용하여 AWS S3 버킷에 접속하는 방법을 정리합니다. <span id="more"></span></p>
+<hr />
+<h2 id="aws-s3">AWS S3</h2>
+<p>S3(Simple Storage Service)는 AWS에서 제공하는 데이터 저장소이다. S3는 웹 기반으로 이루어져 있기 때문에 정적 휍 호스팅을 직접 관리할 수 있으며, 가상 서버인 EC2와도 데이터를 주고 받을 수 있다. 또한 데이터 저장량을 미리 결정해야 하는 EBS와 달리 S3는 무제한으로 데이터를 저장할 수 있다. 경제적인 이점을 제외하고서도 이런 장점들로 인해서 S3는 많이 사용된다.</p>
+<h3 id="객체-object">객체 (object)</h3>
+<p>객체는 S3에 데이터가 저장되는 기본 단위이다. 객체 종류로는 파일과 메타데이터가 있다. 일반적인 파일은 1개당 1Byte부터 5TB 까지 저장 가능하며, 메타데이터는 MIME 형식으로 파일 확장자를 자동으로 변경하여 저장된다. 메타데이터의 확장자는 사용자가 임의로 설정할 수도 있다.</p>
+<h3 id="버킷-bucket">버킷 (bucket)</h3>
+<p>버킷 (bucket)은 S3에서 데이터를 저장하는 최상위 저장소이다. 모든 데이터들은 버킷 안에 저장할 수 있으며, 버킷 없이 데이터를 업로드하는 것은 불가능하다. 각 AWS 계정별로 100개까지 생성할 수 있으며, 각 버킷에는 무제한으로 객체들을 저장할 수 있다.</p>
+<h2 id="boto3-library">boto3 library</h2>
+<p><code>boto3</code>는 파이썬에서 S3를 사용할 수 있도록 해주는 라이브러리이다. 아직 다운받지 않았다면 아래의 코드를 입력하면 된다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">&gt; pip3 install boto3<br></code></pre></td></tr></table></figure>
 <p>다운이 완료되었다면 그 다음으로는 파이썬에 접속한 후 아래의 코드를 입력하여 해당 라이브러리를 가져온다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">&gt; <span class="hljs-keyword">import</span> boto3<br></code></pre></td></tr></table></figure>
-<h2 id="버킷-생성하기"><a href="#버킷-생성하기" class="headerlink" title="버킷 생성하기"></a>버킷 생성하기</h2><p>커맨드라인에서 S3를 사용할 준비가 완료되었다. 이제부터는 훈련 데이터를 넣을 버킷을 생성해보자. 아래의 코드를 입력하여 S3에 접속한다.</p>
+<h2 id="버킷-생성하기">버킷 생성하기</h2>
+<p>커맨드라인에서 S3를 사용할 준비가 완료되었다. 이제부터는 훈련 데이터를 넣을 버킷을 생성해보자. 아래의 코드를 입력하여 S3에 접속한다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">&gt; s3 = boto3.client(<span class="hljs-string">&#x27;s3&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <p>그 다음 버킷 이름을 설정하고, 버킷을 생성한다. 아래의 코드는 서울을 지역으로 설정하여 설정한 이름의 버킷을 생성한다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">&gt; bucket_name = <span class="hljs-string">&#x27;원하는 이름&#x27;</span><br>&gt; s3.create_bucket(Bucket = bucket_name, CreateBucketConfiguration = &#123;<span class="hljs-string">&#x27;LocationConstraint&#x27;</span>: <span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>&#125;)<br></code></pre></td></tr></table></figure>
-<p><strong>Warining</strong><br> 버킷의 이름은 전세계적으로 단 하나의 이름이어야 한다. 따라서 만약 누군가 사용하고 있는 이름을 입력하면 아래와 같은 오류가 발생하고, 버킷이 생성되지 않는다.</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">Traceback (most recent call last):<br> File <span class="hljs-string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;<br> File <span class="hljs-string">&quot;/usr/local/lib/python3.7/site-packages/botocore/client.py&quot;</span>, line <span class="hljs-number">337</span>, <span class="hljs-keyword">in</span> _api_call<br>   <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._make_api_call(operation_name, kwargs)<br> File <span class="hljs-string">&quot;/usr/local/lib/python3.7/site-packages/botocore/client.py&quot;</span>, line <span class="hljs-number">656</span>, <span class="hljs-keyword">in</span> _make_api_call<br>   <span class="hljs-keyword">raise</span> error_class(parsed_response, operation_name)<br>botocore.errorfactory.BucketAlreadyExists: An error occurred (BucketAlreadyExists) when calling the CreateBucket operation: The requested bucket name <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> available. The bucket namespace <span class="hljs-keyword">is</span> shared by <span class="hljs-built_in">all</span> users of the system. Please select a different name <span class="hljs-keyword">and</span> <span class="hljs-keyword">try</span> again.<br></code></pre></td></tr></table></figure>
+<p><strong>Warining</strong><br />
+버킷의 이름은 전세계적으로 단 하나의 이름이어야 한다. 따라서 만약 누군가 사용하고 있는 이름을 입력하면 아래와 같은 오류가 발생하고, 버킷이 생성되지 않는다.</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">Traceback (most recent call last):<br> File <span class="hljs-string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;<br> File <span class="hljs-string">&quot;/usr/local/lib/python3.7/site-packages/botocore/client.py&quot;</span>, line <span class="hljs-number">337</span>, <span class="hljs-keyword">in</span> _api_call<br>   <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._make_api_call(operation_name, kwargs)<br> File <span class="hljs-string">&quot;/usr/local/lib/python3.7/site-packages/botocore/client.py&quot;</span>, line <span class="hljs-number">656</span>, <span class="hljs-keyword">in</span> _make_api_call<br>   <span class="hljs-keyword">raise</span> error_class(parsed_response, operation_name)<br>botocore.errorfactory.BucketAlreadyExists: An error occurred (BucketAlreadyExists) when calling the CreateBucket operation: The requested bucket name <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> available. The bucket namespace <span class="hljs-keyword">is</span> shared by <span class="hljs-built_in">all</span> users of the system. Please select a different name <span class="hljs-keyword">and</span> <span class="hljs-keyword">try</span> again.<br></code></pre></td></tr></table></figure></p>
 <p>버킷 이름을 만들 때 주의해야 할 요소는 아래와 같다.</p>
 <ul>
-<li><p>버킷 이름은 3~63자로 이루어져야 하며 소문자와 숫자, 마침표 및 대시만 포함할 수 있다.</p>
-</li>
-<li><p>버킷 이름은 소문자 또는 숫자로 시작해야 한다.</p>
-</li>
-<li><p>버킷 이름은 밑줄을 포함하거나, 대시로 끝나거나, 마침표가 있거나, 마침표와 인접해 대시를 사용할 수 없다.</p>
-</li>
-<li><p>버킷 이름에 IP 주소 형식(198.51.100.24)을 사용할 수 없다.</p>
-</li>
+<li><p>버킷 이름은 3~63자로 이루어져야 하며 소문자와 숫자, 마침표 및 대시만 포함할 수 있다.</p></li>
+<li><p>버킷 이름은 소문자 또는 숫자로 시작해야 한다.</p></li>
+<li><p>버킷 이름은 밑줄을 포함하거나, 대시로 끝나거나, 마침표가 있거나, 마침표와 인접해 대시를 사용할 수 없다.</p></li>
+<li><p>버킷 이름에 IP 주소 형식(198.51.100.24)을 사용할 수 없다.</p></li>
 </ul>
 <p>이제 버킷 생성이 잘 되었는지 확인해보자. 아래의 코드를 입력하면 해당 계정의 버킷들의 목록을 볼 수 있다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">&gt; s3.list_buckets()<br></code></pre></td></tr></table></figure>
 <p>또한 AWS 사이트에 직접 로그인하여 S3를 확인해봐도 버킷이 생성되었음을 확인할 수 있다.</p>
-<p><img src="/images/91.png" srcset="/img/loading.gif" lazyload alt="AWS3_1"></p>
-<h2 id="버킷에-훈련-데이터-업로드하기"><a href="#버킷에-훈련-데이터-업로드하기" class="headerlink" title="버킷에 훈련 데이터 업로드하기"></a>버킷에 훈련 데이터 업로드하기</h2><p>해당 프로젝트에서는 간단하게 손글씨 데이터인 <code>MNIST</code>를 사용할 예정이다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/AWS_project/tree/master/MNIST_CPU">깃허브</a>에 가면 MNIST 데이터를 바로 다운받을 수 있다. 데이터 압축을 풀면 확장자 <code>plckle</code>인 MNIST 데이터 파일이 4개가 있을 것이다. 데이터 정보는 다음과 같다.</p>
+<figure>
+<img src="/images/91.png" srcset="/img/loading.gif" lazyload alt="AWS3_1" /><figcaption aria-hidden="true">AWS3_1</figcaption>
+</figure>
+<h2 id="버킷에-훈련-데이터-업로드하기">버킷에 훈련 데이터 업로드하기</h2>
+<p>해당 프로젝트에서는 간단하게 손글씨 데이터인 <code>MNIST</code>를 사용할 예정이다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/AWS_project/tree/master/MNIST_CPU">깃허브</a>에 가면 MNIST 데이터를 바로 다운받을 수 있다. 데이터 압축을 풀면 확장자 <code>plckle</code>인 MNIST 데이터 파일이 4개가 있을 것이다. 데이터 정보는 다음과 같다.</p>
 <ul>
 <li>train_x.pickle : 훈련 이미지 데이터 (shape: 60000 x 28 x 28 x 1)</li>
 <li>train_y.pickle : 훈련 정답 데이터 (shape: 60000)</li>
 <li>test_x.pickle : 검증 이미지 데이터 (shape: 10000 x 28 x 28 x 1)</li>
 <li>test_y.pickle : 검증 정답 데이터 (shape: 10000)</li>
 </ul>
-<p><strong>NOTE</strong><br> 왜 파일 확장자로 <code>plckle</code>를 사용했는가?<br> 그 이유는 해당 데이터 중 일부가 4차원 배열이기 때문이다. csv나 text 등의 확장자들은 2차원까지만 저장이 가능하다. 하지만 plckle은 파이썬 객체 자체를 파일로 저장하는 방식이기 때문에 다양한 구조의 데이터들을 비교적 쉽게 저장하고 불러올 수 있다.</p>
+<p><strong>NOTE</strong><br />
+왜 파일 확장자로 <code>plckle</code>를 사용했는가?<br />
+그 이유는 해당 데이터 중 일부가 4차원 배열이기 때문이다. csv나 text 등의 확장자들은 2차원까지만 저장이 가능하다. 하지만 plckle은 파이썬 객체 자체를 파일로 저장하는 방식이기 때문에 다양한 구조의 데이터들을 비교적 쉽게 저장하고 불러올 수 있다.</p>
 <p>다운로드가 완료되었다면 먼저 저장된 데이터가 있는 폴더로 디렉토리를 변경해주어야 한다.</p>
 <p>아래의 코드를 입력하여 현재 경로를 확인해보자.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">&gt; <span class="hljs-keyword">import</span> os<br>&gt; os.getcwd()<br></code></pre></td></tr></table></figure>
@@ -395,7 +402,9 @@
 <p>그 다음 데이터들을 생성한 버킷에 업로드한다. 해당 코드는 아래와 같다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">s3.upload_file(<span class="hljs-string">&#x27;업로드할 파일 이름&#x27;</span>, <span class="hljs-string">&#x27;버킷 이름&#x27;</span>, <span class="hljs-string">&#x27;버킷에 저장할 이름&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <p>그후 사이트에 들어가 확인해보면 아래 그림과 같은 변화를 확인할 수 있다.</p>
-<p><img src="/images/92.png" srcset="/img/loading.gif" lazyload alt="AWS3_2"></p>
+<figure>
+<img src="/images/92.png" srcset="/img/loading.gif" lazyload alt="AWS3_2" /><figcaption aria-hidden="true">AWS3_2</figcaption>
+</figure>
 <p>지금까지 커맨드라인에서 S3의 버킷을 생성하고 데이터를 업로드하는 방법을 살펴보았다.</p>
 
                 

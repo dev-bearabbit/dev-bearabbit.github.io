@@ -254,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          229 words
+          232 words
         
       </span>
     
@@ -347,17 +347,25 @@
             
               <div class="markdown-body">
                 
-                <p>Github에서 제공하는 Action 기능을 통해 데이터 스크래핑 및 적재를 자동화합니다.<br><span id="more"></span></p>
-<hr>
+                <p>Github에서 제공하는 Action 기능을 통해 데이터 스크래핑 및 적재를 자동화합니다. <span id="more"></span></p>
+<hr />
 <p>이번 글은 깃허브에서 무료로 사용할 수 있는 액션이라는 기능을 사용하여 데이터 적재를 자동화하는 과정을 공유하고자 한다.</p>
-<h2 id="Github-Action"><a href="#Github-Action" class="headerlink" title="Github Action"></a>Github Action</h2><p>깃허브 액션은 모든 레파지토리에서 사용할 수 있다. 보통은 레파지토리의 상단 바에서 <code>Actions</code>이라는 카테고리를 찾을 수 있다. 만약 <code>Actions</code>이 없다면 Settings &gt; Action &gt; General &gt; ‘Disable Actions’ 선택되어 있는지 확인하고 ‘Allow all actions and reusable workflows’로 변경해주면 아래 사진처럼 보일 것이다.</p>
-<p><img src="/images/164.png" srcset="/img/loading.gif" lazyload alt="action bar"></p>
+<h2 id="github-action">Github Action</h2>
+<p>깃허브 액션은 모든 레파지토리에서 사용할 수 있다. 보통은 레파지토리의 상단 바에서 <code>Actions</code>이라는 카테고리를 찾을 수 있다. 만약 <code>Actions</code>이 없다면 Settings &gt; Action &gt; General &gt; 'Disable Actions' 선택되어 있는지 확인하고 'Allow all actions and reusable workflows'로 변경해주면 아래 사진처럼 보일 것이다.</p>
+<figure>
+<img src="/images/164.png" srcset="/img/loading.gif" lazyload alt="action bar" /><figcaption aria-hidden="true">action bar</figcaption>
+</figure>
 <p>액션 카테고리로 들어로면 워크플로우를 생성하는 첫 페이지가 보일 것이다. 깃허브에서는 장고, 패키지 생성, 파이린트 등 상황에 따라서 사용할 수 있는 여러 워크플로우 템플릿을 제공한다.</p>
-<p><img src="/images/163.png" srcset="/img/loading.gif" lazyload alt="action"></p>
-<p>이번에는 템플릿 사용 없이 직접 워크플로우를 생성할 것이기에 ‘set up a workflow yourself’을 선택한다. 그럼 설명과 같이 yaml 파일을 작성하는 페이지가 나온다.</p>
-<p><img src="/images/165.png" srcset="/img/loading.gif" lazyload alt="action page"></p>
+<figure>
+<img src="/images/163.png" srcset="/img/loading.gif" lazyload alt="action" /><figcaption aria-hidden="true">action</figcaption>
+</figure>
+<p>이번에는 템플릿 사용 없이 직접 워크플로우를 생성할 것이기에 'set up a workflow yourself'을 선택한다. 그럼 설명과 같이 yaml 파일을 작성하는 페이지가 나온다.</p>
+<figure>
+<img src="/images/165.png" srcset="/img/loading.gif" lazyload alt="action page" /><figcaption aria-hidden="true">action page</figcaption>
+</figure>
 <p>이제 여기에 코드를 알맞게 입력하고 commit 입력하면 작업(Job)이 생성된다.</p>
-<h2 id="Workflow-작성"><a href="#Workflow-작성" class="headerlink" title="Workflow 작성"></a>Workflow 작성</h2><p>이번에 작성할 워크플로우의 조건은 아래와 같다.</p>
+<h2 id="workflow-작성">Workflow 작성</h2>
+<p>이번에 작성할 워크플로우의 조건은 아래와 같다.</p>
 <ul>
 <li>하루에 한번 작동하기</li>
 <li>데이터를 가져와서 DB서버에 Insert하기</li>
@@ -366,18 +374,24 @@
 <p>위 조건을 바탕으로 워크플로우를 작성하려고 한다. 먼저 액션에서 사용되는 yaml 파일의 레이아웃은 아래와 같다.</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-comment"># 워크플로우 이름 설정</span><br><span class="hljs-attr">name:</span> <span class="hljs-string">여기에</span> <span class="hljs-string">작성한</span> <span class="hljs-string">이름이</span> <span class="hljs-string">액션</span> <span class="hljs-string">작업의</span> <span class="hljs-string">이름이</span> <span class="hljs-string">된다.</span><br><br><span class="hljs-comment"># 워크플로우가 작동되는 조건 설정</span><br><span class="hljs-attr">on:</span><br>  <span class="hljs-comment"># 자동으로 언제 작동하는지 설정</span><br>  <span class="hljs-attr">schedule:</span><br>  <span class="hljs-comment"># 수동으로 워크플로우를 작동할 수 있도록 설정</span><br>  <span class="hljs-attr">workflow_dispatch:</span> <br><br><span class="hljs-comment"># 워크플로우에서 작업할 내용들 설정</span><br><span class="hljs-attr">jobs:</span><br>  <span class="hljs-comment"># 작업이 진행될 환경 설정</span><br>  <span class="hljs-attr">build-linux:</span><br>  <span class="hljs-comment"># 작업 내용 설정</span><br>  <span class="hljs-attr">steps:</span><br></code></pre></td></tr></table></figure>
 <p>위 레이아웃을 기준으로 필요한 작업들을 하나씩 작성해보자.</p>
-<h3 id="schedule"><a href="#schedule" class="headerlink" title="schedule"></a>schedule</h3><p>먼저 매일 특정 시간에 작업이 실행되도록 설정하고자 한다. 액션에서는 리눅스 <code>cron</code>을 지원한다.</p>
+<h3 id="schedule">schedule</h3>
+<p>먼저 매일 특정 시간에 작업이 실행되도록 설정하고자 한다. 액션에서는 리눅스 <code>cron</code>을 지원한다.</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">schedule:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">cron:</span> <span class="hljs-string">&#x27;40 4 * * *&#x27;</span><br></code></pre></td></tr></table></figure>
 <p>액션에서 작동하는 <code>cron</code>은 UTC 기준이기 때문에 시간을 잘 맞춰주어야 한다. UTC는 9시간을 더해야 한국 시간이며, 따라서 위 시간은 한국시간으로 13시 40분이다.</p>
-<h3 id="workflow-dispatch"><a href="#workflow-dispatch" class="headerlink" title="workflow_dispatch"></a>workflow_dispatch</h3><p>이제 수동으로 작업을 실행할 수 있는 코드도 작성해보자. 보통 테스트를 해야하거나 작업이 실패했을 시 수동으로 작업을 실행하기 위해서 해당 코드도 추가한다.</p>
+<h3 id="workflow_dispatch">workflow_dispatch</h3>
+<p>이제 수동으로 작업을 실행할 수 있는 코드도 작성해보자. 보통 테스트를 해야하거나 작업이 실패했을 시 수동으로 작업을 실행하기 위해서 해당 코드도 추가한다.</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">workflow_dispatch:</span><br></code></pre></td></tr></table></figure>
 <p>그러면 액션에서 아래처럼 수동으로 실행할 수 있는 트리거가 생성된다.</p>
-<p><img src="/images/166.png" srcset="/img/loading.gif" lazyload alt="action2"></p>
-<h3 id="build-linux"><a href="#build-linux" class="headerlink" title="build-linux"></a>build-linux</h3><p>이제 작업이 실행될 리눅스 환경을 설정한다. <code>max-parallel</code>은 병렬로 처리하려는 작업의 개수를 지정하며, <code>matrix</code>는 작업을 실행할 언어 버전을 지원한다. 아래 코드는 파이썬 3.9 버전에서 작동되도록 설정한 것이다.</p>
+<figure>
+<img src="/images/166.png" srcset="/img/loading.gif" lazyload alt="action2" /><figcaption aria-hidden="true">action2</figcaption>
+</figure>
+<h3 id="build-linux">build-linux</h3>
+<p>이제 작업이 실행될 리눅스 환경을 설정한다. <code>max-parallel</code>은 병렬로 처리하려는 작업의 개수를 지정하며, <code>matrix</code>는 작업을 실행할 언어 버전을 지원한다. 아래 코드는 파이썬 3.9 버전에서 작동되도록 설정한 것이다.</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">build-linux:</span><br>  <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span><br>  <span class="hljs-attr">strategy:</span><br>    <span class="hljs-attr">max-parallel:</span> <span class="hljs-number">1</span><br>    <span class="hljs-attr">matrix:</span><br>      <span class="hljs-attr">python-version:</span> [<span class="hljs-number">3.9</span>]<br></code></pre></td></tr></table></figure>
 <p>위 코드는 ubuntu 운영체제를 바탕으로 파이썬 3.9 버전을 병렬처리 없이 1개의 환경에서 진행된다는 의미이다.</p>
-<h3 id="steps"><a href="#steps" class="headerlink" title="steps"></a>steps</h3><p>이제 본격적으로 작업내용을 작성해보자. 일단 스크래핑을 자동화하는 방법은 다음과 같다.</p>
-<ol>
+<h3 id="steps">steps</h3>
+<p>이제 본격적으로 작업내용을 작성해보자. 일단 스크래핑을 자동화하는 방법은 다음과 같다.</p>
+<ol type="1">
 <li>사용할 코드 가져오기 (actions/checkout@v2)</li>
 <li>파이썬 설치하기 (Set up Python)</li>
 <li>필요한 패키지 설치하기(Install python package)</li>
@@ -385,7 +399,8 @@
 <li>파이썬 스크립트 실행하기 (Build)</li>
 </ol>
 <p>위에서 사용되는 파이썬 스크립트는 데이터를 스크래핑해서 DB에 저장하는 코드를 작성한 것이다.</p>
-<h2 id="최종-스크립트"><a href="#최종-스크립트" class="headerlink" title="최종 스크립트"></a>최종 스크립트</h2><p>위 내용들을 바탕으로 작성한 최종 스크립트는 아래와 같다.</p>
+<h2 id="최종-스크립트">최종 스크립트</h2>
+<p>위 내용들을 바탕으로 작성한 최종 스크립트는 아래와 같다.</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">auto-scraping</span> <span class="hljs-string">KBOdata</span><br><br><span class="hljs-attr">on:</span><br>  <span class="hljs-attr">schedule:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">cron:</span> <span class="hljs-string">&#x27;40 4 * * *&#x27;</span><br>    <span class="hljs-comment"># UTC가 default. 한국 시간으로 오후 1시 40분 실행</span><br>  <span class="hljs-attr">workflow_dispatch:</span><br><br><span class="hljs-attr">jobs:</span><br>  <span class="hljs-attr">build-linux:</span><br>    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span><br>    <span class="hljs-attr">strategy:</span><br>      <span class="hljs-attr">max-parallel:</span> <span class="hljs-number">1</span><br>      <span class="hljs-attr">matrix:</span><br>        <span class="hljs-attr">python-version:</span> [<span class="hljs-number">3.9</span>]<br><br>    <span class="hljs-attr">steps:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v2</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">Python</span> &#123;&#123; <span class="hljs-string">matrix.python-version</span> &#125;&#125;<br>      <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-python@v1</span><br>      <span class="hljs-attr">with:</span><br>        <span class="hljs-attr">python-version:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">matrix.python-version</span> <span class="hljs-string">&#125;&#125;</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">python</span> <span class="hljs-string">package</span><br>      <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br><span class="hljs-string">        pip install kbodata</span><br><span class="hljs-string">        pip install -r requirements.txt</span><br><span class="hljs-string"></span>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">Chromedriver</span><br>      <span class="hljs-attr">uses:</span> <span class="hljs-string">nanasess/setup-chromedriver@v1.0.1</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span><br>      <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br><span class="hljs-string">        cd kbo_data</span><br><span class="hljs-string">        python action.py $&#123;&#123; secrets.DB_INFO &#125;&#125;</span><br></code></pre></td></tr></table></figure>
 
                 

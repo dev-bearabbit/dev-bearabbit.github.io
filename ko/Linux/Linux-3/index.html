@@ -345,72 +345,79 @@
                 
                 <p>리눅스 기본 개념들에 대해서 정리합니다.</p>
 <span id="more"></span>
-<h2 id="Linux-Boot-순서"><a href="#Linux-Boot-순서" class="headerlink" title="Linux Boot 순서"></a>Linux Boot 순서</h2><p>리눅스가 처음 부팅되는 순서는 다음과 같다.</p>
-<ol>
+<h2 id="linux-boot-순서">Linux Boot 순서</h2>
+<p>리눅스가 처음 부팅되는 순서는 다음과 같다.</p>
+<ol type="1">
 <li>BIOS 설정</li>
 <li>BOOT loader(GRUB2) 실행</li>
 <li>커널 초기화</li>
 <li>INIT process 실행(systemd)</li>
 </ol>
 <p>위 과정들을 순서대로 살펴보자.</p>
-<h3 id="BIOS-설정"><a href="#BIOS-설정" class="headerlink" title="BIOS 설정"></a>BIOS 설정</h3><p> 바이오스(BIOS)는 Basic Input Output System의 약자로 컴퓨터가 가장 먼저 실행하는 프로그램이다. 바이오스는 부팅되면서 컴퓨터에 연결되어 있는 각종 부품(CPU, mem, disk 등)이 제대로 연결되어 있는지 확인하고 작동에 문제가 없는지 간단하게 검사한다. 바이오스는 펌웨어이기에 하드웨어 메인보드의 EPROM이나 플래시메모리 칩에 저장되어 있으며, OS가 처음 셋팅되기 전에 실행된다.</p>
-<p> <strong>NOTE</strong><br> 펌웨어(firmware)란?<br> 펌웨어는 특정 하드웨어에 설치된 소프트웨어로, 하드웨어가 각자의 기능대로 작동하기 위해 필요한 최소한의 프로그램이다. 펌웨어는 보통 컴퓨터가 생산될 때 공장에서 읽기 전용 메모리인 ROM(Read Only Memory)에 셋팅하며, 따라서 일반 사용자들이 이를 변경하기는 어렵다. 또한 펌웨어는 램에서 실행되는 일반 프로그램들과 달리 전원이 꺼져도 셋팅이 사라지지 않는다.</p>
-<p> 바이오스가 검사를 마치고 이상이 없다면 다음 단계인 부트 로더를 실행한다.</p>
-<h3 id="BOOT-loader-GRUB2-실행"><a href="#BOOT-loader-GRUB2-실행" class="headerlink" title="BOOT loader(GRUB2) 실행"></a>BOOT loader(GRUB2) 실행</h3><p> 부트 로더는 OS가 시작되기 이전에 미리 실행되어 커널이 올바르게 작동하기 위한 작업을 진행한다. 부트 로더는 보통 첫번째 하드디스크 맨 앞부분의 부트 섹터(boot sector)에 셋팅되어 있으며, 바이오스가 하드디스크 검사 후 해당 위치에서 프로그램을 읽어 메모리에 올린다.</p>
-<p> <strong>NOTE</strong><br> 부트 섹터(boot sector)란?<br> 부트 섹터는 부팅 프로그램을 담을 수 있는 하드 디스크, 플로피 디스크 등 기억 장치의 첫 섹터를 말한다 (1섹터 512 바이트). 부트 섹터의 종류로는 MBR과 VBR이 있다.</p>
-<p> 그렇게 실행된 부트 로더는 압축된 리눅스 커널 이미지를 다시 메모리로 복사하여 압축을 해제하고 로드시키며, 커널이 제대로 작동하는지 체크한다. 사실 더 자세히 살펴본다면 부트 로더도 1차와 2차로 나눠진다. 1차는 방금 설명한 MBR과 VBR이고, 이들은 2차 부트 로더를 실행시킨다. 그리고 2차 부트 로더가 커널을 로드하는 방식이다. 2차 부트 로더는 각 OS마다 다른데 리눅스에서는 GRUB2를 많이 사용한다. 2차 부트 로더는 파일 형식으로 <code>/boot</code> 아래에 위치한다.</p>
-<h3 id="커널-초기화"><a href="#커널-초기화" class="headerlink" title="커널 초기화"></a>커널 초기화</h3><p> 커널 초기화는 2차 부트 로더가 로드한 압축된 커널 이미지를 해제하는 과정이다. 커널은 압축된 이미지를 해제한 후 하드웨어를 초기화하고 메모리 관리 시스템 등을 시작한다. 즉, OS가 작동할 수 있도록 기본적인 환경을 갖추는 것이다. 이를 정상적으로 완료하면 INIT 프로세스를 진행한다.</p>
-<h3 id="INIT-process-systemd-실행"><a href="#INIT-process-systemd-실행" class="headerlink" title="INIT process(systemd) 실행"></a>INIT process(systemd) 실행</h3><p> INIT 프로세스는 사용자가 사용할 수 있는 OS 기타 환경들을 셋팅한다. 이전에는 initd를 사용했지만, systemd가 병렬로 부팅하여 더 빠르다는 등 여러 이유로 centos7 이후로는 systemd를 사용한다. 하지만 initd이나 systemd이나 추상적으로 부팅해서 하는 역할은 같으니 하는 일에 집중하자. systemd는 컴퓨터가 부팅되면서 가장 먼저 실행되는 프로세스이며, 이후 올라오는 모든 프로세스들을 설정 및 관리한다. 특징으로는 가장 먼저 올라오는 프로세스이기에 PID(Process ID)가 1이며, 관리 명령어는 <code>systemctl</code>이다. (기존에 사용했던 init 프로세스는 관리 명령어가 <code>service</code>이다.)</p>
+<h3 id="bios-설정">BIOS 설정</h3>
+<p>바이오스(BIOS)는 Basic Input Output System의 약자로 컴퓨터가 가장 먼저 실행하는 프로그램이다. 바이오스는 부팅되면서 컴퓨터에 연결되어 있는 각종 부품(CPU, mem, disk 등)이 제대로 연결되어 있는지 확인하고 작동에 문제가 없는지 간단하게 검사한다. 바이오스는 펌웨어이기에 하드웨어 메인보드의 EPROM이나 플래시메모리 칩에 저장되어 있으며, OS가 처음 셋팅되기 전에 실행된다.</p>
+<p><strong>NOTE</strong> 펌웨어(firmware)란?<br />
+펌웨어는 특정 하드웨어에 설치된 소프트웨어로, 하드웨어가 각자의 기능대로 작동하기 위해 필요한 최소한의 프로그램이다. 펌웨어는 보통 컴퓨터가 생산될 때 공장에서 읽기 전용 메모리인 ROM(Read Only Memory)에 셋팅하며, 따라서 일반 사용자들이 이를 변경하기는 어렵다. 또한 펌웨어는 램에서 실행되는 일반 프로그램들과 달리 전원이 꺼져도 셋팅이 사라지지 않는다.</p>
+<p>바이오스가 검사를 마치고 이상이 없다면 다음 단계인 부트 로더를 실행한다.</p>
+<h3 id="boot-loadergrub2-실행">BOOT loader(GRUB2) 실행</h3>
+<p>부트 로더는 OS가 시작되기 이전에 미리 실행되어 커널이 올바르게 작동하기 위한 작업을 진행한다. 부트 로더는 보통 첫번째 하드디스크 맨 앞부분의 부트 섹터(boot sector)에 셋팅되어 있으며, 바이오스가 하드디스크 검사 후 해당 위치에서 프로그램을 읽어 메모리에 올린다.</p>
+<p><strong>NOTE</strong> 부트 섹터(boot sector)란?<br />
+부트 섹터는 부팅 프로그램을 담을 수 있는 하드 디스크, 플로피 디스크 등 기억 장치의 첫 섹터를 말한다 (1섹터 512 바이트). 부트 섹터의 종류로는 MBR과 VBR이 있다.</p>
+<p>그렇게 실행된 부트 로더는 압축된 리눅스 커널 이미지를 다시 메모리로 복사하여 압축을 해제하고 로드시키며, 커널이 제대로 작동하는지 체크한다. 사실 더 자세히 살펴본다면 부트 로더도 1차와 2차로 나눠진다. 1차는 방금 설명한 MBR과 VBR이고, 이들은 2차 부트 로더를 실행시킨다. 그리고 2차 부트 로더가 커널을 로드하는 방식이다. 2차 부트 로더는 각 OS마다 다른데 리눅스에서는 GRUB2를 많이 사용한다. 2차 부트 로더는 파일 형식으로 <code>/boot</code> 아래에 위치한다.</p>
+<h3 id="커널-초기화">커널 초기화</h3>
+<p>커널 초기화는 2차 부트 로더가 로드한 압축된 커널 이미지를 해제하는 과정이다. 커널은 압축된 이미지를 해제한 후 하드웨어를 초기화하고 메모리 관리 시스템 등을 시작한다. 즉, OS가 작동할 수 있도록 기본적인 환경을 갖추는 것이다. 이를 정상적으로 완료하면 INIT 프로세스를 진행한다.</p>
+<h3 id="init-processsystemd-실행">INIT process(systemd) 실행</h3>
+<p>INIT 프로세스는 사용자가 사용할 수 있는 OS 기타 환경들을 셋팅한다. 이전에는 initd를 사용했지만, systemd가 병렬로 부팅하여 더 빠르다는 등 여러 이유로 centos7 이후로는 systemd를 사용한다. 하지만 initd이나 systemd이나 추상적으로 부팅해서 하는 역할은 같으니 하는 일에 집중하자. systemd는 컴퓨터가 부팅되면서 가장 먼저 실행되는 프로세스이며, 이후 올라오는 모든 프로세스들을 설정 및 관리한다. 특징으로는 가장 먼저 올라오는 프로세스이기에 PID(Process ID)가 1이며, 관리 명령어는 <code>systemctl</code>이다. (기존에 사용했던 init 프로세스는 관리 명령어가 <code>service</code>이다.)</p>
 <p>위 과정이 모두 진행되면 익숙한 리눅스 로그인 화면을 만날 수 있다.</p>
-<h2 id="Linux-Runlevel-target"><a href="#Linux-Runlevel-target" class="headerlink" title="Linux Runlevel(target)"></a>Linux Runlevel(target)</h2><p>Runlevel은 리눅스 시스템 관리를 보다 편하게 하기 위해 등장한 개념이다. 리눅스의 현 상태를 간단한 명령어 <code>runlevel</code>로 확인할 수 있다. Runlevel 단계는 다음과 같다.</p>
-<div class="table-container">
+<h2 id="linux-runleveltarget">Linux Runlevel(target)</h2>
+<p>Runlevel은 리눅스 시스템 관리를 보다 편하게 하기 위해 등장한 개념이다. 리눅스의 현 상태를 간단한 명령어 <code>runlevel</code>로 확인할 수 있다. Runlevel 단계는 다음과 같다.</p>
 <table>
+
 <thead>
-<tr>
+<tr class="header">
 <th>번호</th>
 <th>단계</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>0</td>
 <td>halt<br>(DO NOT set initdefault to this)</td>
 <td>시스템 종료</td>
 </tr>
-<tr>
+<tr class="even">
 <td>1</td>
 <td>Single user mode<br>rescue</td>
 <td>시스템 복원모드로 관리자 권한으로 접근 가능</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>2</td>
 <td>Multiuser mode<br>(The same as 3, if you do ot have networking)</td>
 <td>네트워크 안되는 다중 사용자 모드(NFS 지원X)</td>
 </tr>
-<tr>
+<tr class="even">
 <td>3</td>
 <td>Full muliuser mode<br>(multi-user.target)</td>
 <td>네트워크 사용가능한 다중 사용자 모드</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>4</td>
 <td>unused</td>
 <td>기본값 없음, 사용자 임의 설정 가능한 번호</td>
 </tr>
-<tr>
+<tr class="even">
 <td>5</td>
 <td>X11<br>(graphical.target)</td>
 <td>3번에 GUI 기능까지 탑재된 모드</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>6</td>
 <td>reboot<br>(DO NOT set initdefault to this)</td>
 <td>시스템 재가동 모드</td>
 </tr>
 </tbody>
 </table>
-</div>
 <p>중간에 runlevel을 변경하려면 간단하게 <code>init $number</code>로 입력하면 되고, 재부팅 없이 변경하려면 <code>telinit $number</code>를 사용하면 된다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># runlevel 확인</span><br>runlevel<br>&gt; N 3<br><br><span class="hljs-comment"># runlevel 변경</span><br>init 5<br><br><span class="hljs-comment"># 재부팅없이 runlevel 변경</span><br>telinit 5<br></code></pre></td></tr></table></figure>
 <p>여기서 한 가지 짚고 넘어가야 하는 것이 있다. runlevel는 기존의 initd에서 사용하던 방식이며, systemd에서는 해당 타겟값들을 아래의 명령어로 확인 및 변경한다. systemd에서 사용하는 명령어는 다음과 같다.</p>

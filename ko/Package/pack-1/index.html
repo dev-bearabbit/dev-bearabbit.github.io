@@ -33,9 +33,9 @@
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="package">
-<meta property="article:tag" content="poetry">
-<meta property="article:tag" content="패키지">
 <meta property="article:tag" content="pypi">
+<meta property="article:tag" content="패키지">
+<meta property="article:tag" content="poetry">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dev-bearabbit.github.io/images/153.png">
   
@@ -252,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          345 words
+          346 words
         
       </span>
     
@@ -347,46 +347,52 @@
                 
                 <p>Python에서 Poetry로 패키지를 관리하는 방법을 정리합니다.</p>
 <span id="more"></span>
-<h2 id="Poetry"><a href="#Poetry" class="headerlink" title="Poetry"></a>Poetry</h2><p>Poetry는 파이썬 패키지 및 의존성을 관리해주는 도구이다.</p>
-<h2 id="Poetry-설치"><a href="#Poetry-설치" class="headerlink" title="Poetry 설치"></a>Poetry 설치</h2><p>Poetry 설치는 <a target="_blank" rel="noopener" href="https://python-poetry.org/docs/#installation">공식 홈페이지</a>에 설명되어 있다.</p>
+<h2 id="poetry">Poetry</h2>
+<p>Poetry는 파이썬 패키지 및 의존성을 관리해주는 도구이다.</p>
+<h2 id="poetry-설치">Poetry 설치</h2>
+<p>Poetry 설치는 <a target="_blank" rel="noopener" href="https://python-poetry.org/docs/#installation">공식 홈페이지</a>에 설명되어 있다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># osx / linux / bashonwindows install instructions</span><br>curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python<br><br><span class="hljs-comment"># windows powershell install instructions</span><br>(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python<br></code></pre></td></tr></table></figure>
-<h2 id="새-프로젝트-생성"><a href="#새-프로젝트-생성" class="headerlink" title="새 프로젝트 생성"></a>새 프로젝트 생성</h2><p>이제 본격적으로 프로젝트를 진행해보자. 먼저 아래의 명령어로 패키지 디렉토리 구조를 생성한다. 여기서는 <code>tests</code>라는 이름의 패키지를 생성한다고 가정한다.</p>
+<h2 id="새-프로젝트-생성">새 프로젝트 생성</h2>
+<p>이제 본격적으로 프로젝트를 진행해보자. 먼저 아래의 명령어로 패키지 디렉토리 구조를 생성한다. 여기서는 <code>tests</code>라는 이름의 패키지를 생성한다고 가정한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">poetry new tests<br></code></pre></td></tr></table></figure>
 <p>그러면 아래와 같은 구조의 디렉토리가 생성된다.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">total 8<br>drwxr-xr-x@  6 ryu  staff   192  3  7 23:46 .<br>drwx------@ 46 ryu  staff  1472  3  7 23:46 ..<br>-rw-r--r--   1 ryu  staff     0  3  7 23:46 README.rst<br>-rw-r--r--   1 ryu  staff   295  3  7 23:46 pyproject.toml<br>drwxr-xr-x@  3 ryu  staff    96  3  7 23:46 test<br>drwxr-xr-x@  4 ryu  staff   128  3  7 23:46 tests<br></code></pre></td></tr></table></figure>
 <p>그 다음 패키지 형상 관리를 위해서 Github을 사용하고자 한다. 그래서 해당 패키지의 레파지토리를 만들고 Git 주소를 연동해준다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 패키지 레파지토리로 이동 후 Git 초기화</span><br>git init<br><span class="hljs-comment"># 리모트 서버 추가</span><br>git remote add origin &#123;깃허브 URL&#125;<br><span class="hljs-comment"># 커밋 추가</span><br>git commit -m <span class="hljs-string">&quot;update&quot;</span><br><span class="hljs-comment"># 배포</span><br>git push origin main<br></code></pre></td></tr></table></figure>
 <p>이렇게 하면 패키지 작성 및 관리를 위한 준비가 끝났다.</p>
-<h2 id="pyproject-toml-작성"><a href="#pyproject-toml-작성" class="headerlink" title="pyproject.toml 작성"></a>pyproject.toml 작성</h2><p>처음 생성된 <code>pyproject.toml</code> 파일에는 필수로 작성해야 하는 내용들이 포함되어 있으며, 그 양식은 아래와 같다.</p>
+<h2 id="pyproject.toml-작성">pyproject.toml 작성</h2>
+<p>처음 생성된 <code>pyproject.toml</code> 파일에는 필수로 작성해야 하는 내용들이 포함되어 있으며, 그 양식은 아래와 같다.</p>
 <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[tool.poetry]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;kbodata&quot;</span><br><span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span><br><span class="hljs-attr">description</span> = <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;Hyeonji-Ryu &lt;dev.bearabbit@gmail.com&gt;&quot;</span>]<br><br><span class="hljs-section">[tool.poetry.dependencies]</span><br><span class="hljs-attr">python</span> = <span class="hljs-string">&quot;^3.7&quot;</span><br><br><span class="hljs-section">[tool.poetry.dev-dependencies]</span><br><span class="hljs-attr">pytest</span> = <span class="hljs-string">&quot;^5.2&quot;</span><br><br><span class="hljs-section">[build-system]</span><br><span class="hljs-attr">requires</span> = [<span class="hljs-string">&quot;poetry-core&gt;=1.0.0&quot;</span>]<br><span class="hljs-attr">build-backend</span> = <span class="hljs-string">&quot;poetry.core.masonry.api&quot;</span><br></code></pre></td></tr></table></figure>
 <p>이제 기본으로 생성된 데이터에서 패키지 필요조건에 맞게 수정하면 된다. 수정해야 할 부분은 크게 2가지이다.</p>
-<div class="table-container">
 <table>
+
 <thead>
-<tr>
+<tr class="header">
 <th>부분</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>tool.poetry</td>
 <td>패키지에 대한 기본 정보를 작성헌다. 기존 setup.py에 작성하던 라이센스, 관리자 정보, 레포 정보 등을 압력하면 된다.</td>
 </tr>
-<tr>
+<tr class="even">
 <td>tool.poetry.dependencies</td>
 <td>해당 패키지가 의존하고 있는 다른 라이브러리들을 정리한다. 기존 requirement.txt와 동일하다.</td>
 </tr>
 </tbody>
 </table>
-</div>
 <p>그렇게 패키징에 필요한 내용들을 추가한 <code>pyproject.toml</code>은 아래와 같다.</p>
 <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[tool.poetry]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;kbodata&quot;</span><br><span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span><br><span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Scraping Korea Baseball Game information&quot;</span><br><span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;Hyeonji-Ryu &lt;dev.bearabbit@gmail.com&gt;&quot;</span>]<br><span class="hljs-attr">license</span> = <span class="hljs-string">&quot;MIT&quot;</span><br><span class="hljs-attr">readme</span> = <span class="hljs-string">&quot;README.md&quot;</span><br><span class="hljs-attr">repository</span> = <span class="hljs-string">&quot;https://github.com/Hyeonji-Ryu/kbo-data&quot;</span><br><span class="hljs-attr">documentation</span> = <span class="hljs-string">&quot;https://github.com/Hyeonji-Ryu/kbo-data/tree/main/docs&quot;</span><br><br><span class="hljs-comment"># Requirements</span><br><span class="hljs-section">[tool.poetry.dependencies]</span><br><span class="hljs-attr">python</span> = <span class="hljs-string">&quot;^3.7.1&quot;</span><br><span class="hljs-attr">selenium</span> = <span class="hljs-string">&quot;^3.141.0&quot;</span><br><span class="hljs-attr">pandas</span> = <span class="hljs-string">&quot;^1.2.2&quot;</span><br><span class="hljs-attr">bs4</span> = <span class="hljs-string">&quot;^0.0.1&quot;</span><br><span class="hljs-attr">lxml</span> = <span class="hljs-string">&quot;^4.6.2&quot;</span><br><span class="hljs-attr">requests</span> = <span class="hljs-string">&quot;^2.25.1&quot;</span><br><br><span class="hljs-section">[tool.poetry.dev-dependencies]</span><br><span class="hljs-attr">pytest</span> = <span class="hljs-string">&quot;^5.2&quot;</span><br><br><span class="hljs-section">[build-system]</span><br><span class="hljs-attr">requires</span> = [<span class="hljs-string">&quot;poetry-core&gt;=1.0.0&quot;</span>]<br><span class="hljs-attr">build-backend</span> = <span class="hljs-string">&quot;poetry.core.masonry.api&quot;</span><br></code></pre></td></tr></table></figure>
-<h2 id="PyPi에-업로드"><a href="#PyPi에-업로드" class="headerlink" title="PyPi에 업로드"></a>PyPi에 업로드</h2><p>PyPi에 업로드하기 위해서는 해당 사이트의 아이디와 비밀번호가 필요하다. 따라서 회원가입이 되어 있지 않다면 <a target="_blank" rel="noopener" href="https://pypi.org">pypi.org</a>에 가서 계정을 생성해야 한다.</p>
+<h2 id="pypi에-업로드">PyPi에 업로드</h2>
+<p>PyPi에 업로드하기 위해서는 해당 사이트의 아이디와 비밀번호가 필요하다. 따라서 회원가입이 되어 있지 않다면 <a target="_blank" rel="noopener" href="https://pypi.org">pypi.org</a>에 가서 계정을 생성해야 한다.</p>
 <p>그 다음 패키지로 올리는 프로젝트 디렉토리로 가서 아래의 코드를 입력한다.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">poetry publish --build<br></code></pre></td></tr></table></figure>
 <p>그러면 PyPi 홈페이지의 아이디와 비밀번호를 입력하라고 한다. 이를 입력하고 나면 poetry는 내부의 소스코드를 확인하고 문제가 있는 부분에 대한 에러를 프린트 하거나 정상적으로 패키지를 업로드 해준다.</p>
-<p><img src="/images/153.png" srcset="/img/loading.gif" lazyload alt="kbodata"></p>
+<figure>
+<img src="/images/153.png" srcset="/img/loading.gif" lazyload alt="kbodata" /><figcaption aria-hidden="true">kbodata</figcaption>
+</figure>
 
                 
               </div>
@@ -431,11 +437,11 @@
       
         <a href="/tags/package/" class="print-no-link">#package</a>
       
-        <a href="/tags/poetry/" class="print-no-link">#poetry</a>
+        <a href="/tags/pypi/" class="print-no-link">#pypi</a>
       
         <a href="/tags/%ED%8C%A8%ED%82%A4%EC%A7%80/" class="print-no-link">#패키지</a>
       
-        <a href="/tags/pypi/" class="print-no-link">#pypi</a>
+        <a href="/tags/poetry/" class="print-no-link">#poetry</a>
       
     </div>
   

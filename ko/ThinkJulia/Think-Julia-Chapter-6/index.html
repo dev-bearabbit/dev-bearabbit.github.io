@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          610 words
+          611 words
         
       </span>
     
@@ -347,20 +347,25 @@
                 <blockquote>
 <p>글을 시작하기에 앞서 해당 시리즈는 Allen Downey, Ben Lauwens의 저서인 Think Julia: How to Think Like a Computer Scientist 를 바탕으로 작성된 글임을 알려드립니다.</p>
 </blockquote>
-<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap07">Iteration</a>를 한글로 요약 정리한 글입니다.<br><span id="more"></span></p>
-<h2 id="반복-Iteration"><a href="#반복-Iteration" class="headerlink" title="반복 (Iteration)"></a>반복 (Iteration)</h2><p>이번 장에서는 명령문들을 반복해주는 반복문에 대해서 살펴볼 것이다. 우리는 이미 <a href="https://dev-bearabbit.github.io/2020/03/03/ThinkJulia/Think-Julia-Chapter-5/">조건문과 재귀</a>에서 <code>for</code>루프를 사용한 반복문을 살펴보았다. 이번 장에서는 <code>while</code>문을 사용하는 방법을 배울 것이다. 그 전에 변수 할당에 대해서 조금 더 알아보자.</p>
-<h3 id="재할당-Reassignment"><a href="#재할당-Reassignment" class="headerlink" title="재할당 (Reassignment)"></a>재할당 (Reassignment)</h3><p>제목에서 알 수 있듯이, 한 변수에 값을 여러 번 할당하는 것은 가능하다. 새로운 할당문은 이전의 값을 제거하고 새로운 값으로 변경한다.</p>
+<p>이 포스트는 <a target="_blank" rel="noopener" href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html#chap07">Iteration</a>를 한글로 요약 정리한 글입니다. <span id="more"></span></p>
+<h2 id="반복-iteration">반복 (Iteration)</h2>
+<p>이번 장에서는 명령문들을 반복해주는 반복문에 대해서 살펴볼 것이다. 우리는 이미 <a href="https://dev-bearabbit.github.io/2020/03/03/ThinkJulia/Think-Julia-Chapter-5/">조건문과 재귀</a>에서 <code>for</code>루프를 사용한 반복문을 살펴보았다. 이번 장에서는 <code>while</code>문을 사용하는 방법을 배울 것이다. 그 전에 변수 할당에 대해서 조금 더 알아보자.</p>
+<h3 id="재할당-reassignment">재할당 (Reassignment)</h3>
+<p>제목에서 알 수 있듯이, 한 변수에 값을 여러 번 할당하는 것은 가능하다. 새로운 할당문은 이전의 값을 제거하고 새로운 값으로 변경한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = <span class="hljs-number">5</span><br><span class="hljs-number">5</span><br>julia&gt; x = <span class="hljs-number">7</span><br><span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
 <p>처음 코드에서 <code>x</code>는 값으로 <code>5</code>를 할당받았지만, 두 번째 코드가 실행된 이후에는 값이 <code>7</code>로 재할당된다.</p>
 <p>이런 재할당의 방식은 다이어그램으로 보면 아래와 같다.</p>
-<p><img src="/images/reassign.png" srcset="/img/loading.gif" lazyload alt="state diagram"></p>
+<figure>
+<img src="/images/reassign.png" srcset="/img/loading.gif" lazyload alt="state diagram" /><figcaption aria-hidden="true">state diagram</figcaption>
+</figure>
 <p>줄리아는 할당에 등호(<code>=</code>)를 사용하기 때문에 수학식에서의 <code>a``=``b</code>와 같은 동일성(equal)으로 이해하는 경우가 종종 있다. 하지만 이것은 잘못된 개념 정의이다.</p>
 <p>먼저 동일성은 대칭관계이지만 할당은 그렇지 않다. 예를 들어 수학에서 <code>a``=``7</code>인 경우 <code>7``=``a</code>도 성립하지만, 줄리아에서는 <code>a``=``7</code>로 할당한다고 해서 <code>7``=``a</code>가 옳은 것은 아니다.</p>
-<p>또한 수학에서 ‘동일성의 속성(a proposition of equality)’은 항상 참(true) 또는 거짓(false)이다. 예를 들어 <code>a``=``b</code>가 참이라면 <code>a</code>는 항상 <code>b</code>와 같아야 한다. 하지만 줄리아는 재할당하면 위의 참 가정이 언제든지 깨질 수 있다.</p>
+<p>또한 수학에서 '동일성의 속성(a proposition of equality)'은 항상 참(true) 또는 거짓(false)이다. 예를 들어 <code>a``=``b</code>가 참이라면 <code>a</code>는 항상 <code>b</code>와 같아야 한다. 하지만 줄리아는 재할당하면 위의 참 가정이 언제든지 깨질 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; a = <span class="hljs-number">5</span><br><span class="hljs-number">5</span><br>julia&gt; b = a    <span class="hljs-comment"># a 와 b 가 현재는 동일하다.</span><br><span class="hljs-number">5</span><br>julia&gt; a = <span class="hljs-number">3</span>    <span class="hljs-comment"># a 를 재할당 하는 순간 동일성은 깨진다.</span><br><span class="hljs-number">3</span><br>julia&gt; b<br><span class="hljs-number">5</span><br></code></pre></td></tr></table></figure>
 <p>위의 코드에서 볼 수 있듯이 <code>a</code>을 재할당해도 <code>b</code>도 같이 재할당되지 않는다. 이는 할당과 동일성이 다르다는 것을 증명한다.</p>
-<p><strong>주의</strong><br>변수를 재할당 하는 것은 종종 유용하지만, 주의해서 사용해야 한다. 너무 자주 변경하면 이후 코드를 읽고 디버깅하기 어려울 수 있다. 또한 이미 생성된 변수와 같은 이름으로 함수를 생성할 수 없다.</p>
-<h3 id="변수-업데이트-Updating-Variables"><a href="#변수-업데이트-Updating-Variables" class="headerlink" title="변수 업데이트 (Updating Variables)"></a>변수 업데이트 (Updating Variables)</h3><p>일반적인 재할당 유형은 업데이트이며, 변수의 새 값은 이전 값에 따라 다르다.</p>
+<p><strong>주의</strong> 변수를 재할당 하는 것은 종종 유용하지만, 주의해서 사용해야 한다. 너무 자주 변경하면 이후 코드를 읽고 디버깅하기 어려울 수 있다. 또한 이미 생성된 변수와 같은 이름으로 함수를 생성할 수 없다.</p>
+<h3 id="변수-업데이트-updating-variables">변수 업데이트 (Updating Variables)</h3>
+<p>일반적인 재할당 유형은 업데이트이며, 변수의 새 값은 이전 값에 따라 다르다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = x + <span class="hljs-number">1</span><br><span class="hljs-number">8</span><br></code></pre></td></tr></table></figure>
 <p>위의 코드는 <code>x</code>의 현재 값을 얻고, 1을 더한 다음 <code>x</code>를 새로운 값으로 업데이트한다.</p>
 <p>하지만 아직 생성되지 않은 변수를 업데이트 하려고 한다면, 줄리아는 오류를 일으킨다.</p>
@@ -368,10 +373,11 @@
 <p>변수를 업데이트하기 전에, 간단하게 값을 할당하여 초기화를 해야 한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; y = <span class="hljs-number">0</span><br><span class="hljs-number">0</span><br>julia&gt; y = y + <span class="hljs-number">1</span><br><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 <p>1을 추가하여 변수를 업데이트 하는 것을 증가(increment)라고 하며, 1을 빼는 것을 감소(decrement)라고 한다.</p>
-<h3 id="while문"><a href="#while문" class="headerlink" title="while문"></a><code>while</code>문</h3><p>컴퓨터는 종종 반복적인 일들을 자동으로 사용한다. 오류 없이 동일한 일을 반복하는 것은 컴퓨터가 가장 잘하는 일이며, 사람들이 가장 못하는 일이다.</p>
+<h3 id="while문"><code>while</code>문</h3>
+<p>컴퓨터는 종종 반복적인 일들을 자동으로 사용한다. 오류 없이 동일한 일을 반복하는 것은 컴퓨터가 가장 잘하는 일이며, 사람들이 가장 못하는 일이다.</p>
 <p>우리는 이미 재귀를 사용하여 반복하는 <code>countdown()</code>, <code>printn()</code>를 보았다. 반복문은 많이 사용되기 때문에 줄리아는 반복문을 더 쉽게 만들 수 있도록 설계되었다. 그 중 하나인 <code>for</code>문은 우리가 <a href="https://dev-bearabbit.github.io/2020/03/02/ThinkJulia/Think-Julia-Chapter-4/">간단한 반복 파트</a>에서 봤기 때문에 <code>while</code>문 먼저 볼 것이다. 아래 코드는 <code>while</code>문을 사용하여 작성한 <code>countdown()</code>이다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> countdown(n)<br>    <span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">0</span><br>        print(n, <span class="hljs-string">&quot; &quot;</span>)<br>        n = n - <span class="hljs-number">1</span><br>    <span class="hljs-keyword">end</span><br>    println(<span class="hljs-string">&quot;Blastoff!&quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><code>while</code>문에 대해서 본 적이 없을지라도 위의 코드를 대부분 이해할 수 있을 것이다. <code>n</code>이 0보다 크다면, <code>n</code>을 보여주고 <code>n</code>에서 1을 뺀다. <code>n</code>이 0이 될 때까지 반복하다가 0이 되면, “Blastoff!”를 반환한다.</p>
+<p><code>while</code>문에 대해서 본 적이 없을지라도 위의 코드를 대부분 이해할 수 있을 것이다. <code>n</code>이 0보다 크다면, <code>n</code>을 보여주고 <code>n</code>에서 1을 뺀다. <code>n</code>이 0이 될 때까지 반복하다가 0이 되면, "Blastoff!"를 반환한다.</p>
 <p>더 형식적으로, <code>while</code>문의 실행 흐름을 정리해보자.</p>
 <ul>
 <li><code>while</code>문의 조건이 참인지 거짓인지 판별하라</li>
@@ -387,25 +393,30 @@
 <p>루프가 매번 작동할 때, 프로그램은 <code>n</code>의 값을 도출한 후 해당 <code>n</code>이 짝수인지 홀수인지 확인한다. 만약에 <code>n</code>이 짝수라면 2로 나눠지며, 홀수라면 <code>n</code>은 <code>n*3 + 1</code> 값으로 대체된다. 예를 들어 <code>seq()</code>에 인수로 3을 준다면, 결괏값으로 3,10,5,16,8,4,2,1을 도출할 것이다.</p>
 <p><code>n</code>은 증가하거나 감소하기 때문에 <code>n</code>이 1이 되어 프로그램이 종료된다는 명백한 증거는 없다. 다만 위의 예시와 같이 <code>n</code>의 특정 값에 대해서는 종료를 증명할 수 있다. 예를 들어 시작 값이 2의 거듭제곱인 경우 <code>n</code>은 루프를 통과할 때마다 짝수가 되며, 결국 1이 되어 종료될 수 있다.</p>
 <p>여기서 어려운 질문은 과연 프로그램은 <code>n</code>이 모든 양수 값일 때 종료되는가이다. 지금가지 누구도 저 문제를 증명하거나 반증하지 못했다.</p>
-<h3 id="break문"><a href="#break문" class="headerlink" title="break문"></a><code>break</code>문</h3><p>때때로 함수를 작성하다보면 루프를 끝내는 지점을 처음에 정하지 못할 수도 있다. 그런 경우에는 <code>break</code>문을 사용하여 루프를 빠져나올 수 있다.</p>
+<h3 id="break문"><code>break</code>문</h3>
+<p>때때로 함수를 작성하다보면 루프를 끝내는 지점을 처음에 정하지 못할 수도 있다. 그런 경우에는 <code>break</code>문을 사용하여 루프를 빠져나올 수 있다.</p>
 <p>예를 들어, 만약에 사용자가 <code>done</code>이라고 작성할 때까지 사용자로부터 입력을 받고 싶다고 가정하자. 그렇다면 아래와 같이 코드를 작성할 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">while</span> <span class="hljs-literal">true</span><br>    print(<span class="hljs-string">&quot;&gt; &quot;</span>)<br>    line = readline()<br>    <span class="hljs-keyword">if</span> line == <span class="hljs-string">&quot;done&quot;</span><br>        <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">end</span><br>    println(line)<br><span class="hljs-keyword">end</span><br>println(<span class="hljs-string">&quot;Done!&quot;</span>)<br></code></pre></td></tr></table></figure>
 <p>해당 루프의 조건은 항상 <code>true</code>이기 때문에, 루프는 <code>break</code>문에 도달할 때까지 계속 반복된다.</p>
-<p>매번 사용자에게 “&gt; “가 표시되며, 사용자가 <code>done</code>이라고 입력하는 즉시 <code>break</code>문이 루프를 종료한다. 만약 <code>done</code>을 입력하지 않으면, 사용자가 입력한 내용을 반영하고 다시 루프의 위로 올라간다.</p>
+<p>매번 사용자에게 "&gt; "가 표시되며, 사용자가 <code>done</code>이라고 입력하는 즉시 <code>break</code>문이 루프를 종료한다. 만약 <code>done</code>을 입력하지 않으면, 사용자가 입력한 내용을 반영하고 다시 루프의 위로 올라간다.</p>
 <p>실행한 결과는 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">&gt; not done<br>not done<br>&gt; done<br>Done!<br></code></pre></td></tr></table></figure>
 <p>이렇게 루프를 작성하는 방법은 루프의 어느 곳에서든 조건을 확인할 수 있고, 멈춰야 하는 지점도 정확히 설정할 수 있기 때문에 일반적으로 사용된다.</p>
-<h3 id="continue문"><a href="#continue문" class="headerlink" title="continue문"></a><code>continue</code>문</h3><p><code>break</code>문이 루프를 빠져나가게 한다면, <code>continue</code>문은 명령문들 중간에서 루프의 시작점으로 올려준다. 예를 통해 확인해보자.</p>
+<h3 id="continue문"><code>continue</code>문</h3>
+<p><code>break</code>문이 루프를 빠져나가게 한다면, <code>continue</code>문은 명령문들 중간에서 루프의 시작점으로 올려준다. 예를 통해 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:<span class="hljs-number">10</span><br>    <span class="hljs-keyword">if</span> i % <span class="hljs-number">3</span> == <span class="hljs-number">0</span><br>        <span class="hljs-keyword">continue</span><br>    <span class="hljs-keyword">end</span><br>    print(i, <span class="hljs-string">&quot; &quot;</span>)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>위 코드 실행의 결과는 다음과 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
 <p>코드를 살펴보면, <code>i</code>가 3으로 나눠지면 <code>continue</code>문을 만나서 루프의 처음으로 돌아가며, <code>i</code>가 3으로 나눠지지 않으면 그대로 <code>print()</code>로 넘어간다. 따라서 결과에서 3으로 나눠지는 수들은 다 제외되고 출력된 것이다.</p>
-<h3 id="제곱근-Square-Roots"><a href="#제곱근-Square-Roots" class="headerlink" title="제곱근 (Square Roots)"></a>제곱근 (Square Roots)</h3><p>루프는 반복하여 수치 결과를 개선하는 프로그램에도 자주 사용된다.</p>
-<p> 예로 제곱근을 계산하는 방법 중 하나인 뉴턴의 방법을 보자. 만약 <code>a</code>라는 수의 제곱근을 알고 싶다면, 아래의 공식을 반복하여 값을 찾을 수 있다.</p>
-<script type="math/tex; mode=display">
+<h3 id="제곱근-square-roots">제곱근 (Square Roots)</h3>
+<p>루프는 반복하여 수치 결과를 개선하는 프로그램에도 자주 사용된다.</p>
+<p>예로 제곱근을 계산하는 방법 중 하나인 뉴턴의 방법을 보자. 만약 <code>a</code>라는 수의 제곱근을 알고 싶다면, 아래의 공식을 반복하여 값을 찾을 수 있다.</p>
+<p><span class="math display">\[
 \begin{equation}
 y= \frac{1}{2}\left(x+\frac{a}{x}\right)
-\end{equation}</script><p>임의로 <code>a</code>에 4을 할당하고, <code>x</code>에 3을 할당한다.</p>
+\end{equation}
+\]</span></p>
+<p>임의로 <code>a</code>에 4을 할당하고, <code>x</code>에 3을 할당한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; a = <span class="hljs-number">4</span><br><span class="hljs-number">4</span><br>julia&gt; x = <span class="hljs-number">3</span><br><span class="hljs-number">3</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.1666666666666665</span><br></code></pre></td></tr></table></figure>
 <p>위 결과는 4의 제곱근인 2와 가깝다. 만약에 위 과정을 반복한다면, 2와 더 가까운 결과를 얻을 수 있다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = y<br><span class="hljs-number">2.1666666666666665</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0064102564102564</span><br></code></pre></td></tr></table></figure>
@@ -415,18 +426,20 @@ y= \frac{1}{2}\left(x+\frac{a}{x}\right)
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia">julia&gt; x = y<br><span class="hljs-number">2.0000000000262146</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0</span><br>julia&gt; x = y<br><span class="hljs-number">2.0</span><br>julia&gt; y = (x + a/x) / <span class="hljs-number">2</span><br><span class="hljs-number">2.0</span><br></code></pre></td></tr></table></figure>
 <p><code>y == x</code>에 도달했을 때는 반복문을 멈출 수 있다. 위의 과정을 <code>while</code>문으로 작성하면 아래와 같다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">while</span> <span class="hljs-literal">true</span><br>    println(x)<br>    y = (x + a/x) / <span class="hljs-number">2</span><br>    <span class="hljs-keyword">if</span> y == x<br>        <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">end</span><br>    x = y<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>대부분의 값은 정상적으로 작동하지만 <script type="math/tex">\sqrt{2}</script> 와 같은 수들은 <code>Float64</code>로 표현되지 않기 때문에 피하는게 좋다.</p>
+<p>대부분의 값은 정상적으로 작동하지만 <span class="math display">\[\sqrt{2}\]</span> 와 같은 수들은 <code>Float64</code>로 표현되지 않기 때문에 피하는게 좋다.</p>
 <p><code>y</code>와 <code>x</code>가 정확하게 동일한지 확인하기 위해서는 내장 함수 <code>abs()</code>를 사용하여 이들의 차이를 절대 값으로 계산하는 것이 더 안전하다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">if</span> abs(y-x) &lt; ε<br>    <span class="hljs-keyword">break</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>여기서 <code>ε</code>(<code>\varepsilon TAB</code>)은 <code>0.0000001</code>과 같이 얼마나 가까운지 결정한다.</p>
-<h3 id="알고리즘"><a href="#알고리즘" class="headerlink" title="알고리즘"></a>알고리즘</h3><p>뉴턴의 방법은 알고리즘 예시 중 하나이다. 알고리즘(Algorithms)은 제곱근 계산과 같이 문제들을 해결하는 기계적인 프로세스이다.</p>
+<h3 id="알고리즘">알고리즘</h3>
+<p>뉴턴의 방법은 알고리즘 예시 중 하나이다. 알고리즘(Algorithms)은 제곱근 계산과 같이 문제들을 해결하는 기계적인 프로세스이다.</p>
 <p>알고리즘이 무엇인지 이해하기 위해서는 알고리즘이 아닌 것들을 먼저 보는 것이 더 효과적일 수 있다. 예로 한 자리 숫자를 곱하는 법을 배울 때, 단순히 곱셈표를 외웠을 것이다. 이런 종류의 지식은 알고리즘이라고 할 수 없다.</p>
 <p>그러나 게으른 사람이라면 몇 가지의 요령을 획득했을 것이다. 예를 들어 n과 9의 곱을 찾으려면 n−1을 첫 번째 숫자로, 10−n을 두 번째 숫자로 사용하여 답을 만들 수 있다. 이 식은 한자리 숫자와 9를 곱하는 일반적인 해결방안이다. 이것이 알고리즘이다.</p>
 <p>알고리즘의 특징 중 하나는 이를 수행할 지능이 필요하지 않다는 점이다. 알고리즘들은 간단한 규칙에 따라서 진행하는 기계적인 프로세스이다.</p>
 <p>알고리즘 실행은 지루하지만 알고리즘 설계는 흥미롭고 도전적이다. 또한 알고리즘 설계는 컴퓨터 과학의 핵심이다.</p>
 <p>사람들이 자연스럽게 하는 것들 중 일부는 알고리즘으로 구현하기가 어렵다. 예로 자연어를 이해하는 것 등이다. 우리는 모두 자연어를 이해하고 있지만, 알고리즘적으로 어떻게 이해하는지 설명하는 것은 매우 어렵다.</p>
-<h3 id="디버깅"><a href="#디버깅" class="headerlink" title="디버깅"></a>디버깅</h3><p>더 큰 프로그램을 작성하기 시작하면 디버깅에 많은 시간을 투자하게 된다. 코드가 많을수록 오류가 발생할 확률도 올라가며 버그가 숨어있을 수 있는 공간도 많아진다.</p>
-<p>디버깅 시간을 줄일 수 있는 한 가지 방법은 이분법 디버깅이다.<br>이분법 디버깅은 프로그램 코드를 중간 단위로 분해하여 확인하면서 문제점을 빠르게 찾는 방법이다. 예를 들어 프로그램 코드가 100줄이라면, 50줄 쯤에서 나눈 다음 그 근처를 확인하는 것이다. 확인하는 방법은 <code>print</code>문을 넣어 코드가 잘 작동하는지 보는 것이다. 이때 잘 작동한다면 프로그램 후반부에 문제가 있는 것이고, 아니라면 전반부에 문제가 있는 것이다. 이 방식으로 검사하면 100줄을 전부 다 볼 필요 없다.</p>
+<h3 id="디버깅">디버깅</h3>
+<p>더 큰 프로그램을 작성하기 시작하면 디버깅에 많은 시간을 투자하게 된다. 코드가 많을수록 오류가 발생할 확률도 올라가며 버그가 숨어있을 수 있는 공간도 많아진다.</p>
+<p>디버깅 시간을 줄일 수 있는 한 가지 방법은 이분법 디버깅이다. 이분법 디버깅은 프로그램 코드를 중간 단위로 분해하여 확인하면서 문제점을 빠르게 찾는 방법이다. 예를 들어 프로그램 코드가 100줄이라면, 50줄 쯤에서 나눈 다음 그 근처를 확인하는 것이다. 확인하는 방법은 <code>print</code>문을 넣어 코드가 잘 작동하는지 보는 것이다. 이때 잘 작동한다면 프로그램 후반부에 문제가 있는 것이고, 아니라면 전반부에 문제가 있는 것이다. 이 방식으로 검사하면 100줄을 전부 다 볼 필요 없다.</p>
 <p>하지만 실제 상황에서는 프로그램 중간이 무엇인지 명확하지 않을 수 있다. 코드 줄 개수에 맞춰 반으로 나누는 것은 합리적이지 않다. 따라서 프로그램에 오류가 있을 수 있는 장소와 코드를 먼저 점검한 후, 개발자가 생각하는 합리적인 중간점을 찾는 것이 좋다.</p>
 
                 
