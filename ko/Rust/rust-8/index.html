@@ -30,13 +30,13 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/158.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/157.png">
 <meta property="article:published_time" content="2022-03-08T11:40:23.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:37:45.843Z">
+<meta property="article:modified_time" content="2025-02-08T13:57:27.806Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="recursion">
 <meta property="article:tag" content="recursive">
 <meta property="article:tag" content="python">
-<meta property="article:tag" content="rust">
 <meta property="article:tag" content="비교">
+<meta property="article:tag" content="rust">
 <meta property="article:tag" content="hanoi">
 <meta property="article:tag" content="시간초과">
 <meta property="article:tag" content="println">
@@ -355,7 +355,7 @@
 <h2 id="문제-발생-시점">문제 발생 시점</h2>
 <p>러스트로 <a target="_blank" rel="noopener" href="https://www.acmicpc.net/problem/1914">백준의 하노이 탑 문제</a>를 풀고 있었다. 이미 해당 문제는 파이썬으로 풀었기에 로직 변화 없이 러스트 코드로 컨버팅했다. 하지만 계속 채점률 40%에서 시간 초과 오류가 발생했다. 시간 초과가 발생하는 코드는 아래와 같다.</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::io;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">num</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">new</span>();<br>    io::<span class="hljs-title function_ invoke__">stdin</span>().<span class="hljs-title function_ invoke__">read_line</span>(&amp;<span class="hljs-keyword">mut</span> num).<span class="hljs-title function_ invoke__">unwrap</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">n</span>:<span class="hljs-type">u32</span> = num.<span class="hljs-title function_ invoke__">trim</span>().<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;숫자가 아닙니다.&quot;</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">start</span>:<span class="hljs-type">u32</span> = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">dest</span>:<span class="hljs-type">u32</span> = <span class="hljs-number">3</span>;<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt; n &amp;&amp; n &lt;= <span class="hljs-number">20</span> &#123;<br>        <span class="hljs-title function_ invoke__">count_move</span>(n);<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n, start, dest);<br>    &#125;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-title function_ invoke__">count_move</span>(n);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">count_move</span>(n: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">count</span> = <span class="hljs-type">i128</span>::<span class="hljs-title function_ invoke__">pow</span>(<span class="hljs-number">2</span>,n);<br>    <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125;\n&quot;</span>,count-<span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">hanoi</span>(n: <span class="hljs-type">u32</span>, start: <span class="hljs-type">u32</span>, dest: <span class="hljs-type">u32</span>) &#123;<br>    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, start, <span class="hljs-number">6</span>-start-dest);<br>        <span class="hljs-built_in">print!</span>(<span class="hljs-string">&quot;&#123;&#125; &#123;&#125;\n&quot;</span>,start, dest);<br>        <span class="hljs-title function_ invoke__">hanoi</span>(n-<span class="hljs-number">1</span>, <span class="hljs-number">6</span>-start-dest, dest);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>위 코드의 로직이 궁금한 사람은 <a href="https://dev-bearabbit.github.io/2022/03/08/Algorithms/Algorithms-2/">이 글</a>에서 확인할 수 있다.</p>
+<p>위 코드의 로직이 궁금한 사람은 <a href="https://dev-bearabbit.github.io/ko/Algorithms/algorithms-2/">이 글</a>에서 확인할 수 있다.</p>
 <h2 id="원인-분석">원인 분석</h2>
 <p>처음에는 로직에 문제가 있었나 했지만 파이썬 코드로는 채점 통과하는 것을 확인하니 이 부분은 문제가 아닐 것 같아 배제하고 다른 원인을 찾아보았다. 그러다가 아래와 같은 글을 발견하였다.</p>
 <blockquote>
@@ -454,9 +454,9 @@ https://www.reddit.com/r/rust/comments/qiyqlo/fizzbuzz_in_rust_is_slower_than_py
       
         <a href="/tags/python/" class="print-no-link">#python</a>
       
-        <a href="/tags/rust/" class="print-no-link">#rust</a>
-      
         <a href="/tags/%EB%B9%84%EA%B5%90/" class="print-no-link">#비교</a>
+      
+        <a href="/tags/rust/" class="print-no-link">#rust</a>
       
         <a href="/tags/hanoi/" class="print-no-link">#hanoi</a>
       

@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/79.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/80.png">
 <meta property="article:published_time" content="2020-07-14T08:50:32.000Z">
-<meta property="article:modified_time" content="2025-01-27T20:57:18.292Z">
+<meta property="article:modified_time" content="2025-02-08T13:44:42.470Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
@@ -357,9 +357,9 @@
 <hr />
 <p>이전 글에서는 합성곱과 풀링의 역전파 계산과 그에 사용되는 <code>col2im()</code>에 대해서 알아보았다. 이번 글에서는 <code>col2im()</code>을 사용한 합성곱과 풀링 역전파를 직접 코드로 구현할 것이다.</p>
 <h2 id="합성곱-with-col2im">합성곱 with col2im</h2>
-<p>합성곱이 역전파 알고리즘에서 어떻게 미분되는지에 관해서는 <a href="https://dev-bearabbit.github.io/2020/07/01/DeeplearningJulia/Deeplearning-16/">이전 글</a>에서 다뤘기 때문에 이번 글에서는 기술적으로 합성곱이 작동되는 방식에 대해서 논의하고자 한다. 이를 위해 먼저 합성곱 역전파를 구현한 코드를 확인해보자.</p>
+<p>합성곱이 역전파 알고리즘에서 어떻게 미분되는지에 관해서는 <a href="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-16/">이전 글</a>에서 다뤘기 때문에 이번 글에서는 기술적으로 합성곱이 작동되는 방식에 대해서 논의하고자 한다. 이를 위해 먼저 합성곱 역전파를 구현한 코드를 확인해보자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs Julia"><span class="hljs-keyword">function</span> convolution2D_backward(dense ,input, stride, pad)<br><br>    input_r, input_c,input_d,input_num = size(dense.x)<br>    filter_r, filter_c, filter_d, filter_num = size(dense.w)<br><br>    result = permutedims(input,(<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>))<br>    dout = <span class="hljs-built_in">Array</span>(reshape(result,filter_num,:)&#x27;)<br><br>    dense.db = sum(dout,dims=<span class="hljs-number">1</span>)<br>    weight = <span class="hljs-built_in">Array</span>(dense.col&#x27;) * dout<br>    dense.dw = reshape(weight,size(dense.w))<br><br>    <span class="hljs-comment"># 1324 순서</span><br>    dcol = dout * <span class="hljs-built_in">Array</span>(dense.col_w&#x27;)<br>    dx = col2im(dense, dcol, filter_r, filter_c, stride, pad)<br><br>    <span class="hljs-keyword">return</span> dx<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p>이제 위 코드의 작동 과정을 하나씩 살펴보자. 먼저 순전파 계산 과정에서 저장해둔 입력데이터의 크기와 필터의 크기를 불러온다. 코드에서 사용된 <code>dense</code>는 순전파 계산에서 각 데이터들을 저장해둔 구조체이다. 구조체에 대해 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/03/15/ThinkJulia/Think-Julia-Chapter-15/">이 페이지</a>을 읽어보면 좋다. 그 다음으로는 미분값의 차원을 변경하고, 2차원의 배열의 형상으로 바꾼다. 여기서 그 2차원의 형상은 아래의 그림과 같다.</p>
+<p>이제 위 코드의 작동 과정을 하나씩 살펴보자. 먼저 순전파 계산 과정에서 저장해둔 입력데이터의 크기와 필터의 크기를 불러온다. 코드에서 사용된 <code>dense</code>는 순전파 계산에서 각 데이터들을 저장해둔 구조체이다. 구조체에 대해 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/ko/ThinkJulia/Think-Julia-Chapter-15/">이 페이지</a>을 읽어보면 좋다. 그 다음으로는 미분값의 차원을 변경하고, 2차원의 배열의 형상으로 바꾼다. 여기서 그 2차원의 형상은 아래의 그림과 같다.</p>
 <figure>
 <img src="/images/78.png" srcset="/img/loading.gif" lazyload alt="dout" /><figcaption aria-hidden="true">dout</figcaption>
 </figure>

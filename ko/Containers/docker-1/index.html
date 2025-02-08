@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/93.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/94.png">
 <meta property="article:published_time" content="2020-09-23T07:22:28.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:34:05.984Z">
+<meta property="article:modified_time" content="2025-02-08T13:34:26.720Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="AWS">
 <meta property="article:tag" content="Amazon">
@@ -401,7 +401,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3<br>import boto3<br></code></pre></td></tr></table></figure>
 <p>그러면 파이썬이 열리고 <code>boto3</code> 라이브러리를 사용할 수 있다. S3에 접속하기 위해 client를 설정하고, 파일을 업로드 한다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">s3 = boto3.client(<span class="hljs-string">&#x27;s3&#x27;</span>)<br>s3.upload_file(<span class="hljs-string">&#x27;업로드할 파일 이름&#x27;</span>, <span class="hljs-string">&#x27;버킷 이름&#x27;</span>, <span class="hljs-string">&#x27;버킷에 저장할 이름&#x27;</span>)<br></code></pre></td></tr></table></figure>
-<p>파일을 S3에 업로드 하는 방법을 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/2020/09/17/AWS/AWS-project-3/">3편</a>을 살펴보자.</p>
+<p>파일을 S3에 업로드 하는 방법을 자세히 알고 싶다면 <a href="https://dev-bearabbit.github.io/ko/AWS/aws-3/">3편</a>을 살펴보자.</p>
 <p>업로드가 완료된 후 AWS S3 콘솔에 들어가보면 해당 버킷은 아래와 같이 나타날 것이다.</p>
 <figure>
 <img src="/images/94.png" srcset="/img/loading.gif" lazyload alt="AWS5_2" /><figcaption aria-hidden="true">AWS5_2</figcaption>
@@ -523,7 +523,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/ko/AWS/AWS-4/" title="EC2 인스턴스 생성하기">
+                      <a href="/ko/AWS/aws-4/" title="EC2 인스턴스 생성하기">
                         <span class="hidden-mobile">EC2 인스턴스 생성하기</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>

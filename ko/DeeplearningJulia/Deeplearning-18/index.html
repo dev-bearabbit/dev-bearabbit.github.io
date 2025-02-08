@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/81.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/82.png">
 <meta property="article:published_time" content="2020-08-01T03:06:31.000Z">
-<meta property="article:modified_time" content="2025-01-27T20:57:30.149Z">
+<meta property="article:modified_time" content="2025-02-08T13:48:24.752Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
@@ -357,7 +357,7 @@
 <p>지금까지 <code>im2col()</code>, <code>col2im()</code>을 적용한 새로운 합성곱과 풀링에 대해 알아보았다. 이번 글에서는 새로운 합성곱과 풀링을 사용하여 새로운 <code>simpleNet</code>을 구현할 것이다. <code>im2col()</code>, <code>col2im()</code>을 적용하지 않은 기존 <code>simpleNet</code>은 1에폭에 1시간이 걸린 반면 새로운 <code>simpleNet</code>은 1에폭에 5분이면 학습이 완료된다.</p>
 <h2 id="cnn-모델-구현">CNN 모델 구현</h2>
 <h3 id="준비-단계">준비 단계</h3>
-<p>이제 설계한 모델을 직접 구현해보자. 먼저 모델을 생성하고 학습하는데 필요한 재료들을 가져와야 한다. <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia">해당 깃허브 사이트</a>에 가서 코드를 다운받으면 바로 학습을 진행할 수 있다. 만약 다운받기 싫다면 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/CNN">이 사이트</a>에서 아래의 파일들의 코드를 모두 복사해서 사용해도 된다.</p>
+<p>이제 설계한 모델을 직접 구현해보자. 먼저 모델을 생성하고 학습하는데 필요한 재료들을 가져와야 한다. <a target="_blank" rel="noopener" href="https://github.com/dev-bearabbit/Deep-Learning-in-Julia">해당 깃허브 사이트</a>에 가서 코드를 다운받으면 바로 학습을 진행할 수 있다. 만약 다운받기 싫다면 <a target="_blank" rel="noopener" href="https://github.com/dev-bearabbit/Deep-Learning-in-Julia/tree/master/CNN">이 사이트</a>에서 아래의 파일들의 코드를 모두 복사해서 사용해도 된다.</p>
 <p>깃허브 데스크탑에 코드를 클론하거나 저장한 분들은 현재 사용하고 있는 커맨드의 경로를 <code>CNN</code> 파일로 변경해야 한다.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Julia">pwd <span class="hljs-comment"># 현재 경로 확인</span><br>cd 코드가 있는 파일 경로 입력/Deep_Learning_in_Julia/CNN<br></code></pre></td></tr></table></figure>
 <p>다시 <code>pwd</code>를 입력했을 때 아래와 같이 변경되어 있으면 변경이 완료된 것이다.</p>
@@ -365,7 +365,7 @@
 <p>변경이 완료된 후 아래의 코드를 입력하자.</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Julia">include(<span class="hljs-string">&quot;MNIST_data.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;functions.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;layers.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;making_network.jl&quot;</span>)<br>include(<span class="hljs-string">&quot;optimizers.jl&quot;</span>)<br></code></pre></td></tr></table></figure>
 <p><strong>Note</strong> 만약 터미널 변경에는 성공했는데 위 코드가 작동하지 않는다면 해당 터미널이 줄리아 언어로 세팅되어 있는지를 확인해보자. 줄리아 언어로 변경하는 방법은 줄리아가 저장되어 있는 경로를 찾아서 입력하면 사용할 수 있다.</p>
-<p>위 코드는 파일에 들어 있는 모든 코드들을 작동시킨다. 만약 코드를 복사하여 사용할 분들은 <a target="_blank" rel="noopener" href="https://github.com/Hyeonji-Ryu/Deep_Learning_in_Julia/tree/master/CNN">해당 페이지</a>에서 위의 파일들의 코드를 복사하여 입력해주면 된다.</p>
+<p>위 코드는 파일에 들어 있는 모든 코드들을 작동시킨다. 만약 코드를 복사하여 사용할 분들은 <a target="_blank" rel="noopener" href="https://github.com/dev-bearabbit/Deep-Learning-in-Julia/tree/master/CNN">해당 페이지</a>에서 위의 파일들의 코드를 복사하여 입력해주면 된다.</p>
 <p>이제 간단한 CNN 모델을 만들 준비가 끝났다.</p>
 <h3 id="cnn-모델-설계">CNN 모델 설계</h3>
 <p><code>MNIST</code> 데이터는 간단하게 손글씨로 쓴 숫자이기에 비교적 얕은 모델로도 높은 성능의 분류기를 만들 수 있다. 아래의 그림을 참고해보자.</p>
@@ -534,7 +534,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/ko/AWS/AWS-0/" title="AWS 기초">
+                      <a href="/ko/AWS/aws-0/" title="AWS 기초">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">AWS 기초</span>
                         <span class="visible-mobile">Previous</span>

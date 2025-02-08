@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/56.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/57.png">
 <meta property="article:published_time" content="2020-05-02T10:51:05.000Z">
-<meta property="article:modified_time" content="2025-01-27T20:56:03.290Z">
+<meta property="article:modified_time" content="2025-02-08T13:42:47.108Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="딥러닝">
 <meta property="article:tag" content="Deeplearning">
@@ -365,7 +365,7 @@
 <li>오버피팅을 어떻게 막을 것인가? (가중치 감소 또는 Dropout)</li>
 <li>배치 정규화를 사용할 것인가?</li>
 </ul>
-<p>위의 질문 중에서 첫 번째는 이전 글들에서 직접 확인하였다. 따라서 첫 번째 질문에 대한 답변은 <a href="https://dev-bearabbit.github.io/2020/04/04/DeeplearningJulia/Deeplearning-7/">순전파 알고리즘</a>과 <a href="https://dev-bearabbit.github.io/2020/04/20/DeeplearningJulia/Deeplearning-9/">역전파 알고리즘</a>으로 대신할 것이다.</p>
+<p>위의 질문 중에서 첫 번째는 이전 글들에서 직접 확인하였다. 따라서 첫 번째 질문에 대한 답변은 <a href="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-7/">순전파 알고리즘</a>과 <a href="https://dev-bearabbit.github.io/ko/DeeplearningJulia/Deeplearning-9/">역전파 알고리즘</a>으로 대신할 것이다.</p>
 <p>다음 질문은 매개 변수 갱신 방법에 대한 논의이며, 이번 글에서 우리가 다룰 주제이다.</p>
 <h2 id="optimizers">Optimizers</h2>
 <p>옵티마이저(Optimizer)는 도출된 미분 값을 어떻게 계산하여 적용하는지를 다루는 기법이다. 종류는 매우 다양하지만 이 글에서는 'SGD', 'Momentum', 'AdaGrad', 'RMSProp', 'Adam'만 다룰 것이다. 몇몇 옵티마이저는 갱신할 때 이전 값들을 필요로 한다. 따라서 옵티마이저 구조체를 설정하여 값을 보관해야 한다.</p>

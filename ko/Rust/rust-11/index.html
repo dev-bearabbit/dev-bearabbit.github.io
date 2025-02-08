@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ko_KR">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/171.png">
 <meta property="article:published_time" content="2022-06-26T17:59:23.000Z">
-<meta property="article:modified_time" content="2024-12-29T18:37:56.172Z">
+<meta property="article:modified_time" content="2025-02-08T13:58:13.407Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="rust">
 <meta property="article:tag" content="webserver">
@@ -346,7 +346,7 @@
                 
                 <p>단일 스레드 웹서버를 러스트로 구현하는 과정을 정리합니다. <span id="more"></span></p>
 <p>이전 글에서 HTTP 요청을 읽어오는 것까지 살펴보았다. 이번 글에서는 그 이후 요청을 분석하여 응답을 작성 및 보내는 과정에 대해서 정리하고자 한다.</p>
-<p><a href="https://dev-bearabbit.github.io/2022/06/26/Rust/rust-10/">이전 글 보러가기</a></p>
+<p><a href="https://dev-bearabbit.github.io/ko/Rust/rust-10/">이전 글 보러가기</a></p>
 <h2 id="http-요청-분석-및-검증하기">HTTP 요청 분석 및 검증하기</h2>
 <p>요청을 분석하기 위해서는 HTTP 통신에 대해서 알아야 한다. 기본적으로 HTTP는 텍스트 기반 프로토콜로 클라이언트 요청 정보를 형식에 맞춰서 전달하는 방식이다. HTTP의 요쳥 규약은 다음과 같다.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">Method Request-URI HTTP-Version CRLF<br>headers CRLF<br>message-body<br></code></pre></td></tr></table></figure>
