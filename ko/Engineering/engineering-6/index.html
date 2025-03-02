@@ -20,15 +20,15 @@
   <meta name="author" content="Jess">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Spark와 Delta를 사용하는 환경에서 추가된 timestamp_ntz 데이터 타입으로 인해 발생했던 이슈를 공유합니다.">
+    <meta name="description" content="Spark와 Delta를 사용하는 환경에서 추가된 TimestampNTZ 데이터 타입으로 인해 발생했던 이슈를 공유합니다.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark TimestampNTZ 데이터 타입을 아십니까?">
 <meta property="og:url" content="https://dev-bearabbit.github.io/ko/Engineering/engineering-6/index.html">
 <meta property="og:site_name" content="DEV AnythinG">
-<meta property="og:description" content="Spark와 Delta를 사용하는 환경에서 추가된 timestamp_ntz 데이터 타입으로 인해 발생했던 이슈를 공유합니다.">
+<meta property="og:description" content="Spark와 Delta를 사용하는 환경에서 추가된 TimestampNTZ 데이터 타입으로 인해 발생했던 이슈를 공유합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2025-03-02T11:59:26.000Z">
-<meta property="article:modified_time" content="2025-03-02T13:51:38.455Z">
+<meta property="article:modified_time" content="2025-03-02T13:59:30.488Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="Spark">
@@ -343,7 +343,7 @@
             
               <div class="markdown-body">
                 
-                <p>Spark와 Delta를 사용하는 환경에서 추가된 timestamp_ntz 데이터 타입으로 인해 발생했던 이슈를 공유합니다. <span id="more"></span></p>
+                <p>Spark와 Delta를 사용하는 환경에서 추가된 <code>TimestampNTZ</code> 데이터 타입으로 인해 발생했던 이슈를 공유합니다. <span id="more"></span></p>
 <h2 id="emr-버전-업그레이드">EMR 버전 업그레이드</h2>
 <p>최근에 사용중인 EMR 버전을 6.10에서 6.15로 업그레이드 하였다. 급하게 업그레이드를 진행한 이유는 EMR 6.10에 속한 Delta 2.2.0 버전이 <code>alter</code> 시 새로운 변경값이 적용되지 않는 이슈가 존재했기 때문이다. (컬럼 이름이 변경 안된다던지..전부 NULL값으로 가져온다던지..) 혹시 Delta를 사용중인데 동일한 문제가 발생한다면, 특정 버전의 버그일 가능성이 크므로 빠르게 버전 업그레이드를 추천한다.</p>
 <p>아무튼 EMR 버전이 올라가면서 Spark와 Delta 버전이 아래와 같이 변경되었다.</p>
@@ -352,7 +352,9 @@
 <li>Delta: 2.2.0 -&gt; 2.4.0</li>
 </ul>
 <p>작업을 하기 전에 각 버전의 릴리즈 노트를 확인했었는데 현재 <code>TimestampNTZ</code>를 사용하고 있지 않으니 문제될 것이 없다고 생각했다.</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Support the TimestampNTZ data type added in Spark 3.3. Using TimestampNTZ requires a Delta protocol upgrade; see the documentation for more information.<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>Support the TimestampNTZ data type added in Spark 3.3. Using TimestampNTZ requires a Delta protocol upgrade; see the documentation for more information.</p>
+</blockquote>
 <p>업그레이드를 완료했고, 역시나 예상했던 대로 pyspark나 SQL을 테스트할 때까지는 문제가 없었다.</p>
 <h2 id="예상치-못한-타임스탬프-문제">예상치 못한 타임스탬프 문제</h2>
 <p>다음날 우리팀 AI 엔지니어께서 <code>timestamp</code>가 이상해졌다고 문의를 주셨다. 전날과 동일한 코드로 배치를 돌린 후 데이터를 확인해봤는데 UTC 기준으로 보인다는 것이다. 설마 하는 마음에 다른 배치들도 빠르게 확인했지만, 동일한 현상은 발견되지 않았다.</p>
