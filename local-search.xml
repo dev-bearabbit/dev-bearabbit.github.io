@@ -143,11 +143,11 @@
       
       <tag>학위</tag>
       
+      <tag>학점은행제</tag>
+      
       <tag>컴퓨터공학</tag>
       
       <tag>비전공</tag>
-      
-      <tag>학점은행제</tag>
       
     </tags>
     
@@ -254,9 +254,9 @@
       
       <tag>학위</tag>
       
-      <tag>학점은행제</tag>
-      
       <tag>외국계</tag>
+      
+      <tag>학점은행제</tag>
       
       <tag>TOEFL</tag>
       
@@ -330,9 +330,9 @@
       
       <tag>rust</tag>
       
-      <tag>review</tag>
-      
       <tag>book</tag>
+      
+      <tag>review</tag>
       
     </tags>
     
@@ -1325,15 +1325,15 @@
     
     <tags>
       
+      <tag>python</tag>
+      
       <tag>recursion</tag>
       
       <tag>recursive</tag>
       
-      <tag>python</tag>
+      <tag>비교</tag>
       
       <tag>rust</tag>
-      
-      <tag>비교</tag>
       
       <tag>hanoi</tag>
       
@@ -2202,13 +2202,13 @@
     
     <tags>
       
-      <tag>sql</tag>
-      
       <tag>자격증</tag>
       
       <tag>SQLD</tag>
       
       <tag>sqld</tag>
+      
+      <tag>sql</tag>
       
     </tags>
     
@@ -2305,9 +2305,9 @@
     
     <tags>
       
-      <tag>docker</tag>
-      
       <tag>sshpass</tag>
+      
+      <tag>docker</tag>
       
       <tag>script</tag>
       
@@ -2574,9 +2574,9 @@
     
     <tags>
       
-      <tag>docker</tag>
-      
       <tag>sshpass</tag>
+      
+      <tag>docker</tag>
       
       <tag>script</tag>
       
@@ -2609,9 +2609,9 @@
     
     <tags>
       
-      <tag>docker</tag>
-      
       <tag>sshpass</tag>
+      
+      <tag>docker</tag>
       
       <tag>script</tag>
       
@@ -2646,13 +2646,13 @@
       
       <tag>linux</tag>
       
+      <tag>boot</tag>
+      
       <tag>centos</tag>
       
       <tag>ubuntu</tag>
       
       <tag>repository</tag>
-      
-      <tag>boot</tag>
       
     </tags>
     
@@ -2716,6 +2716,8 @@
       
       <tag>알고리즘</tag>
       
+      <tag>기초</tag>
+      
       <tag>버블정렬</tag>
       
       <tag>삽입정렬</tag>
@@ -2725,8 +2727,6 @@
       <tag>정렬알고리즘</tag>
       
       <tag>sort</tag>
-      
-      <tag>기초</tag>
       
     </tags>
     
@@ -2950,13 +2950,13 @@
       
       <tag>linux</tag>
       
-      <tag>boot</tag>
-      
       <tag>kernel</tag>
       
       <tag>systemd</tag>
       
       <tag>filesystem</tag>
+      
+      <tag>boot</tag>
       
       <tag>hardware</tag>
       
@@ -3266,9 +3266,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3309,9 +3309,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3467,9 +3467,9 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3506,9 +3506,9 @@
     
     <tags>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>명령어</tag>
       
@@ -3543,9 +3543,9 @@
     
     <tags>
       
-      <tag>database</tag>
-      
       <tag>sql</tag>
+      
+      <tag>database</tag>
       
       <tag>mariaDB</tag>
       
@@ -3580,11 +3580,11 @@
       
       <tag>mariadb</tag>
       
-      <tag>database</tag>
+      <tag>docker</tag>
       
       <tag>sql</tag>
       
-      <tag>docker</tag>
+      <tag>database</tag>
       
       <tag>vi</tag>
       
@@ -4993,11 +4993,11 @@
       
       <tag>알고리즘</tag>
       
-      <tag>기초</tag>
-      
       <tag>빅오 표기법</tag>
       
       <tag>피보나치</tag>
+      
+      <tag>기초</tag>
       
     </tags>
     
