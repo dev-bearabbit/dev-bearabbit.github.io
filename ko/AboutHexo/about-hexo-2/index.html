@@ -321,7 +321,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });

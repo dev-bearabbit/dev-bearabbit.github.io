@@ -31,13 +31,13 @@
 <meta property="article:published_time" content="2021-05-25T04:03:41.000Z">
 <meta property="article:modified_time" content="2024-12-29T18:33:39.019Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="data">
 <meta property="article:tag" content="자격증">
 <meta property="article:tag" content="DAsP">
 <meta property="article:tag" content="데이터아키텍처">
 <meta property="article:tag" content="전사아키텍처">
 <meta property="article:tag" content="데이터">
 <meta property="article:tag" content="요건분석">
+<meta property="article:tag" content="data">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dev-bearabbit.github.io/images/113.jpg">
   
@@ -316,7 +316,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });
@@ -682,8 +691,6 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/data/" class="print-no-link">#data</a>
-      
         <a href="/tags/%EC%9E%90%EA%B2%A9%EC%A6%9D/" class="print-no-link">#자격증</a>
       
         <a href="/tags/dasp/" class="print-no-link">#DAsP</a>
@@ -695,6 +702,8 @@
         <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0/" class="print-no-link">#데이터</a>
       
         <a href="/tags/%EC%9A%94%EA%B1%B4%EB%B6%84%EC%84%9D/" class="print-no-link">#요건분석</a>
+      
+        <a href="/tags/data/" class="print-no-link">#data</a>
       
     </div>
   

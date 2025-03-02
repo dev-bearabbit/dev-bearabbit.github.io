@@ -326,9 +326,9 @@
     
     <tags>
       
-      <tag>rust</tag>
-      
       <tag>python</tag>
+      
+      <tag>rust</tag>
       
       <tag>book</tag>
       
@@ -677,9 +677,9 @@
     
     <tags>
       
-      <tag>rust</tag>
-      
       <tag>python</tag>
+      
+      <tag>rust</tag>
       
       <tag>dataframe</tag>
       
@@ -975,9 +975,9 @@
     
     <tags>
       
-      <tag>rust</tag>
-      
       <tag>python</tag>
+      
+      <tag>rust</tag>
       
       <tag>package</tag>
       
@@ -1144,11 +1144,11 @@
     
     <tags>
       
+      <tag>data</tag>
+      
       <tag>ETL</tag>
       
       <tag>ELT</tag>
-      
-      <tag>data</tag>
       
       <tag>dataflow</tag>
       
@@ -1329,11 +1329,11 @@
       
       <tag>recursive</tag>
       
+      <tag>python</tag>
+      
       <tag>rust</tag>
       
       <tag>비교</tag>
-      
-      <tag>python</tag>
       
       <tag>hanoi</tag>
       
@@ -1563,9 +1563,9 @@
       
       <tag>KBO</tag>
       
-      <tag>data</tag>
-      
       <tag>python</tag>
+      
+      <tag>data</tag>
       
       <tag>package</tag>
       
@@ -2753,8 +2753,6 @@
     
     <tags>
       
-      <tag>data</tag>
-      
       <tag>자격증</tag>
       
       <tag>DAsP</tag>
@@ -2766,6 +2764,8 @@
       <tag>데이터</tag>
       
       <tag>요건분석</tag>
+      
+      <tag>data</tag>
       
     </tags>
     
@@ -2792,8 +2792,6 @@
     
     <tags>
       
-      <tag>data</tag>
-      
       <tag>자격증</tag>
       
       <tag>DAsP</tag>
@@ -2805,6 +2803,8 @@
       <tag>데이터</tag>
       
       <tag>요건분석</tag>
+      
+      <tag>data</tag>
       
     </tags>
     
@@ -2864,8 +2864,6 @@
     
     <tags>
       
-      <tag>error</tag>
-      
       <tag>windows</tag>
       
       <tag>rust</tag>
@@ -2877,6 +2875,8 @@
       <tag>gnu</tag>
       
       <tag>vscode</tag>
+      
+      <tag>error</tag>
       
       <tag>toolchain</tag>
       
@@ -3422,6 +3422,8 @@
     
     <tags>
       
+      <tag>error</tag>
+      
       <tag>sqlalchemy</tag>
       
       <tag>flask_sqlalchemy</tag>
@@ -3433,8 +3435,6 @@
       <tag>db</tag>
       
       <tag>scoped_session</tag>
-      
-      <tag>error</tag>
       
       <tag>Registrant</tag>
       

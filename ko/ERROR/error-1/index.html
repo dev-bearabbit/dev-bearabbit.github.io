@@ -30,13 +30,13 @@
 <meta property="article:published_time" content="2021-05-14T16:26:10.000Z">
 <meta property="article:modified_time" content="2024-12-29T18:35:30.953Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="error">
 <meta property="article:tag" content="windows">
 <meta property="article:tag" content="rust">
 <meta property="article:tag" content="compiler">
 <meta property="article:tag" content="msvc">
 <meta property="article:tag" content="gnu">
 <meta property="article:tag" content="vscode">
+<meta property="article:tag" content="error">
 <meta property="article:tag" content="toolchain">
 <meta property="article:tag" content="linkerror">
 <meta name="twitter:card" content="summary_large_image">
@@ -316,7 +316,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });
@@ -399,8 +408,6 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/error/" class="print-no-link">#error</a>
-      
         <a href="/tags/windows/" class="print-no-link">#windows</a>
       
         <a href="/tags/rust/" class="print-no-link">#rust</a>
@@ -412,6 +419,8 @@
         <a href="/tags/gnu/" class="print-no-link">#gnu</a>
       
         <a href="/tags/vscode/" class="print-no-link">#vscode</a>
+      
+        <a href="/tags/error/" class="print-no-link">#error</a>
       
         <a href="/tags/toolchain/" class="print-no-link">#toolchain</a>
       

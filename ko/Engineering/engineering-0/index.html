@@ -30,9 +30,9 @@
 <meta property="article:published_time" content="2022-04-04T14:12:22.000Z">
 <meta property="article:modified_time" content="2024-12-29T18:35:13.080Z">
 <meta property="article:author" content="Jess">
+<meta property="article:tag" content="data">
 <meta property="article:tag" content="ETL">
 <meta property="article:tag" content="ELT">
-<meta property="article:tag" content="data">
 <meta property="article:tag" content="dataflow">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -311,7 +311,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });
@@ -460,11 +469,11 @@ OLAP란 Online Analytical Processing의 약자로 데이터 웨어하우스와 �
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/data/" class="print-no-link">#data</a>
+      
         <a href="/tags/etl/" class="print-no-link">#ETL</a>
       
         <a href="/tags/elt/" class="print-no-link">#ELT</a>
-      
-        <a href="/tags/data/" class="print-no-link">#data</a>
       
         <a href="/tags/dataflow/" class="print-no-link">#dataflow</a>
       

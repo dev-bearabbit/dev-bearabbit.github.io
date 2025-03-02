@@ -34,9 +34,9 @@
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="recursion">
 <meta property="article:tag" content="recursive">
+<meta property="article:tag" content="python">
 <meta property="article:tag" content="rust">
 <meta property="article:tag" content="비교">
-<meta property="article:tag" content="python">
 <meta property="article:tag" content="hanoi">
 <meta property="article:tag" content="시간초과">
 <meta property="article:tag" content="println">
@@ -320,7 +320,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });
@@ -452,11 +461,11 @@ https://www.reddit.com/r/rust/comments/qiyqlo/fizzbuzz_in_rust_is_slower_than_py
       
         <a href="/tags/recursive/" class="print-no-link">#recursive</a>
       
+        <a href="/tags/python/" class="print-no-link">#python</a>
+      
         <a href="/tags/rust/" class="print-no-link">#rust</a>
       
         <a href="/tags/%EB%B9%84%EA%B5%90/" class="print-no-link">#비교</a>
-      
-        <a href="/tags/python/" class="print-no-link">#python</a>
       
         <a href="/tags/hanoi/" class="print-no-link">#hanoi</a>
       

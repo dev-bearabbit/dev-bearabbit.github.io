@@ -30,8 +30,8 @@
 <meta property="article:published_time" content="2022-06-11T11:19:40.000Z">
 <meta property="article:modified_time" content="2024-12-29T18:37:01.728Z">
 <meta property="article:author" content="Jess">
-<meta property="article:tag" content="rust">
 <meta property="article:tag" content="python">
+<meta property="article:tag" content="rust">
 <meta property="article:tag" content="package">
 <meta property="article:tag" content="library">
 <meta property="article:tag" content="pyo3">
@@ -314,7 +314,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });
@@ -412,9 +421,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/rust/" class="print-no-link">#rust</a>
-      
         <a href="/tags/python/" class="print-no-link">#python</a>
+      
+        <a href="/tags/rust/" class="print-no-link">#rust</a>
       
         <a href="/tags/package/" class="print-no-link">#package</a>
       

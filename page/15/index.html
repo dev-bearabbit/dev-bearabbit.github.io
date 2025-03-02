@@ -263,7 +263,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });
@@ -578,8 +587,6 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/data/">#data</a>
-            
               <a href="/tags/%EC%9E%90%EA%B2%A9%EC%A6%9D/">#자격증</a>
             
               <a href="/tags/dasp/">#DAsP</a>
@@ -591,6 +598,8 @@
               <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0/">#데이터</a>
             
               <a href="/tags/%EC%9A%94%EA%B1%B4%EB%B6%84%EC%84%9D/">#요건분석</a>
+            
+              <a href="/tags/data/">#data</a>
             
           </div>
         
@@ -658,8 +667,6 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/data/">#data</a>
-            
               <a href="/tags/%EC%9E%90%EA%B2%A9%EC%A6%9D/">#자격증</a>
             
               <a href="/tags/dasp/">#DAsP</a>
@@ -671,6 +678,8 @@
               <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0/">#데이터</a>
             
               <a href="/tags/%EC%9A%94%EA%B1%B4%EB%B6%84%EC%84%9D/">#요건분석</a>
+            
+              <a href="/tags/data/">#data</a>
             
           </div>
         

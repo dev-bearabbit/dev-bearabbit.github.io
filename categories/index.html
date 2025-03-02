@@ -259,7 +259,16 @@
     setInterval(matrix, 60);
 
     // 창 크기 조정 시 캔버스 크기 업데이트
+    let isTouching = false;
+
+    // 터치 이벤트 중에는 resize 실행 방지
+    window.addEventListener('touchstart', () => { isTouching = true; });
+    window.addEventListener('touchend', () => {
+      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
+    });
+
     window.addEventListener('resize', () => {
+      if (isTouching) return; // 터치 중에는 resize 무시
       canvas.width = banner.offsetWidth;
       canvas.height = banner.offsetHeight;
     });
@@ -889,57 +898,6 @@
     
     <div class="category-sub row nomargin-x">
       <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="errors"
-        id="heading-07213a0161f52846ab198be103b5ab43" role="tab" data-toggle="collapse" href="#collapse-07213a0161f52846ab198be103b5ab43"
-        aria-expanded="false"
-      >
-        errors
-        <span class="list-group-count"></span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-        <a href="/categories/etc/errors/" class="category-count col-2 col-md-1 col-xm-1">
-          <i class="iconfont icon-articles"></i>
-          <span>2</span>
-        </a>
-      
-      <div class="category-collapse collapse " id="collapse-07213a0161f52846ab198be103b5ab43"
-           role="tabpanel" aria-labelledby="heading-07213a0161f52846ab198be103b5ab43">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/ko/ERROR/error-1/" title="Windows 환경에서 Rust 컴파일 link 에러"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Windows 환경에서 Rust 컴파일 link 에러</span>
-        </a>
-      
-    
-      
-      
-        <a href="/ko/ERROR/error-0/" title="SQLAlchemy ORM 사용 중 pylint 에러"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">SQLAlchemy ORM 사용 중 pylint 에러</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="academic"
         id="heading-8da6f5e5e803dafe72cabfdd8adb476f" role="tab" data-toggle="collapse" href="#collapse-8da6f5e5e803dafe72cabfdd8adb476f"
         aria-expanded="false"
@@ -977,6 +935,57 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">직장인 4년차, 미래를 준비하는 법</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="errors"
+        id="heading-07213a0161f52846ab198be103b5ab43" role="tab" data-toggle="collapse" href="#collapse-07213a0161f52846ab198be103b5ab43"
+        aria-expanded="false"
+      >
+        errors
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/etc/errors/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>2</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-07213a0161f52846ab198be103b5ab43"
+           role="tabpanel" aria-labelledby="heading-07213a0161f52846ab198be103b5ab43">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/ko/ERROR/error-1/" title="Windows 환경에서 Rust 컴파일 link 에러"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Windows 환경에서 Rust 컴파일 link 에러</span>
+        </a>
+      
+    
+      
+      
+        <a href="/ko/ERROR/error-0/" title="SQLAlchemy ORM 사용 중 pylint 에러"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">SQLAlchemy ORM 사용 중 pylint 에러</span>
         </a>
       
     
