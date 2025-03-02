@@ -28,7 +28,7 @@
 <meta property="og:description" content="Spark와 Delta를 사용하는 환경에서 추가된 TimestampNTZ 데이터 타입으로 인해 발생했던 이슈를 공유합니다.">
 <meta property="og:locale" content="ko_KR">
 <meta property="article:published_time" content="2025-03-02T11:59:26.000Z">
-<meta property="article:modified_time" content="2025-03-02T13:59:30.488Z">
+<meta property="article:modified_time" content="2025-03-02T15:36:54.266Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="빅데이터">
 <meta property="article:tag" content="Spark">
@@ -283,49 +283,36 @@
   document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-  
-    // 캔버스 크기를 배너 크기와 동기화
     const banner = document.getElementById('banner');
-  
-    function updateCanvasSize() {
-      // 먼저 블랙으로 채운 후 크기 변경 (리사이징 깜빡임 방지)
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-      // 크기 변경 후 다시 블랙으로 덮기
-      canvas.width = banner.offsetWidth;
-      canvas.height = banner.offsetHeight;
-  
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-  
-    updateCanvasSize(); // 초기에 캔버스 크기 설정
-  
+
+    // 캔버스 크기를 배너 크기와 동기화
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
     const cols = Math.floor(canvas.width / 20) + 1;
     const ypos = Array(cols).fill(0);
-  
+
     function matrix() {
-      // 페이드 효과 유지 (배경을 점점 지우는 효과)
-      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      // ✅ 페이드 효과 유지 (배경을 점점 지우는 효과)
+      ctx.fillStyle = '#0001'; 
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
+
       ctx.fillStyle = '#009600'; // 텍스트 색상
       ctx.font = '14pt monospace';
-  
+
       ypos.forEach((y, index) => {
         const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
         const x = index * 20;
         ctx.fillText(text, x, y);
-  
+
         if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
         else ypos[index] = y + 20;
       });
     }
-  
+
     setInterval(matrix, 60);
-  
-    // 화면에 다시 나타날 때 검은색 유지 (모바일 스크롤 최적화)
+
+    // ✅ 화면에 다시 나타날 때 검은색 유지 (모바일 스크롤 최적화)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -334,25 +321,38 @@
           }
         });
       }, { threshold: 0.1 });
-  
+
     observer.observe(canvas);
-  
+
     // 창 크기 조정 시 캔버스 크기 업데이트
     let isTouching = false;
-  
+
     // 터치 이벤트 중에는 resize 실행 방지
     window.addEventListener('touchstart', () => { isTouching = true; });
     window.addEventListener('touchend', () => {
       setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
     });
-  
+
+    function updateCanvasSize() {
+      // 먼저 블랙으로 채운 후 크기 변경 (리사이징 깜빡임 방지)
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 크기 변경 후 다시 블랙으로 덮기
+      canvas.width = banner.offsetWidth;
+      canvas.height = banner.offsetHeight;
+
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
     window.addEventListener('resize', () => {
       if (isTouching) return; // 터치 중이면 resize 무시
       updateCanvasSize(); // 리사이징 시 블랙 유지
     });
   });
 </script>
-  
+
 </div>
 
   </header>
@@ -394,7 +394,7 @@
 <p>다음날 우리팀 AI 엔지니어께서 <code>timestamp</code>가 이상해졌다고 문의를 주셨다. 전날과 동일한 코드로 배치를 돌린 후 데이터를 확인해봤는데 UTC 기준으로 보인다는 것이다. 설마 하는 마음에 다른 배치들도 빠르게 확인했지만, 동일한 현상은 발견되지 않았다.</p>
 <p>결론부터 말하자면 <code>timestamp</code> 데이터 타입을 <code>pandas</code>에서 직접 생성 후 <code>delta</code> 테이블로 밀어넣으면 발생하는 문제였다. 대부분 그러하듯 우리 플랫폼 또한 실제 데이터는 UTC로 저장하고 읽어올 때만 KST 기준으로 구성되어 있었는데, 이 과정 중에서 <code>UTC</code>로 변환 후 <code>TimestampNTZ</code>로 저장이 된 후에 <code>spark</code>에서 그대로 읽어진 것이다.</p>
 <p>그렇다, <code>delta</code>에서 <code>TimestampNTZ</code>를 지원하면서 타임존이 없는 경우에는 해당 데이터 타입으로 스키마가 추론되도록 설정된 것이다.</p>
-<h2 id="timestampntz-데이터-타임">TimestampNTZ 데이터 타임</h2>
+<h2 id="timestampntz-데이터-타입">TimestampNTZ 데이터 타입</h2>
 <ul>
 <li>Spark 3.3부터 지원되는 새로운 타임존 없는 데이터 타입</li>
 <li>기존 timestamp 타입과 달리 타임존 정보를 포함하지 않고, 저장된 값 그대로 반환</li>
