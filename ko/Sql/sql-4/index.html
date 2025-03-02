@@ -284,52 +284,77 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
 
-    // 캔버스 크기를 배너 크기와 동기화
-    const banner = document.getElementById('banner');
+  // 캔버스 크기를 배너 크기와 동기화
+  const banner = document.getElementById('banner');
+
+  function updateCanvasSize() {
+    // 1️⃣ 먼저 블랙으로 채운 후 크기 변경 (리사이징 깜빡임 방지)
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 2️⃣ 크기 변경 후 다시 블랙으로 덮기
     canvas.width = banner.offsetWidth;
     canvas.height = banner.offsetHeight;
 
-    const cols = Math.floor(canvas.width / 20) + 1;
-    const ypos = Array(cols).fill(0);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
-    function matrix() {
-      ctx.fillStyle = '#0001'; // 배경 페이드 효과
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  updateCanvasSize(); // 초기에 캔버스 크기 설정
 
-      ctx.fillStyle = '#009600'; // 텍스트 색상
-      ctx.font = '14pt monospace';
+  const cols = Math.floor(canvas.width / 20) + 1;
+  const ypos = Array(cols).fill(0);
 
-      ypos.forEach((y, index) => {
-        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
-        const x = index * 20;
-        ctx.fillText(text, x, y);
+  function matrix() {
+    // ✅ 페이드 효과 유지 (배경을 점점 지우는 효과)
+    ctx.fillStyle = '#0001'; // 배경 페이드 효과
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
-        else ypos[index] = y + 20;
+    ctx.fillStyle = '#009600'; // 텍스트 색상
+    ctx.font = '14pt monospace';
+
+    ypos.forEach((y, index) => {
+      const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+      const x = index * 20;
+      ctx.fillText(text, x, y);
+
+      if (y > canvas.height + Math.random() * 10000) ypos[index] = 0;
+      else ypos[index] = y + 20;
+    });
+  }
+
+  setInterval(matrix, 60);
+
+  // ✅ 화면에 다시 나타날 때 검은색 유지 (모바일 스크롤 최적화)
+  const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
       });
-    }
+    }, { threshold: 0.1 });
 
-    setInterval(matrix, 60);
+  observer.observe(canvas);
 
-    // 창 크기 조정 시 캔버스 크기 업데이트
-    let isTouching = false;
+  // 창 크기 조정 시 캔버스 크기 업데이트
+  let isTouching = false;
 
-    // 터치 이벤트 중에는 resize 실행 방지
-    window.addEventListener('touchstart', () => { isTouching = true; });
-    window.addEventListener('touchend', () => {
-      setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
-    });
-
-    window.addEventListener('resize', () => {
-      if (isTouching) return; // 터치 중에는 resize 무시
-      canvas.width = banner.offsetWidth;
-      canvas.height = banner.offsetHeight;
-    });
+  // 터치 이벤트 중에는 resize 실행 방지
+  window.addEventListener('touchstart', () => { isTouching = true; });
+  window.addEventListener('touchend', () => {
+    setTimeout(() => { isTouching = false; }, 500); // 터치 종료 후 500ms 후 재활성화
   });
+
+  window.addEventListener('resize', () => {
+    if (isTouching) return; // 터치 중이면 resize 무시
+    updateCanvasSize(); // 리사이징 시 블랙 유지
+  });
+});
 </script>
 
 </div>

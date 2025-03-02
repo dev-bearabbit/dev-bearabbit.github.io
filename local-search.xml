@@ -143,11 +143,11 @@
       
       <tag>학위</tag>
       
-      <tag>학점은행제</tag>
-      
       <tag>컴퓨터공학</tag>
       
       <tag>비전공</tag>
+      
+      <tag>학점은행제</tag>
       
     </tags>
     
@@ -254,9 +254,9 @@
       
       <tag>학위</tag>
       
-      <tag>외국계</tag>
-      
       <tag>학점은행제</tag>
+      
+      <tag>외국계</tag>
       
       <tag>TOEFL</tag>
       
@@ -330,9 +330,9 @@
       
       <tag>rust</tag>
       
-      <tag>book</tag>
-      
       <tag>review</tag>
+      
+      <tag>book</tag>
       
     </tags>
     
@@ -2305,9 +2305,9 @@
     
     <tags>
       
-      <tag>sshpass</tag>
-      
       <tag>docker</tag>
+      
+      <tag>sshpass</tag>
       
       <tag>script</tag>
       
@@ -2574,9 +2574,9 @@
     
     <tags>
       
-      <tag>sshpass</tag>
-      
       <tag>docker</tag>
+      
+      <tag>sshpass</tag>
       
       <tag>script</tag>
       
@@ -2609,9 +2609,9 @@
     
     <tags>
       
-      <tag>sshpass</tag>
-      
       <tag>docker</tag>
+      
+      <tag>sshpass</tag>
       
       <tag>script</tag>
       
@@ -2646,13 +2646,13 @@
       
       <tag>linux</tag>
       
-      <tag>boot</tag>
-      
       <tag>centos</tag>
       
       <tag>ubuntu</tag>
       
       <tag>repository</tag>
+      
+      <tag>boot</tag>
       
     </tags>
     
@@ -2716,8 +2716,6 @@
       
       <tag>알고리즘</tag>
       
-      <tag>기초</tag>
-      
       <tag>버블정렬</tag>
       
       <tag>삽입정렬</tag>
@@ -2727,6 +2725,8 @@
       <tag>정렬알고리즘</tag>
       
       <tag>sort</tag>
+      
+      <tag>기초</tag>
       
     </tags>
     
@@ -2864,6 +2864,8 @@
     
     <tags>
       
+      <tag>error</tag>
+      
       <tag>windows</tag>
       
       <tag>rust</tag>
@@ -2875,8 +2877,6 @@
       <tag>gnu</tag>
       
       <tag>vscode</tag>
-      
-      <tag>error</tag>
       
       <tag>toolchain</tag>
       
@@ -2950,13 +2950,13 @@
       
       <tag>linux</tag>
       
+      <tag>boot</tag>
+      
       <tag>kernel</tag>
       
       <tag>systemd</tag>
       
       <tag>filesystem</tag>
-      
-      <tag>boot</tag>
       
       <tag>hardware</tag>
       
@@ -3422,8 +3422,6 @@
     
     <tags>
       
-      <tag>error</tag>
-      
       <tag>sqlalchemy</tag>
       
       <tag>flask_sqlalchemy</tag>
@@ -3435,6 +3433,8 @@
       <tag>db</tag>
       
       <tag>scoped_session</tag>
+      
+      <tag>error</tag>
       
       <tag>Registrant</tag>
       
@@ -3580,11 +3580,11 @@
       
       <tag>mariadb</tag>
       
-      <tag>docker</tag>
-      
       <tag>database</tag>
       
       <tag>sql</tag>
+      
+      <tag>docker</tag>
       
       <tag>vi</tag>
       
@@ -4993,11 +4993,11 @@
       
       <tag>알고리즘</tag>
       
+      <tag>기초</tag>
+      
       <tag>빅오 표기법</tag>
       
       <tag>피보나치</tag>
-      
-      <tag>기초</tag>
       
     </tags>
     
