@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>Spark TimestampNTZ 데이터 타입을 아십니까?</title>
+    <link href="/ko/Engineering/engineering-6/"/>
+    <url>/ko/Engineering/engineering-6/</url>
+    
+    <content type="html"><![CDATA[<p>Spark와 Delta를 사용하는 환경에서 추가된 timestamp_ntz 데이터 타입으로 인해 발생했던 이슈를 공유합니다. <span id="more"></span></p><h2 id="emr-버전-업그레이드">EMR 버전 업그레이드</h2><p>최근에 사용중인 EMR 버전을 6.10에서 6.15로 업그레이드 하였다. 급하게 업그레이드를 진행한 이유는 EMR 6.10에 속한 Delta 2.2.0 버전이 <code>alter</code> 시 새로운 변경값이 적용되지 않는 이슈가 존재했기 때문이다. (컬럼 이름이 변경 안된다던지..전부 NULL값으로 가져온다던지..) 혹시 Delta를 사용중인데 동일한 문제가 발생한다면, 특정 버전의 버그일 가능성이 크므로 빠르게 버전 업그레이드를 추천한다.</p><p>아무튼 EMR 버전이 올라가면서 Spark와 Delta 버전이 아래와 같이 변경되었다.</p><ul><li>Spark: 3.3.0 -&gt; 3.4.1</li><li>Delta: 2.2.0 -&gt; 2.4.0</li></ul><p>작업을 하기 전에 각 버전의 릴리즈 노트를 확인했었는데 현재 <code>TimestampNTZ</code>를 사용하고 있지 않으니 문제될 것이 없다고 생각했다.</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Support the TimestampNTZ data type added in Spark 3.3. Using TimestampNTZ requires a Delta protocol upgrade; see the documentation for more information.<br></code></pre></td></tr></table></figure><p>업그레이드를 완료했고, 역시나 예상했던 대로 pyspark나 SQL을 테스트할 때까지는 문제가 없었다.</p><h2 id="예상치-못한-타임스탬프-문제">예상치 못한 타임스탬프 문제</h2><p>다음날 우리팀 AI 엔지니어께서 <code>timestamp</code>가 이상해졌다고 문의를 주셨다. 전날과 동일한 코드로 배치를 돌린 후 데이터를 확인해봤는데 UTC 기준으로 보인다는 것이다. 설마 하는 마음에 다른 배치들도 빠르게 확인했지만, 동일한 현상은 발견되지 않았다.</p><p>결론부터 말하자면 <code>timestamp</code> 데이터 타입을 <code>pandas</code>에서 직접 생성 후 <code>delta</code> 테이블로 밀어넣으면 발생하는 문제였다. 대부분 그러하듯 우리 플랫폼 또한 실제 데이터는 UTC로 저장하고 읽어올 때만 KST 기준으로 구성되어 있었는데, 이 과정 중에서 <code>UTC</code>로 변환 후 <code>TimestampNTZ</code>로 저장이 된 후에 <code>spark</code>에서 그대로 읽어진 것이다.</p><p>그렇다, <code>delta</code>에서 <code>TimestampNTZ</code>를 지원하면서 타임존이 없는 경우에는 해당 데이터 타입으로 스키마가 추론되도록 설정된 것이다.</p><h2 id="timestampntz-데이터-타임">TimestampNTZ 데이터 타임</h2><ul><li>Spark 3.3부터 지원되는 새로운 타임존 없는 데이터 타입</li><li>기존 timestamp 타입과 달리 타임존 정보를 포함하지 않고, 저장된 값 그대로 반환</li><li>Delta에서도 2.4.0 버전부터 지원됨</li></ul><p>해당 타입은 타임존 정보가 아예 포함되지 않기 때문에 Spark에서도 조회 시 캐스팅을 해주지 않는다.</p><table><thead><tr class="header"><th>데이터 타입</th><th>타임존 포함 여부</th><th>Spark에서 변환 방식</th></tr></thead><tbody><tr class="odd"><td>Timestamp</td><td>타임존 포함</td><td>조회 시 config에 설정된 시간대로 변환</td></tr><tr class="even"><td>TimestampNTZ</td><td>타임존 포함하지 않음</td><td>조회 시 저장된 값 그대로 반환</td></tr></tbody></table><p>따라서 해당 데이터 타입으로 저장된다면 쿼리 시 특정 시간대로 명확하게 캐스팅을 해줘야 한다. 하지만 저장된 <code>TimestampNTZ</code> 데이터 타입의 타임존이 어느 시간대인지 알 수 없다면 사실상 캐스팅이 의미있을까? 싶기는 하다.</p><h2 id="결론">결론</h2><ul><li>Spark 3.3+와 Delta 2.4.0+에서는 TimestampNTZ가 기본적으로 활성화되어 있다.</li><li>pandas에서 타임존 설정 없이 datetime 데이터를 Delta에 삽입하면 자동으로 TimestampNTZ로 저장된다.</li><li>Spark에서 TimestampNTZ 타입을 조회할 때는 시간 변환이 자동으로 이루어지지 않는다.</li><li>따라서 저장 전에 데이터 타입을 명확히 지정하거나, Spark에서 명시적으로 변환해야 한다.</li></ul><p>이번 기회로 가이드라인에 무조건 타임존을 명시적으로 코드에 정의하라는 문구가 추가되었다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>BigData</category>
+      
+      <category>engineering</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>빅데이터</tag>
+      
+      <tag>Spark</tag>
+      
+      <tag>Delta</tag>
+      
+      <tag>TimestampNTZ</tag>
+      
+      <tag>데이터타입</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>많이 늦은 『데이터 분석을 위한 줄리아』 번역 후기</title>
     <link href="/ko/Julia/julia-0/"/>
     <url>/ko/Julia/julia-0/</url>

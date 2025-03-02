@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>Do You Know About the Spark TimestampNTZ Data Type?</title>
+    <link href="/en/en/Engineering/engineering-2/"/>
+    <url>/en/en/Engineering/engineering-2/</url>
+    
+    <content type="html"><![CDATA[<p>Sharing an issue that occurred due to the introduction of the <code>timestamp_ntz</code> data type in environments using Spark and Delta.</p><span id="more"></span><h2 id="EMR-Version-Upgrade"><a href="#EMR-Version-Upgrade" class="headerlink" title="EMR Version Upgrade"></a>EMR Version Upgrade</h2><p>Recently, I upgraded the EMR version in use from 6.10 to 6.15. The reason for the urgent upgrade was an issue in Delta 2.2.0, included in EMR 6.10, where <code>alter</code> statements did not apply new changes. (For example, column names were not updated, or all values were returned as NULL.) If you are using Delta and experiencing the same issue, it is likely a bug in that specific version, so upgrading to a newer version is recommended.</p><p>With the EMR upgrade, the Spark and Delta versions were updated as follows:</p><ul><li>Spark: 3.3.0 → 3.4.1</li><li>Delta: 2.2.0 → 2.4.0</li></ul><p>Before proceeding, I checked the release notes for each version and concluded that there should be no issues since we were not using <code>TimestampNTZ</code>.</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Support the TimestampNTZ data type added in Spark 3.3. Using TimestampNTZ requires a Delta protocol upgrade; see the documentation for more information.<br></code></pre></td></tr></table></figure><p>The upgrade was completed, and as expected, there were no issues when testing with pyspark or SQL.</p><h2 id="Unexpected-Timestamp-Issue"><a href="#Unexpected-Timestamp-Issue" class="headerlink" title="Unexpected Timestamp Issue"></a>Unexpected Timestamp Issue</h2><p>The next day, our AI engineer reported an issue where <code>timestamp</code> values appeared incorrectly. After running a batch process with the same code as the previous day, he found that the timestamps were displayed in UTC. I quickly checked other batch jobs, but no similar issues were found.</p><p>To get straight to the point, the issue occurred when <code>timestamp</code> data was created in <code>pandas</code> and then inserted into a <code>delta</code> table.<br>Like many other platforms, our system stores data in UTC and converts it to KST only when reading. However, in this process, the data was converted to <code>UTC</code>, stored as <code>TimestampNTZ</code>, and then read as is in <code>Spark</code>.</p><p>That’s right—since <code>delta</code> started supporting <code>TimestampNTZ</code>, if a dataset has no explicit timezone information, the schema is inferred as this data type.</p><h2 id="What-is-the-TimestampNTZ-Data-Type"><a href="#What-is-the-TimestampNTZ-Data-Type" class="headerlink" title="What is the TimestampNTZ Data Type?"></a>What is the TimestampNTZ Data Type?</h2><ul><li>A new timezone-free data type supported in Spark 3.3+</li><li>Unlike the traditional timestamp type, it does not include timezone information and returns values exactly as stored</li><li>Officially supported in Delta 2.4.0+</li></ul><table><thead><tr><th>Data Type</th><th>Timezone Included</th><th>How Spark Converts</th></tr></thead><tbody><tr><td>Timestamp</td><td>Includes timezone</td><td>Converts to the configured timezone when queried</td></tr><tr><td>TimestampNTZ</td><td>Does not include timezone</td><td>Returns stored values as-is</td></tr></tbody></table><p>Therefore, if data is stored as this type, queries must explicitly cast it to a specific timezone.<br>However, if the timezone of the stored <code>TimestampNTZ</code> data is unknown, is casting even meaningful?</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>In Spark 3.3+ and Delta 2.4.0+, TimestampNTZ is enabled by default.</li><li>If pandas datetime data is inserted into Delta without a timezone setting, it is automatically stored as TimestampNTZ.</li><li>When querying TimestampNTZ data in Spark, time conversion does not happen automatically.</li></ul><p>Therefore, the data type should be explicitly defined before storage, or Spark should be configured to handle it explicitly.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>BigData</category>
+      
+      <category>engineering</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>BigData</tag>
+      
+      <tag>Spark</tag>
+      
+      <tag>Delta</tag>
+      
+      <tag>TimestampNTZ</tag>
+      
+      <tag>DataType</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>My Experience Translating 『Julia for Data Analytics』</title>
     <link href="/en/en/Julia/julia-0/"/>
     <url>/en/en/Julia/julia-0/</url>
