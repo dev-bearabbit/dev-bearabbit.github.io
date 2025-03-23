@@ -1,0 +1,885 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/en/img/apple-touch-icon.png">
+  <link rel="icon" href="/en/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Introducing an easy way to store data in AWS S3 and query it directly from your local machine using DuckDB.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Build Your Own Data Warehouse with DuckDB + S3">
+<meta property="og:url" content="https://dev-bearabbit.github.io/en/en/Engineering/engineering-3/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="Introducing an easy way to store data in AWS S3 and query it directly from your local machine using DuckDB.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/7.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/8.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/9.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/10.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/11.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/12.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/13.png">
+<meta property="article:published_time" content="2025-03-23T14:24:06.000Z">
+<meta property="article:modified_time" content="2025-03-23T14:40:53.120Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="duckdb">
+<meta property="article:tag" content="datawarehouse">
+<meta property="article:tag" content="data">
+<meta property="article:tag" content="s3">
+<meta property="article:tag" content="aws">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/en/images/7.png">
+  
+  
+  
+  <title>Build Your Own Data Warehouse with DuckDB + S3 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/en/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/en/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/en/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/en/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"G-QW3E4LZZNF"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/en/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/en/js/utils.js" ></script>
+  <script  src="/en/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=G-QW3E4LZZNF", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'G-QW3E4LZZNF');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/en/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/en/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/en/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/en/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner" parallax=true
+  style="background: url('/en/img/baclground.gif') no-repeat center center; background-size: cover;">
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Build Your Own Data Warehouse with DuckDB + S3"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-23 23:24" pubdate>
+          March 23, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          378 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const banner = document.getElementById('banner');
+
+    // 캔버스 크기를 배너 크기와 동기화
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    // 터치 이벤트 발생 여부를 체크하는 변수
+    let isTouching = false;
+    
+    // 모바일 터치 이벤트 감지
+    document.addEventListener('touchstart', () => {
+      isTouching = true;
+    });
+    document.addEventListener('touchend', () => {
+      isTouching = false;
+    });
+
+    function matrix() {
+      // 터치 중이면 업데이트 중지
+      if (isTouching) return;
+      
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) {
+          ypos[index] = 0;
+        } else {
+          ypos[index] = y + 20;
+        }
+      });
+    }
+
+    // 60ms 간격으로 matrix 함수를 호출
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Build Your Own Data Warehouse with DuckDB + S3</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Introducing an easy way to store data in AWS S3 and query it directly from your local machine using DuckDB.</p>
+<span id="more"></span>
+
+<h2 id="Why-DuckDB-S3"><a href="#Why-DuckDB-S3" class="headerlink" title="Why DuckDB + S3?"></a>Why DuckDB + S3?</h2><ul>
+<li>DuckDB: Lightweight like SQLite, but with a columnar engine for speed and strong SQL support</li>
+<li>S3: Store large datasets without worry and access them from anywhere, whether local or cloud</li>
+<li>Simple Setup: No complex infrastructure needed—start analyzing data right away</li>
+</ul>
+<h2 id="Architecture-Task-Outline"><a href="#Architecture-Task-Outline" class="headerlink" title="Architecture &amp; Task Outline"></a>Architecture &amp; Task Outline</h2><p>Here’s how the structure looks:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">[S3] Data Storage ──────▶ [DuckDB] Query locally<br>                         └──────▶ Metadata &amp; Schema Management (.duckdb file)<br></code></pre></td></tr></table></figure>
+
+<p>Actual table data is stored in S3, while metadata and schema files are kept locally.</p>
+<p>This way, you can analyze freely without worrying about storage limits.<br>Also, the schema stays intact while you can update only the data as needed.</p>
+<p>Today’s task order:</p>
+<ul>
+<li>Install DuckDB on Mac</li>
+<li>Learn how to use DuckDB UI</li>
+<li>Connect DuckDB to S3</li>
+<li>Apply .duckdbrc configuration</li>
+<li>Test S3 tables from DuckDB UI</li>
+</ul>
+<h2 id="Installing-DuckDB-on-Mac"><a href="#Installing-DuckDB-on-Mac" class="headerlink" title="Installing DuckDB on Mac"></a>Installing DuckDB on Mac</h2><p>Installation is super simple via terminal:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">&gt; brew install duckdb<br></code></pre></td></tr></table></figure>
+
+<p>Once installed, you can use it in <code>Transient In-Memory Mode</code> like below:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">&gt; duckdb<br>v1.2.1 8e52ec4395<br>Enter <span class="hljs-string">&quot;.help&quot;</span> <span class="hljs-keyword">for</span> usage hints.<br>Connected to a transient in-memory database.<br>Use <span class="hljs-string">&quot;.open FILENAME&quot;</span> to reopen on a persistent database.<br>D <br></code></pre></td></tr></table></figure>
+
+<p>DuckDB offers a REPL mode by default. Depending on whether you want one-time use or persistence, choose:</p>
+<ul>
+<li>Transient In-Memory DB: If you connect without <code>.open</code>, data is kept in memory and lost on exit</li>
+<li>Persistent DB: <code>.duckdb</code> file stores schema&#x2F;data and can be reused</li>
+</ul>
+<h2 id="Using-DuckDB-UI"><a href="#Using-DuckDB-UI" class="headerlink" title="Using DuckDB UI"></a>Using DuckDB UI</h2><p>You can launch the UI, which is notebook-style, using a simple CLI command:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">❯ duckdb -ui<br>┌──────────────────────────────────────┐<br>│                result                │<br>│               varchar                │<br>├──────────────────────────────────────┤<br>│ UI started at http://localhost:4213/ │<br>└──────────────────────────────────────┘<br>v1.2.1 8e52ec4395<br>Enter &quot;.help&quot; for usage hints.<br>D <br></code></pre></td></tr></table></figure>
+
+<p>Visiting <code>http://localhost:4213/</code>, you’ll see a welcome page like this:</p>
+<p><img src="/en/images/7.png" srcset="/en/img/loading.gif" lazyload alt="duckdb page"></p>
+<p>Click on <code>attached databases</code> at the top left and create a <code>.duckdb</code> file via the File option.</p>
+<p><img src="/en/images/8.png" srcset="/en/img/loading.gif" lazyload alt="add database"></p>
+<p>You’ll see the <code>.duckdb</code> file created at the specified path:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">~/Desktop/duckdb on  main [✘»!+?] on ☁️  (ap-northeast-2) <br>❯ ls -al<br>total 24<br>drwxr-xr-x   3 ryu  staff     96  3 23 20:53 .<br>drwx------@ 24 ryu  staff    768  3 23 20:53 ..<br>-rw-r--r--   1 ryu  staff  12288  3 23 20:53 mywarehouse.duckdb<br></code></pre></td></tr></table></figure>
+
+<p>DuckDB UI allows three types of database connections:</p>
+<ul>
+<li>File: Connect or create <code>.duckdb</code> files in the local file system</li>
+<li>URL: Useful for sharing read-only DB files in a centralized storage</li>
+<li>Memory: Ideal for tests, one-off queries, or temporary sessions</li>
+</ul>
+<p>The URL option can be really handy in team environments.<br>Engineers can ETL and upload, while analysts&#x2F;managers can use the data.<br>Since it’s read-only, there’s no risk of accidentally deleting data.<br>However, whenever a new table is added or schema changes, someone needs to update the <code>.duckdb</code> file.</p>
+<h2 id="Connecting-DuckDB-to-S3"><a href="#Connecting-DuckDB-to-S3" class="headerlink" title="Connecting DuckDB to S3"></a>Connecting DuckDB to S3</h2><p>First, create an S3 bucket to store your data. Disable all public access options.</p>
+<p><img src="/en/images/9.png" srcset="/en/img/loading.gif" lazyload alt="create S3 bucket"></p>
+<p>Then go to <code>IAM &gt; Policies</code> and create a policy like this, allowing the specific bucket access:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;Effect&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Allow&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>            <span class="hljs-string">&quot;s3:GetObject&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;s3:ListBucket&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;s3:PutObject&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;s3:DeleteObject&quot;</span><br>        <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Resource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>            <span class="hljs-string">&quot;arn:aws:s3:::your-bucket-name&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;arn:aws:s3:::your-bucket-name/*&quot;</span><br>        <span class="hljs-punctuation">]</span><br>        <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>Next, go to <code>IAM &gt; Users</code> to create a new user and attach the above policy. Once the user is created, issue Access Keys under <code>Command Line Interface</code> access.</p>
+<p>Back to local terminal, use the following command to set up the profile:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">&gt; </span><span class="language-bash">aws configure</span><br>AWS Access Key ID [********************]:<br>AWS Secret Access Key [********************]:<br>Default region name [*************]: <br>Default output format [****]: <br></code></pre></td></tr></table></figure>
+
+<p>For security, instead of hardcoding access keys, load them dynamically. Add this to <code>.bashrc</code> or <code>.zshrc</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)<br><span class="hljs-built_in">export</span> AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)<br></code></pre></td></tr></table></figure>
+
+<p>Apply the changes:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">source</span> ~/.zshrc<br></code></pre></td></tr></table></figure>
+
+<p>S3 setup is now complete.</p>
+<h2 id="Applying-duckdbrc"><a href="#Applying-duckdbrc" class="headerlink" title="Applying .duckdbrc"></a>Applying <code>.duckdbrc</code></h2><p>It’s tedious to reattach DBs and input env variables every time the UI restarts.<br>You can automate this by adding a <code>.duckdbrc</code> file in your home directory:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;<span class="hljs-operator">/</span>absolute<span class="hljs-operator">/</span>path<span class="hljs-operator">/</span><span class="hljs-keyword">to</span><span class="hljs-operator">/</span>.duckdb&#125;<span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>This file automatically attaches the DB and sets S3 configs.<br>You’ll see the DB consistently attached every time you restart the UI:</p>
+<p><img src="/en/images/10.png" srcset="/en/img/loading.gif" lazyload alt="auto attached DB"></p>
+<h2 id="Testing-S3-Table-in-DuckDB-UI"><a href="#Testing-S3-Table-in-DuckDB-UI" class="headerlink" title="Testing S3 Table in DuckDB UI"></a>Testing S3 Table in DuckDB UI</h2><p>Let’s prepare a sample dataset:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Create sample.csv</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;id,name,country</span><br><span class="hljs-string">1,Alice,KR</span><br><span class="hljs-string">2,Bob,US</span><br><span class="hljs-string">3,Charlie,JP&quot;</span> &gt; sample.csv<br><br><span class="hljs-comment"># Upload to S3</span><br>aws s3 <span class="hljs-built_in">cp</span> sample.csv s3://your-bucket-name/sample.csv<br></code></pre></td></tr></table></figure>
+
+<p>Try querying it:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">HTTP Error: HTTP GET error on &#x27;https://your_bucket.s3.amazonaws.com/sample.csv&#x27; (HTTP 400)<br></code></pre></td></tr></table></figure>
+
+<p>Uh-oh… the query fails!</p>
+<p>Turns out, the <code>s3_region</code> setting in <code>.duckdbrc</code> wasn’t applied correctly.<br>After re-running the setting manually in the UI, the query works fine:</p>
+<p><img src="/en/images/11.png" srcset="/en/img/loading.gif" lazyload alt="query result"></p>
+<p>I’ve reported the <a target="_blank" rel="noopener" href="https://github.com/duckdb/duckdb-ui/issues/87">issue</a> in their GitHub repo.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> users <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> read_csv_auto(<span class="hljs-string">&#x27;s3://your-bucket-name/sample.csv&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>Now, let’s create a <code>users</code> view based on the <code>CSV</code> file:</p>
+<p><img src="/en/images/12.png" srcset="/en/img/loading.gif" lazyload alt="create table"></p>
+<p>Insert and Update the data:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> users<br><span class="hljs-keyword">SET</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Bob Updated&#x27;</span>, country <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CA&#x27;</span><br><span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br><br><span class="hljs-keyword">INSERT INTO</span> users (id, name, country) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">4</span>, <span class="hljs-string">&#x27;David&#x27;</span>, <span class="hljs-string">&#x27;CN&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>These changes affect only the <code>local</code> users table, not the S3 file.<br>To persist the changes back to S3:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">COPY</span> users <span class="hljs-keyword">TO</span> <span class="hljs-string">&#x27;s3://your-bucket-name/updated_users.parquet&#x27;</span> (FORMAT PARQUET);<br></code></pre></td></tr></table></figure>
+
+<p><img src="/en/images/13.png" srcset="/en/img/loading.gif" lazyload alt="create new table"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Building your own data warehouse with DuckDB and S3 is surprisingly simple yet powerful.<br>The combination of DuckDB’s lightness and S3’s scalability allows you to set up a large-scale data analysis environment locally, without the need for dedicated cloud data warehouses.</p>
+<p>One thing to keep an eye on is the .duckdbrc issue with <code>s3_region</code> not auto-applying.<br>Until it’s patched, manual configuration might still be necessary.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/en/categories/bigdata/" class="category-chain-item">BigData</a>
+  
+  
+    <span>></span>
+    
+  <a href="/en/categories/bigdata/engineering/" class="category-chain-item">engineering</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/en/tags/duckdb/" class="print-no-link">#duckdb</a>
+      
+        <a href="/en/tags/datawarehouse/" class="print-no-link">#datawarehouse</a>
+      
+        <a href="/en/tags/data/" class="print-no-link">#data</a>
+      
+        <a href="/en/tags/s3/" class="print-no-link">#s3</a>
+      
+        <a href="/en/tags/aws/" class="print-no-link">#aws</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Build Your Own Data Warehouse with DuckDB + S3</div>
+      <div>https://dev-bearabbit.github.io/en/en/Engineering/engineering-3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 23, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/en/en/Engineering/engineering-2/" title="Do You Know About the Spark TimestampNTZ Data Type?">
+                        <span class="hidden-mobile">Do You Know About the Spark TimestampNTZ Data Type?</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/en/js/events.js" ></script>
+<script  src="/en/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/en/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/en/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/en/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

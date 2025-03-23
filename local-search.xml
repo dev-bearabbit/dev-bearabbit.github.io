@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>DuckDB + S3로 나만의 데이터 웨어하우스 만들기</title>
+    <link href="/ko/Engineering/engineering-7/"/>
+    <url>/ko/Engineering/engineering-7/</url>
+    
+    <content type="html"><![CDATA[<p>AWS S3 스토리지에 데이터를 저장해두고, 로컬에서 간편하게 DuckDB로 바로 쿼리해보는 방법을 소개합니다. <span id="more"></span></p><h2 id="왜-duckdb-s3인가">왜 DuckDB + S3인가</h2><ul><li>DuckDB: SQLite처럼 가볍지만, 컬럼 기반 엔진으로 빠르고 SQL 지원도 탄탄함</li><li>S3 연동: 대용량 데이터도 부담없이 저장하고, 로컬이나 클라우드 어디서든 접근 가능함</li><li>설정이 매우 심플: 복잡한 인프라 구성 없이 바로 데이터 분석 가능</li></ul><h2 id="구조-및-일감-정의">구조 및 일감 정의</h2><p>구조를 설명하면 다음과 같다.</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">[S3] 데이터 저장소 ──────▶ [DuckDB] 로컬에서 바로 쿼리<br>                         └──────▶ 메타데이터 &amp; 스키마 관리 (.duckdb 파일)<br></code></pre></td></tr></table></figure><p>실제 Table에 포함되는 데이터는 S3에 저장을 해두고, 해당 파일을 읽어오는 메타데이터 + 스키마 파일은 로컬에 둔다.</p><p>이렇게 하면 용량 걱정없이 로컬에서 자유롭게 분석할 수 있다. 또한 필요할 때 스키마는 유지하고 데이터만 최신 파일만 교체 가능</p><p>따라서 오늘 일감 순서는 다음과 같다.</p><ul><li>Mac에 DuckDB 설치하기</li><li>DuckDB UI 사용법 배우기</li><li>DuckDB와 S3 연동하기</li><li><code>.duckdbrc</code> 적용하기</li><li>DuckDB UI에서 S3 테이블 테스트하기</li></ul><h2 id="mac에-duckdb-설치">Mac에 DuckDB 설치</h2><p>터미널에서 간단하게 설치할 수 있다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">&gt; </span><span class="language-bash">brew install duckdb</span><br></code></pre></td></tr></table></figure><p>설치가 완료되면 아래처럼 <code>Transient In-Memory Mode</code>로 사용할 수 있다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">&gt; </span><span class="language-bash">duckdb</span><br>v1.2.1 8e52ec4395<br>Enter &quot;.help&quot; for usage hints.<br>Connected to a transient in-memory database.<br>Use &quot;.open FILENAME&quot; to reopen on a persistent database.<br>D <br></code></pre></td></tr></table></figure><p>DuckDB는 기본적으로 REPL 모드로 제공되는데 일회성으로 사용할지 재사용 할지에 따라 모드를 선택할 수 있다.</p><ul><li>Transient In-Memory DB: <code>.open</code> 없이 접속하면 메모리에만 존재, 종료하면 데이터 날아감</li><li>Persistent DB: <code>.duckdb 파일</code>에 스키마/데이터 저장, 재사용 가능</li></ul><h2 id="duckdb-ui-사용">DuckDB UI 사용</h2><p>UI는 notebook처럼 CLI 명령어로 실행할 수 있다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">❯ duckdb -ui<br>┌──────────────────────────────────────┐<br>│                result                │<br>│               varchar                │<br>├──────────────────────────────────────┤<br>│ UI started at http://localhost:4213/ │<br>└──────────────────────────────────────┘<br>v1.2.1 8e52ec4395<br>Enter &quot;.help&quot; for usage hints.<br>D <br></code></pre></td></tr></table></figure><p><code>http://localhost:4213/</code> 링크로 들어가면 아래와 같은 웰컴 페이지를 만날 수 있다.</p><figure><img src="/images/198.png" alt="duckdb page" /><figcaption aria-hidden="true">duckdb page</figcaption></figure><p>이제 왼쪽 상단에 있는 <code>attached databases</code>를 선택하여 아래 옵션으로 <code>.duckdb</code> 파일을 생성한다.</p><figure><img src="/images/199.png" alt="add database" /><figcaption aria-hidden="true">add database</figcaption></figure><p>그러면 작성한 path에 <code>.duckdb</code> 파일이 생성된 걸 확인할 수 있다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">~/Desktop/duckdb on  main [✘»!+?] on ☁️  (ap-northeast-2) <br>❯ ls -al<br>total 24<br>drwxr-xr-x   3 ryu  staff     96  3 23 20:53 .<br>drwx------@ 24 ryu  staff    768  3 23 20:53 ..<br>-rw-r--r--   1 ryu  staff  12288  3 23 20:53 mywarehouse.duckdb<br></code></pre></td></tr></table></figure><p>DuckDB UI에서 연결할 수 있는 방식이 3가지가 있는데 각 종류는 다음과 같다.</p><ul><li>File: 로컬 파일 시스템에 있는 <code>.duckdb</code> 파일을 연결하거나 새로 생성</li><li>URL: 중앙 저장소의 DB 파일을 여러 명이 읽기 전용으로 공유할 때 유용</li><li>Memory: 테스트, 일회성 쿼리, 세션 종료 시 데이터 삭제</li></ul><p>특히 URL은 팀에서 일할 때 꽤나 유용할 것 같다. 엔지니어가 ETL해서 올려주면 분석가나 매니저가 데이터를 사용하는 것이다. 읽기 전용이니 오히려 원본 데이터 손실에 대한 걱정도 없다. 하지만 새로운 테이블이 추가되거나 스키마 변경사항이 있을 때는 업데이트된 최신 <code>.duckdb</code> 파일로 변경해줘야 하는 작업이 추가된다.</p><h2 id="duckdb와-s3-연동">DuckDB와 S3 연동</h2><p>이제 데이터를 저장할 S3 버킷을 하나 생성한다. 접근 정책은 모두 비활성화한다.</p><figure><img src="/images/200.png" alt="create S3 bucket" /><figcaption aria-hidden="true">create S3 bucket</figcaption></figure><p>그 다음에는 <code>IAM &gt; 정책</code>에 들어가서 아래 정책을 하나 생성한다. 이는 S3 연동에 사용할 유저가 지금 만든 버킷에만 접근할 수 있도록 하기 위함이다.</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;Effect&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Allow&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>            <span class="hljs-string">&quot;s3:GetObject&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;s3:ListBucket&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;s3:PutObject&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;s3:DeleteObject&quot;</span><br>        <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Resource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>            <span class="hljs-string">&quot;arn:aws:s3:::your-bucket-name&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-string">&quot;arn:aws:s3:::your-bucket-name/*&quot;</span><br>        <span class="hljs-punctuation">]</span><br>        <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure><p>마지막으로 <code>IAM &gt; 사용자 생성 &gt; 직접 정책 연결</code>로 위에서 만든 정책을 연결하여 사용자를 생성한다. 생성된 사용자를 클릭하여 <code>Command Line Interface</code> 엑세스키를 발급한다.</p><p>이제 준비가 모두 끝났다. 로컬 터미널에서 아래 명령어를 사용하여 엑세스키 정보를 프로파일로 추가한다. 직접 엑세스키를 입력하지 않고 프로파일을 쓰는 이유는 보안 측면에서 더 안전하기 때문이다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">&gt; </span><span class="language-bash">aws configure</span><br>AWS Access Key ID [********************]:<br>AWS Secret Access Key [********************]:<br>Default region name [*************]: <br>Default output format [****]: <br></code></pre></td></tr></table></figure><p>이렇게 프로파일을 만들었다면 <code>.bashrc</code> 또는 <code>.zshrc</code>에 아래 코드를 추가하자.</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)<br><span class="hljs-built_in">export</span> AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)<br></code></pre></td></tr></table></figure><p>해당 변경사항을 적용하려면 <code>source</code>로 업데이트를 해준다.</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">source</span> ~/.zshrc<br></code></pre></td></tr></table></figure><p>이제 S3관련 설정은 끝났다.</p><h2 id="duckdbrc-적용하기"><code>.duckdbrc</code> 적용하기</h2><p>UI를 재시작할 때마다 매번 DB를 연결해주고 환경변수를 입력하는 것은 너무 귀찮다. 사용자 홈 디렉토리에 <code>.duckdbrc</code>를 만들어두면 UI 실행 시 자동으로 적용하도록 할 수 있다.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;.duckdb 절대 경로&#125;<span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure><p>위 쿼리는 DB 붙이는 것과 S3 사용 시 필요한 것이 포함되어 있다. 아래 사진에 보면 UI를 여러번 껐다 켜도 자동으로 DB가 연결되는걸 확인할 수 있다.</p><figure><img src="/images/201.png" alt="auto attached DB" /><figcaption aria-hidden="true">auto attached DB</figcaption></figure><h2 id="duckdb-ui에서-s3-테이블-테스트">DuckDB UI에서 S3 테이블 테스트</h2><p>이제 간단하게 데이터를 만들어서 테스트해보자.</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># sample.csv 생성</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;id,name,country</span><br><span class="hljs-string">1,Alice,KR</span><br><span class="hljs-string">2,Bob,US</span><br><span class="hljs-string">3,Charlie,JP&quot;</span> &gt; sample.csv<br><br><span class="hljs-comment"># S3에 업로드</span><br>aws s3 <span class="hljs-built_in">cp</span> sample.csv s3://your-bucket-name/sample.csv<br></code></pre></td></tr></table></figure><p>csv로 데이터를 만들어서 생성한 버킷에 올린다. 다음으로는 해당 테이블을 한번 쿼리해보자.</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">HTTP Error: HTTP GET error on &#x27;https://your_bucket.s3.amazonaws.com/sample.csv&#x27; (HTTP 400)<br></code></pre></td></tr></table></figure><p>오...쿼리가 안된다..? 아..원인을 찾아보니 duckdbrc 파일에 셋팅해둔 값 중에 <code>s3_region</code>가 적용이 안되었다. 해당 변수를 UI에서 다시 돌린 후 쿼리를 돌려보니 데이터를 잘 가져온다.</p><figure><img src="/images/202.png" alt="query result" /><figcaption aria-hidden="true">query result</figcaption></figure><p>해당 이슈는 깃허브 레포에 <a href="https://github.com/duckdb/duckdb-ui/issues/87">버그 리포팅</a> 해두었다.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> users <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> read_csv_auto(<span class="hljs-string">&#x27;s3://your-bucket-name/sample.csv&#x27;</span>);<br></code></pre></td></tr></table></figure><p>해당 <code>csv</code> 파일을 사용하여 로컬에 <code>users</code>라는 뷰를 생성한다.</p><figure><img src="/images/203.png" alt="create table" /><figcaption aria-hidden="true">create table</figcaption></figure><p>해당 테이블에 새로운 데이터를 추가하고 변경해보자.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> users<br><span class="hljs-keyword">SET</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Bob Updated&#x27;</span>, country <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CA&#x27;</span><br><span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br><br><span class="hljs-keyword">INSERT INTO</span> users (id, name, country) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">4</span>, <span class="hljs-string">&#x27;David&#x27;</span>, <span class="hljs-string">&#x27;CN&#x27;</span>);<br></code></pre></td></tr></table></figure><p>로컬 메모리에서 <code>users</code> 테이블에서는 변경이 적용되었지만 S3 파일은 변경되지 않았다. 따라서 변경된 테이블을 저장한다. 여기서 path를 동일하게 하면 <code>overwrite</code> 되는 것이다.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">COPY</span> users <span class="hljs-keyword">TO</span> <span class="hljs-string">&#x27;s3://your-bucket-name/updated_users.parquet&#x27;</span> (FORMAT PARQUET);<br></code></pre></td></tr></table></figure><figure><img src="/images/204.png" alt="create new table" /><figcaption aria-hidden="true">create new table</figcaption></figure><h2 id="결론">결론</h2><p>DuckDB와 S3를 연동해 나만의 데이터 웨어하우스를 만드는 과정은 생각보다 훨씬 간단하면서도 강력하다. 특히 DuckDB의 가벼움과 S3의 확장성을 활용해, 별도의 클라우드 데이터웨어하우스 없이도 로컬에서 대용량 데이터 분석 환경을 구축할 수 있다는 점이 가장 큰 장점이다.</p><p>이번에 테스트하면서 발견된 .duckdbrc의 <code>s3_region</code> 설정이 자동 적용되지 않는 문제는 어떻게 해결될지 트래킹 해봐야겠다. 수정되기 전까지는 수동으로 정의해서 사용해야겠다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>BigData</category>
+      
+      <category>engineering</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>aws</tag>
+      
+      <tag>data</tag>
+      
+      <tag>duckdb</tag>
+      
+      <tag>datawarehouse</tag>
+      
+      <tag>s3</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Spark TimestampNTZ 데이터 타입을 아십니까?</title>
     <link href="/ko/Engineering/engineering-6/"/>
     <url>/ko/Engineering/engineering-6/</url>
@@ -94,13 +129,13 @@
     
     <tags>
       
-      <tag>데이터웨어하우스</tag>
-      
-      <tag>warehouse</tag>
-      
       <tag>빅데이터</tag>
       
+      <tag>데이터웨어하우스</tag>
+      
       <tag>DW</tag>
+      
+      <tag>warehouse</tag>
       
       <tag>데이터품질</tag>
       
@@ -488,15 +523,15 @@
     
     <tags>
       
-      <tag>데이터웨어하우스</tag>
-      
       <tag>빅데이터</tag>
       
       <tag>bigdata</tag>
       
-      <tag>데이터마트</tag>
+      <tag>데이터웨어하우스</tag>
       
       <tag>datawarehouse</tag>
+      
+      <tag>데이터마트</tag>
       
       <tag>datamart</tag>
       
@@ -757,19 +792,19 @@
       
       <tag>인프라</tag>
       
+      <tag>OS</tag>
+      
+      <tag>운영체제</tag>
+      
       <tag>분산처리</tag>
       
       <tag>대규모데이터</tag>
       
       <tag>데이터구조</tag>
       
-      <tag>서버</tag>
-      
-      <tag>OS</tag>
-      
-      <tag>운영체제</tag>
-      
       <tag>캐시</tag>
+      
+      <tag>서버</tag>
       
     </tags>
     
@@ -800,10 +835,6 @@
       
       <tag>인프라</tag>
       
-      <tag>메모리</tag>
-      
-      <tag>대규모</tag>
-      
       <tag>분산처리</tag>
       
       <tag>대규모데이터</tag>
@@ -811,6 +842,10 @@
       <tag>데이터구조</tag>
       
       <tag>서버</tag>
+      
+      <tag>메모리</tag>
+      
+      <tag>대규모</tag>
       
     </tags>
     
@@ -944,9 +979,9 @@
       
       <tag>데이터웨어하우스</tag>
       
-      <tag>데이터레이크</tag>
-      
       <tag>warehouse</tag>
+      
+      <tag>데이터레이크</tag>
       
       <tag>lake</tag>
       
@@ -1159,6 +1194,47 @@
   
   
   <entry>
+    <title>데이터 엔지니어의 IoT 도전기 1편</title>
+    <link href="/ko/Embedded/embedded-0/"/>
+    <url>/ko/Embedded/embedded-0/</url>
+    
+    <content type="html"><![CDATA[<span id="more"></span><h2 id="시작하기-전에">시작하기 전에</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>Hardware</category>
+      
+      <category>embedded/IoT</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>IoT</tag>
+      
+      <tag>embedded</tag>
+      
+      <tag>nodeMCU</tag>
+      
+      <tag>IR센서</tag>
+      
+      <tag>RFID</tag>
+      
+      <tag>ESP8266</tag>
+      
+      <tag>TCRT5000</tag>
+      
+      <tag>RFID-RC522</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>하드웨어의 기초</title>
     <link href="/ko/Infra/infra-1/"/>
     <url>/ko/Infra/infra-1/</url>
@@ -1247,13 +1323,13 @@
       
       <tag>DB</tag>
       
-      <tag>database</tag>
-      
       <tag>architecture</tag>
       
       <tag>sharednothing</tag>
       
       <tag>shareddisk</tag>
+      
+      <tag>database</tag>
       
       <tag>아키텍처</tag>
       
@@ -1325,11 +1401,11 @@
     
     <tags>
       
+      <tag>python</tag>
+      
       <tag>recursion</tag>
       
       <tag>recursive</tag>
-      
-      <tag>python</tag>
       
       <tag>비교</tag>
       
@@ -1530,11 +1606,11 @@
       
       <tag>package</tag>
       
-      <tag>pypi</tag>
+      <tag>poetry</tag>
       
       <tag>패키지</tag>
       
-      <tag>poetry</tag>
+      <tag>pypi</tag>
       
     </tags>
     
@@ -1569,9 +1645,9 @@
       
       <tag>package</tag>
       
-      <tag>pypi</tag>
-      
       <tag>패키지</tag>
+      
+      <tag>pypi</tag>
       
       <tag>한국프로야구</tag>
       
@@ -2716,8 +2792,6 @@
       
       <tag>알고리즘</tag>
       
-      <tag>기초</tag>
-      
       <tag>버블정렬</tag>
       
       <tag>삽입정렬</tag>
@@ -2727,6 +2801,8 @@
       <tag>정렬알고리즘</tag>
       
       <tag>sort</tag>
+      
+      <tag>기초</tag>
       
     </tags>
     
@@ -3937,13 +4013,13 @@
       
       <tag>풀링</tag>
       
-      <tag>Julia</tag>
-      
-      <tag>모델</tag>
-      
       <tag>im2col</tag>
       
       <tag>col2im</tag>
+      
+      <tag>Julia</tag>
+      
+      <tag>모델</tag>
       
     </tags>
     
@@ -3984,13 +4060,13 @@
       
       <tag>풀링</tag>
       
-      <tag>Julia</tag>
-      
-      <tag>모델</tag>
-      
       <tag>im2col</tag>
       
       <tag>col2im</tag>
+      
+      <tag>Julia</tag>
+      
+      <tag>모델</tag>
       
     </tags>
     
@@ -4031,13 +4107,13 @@
       
       <tag>풀링</tag>
       
-      <tag>Julia</tag>
-      
-      <tag>모델</tag>
-      
       <tag>im2col</tag>
       
       <tag>col2im</tag>
+      
+      <tag>Julia</tag>
+      
+      <tag>모델</tag>
       
     </tags>
     
@@ -4078,13 +4154,13 @@
       
       <tag>풀링</tag>
       
-      <tag>Julia</tag>
-      
-      <tag>모델</tag>
-      
       <tag>im2col</tag>
       
       <tag>col2im</tag>
+      
+      <tag>Julia</tag>
+      
+      <tag>모델</tag>
       
     </tags>
     
@@ -4125,13 +4201,13 @@
       
       <tag>풀링</tag>
       
-      <tag>flatten</tag>
-      
-      <tag>convolution</tag>
-      
       <tag>Julia</tag>
       
       <tag>모델</tag>
+      
+      <tag>flatten</tag>
+      
+      <tag>convolution</tag>
       
     </tags>
     
@@ -4993,11 +5069,11 @@
       
       <tag>알고리즘</tag>
       
+      <tag>기초</tag>
+      
       <tag>빅오 표기법</tag>
       
       <tag>피보나치</tag>
-      
-      <tag>기초</tag>
       
     </tags>
     
