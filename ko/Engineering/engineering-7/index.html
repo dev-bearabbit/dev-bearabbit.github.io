@@ -35,12 +35,12 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/203.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/204.png">
 <meta property="article:published_time" content="2025-03-21T10:37:12.000Z">
-<meta property="article:modified_time" content="2025-03-23T14:38:51.128Z">
+<meta property="article:modified_time" content="2025-03-23T15:11:13.127Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="aws">
 <meta property="article:tag" content="data">
-<meta property="article:tag" content="duckdb">
 <meta property="article:tag" content="datawarehouse">
+<meta property="article:tag" content="duckdb">
 <meta property="article:tag" content="s3">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dev-bearabbit.github.io/images/198.png">
@@ -374,8 +374,7 @@
 <p>구조를 설명하면 다음과 같다.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">[S3] 데이터 저장소 ──────▶ [DuckDB] 로컬에서 바로 쿼리<br>                         └──────▶ 메타데이터 &amp; 스키마 관리 (.duckdb 파일)<br></code></pre></td></tr></table></figure>
 <p>실제 Table에 포함되는 데이터는 S3에 저장을 해두고, 해당 파일을 읽어오는 메타데이터 + 스키마 파일은 로컬에 둔다.</p>
-<p>이렇게 하면 용량 걱정없이 로컬에서 자유롭게 분석할 수 있다. 또한 필요할 때 스키마는 유지하고 데이터만 최신 파일만 교체 가능</p>
-<p>따라서 오늘 일감 순서는 다음과 같다.</p>
+<p>이렇게 하면 용량 걱정없이 로컬에서 자유롭게 분석할 수 있다. 따라서 오늘 일감 순서는 다음과 같다.</p>
 <ul>
 <li>Mac에 DuckDB 설치하기</li>
 <li>DuckDB UI 사용법 배우기</li>
@@ -430,7 +429,7 @@
 <p>이제 S3관련 설정은 끝났다.</p>
 <h2 id="duckdbrc-적용하기"><code>.duckdbrc</code> 적용하기</h2>
 <p>UI를 재시작할 때마다 매번 DB를 연결해주고 환경변수를 입력하는 것은 너무 귀찮다. 사용자 홈 디렉토리에 <code>.duckdbrc</code>를 만들어두면 UI 실행 시 자동으로 적용하도록 할 수 있다.</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;.duckdb 절대 경로&#125;<span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;.duckdb 절대 경로&#125; <span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p>위 쿼리는 DB 붙이는 것과 S3 사용 시 필요한 것이 포함되어 있다. 아래 사진에 보면 UI를 여러번 껐다 켜도 자동으로 DB가 연결되는걸 확인할 수 있다.</p>
 <figure>
 <img src="/images/201.png" srcset="/img/loading.gif" lazyload alt="auto attached DB" /><figcaption aria-hidden="true">auto attached DB</figcaption>
@@ -504,9 +503,9 @@
       
         <a href="/tags/data/" class="print-no-link">#data</a>
       
-        <a href="/tags/duckdb/" class="print-no-link">#duckdb</a>
-      
         <a href="/tags/datawarehouse/" class="print-no-link">#datawarehouse</a>
+      
+        <a href="/tags/duckdb/" class="print-no-link">#duckdb</a>
       
         <a href="/tags/s3/" class="print-no-link">#s3</a>
       

@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/12.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/13.png">
 <meta property="article:published_time" content="2025-03-23T14:24:06.000Z">
-<meta property="article:modified_time" content="2025-03-23T14:40:53.120Z">
+<meta property="article:modified_time" content="2025-03-23T15:12:03.774Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="duckdb">
 <meta property="article:tag" content="datawarehouse">
@@ -258,7 +258,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          378 words
+          376 words
         
       </span>
     
@@ -375,8 +375,7 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">[S3] Data Storage ──────▶ [DuckDB] Query locally<br>                         └──────▶ Metadata &amp; Schema Management (.duckdb file)<br></code></pre></td></tr></table></figure>
 
 <p>Actual table data is stored in S3, while metadata and schema files are kept locally.</p>
-<p>This way, you can analyze freely without worrying about storage limits.<br>Also, the schema stays intact while you can update only the data as needed.</p>
-<p>Today’s task order:</p>
+<p>This way, you can analyze freely without worrying about storage limits.<br>Today’s task order:</p>
 <ul>
 <li>Install DuckDB on Mac</li>
 <li>Learn how to use DuckDB UI</li>
@@ -429,7 +428,7 @@
 
 <p>S3 setup is now complete.</p>
 <h2 id="Applying-duckdbrc"><a href="#Applying-duckdbrc" class="headerlink" title="Applying .duckdbrc"></a>Applying <code>.duckdbrc</code></h2><p>It’s tedious to reattach DBs and input env variables every time the UI restarts.<br>You can automate this by adding a <code>.duckdbrc</code> file in your home directory:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;<span class="hljs-operator">/</span>absolute<span class="hljs-operator">/</span>path<span class="hljs-operator">/</span><span class="hljs-keyword">to</span><span class="hljs-operator">/</span>.duckdb&#125;<span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;<span class="hljs-operator">/</span>absolute<span class="hljs-operator">/</span>path<span class="hljs-operator">/</span><span class="hljs-keyword">to</span><span class="hljs-operator">/</span>.duckdb&#125; <span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure>
 
 <p>This file automatically attaches the DB and sets S3 configs.<br>You’ll see the DB consistently attached every time you restart the UI:</p>
 <p><img src="/en/images/10.png" srcset="/en/img/loading.gif" lazyload alt="auto attached DB"></p>
