@@ -35,12 +35,12 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/203.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/204.png">
 <meta property="article:published_time" content="2025-03-21T10:37:12.000Z">
-<meta property="article:modified_time" content="2025-03-23T15:11:13.127Z">
+<meta property="article:modified_time" content="2025-03-29T13:37:56.468Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="aws">
 <meta property="article:tag" content="data">
-<meta property="article:tag" content="datawarehouse">
 <meta property="article:tag" content="duckdb">
+<meta property="article:tag" content="datawarehouse">
 <meta property="article:tag" content="s3">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dev-bearabbit.github.io/images/198.png">
@@ -258,7 +258,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          475 words
+          514 words
         
       </span>
     
@@ -269,7 +269,7 @@
         
         
         
-          4 mins
+          5 mins
         
       </span>
     
@@ -444,6 +444,21 @@
 <img src="/images/202.png" srcset="/img/loading.gif" lazyload alt="query result" /><figcaption aria-hidden="true">query result</figcaption>
 </figure>
 <p>해당 이슈는 깃허브 레포에 <a target="_blank" rel="noopener" href="https://github.com/duckdb/duckdb-ui/issues/87">버그 리포팅</a> 해두었다.</p>
+<table style="width:6%;">
+
+<tbody>
+<tr class="odd">
+<td><strong>[2025-03-29 UPDATE]</strong> 레포에서 이야기한 결과 <code>s3_region</code>의 경우 <code>GLOBAL</code> 변수로 정의하면 정상적으로 작동하는 것을 확인하였다.</td>
+</tr>
+<tr class="even">
+<td><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;.duckdb 절대 경로&#125; <span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> <span class="hljs-keyword">GLOBAL</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure></td>
+</tr>
+<tr class="odd">
+<td><code>.duckdbrc</code> 파일에서 <code>s3_region</code> 앞에 <code>GLOBAL</code> 키워드를 추가한다.</td>
+</tr>
+</tbody>
+</table>
+<p>테스트를 계속 진행해보자.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> users <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> read_csv_auto(<span class="hljs-string">&#x27;s3://your-bucket-name/sample.csv&#x27;</span>);<br></code></pre></td></tr></table></figure>
 <p>해당 <code>csv</code> 파일을 사용하여 로컬에 <code>users</code>라는 뷰를 생성한다.</p>
 <figure>
@@ -458,7 +473,7 @@
 </figure>
 <h2 id="결론">결론</h2>
 <p>DuckDB와 S3를 연동해 나만의 데이터 웨어하우스를 만드는 과정은 생각보다 훨씬 간단하면서도 강력하다. 특히 DuckDB의 가벼움과 S3의 확장성을 활용해, 별도의 클라우드 데이터웨어하우스 없이도 로컬에서 대용량 데이터 분석 환경을 구축할 수 있다는 점이 가장 큰 장점이다.</p>
-<p>이번에 테스트하면서 발견된 .duckdbrc의 <code>s3_region</code> 설정이 자동 적용되지 않는 문제는 어떻게 해결될지 트래킹 해봐야겠다. 수정되기 전까지는 수동으로 정의해서 사용해야겠다.</p>
+<p>물론 여기서 말하는 것은 스토리지 제약이 없다는 의미이며, 분산처리엔진을 대신할 수 있다는 의미는 아니다. 싱글 노드의 특성상 사용가능한 메모리는 한정적일 수밖에 없다. 하지만 대규모 테이블은 파티셔닝 해두고 분석할 때는 필요한 기간의 데이터만 가져와서 사용하는 등 테이블 구조만 잘 설계한다면 충분히 사용성있는 환경을 구성할 수 있다고 생각한다.</p>
 
                 
               </div>
@@ -503,9 +518,9 @@
       
         <a href="/tags/data/" class="print-no-link">#data</a>
       
-        <a href="/tags/datawarehouse/" class="print-no-link">#datawarehouse</a>
-      
         <a href="/tags/duckdb/" class="print-no-link">#duckdb</a>
+      
+        <a href="/tags/datawarehouse/" class="print-no-link">#datawarehouse</a>
       
         <a href="/tags/s3/" class="print-no-link">#s3</a>
       

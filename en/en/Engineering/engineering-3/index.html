@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/12.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/13.png">
 <meta property="article:published_time" content="2025-03-23T14:24:06.000Z">
-<meta property="article:modified_time" content="2025-03-23T15:12:03.774Z">
+<meta property="article:modified_time" content="2025-03-29T13:42:35.075Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="duckdb">
 <meta property="article:tag" content="datawarehouse">
@@ -258,7 +258,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          376 words
+          419 words
         
       </span>
     
@@ -442,6 +442,13 @@
 <p>Turns out, the <code>s3_region</code> setting in <code>.duckdbrc</code> wasn’t applied correctly.<br>After re-running the setting manually in the UI, the query works fine:</p>
 <p><img src="/en/images/11.png" srcset="/en/img/loading.gif" lazyload alt="query result"></p>
 <p>I’ve reported the <a target="_blank" rel="noopener" href="https://github.com/duckdb/duckdb-ui/issues/87">issue</a> in their GitHub repo.</p>
+<hr>
+<p><strong>[2025-03-29 UPDATE]</strong><br>As discussed in the issue, we confirmed that setting <code>s3_region</code> as a <code>GLOBAL</code> variable works correctly.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ATTACH DATABASE &#123;<span class="hljs-operator">/</span>absolute<span class="hljs-operator">/</span>path<span class="hljs-operator">/</span><span class="hljs-keyword">to</span><span class="hljs-operator">/</span>.duckdb&#125; <span class="hljs-keyword">AS</span> dw;<br>INSTALL httpfs;<br>LOAD httpfs;<br><span class="hljs-keyword">SET</span> <span class="hljs-keyword">GLOBAL</span> s3_region<span class="hljs-operator">=</span><span class="hljs-string">&#x27;ap-northeast-2&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_access_key_id<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_ACCESS_KEY_ID&#125;&#x27;</span>;<br><span class="hljs-keyword">SET</span> s3_secret_access_key<span class="hljs-operator">=</span><span class="hljs-string">&#x27;$&#123;AWS_SECRET_ACCESS_KEY&#125;&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>Add the <code>GLOBAL</code> keyword before <code>s3_region</code> in your <code>.duckdbrc</code> file.</p>
+<hr>
+<p>Let’s continue testing.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> users <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> read_csv_auto(<span class="hljs-string">&#x27;s3://your-bucket-name/sample.csv&#x27;</span>);<br></code></pre></td></tr></table></figure>
 
 <p>Now, let’s create a <code>users</code> view based on the <code>CSV</code> file:</p>
@@ -454,7 +461,7 @@
 
 <p><img src="/en/images/13.png" srcset="/en/img/loading.gif" lazyload alt="create new table"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Building your own data warehouse with DuckDB and S3 is surprisingly simple yet powerful.<br>The combination of DuckDB’s lightness and S3’s scalability allows you to set up a large-scale data analysis environment locally, without the need for dedicated cloud data warehouses.</p>
-<p>One thing to keep an eye on is the .duckdbrc issue with <code>s3_region</code> not auto-applying.<br>Until it’s patched, manual configuration might still be necessary.</p>
+<p>To be clear, this means there are no storage limitations—but it doesn’t mean it can replace a distributed processing engine.<br>Given the nature of a single-node setup, available memory is inevitably limited.<br>However, with proper table design—such as partitioning large tables and only loading the necessary time range for analysis—<br>it’s definitely possible to build a practical and efficient environment.</p>
 
                 
               </div>
