@@ -22,6 +22,8 @@
     
     <tags>
       
+      <tag>aws</tag>
+      
       <tag>duckdb</tag>
       
       <tag>datawarehouse</tag>
@@ -29,8 +31,6 @@
       <tag>data</tag>
       
       <tag>s3</tag>
-      
-      <tag>aws</tag>
       
     </tags>
     
