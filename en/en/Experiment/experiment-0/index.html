@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/18.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/en/images/19.png">
 <meta property="article:published_time" content="2025-03-30T10:55:37.000Z">
-<meta property="article:modified_time" content="2025-03-30T16:42:14.856Z">
+<meta property="article:modified_time" content="2025-03-30T16:53:49.386Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="DeepLearning">
 <meta property="article:tag" content="LLM">
@@ -260,7 +260,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          525 words
+          526 words
         
       </span>
     
@@ -427,6 +427,7 @@
 <p>An example of <code>ai-plugin.json</code> is shown below.</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;schema_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;v1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name_for_human&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Seoul Real Estate Data API&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name_for_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;seoul_real_estate_data&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description_for_human&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;An API for querying and analyzing apartment transaction data in Seoul.&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description_for_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Use this API to retrieve and analyze real estate transaction data in Seoul. Supports full or date-based queries.&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;auth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;none&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;api&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;openapi&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://56a3-xxxx.ngrok-free.app/.well-known/openapi.json&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;contact_email&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dev.bearabbit@gmail.com&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
 
+<p>Here we need to change the <code>url</code> value to the URL exposed earlier.</p>
 <p>FastAPI automatically exposes the API specification in the path <code>/openapi.json</code>.<br>You can copy it to your <code>.well-known</code> directory.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">curl http://127.0.0.1:8000/openapi.json -o .well-known/openapi.json<br></code></pre></td></tr></table></figure>
 

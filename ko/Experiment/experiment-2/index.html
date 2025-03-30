@@ -34,17 +34,17 @@
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/209.png">
 <meta property="og:image" content="https://dev-bearabbit.github.io/images/210.png">
 <meta property="article:published_time" content="2025-03-30T10:55:37.000Z">
-<meta property="article:modified_time" content="2025-03-30T16:42:16.677Z">
+<meta property="article:modified_time" content="2025-03-30T16:52:39.336Z">
 <meta property="article:author" content="Jess">
 <meta property="article:tag" content="S3">
 <meta property="article:tag" content="DeepLearning">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="ChatGPT">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="인공지능">
 <meta property="article:tag" content="openai">
 <meta property="article:tag" content="FastAPI">
 <meta property="article:tag" content="DuckDB">
-<meta property="article:tag" content="AI">
-<meta property="article:tag" content="인공지능">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dev-bearabbit.github.io/images/205.png">
   
@@ -261,7 +261,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          632 words
+          637 words
         
       </span>
     
@@ -430,6 +430,7 @@
 </ul>
 <p><code>ai-plugin.json</code> 예시는 아래와 같다.</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;schema_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;v1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name_for_human&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Seoul Real Estate Data API&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name_for_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;seoul_real_estate_data&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description_for_human&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;서울 아파트 실거래 데이터를 분석할 수 있는 API입니다.&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description_for_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Use this API to retrieve and analyze Seoul apartment real estate transaction data. Supports full or date-based queries.&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;auth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;none&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;api&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;openapi&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://56a3-xxxx.ngrok-free.app/.well-known/openapi.json&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;contact_email&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dev.bearabbit@gmail.com&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>여기서 <code>url</code> 값을 아까 노출된 url로 변경해줘야 한다.</p>
 <p>FastAPI는 <code>/openapi.json</code> 경로에 자동으로 API 스펙을 노출한다. 이를 <code>.well-known</code> 디렉토리로 복사하면 된다.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">curl http://127.0.0.1:8000/openapi.json -o .well-known/openapi.json<br></code></pre></td></tr></table></figure>
 <p><code>/openapi.json</code> 파일에 추가적으로 <code>Servers</code> 정보를 입력해야 하는데 이건 나중에 툴 연결할 때 추가한다.</p>
@@ -452,7 +453,7 @@
 <figure>
 <img src="/images/207.png" srcset="/img/loading.gif" lazyload alt="test 1" /><figcaption aria-hidden="true">test 1</figcaption>
 </figure>
-<h3 id="혹시-올해-들어서는-아파트-가격이-하락세인가">혹시 올해 들어서는 아파트 가격이 하락세인가?</h3>
+<h3 id="올해-들어서는-아파트-가격이-하락세인가">올해 들어서는 아파트 가격이 하락세인가?</h3>
 <figure>
 <img src="/images/208.png" srcset="/img/loading.gif" lazyload alt="test 2" /><figcaption aria-hidden="true">test 2</figcaption>
 </figure>
@@ -521,15 +522,15 @@
       
         <a href="/tags/chatgpt/" class="print-no-link">#ChatGPT</a>
       
+        <a href="/tags/ai/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%EC%9D%B8%EA%B3%B5%EC%A7%80%EB%8A%A5/" class="print-no-link">#인공지능</a>
+      
         <a href="/tags/openai/" class="print-no-link">#openai</a>
       
         <a href="/tags/fastapi/" class="print-no-link">#FastAPI</a>
       
         <a href="/tags/duckdb/" class="print-no-link">#DuckDB</a>
-      
-        <a href="/tags/ai/" class="print-no-link">#AI</a>
-      
-        <a href="/tags/%EC%9D%B8%EA%B3%B5%EC%A7%80%EB%8A%A5/" class="print-no-link">#인공지능</a>
       
     </div>
   
