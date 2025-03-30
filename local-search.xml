@@ -4,6 +4,49 @@
   
   
   <entry>
+    <title>ChatGPT에 DuckDB + S3 연결해 데이터 분석시키기</title>
+    <link href="/ko/Experiment/experiment-2/"/>
+    <url>/ko/Experiment/experiment-2/</url>
+    
+    <content type="html"><![CDATA[<p>이 글에선 S3에 저장된 데이터를 DuckDB로 읽고, 그 결과를 ChatGPT가 가져와 분석하는 구조를 만들어보고 테스트합니다. <span id="more"></span></p><hr /><h2 id="시작하며">시작하며</h2><p>최근에 부동산 데이터에 관심이 생겨서 개인 S3에 데이터를 적재하고 이것저것 살펴보던 중이었다. 데이터를 직접 쿼리하고 분석하는 것도 좋지만, 문득 이런 생각이 들었다.</p><blockquote><p>"AI가 대신 분석해서 내 질문에 답해주면 얼마나 편할까?"</p></blockquote><p>마침 요즘 <code>MCP(Model Context Protocol)</code> 같은 툴 호출 방식이 화제라는 걸 알게 되었고,<br />그걸 통해 <strong>AI가 내 데이터를 직접 쿼리해서 분석해주는 구조를 만들 수 있지 않을까?</strong> 하는 기대가 생겼다.</p><p>하지만 OpenAI는 <code>.context.yaml</code>이나 MCP 프로토콜을 직접 지원하진 않았다. 최근 공개된 SDK는 Agents API에서만 사용할 수 있고, ChatGPT 웹 인터페이스(GPTs)에서는 MCP를 직접 쓸 수 없었다. 대신 GPTs는 <code>openapi.json</code>을 제공하는 API 서버를 자동 탐색하여 function으로 등록할 수 있기 때문에,<br />이를 활용하면 마치 MCP처럼 작동하는 <code>AI 데이터 분석가</code>를 흉내낼 수 있을 것 같았다.</p><p>그래서 한 번 실험해보기로 했다.</p><h2 id="전체-구조-살펴보기">전체 구조 살펴보기</h2><p>이번 실험에서 사용한 전체 구조는 다음과 같다.</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs text">[GPTs (웹 인터페이스)]<br><br>    ↓ function-calling 호출<br><br>[FastAPI 서버 (DuckDB + S3 연결)]<br><br>    ↓ DuckDB 쿼리<br><br>[S3에 저장된 부동산 parquet 파일]<br></code></pre></td></tr></table></figure><ol type="1"><li>사용자는 GPTs에 자연어로 질문을 입력한다.</li><li>GPT는 <code>openapi.json</code>을 통해 등록된 툴을 기반으로, 적절한 API를 선택하고 파라미터를 구성한다.</li><li>선택된 API는 FastAPI 서버로 호출된다.</li><li>FastAPI는 DuckDB를 통해 S3에 저장된 parquet 파일을 쿼리한다.</li><li>결과는 다시 GPT에게 전달되어 자연어로 요약된다.</li><li>필요에 따라 가져온 데이터를 기반으로 추가적인 분석을 이어간다.</li></ol><h2 id="s3-데이터를-쿼리하는-api-서버-만들기">S3 데이터를 쿼리하는 API 서버 만들기</h2><p>먼저 데이터의 경우 <a href="https://data.seoul.go.kr/dataList/OA-21275/S/1/datasetView.do">서울 열린데이터 광장</a>에서 가져와 <code>S3</code>에 적재하였다. 해당 홈페이지에서 API도 지원해주기 때문에 <code>Github Actions</code>으로 일배치 돌려두면 일자별 최신 데이터도 업로드 해둘 수 있다.</p><p>이번에 사용할 데이터 저장 구조는 다음과 같다.</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">f&quot;seoul_apt_data/&#123;year&#125;/&#123;month:02d&#125;/&#123;day:02d&#125;.parquet&quot;<br></code></pre></td></tr></table></figure><p>년도와 월까지 파티셔닝이 되어있기 때문에 폴더 단위 통째로 불러올 수 있고 날짜 단위로 필터링도 쉽게 적용 가능하다.</p><p>이제 해당 데이터를 쿼리하는 API 서버를 FastAPI로 구성해보자.</p><h3 id="필요한-패키지들-설치">필요한 패키지들 설치</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">pip3 install fastapi uvicorn duckdb<br></code></pre></td></tr></table></figure><h3 id="main.py에-아래-코드를-추가"><code>main.py</code>에 아래 코드를 추가</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, Query<br><span class="hljs-keyword">from</span> fastapi.staticfiles <span class="hljs-keyword">import</span> StaticFiles<br><span class="hljs-keyword">import</span> duckdb<br><span class="hljs-keyword">import</span> os<br><br>app = FastAPI()<br><br><span class="hljs-comment"># 환경 변수로 AWS 키 관리하기</span><br>S3_REGION = <span class="hljs-string">&quot;ap-northeast-2&quot;</span><br>S3_BUCKET = <span class="hljs-string">&quot;your-bucket-name&quot;</span><br>S3_ACCESS_KEY = os.getenv(<span class="hljs-string">&quot;AWS_ACCESS_KEY_ID&quot;</span>)<br>S3_SECRET_KEY = os.getenv(<span class="hljs-string">&quot;AWS_SECRET_ACCESS_KEY&quot;</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">duckdb_connect</span>():<br>    con = duckdb.connect()<br>    con.execute(<span class="hljs-string">f&quot;SET s3_region=&#x27;<span class="hljs-subst">&#123;S3_REGION&#125;</span>&#x27;;&quot;</span>)<br>    con.execute(<span class="hljs-string">f&quot;SET s3_access_key_id=&#x27;<span class="hljs-subst">&#123;S3_ACCESS_KEY&#125;</span>&#x27;;&quot;</span>)<br>    con.execute(<span class="hljs-string">f&quot;SET s3_secret_access_key=&#x27;<span class="hljs-subst">&#123;S3_SECRET_KEY&#125;</span>&#x27;;&quot;</span>)<br>    <span class="hljs-keyword">return</span> con<br><br><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">&quot;/data_by_date&quot;</span></span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_data_by_date</span>(<span class="hljs-params"></span><br><span class="hljs-params">    year: <span class="hljs-built_in">int</span> = Query(<span class="hljs-params">...</span>),</span><br><span class="hljs-params">    month: <span class="hljs-built_in">int</span> = Query(<span class="hljs-params">...</span>),</span><br><span class="hljs-params">    day: <span class="hljs-built_in">int</span> = Query(<span class="hljs-params">...</span>)</span><br><span class="hljs-params"></span>):<br>    con = duckdb_connect()<br>    path = <span class="hljs-string">f&quot;s3://<span class="hljs-subst">&#123;S3_BUCKET&#125;</span>/seoul_apt_data/<span class="hljs-subst">&#123;year&#125;</span>/<span class="hljs-subst">&#123;month:02d&#125;</span>/<span class="hljs-subst">&#123;day:02d&#125;</span>.parquet&quot;</span><br><br>    <span class="hljs-keyword">try</span>:<br>        df = con.execute(<span class="hljs-string">f&quot;SELECT CGG_NM, ARCH_AREA, ARCH_YR, THING_AMT FROM read_parquet(&#x27;<span class="hljs-subst">&#123;path&#125;</span>&#x27;)&quot;</span>).fetchdf()<br>        <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;success&quot;</span>,<br>            <span class="hljs-string">&quot;rows&quot;</span>: <span class="hljs-built_in">len</span>(df),<br>            <span class="hljs-string">&quot;data&quot;</span>: df.to_dict(orient=<span class="hljs-string">&quot;records&quot;</span>)<br>        &#125;<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;error&quot;</span>,<br>            <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-built_in">str</span>(e)<br>        &#125;<br><br><span class="hljs-keyword">if</span> os.path.exists(<span class="hljs-string">&quot;.well-known&quot;</span>):<br>    app.mount(<span class="hljs-string">&quot;/.well-known&quot;</span>, StaticFiles(directory=<span class="hljs-string">&quot;.well-known&quot;</span>), name=<span class="hljs-string">&quot;well-known&quot;</span>)<br></code></pre></td></tr></table></figure><h3 id="api-서버-구동">API 서버 구동</h3><p>테스트하는 중이니 일단 로컬에서 돌려보자.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">uvicorn main:app --reload<br></code></pre></td></tr></table></figure><h3 id="api-테스트">API 테스트</h3><p>마지막으로 API가 정상적으로 데이터를 제공하는지 테스트한다.</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests <span class="hljs-keyword">as</span> rq<br><br>params = &#123;<br>    <span class="hljs-string">&quot;year&quot;</span>: <span class="hljs-number">2024</span>,<br>    <span class="hljs-string">&quot;month&quot;</span>: <span class="hljs-number">12</span>,<br>    <span class="hljs-string">&quot;day&quot;</span>: <span class="hljs-number">1</span><br>&#125;<br><br>res = rq.get(<span class="hljs-string">&quot;http://127.0.0.1:8000/data_by_date&quot;</span>, params=params)<br></code></pre></td></tr></table></figure><p>데이터가 정상적으로 반환되면 성공이다.</p><h2 id="gpts에-툴-등록하기">GPTs에 툴 등록하기</h2><p>GPTs는 <code>openapi.json</code>이 제공되는 API 서버를 자동 탐색하여 function-calling 툴로 등록할 수 있다. 이를 위해서는 2가지를 해야 한다.</p><ol type="1"><li><code>ngrok</code>을 사용하여 로컬 FastAPI 서버를 외부에서 접근 가능하게 만든다.<br /></li><li><code>.well-known</code> 폴더에 <code>ai-plugin.json</code>과 <code>openapi.json</code>을 준비한다.</li></ol><h3 id="ngrok으로-서버-열기">ngrok으로 서버 열기</h3><p>먼저 <code>ngrok</code>을 다운로드한다. Mac에서는 다음 명령어로 설치할 수 있다. 만약 다른 OS를 사용중이라면 <a href="https://ngrok.com/downloads/mac-os">해당 사이트</a>에서 다운로드 받을 수 있다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">brew install ngrok<br></code></pre></td></tr></table></figure><p>설치 후 <a href="https://dashboard.ngrok.com/signup">ngrok 홈페이지</a>에서 회원가입을 하고 <code>Auth Token</code> 토큰을 발급받아 아래처럼 등록한다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ngrok config add-authtoken &lt;your-token&gt;<br></code></pre></td></tr></table></figure><p>이제 아래 명령어로 로컬 8000번 포트를 외부에 노출시킨다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">&gt; </span><span class="language-bash">ngrok http 8000</span><br></code></pre></td></tr></table></figure><p>성공적으로 연결되면 다음과 같은 주소가 표시된다:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">Forwarding  https://56a3-xxxx.ngrok-free.app -&gt; http://localhost:8000 <br></code></pre></td></tr></table></figure><h3 id="well-known-디렉토리-구성">.well-known 디렉토리 구성</h3><p>FastAPI서버 최상단에 <code>.well-known</code> 디렉토리를 만들고 아래 2개 파일을 생성한다.</p><ul><li>ai-plugin.json</li><li>openapi.json</li></ul><p><code>ai-plugin.json</code> 예시는 아래와 같다.</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;schema_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;v1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name_for_human&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Seoul Real Estate Data API&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name_for_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;seoul_real_estate_data&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description_for_human&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;서울 아파트 실거래 데이터를 분석할 수 있는 API입니다.&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description_for_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Use this API to retrieve and analyze Seoul apartment real estate transaction data. Supports full or date-based queries.&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;auth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;none&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;api&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;openapi&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://56a3-xxxx.ngrok-free.app/.well-known/openapi.json&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;contact_email&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dev.bearabbit@gmail.com&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure><p>FastAPI는 <code>/openapi.json</code> 경로에 자동으로 API 스펙을 노출한다. 이를 <code>.well-known</code> 디렉토리로 복사하면 된다.</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">curl http://127.0.0.1:8000/openapi.json -o .well-known/openapi.json<br></code></pre></td></tr></table></figure><p><code>/openapi.json</code> 파일에 추가적으로 <code>Servers</code> 정보를 입력해야 하는데 이건 나중에 툴 연결할 때 추가한다.</p><h2 id="gpt에서-툴-연결">GPT에서 툴 연결</h2><p>마지막으로 GPT 홈페이지에서 툴을 만들면 완료된다.</p><p>먼저 <a href="https://chat.openai.com/gpts">해당 페이지</a>에서 <code>GPT 탐색 &gt; 만들기</code>를 클릭한다. 다음으로 아래 사진처럼 원하는 정보를 입력한다.</p><figure><img src="/images/205.png" alt="update info" /><figcaption aria-hidden="true">update info</figcaption></figure><p>마지막으로 작업을 추가한다.</p><figure><img src="/images/206.png" alt="add task" /><figcaption aria-hidden="true">add task</figcaption></figure><p>인증은 없고 스키마만 추가한다. 스키마는 <code>https://56a3-xxxx.ngrok-free.app/.well-known/openapi.json</code> URL을 사용하면 된다. 업데이트된 스키마에는 아래 내용을 추가해준다.</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;servers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://bb1c-221-149-204-63.ngrok-free.app&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br></code></pre></td></tr></table></figure><p>그럼 연동까지 완료된다.</p><h2 id="테스트">테스트</h2><p>이제 나만의 분석가가 준비되었기 때문에 진짜 궁금했던 질문들을 한번 던져보자.</p><h3 id="저번주-아파트값-추이가-어떻게-돼">저번주 아파트값 추이가 어떻게 돼?</h3><figure><img src="/images/207.png" alt="test 1" /><figcaption aria-hidden="true">test 1</figcaption></figure><h3 id="혹시-올해-들어서는-아파트-가격이-하락세인가">혹시 올해 들어서는 아파트 가격이 하락세인가?</h3><figure><img src="/images/208.png" alt="test 2" /><figcaption aria-hidden="true">test 2</figcaption></figure><h3 id="데이터를-바탕으로-요즘-아파트를-사도-괜찮을지-분석해줘">데이터를 바탕으로 요즘 아파트를 사도 괜찮을지 분석해줘</h3><p><img src="/images/209.png" alt="test 3_1" /> <img src="/images/210.png" alt="test 3_2" /></p><h2 id="결론">결론</h2><p>생각보다 데이터를 꽤 잘 가져와서 분석해주는 걸 보고 좀 신기했다.<br />직접 구성해보니 좋았던 점과 아쉬웠던 점이 확실히 나뉘었다.</p><h3 id="좋았던-점">좋았던 점</h3><ul><li>진짜 분석가처럼 데이터 기반의 인사이트를 꽤 그럴듯하게 제공해준다.</li><li>내 아파트 구매 시기를 같이 고민해줄 동료가 생겼다.</li><li>툴 등록 후엔 자연어만으로 데이터 접근이 가능해서 인터랙션이 직관적이었다.</li></ul><h3 id="아쉬웠던-점">아쉬웠던 점</h3><ul><li>API 통신 기반이라 대규모 데이터는 어렵다. 응답 크기 제한에 자주 걸린다.</li><li>ngrok 무료 버전은 매번 URL이 바뀌어서 툴 등록을 매번 다시 해야 하는 게 번거롭다.</li></ul><p>사실 아쉬운 점은 API 서버 설계를 좀 더 잘하고 돈을 쓰면 해결될 문제이기는 하다. 오늘은 그냥 실험해본 거지만 나중에는 더 재밌는 도구를 만들어볼 수 있을 것 같다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>MachineLearning</category>
+      
+      <category>experiment</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>S3</tag>
+      
+      <tag>DeepLearning</tag>
+      
+      <tag>LLM</tag>
+      
+      <tag>ChatGPT</tag>
+      
+      <tag>openai</tag>
+      
+      <tag>FastAPI</tag>
+      
+      <tag>DuckDB</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>인공지능</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>DuckDB + S3로 나만의 데이터 웨어하우스 만들기</title>
     <link href="/ko/Engineering/engineering-7/"/>
     <url>/ko/Engineering/engineering-7/</url>
@@ -26,9 +69,9 @@
       
       <tag>data</tag>
       
-      <tag>datawarehouse</tag>
-      
       <tag>duckdb</tag>
+      
+      <tag>datawarehouse</tag>
       
       <tag>s3</tag>
       
@@ -94,6 +137,8 @@
       
       <tag>데이터분석</tag>
       
+      <tag>book</tag>
+      
       <tag>julia</tag>
       
       <tag>translate</tag>
@@ -101,8 +146,6 @@
       <tag>번역</tag>
       
       <tag>데이터분석을위한줄리아</tag>
-      
-      <tag>book</tag>
       
     </tags>
     
@@ -129,11 +172,11 @@
     
     <tags>
       
+      <tag>빅데이터</tag>
+      
       <tag>데이터웨어하우스</tag>
       
       <tag>warehouse</tag>
-      
-      <tag>빅데이터</tag>
       
       <tag>DW</tag>
       
@@ -303,8 +346,8 @@
   
   <entry>
     <title>요즘 유행하는 ChatGPT로 슬랙봇 만들기 2편</title>
-    <link href="/ko/DeepLearning/deeplearning-1/"/>
-    <url>/ko/DeepLearning/deeplearning-1/</url>
+    <link href="/ko/Experiment/experiment-1/"/>
+    <url>/ko/Experiment/experiment-1/</url>
     
     <content type="html"><![CDATA[<p>LLM을 사용하여 사내가이드 슬랙봇 만드는 방법을 정리합니다. <span id="more"></span></p><hr /><h2 id="시작하며">시작하며</h2><p>1편 뒤에 바로 2편을 쓴다고 다짐했었지만 게으름과 귀찮음에 사로잡혀 이제서야 글을 써본다. 마음속의 내 모습은 갓생 사는 직장인인데, 현생에서는 그냥 일에 치이고 스트레스가 통제되지 않는 망나니에 가깝다. 언제나 스스로에게 실망하지만 포기하지 않고 끝까지 글을 써본다. 경험들을 하나씩 저장해두면 나중에 큰 자산이 될 것이라고 일단 믿어본다.</p><h2 id="설계도면">설계도면</h2><p>이번에 만든 슬랙봇 설계도는 다음과 같다.</p><ol type="1"><li>일배치로 원천 데이터를 업데이트 한다.</li><li>원천 데이터가 업데이트 된다면 Vector DB도 업데이트 한다.</li><li>Vector DB에는 문서 요약본과 문장(청크)이 구성되어 있다.</li><li>유사도 분석은 문장 단위로 진행된다.</li><li>질문에 가장 유사한 문장이 속한 문서 요약본을 GPT에 전달한다.</li><li>질문과 문서 요약본을 보내 정리된 답을 받은 후 슬랙봇을 통해 전달한다.</li><li>슬랙봇은 <code>@</code> 태그를 하거나 특정 채널에 글이 올라오면 쓰레드로 답변을 달아준다.</li></ol><h2 id="준비물">준비물</h2><p>슬랙봇을 만들기 위해서는 여러가지 준비물이 필요하다.</p><ul><li>VectorDB를 만들 원천 데이터</li><li>Slack 앱</li><li>OpenAi 토큰</li><li>응답을 반환해줄 서버</li><li>약간의 돈 (또는 회사의 지원)</li></ul><h2 id="개발-순서">개발 순서</h2><h3 id="원천-데이터를-수집-및-가공하기">1. 원천 데이터를 수집 및 가공하기</h3><p>우리 회사에서는 주요한 가이드를 모두 컨플루언스에 저장하고 관리하고 있었다. 따라서 개인 계정에서 API token을 하나 발급받아서 크롤링을 하면 된다. 크롤링은 빠르게 python의 requests 라이브러리를 사용하여 개발할 수 있다.</p><p>나의 경우 먼저 가져오려는 space 이름으로 <code>space id</code>를 가져온 후 해당 스페이스에 있는 모든 <code>page</code> 데이터를 가져왔다. <code>page</code> 데이터의 경우 사용자가 추가하거나 업데이트 할 수 있기에 일배치로 실행하였다.</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># space 이름으로 아이디 가져오기</span><br>url = <span class="hljs-string">&quot;https://&#123;your-domain&#125;/wiki/api/v2/spaces&quot;</span><br><br><span class="hljs-comment"># 특정 space id에 있는 모든 페이지 데이터 가져오기</span><br>url = <span class="hljs-string">&quot;https://&#123;your-domain&#125;/wiki/api/v2/spaces/&#123;id&#125;/pages&quot;</span><br></code></pre></td></tr></table></figure><p>API 관련된 자세한 설명은 <a href="https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#about">컨플루언스 공식 페이지</a>에서 확인할 수 있다. token의 경우 요청을 날릴 때 <code>HTTPBasicAuth</code>를 사용하여 랩핑한 후 같이 보냈다. 아래 코드는 공식 API 가이드에 있는 예제 코드이다. 공식 페이지에 언어별로 잘 정리되어 있으니 참고하기 바란다.</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">from</span> requests.auth <span class="hljs-keyword">import</span> HTTPBasicAuth<br><br>auth = HTTPBasicAuth(<span class="hljs-string">&quot;email@example.com&quot;</span>, <span class="hljs-string">&quot;&lt;api_token&gt;&quot;</span>)<br><br>headers = &#123;<br>  <span class="hljs-string">&quot;Accept&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span><br>&#125;<br><br>response = requests.request(<br>   <span class="hljs-string">&quot;GET&quot;</span>,<br>   url,<br>   headers=headers,<br>   auth=auth<br>)<br></code></pre></td></tr></table></figure><h3 id="vector-db-생성하기">2. Vector DB 생성하기</h3><p>원천 데이터가 준비 완료되었다면 Vector DB를 생성한다. Vector DB를 생성하는 구조는 다음과 같다.</p><ol type="1"><li>원천 데이터 가져오기</li><li>요약본 만들기</li><li>임베딩하기</li><li>S3에 저장하기</li></ol><p>요약본을 생성하는 것은 랭체인(langchain)의 <code>TokenTextSplitter</code>를 사용하여 <code>Document</code>에 맞게 청크를 생성한 후 각각의 청크를 요약하고 이를 합치는 구조로 만들었다. 특히 <code>load_summarize_chain</code>를 사용할 때 chain_type을 <code>map_reduce</code>로 쓰지 않았는데 이는 테스트해보니 너무 많은 부분이 요약되었기 때문이다. 이 요약본의 목적은 이후 GPT에게 답변을 생성할 때 보내지는 데이터이다.</p><p>그 다음 <code>UnstructuredHTMLLoader</code>를 사용하여 HTML 구조의 데이터를 문장 별로 쪼개 train set을 만들었다. 이 문장들을 임베딩하여 이후 유사도 분석에서 사용한다. 임베딩의 경우 OpenAI의 임베더를 사용하였으며, 모델은 <code>text-embedding-3-large</code>를 사용하였다. OpenAI의 임베더의 경우 한번에 처리할 수 있는 문자의 길이가 8192이기 때문에 한 문장이 이를 넘는다면 쪼개서 작업해야 한다.</p><p>이렇게 하여 생성된 Vector DB의 컬럼은 다음과 같다.</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">[<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;version&quot;</span>, <span class="hljs-string">&quot;url&quot;</span>, <span class="hljs-string">&quot;title&quot;</span>, <span class="hljs-string">&quot;train&quot;</span>, <span class="hljs-string">&quot;summary&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>]<br></code></pre></td></tr></table></figure><p><code>id</code>나 <code>version</code>을 추가한 이유는 업데이트 로직을 위함이다. 사용자가 해당 컨플루언스 페이지를 업데이트하면 API로 데이터를 가져올 때 Version 매트릭이 +1 된다. 이를 이용하여 Vector DB도 변동값이 있는 페이지만 다시 생성하는 것이다. 이렇게 작업한 이유는 간단하다. 임베딩에는 돈이 들어간다. 이미 임베딩이 된 페이지를 다시 진행할 필요는 없기 때문이다.</p><p><code>url</code>의 경우에는 슬랙봇이 참고한 컨플루언스 URL을 같이 첨부해서 주기 때문이다. 이렇게 기획한 이유는 할루시네이션 이슈도 있고 더 자세한 정보를 알고 싶은 사용자에게 더 많은 데이터를 주기 위함도 있다.</p><p>참고로 요약 요청 시 보내는 프롬프트의 경우 매우 간단하게 설정하였다.</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">너는 긴 문서를 정리하는 요약 도우미야. <br>내용 무엇도 제외하지 말고 최대한 요약해줘.<br>그리고 다음 규칙을 무조건 지켜야해.<br>규칙0. 글에 예외사항이나 Q&amp;A가 있는 경우에는 무조건 가져와줘<br>규칙1. 글에 시간, 증명자료, 지원여부 관련 설명이 있다면 무조건 가져와줘.<br></code></pre></td></tr></table></figure><p>이렇게 만들어진 Vector DB는 S3에 parquet 파일로 저장해둔다.</p><h3 id="유사도-분석-로직-개발하기">3. 유사도 분석 로직 개발하기</h3><p>이제 요리를 위한 재료 준비는 모두 끝났다. 조리 방법만 잘 정하면 된다. Vector DB를 다룰 수 있는 다양한 라이브러리들이 존재하지만 나는 FAISS를 사용했다. 특히 ChromaDB와 FAISS 중 무엇을 쓸지 고민했었는데 FAISS를 사용한 이유로는 다음과 같다.</p><ul><li>인덱싱이 빠르다.</li><li>코드를 유연하게 개발할 수 있다.</li><li>CPU 모드를 지원한다.</li><li>확장성이 좋다.</li></ul><p>나는 이 분야의 전문가가 아니라서 최대한 고수준 API나 기능들을 제공해주는 라이브러리를 쓰고 싶었는데 ChromaDB는 너무 무겁고 생각보다 사용성이 편리하지 않았다. 특히 지금처럼 간단한 인덱싱 작업을 할꺼라면 차라리 FAISS로 개발하는게 훨씬 편한 것 같았다. 이렇게 사용할 라이브러리는 대충 정해졌다. 빠르게 개발을 시작한다.</p><p>유사도 측정 알고리즘은 간단하게 내적을 이용하였다. 문장이 길지 않거니와 질문에 대한 정확한 답을 가져오는게 가장 우선시되었기 때문이다. 자세한 내용은 <a href="https://dev-bearabbit.github.io/2024/04/21/Package/pack-3/#more">해당 문서</a>에서 확인할 수 있다.</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">index = faiss.IndexIDMap(faiss.IndexFlatIP(encoded_data.shape[<span class="hljs-number">1</span>]))<br></code></pre></td></tr></table></figure><h3 id="응답을-생성할-백엔드-서버-구축하기">4. 응답을 생성할 백엔드 서버 구축하기</h3><p>RAG 아키텍처에 맞춰서 질문과 함께 요청이 들어오면 다음과 같이 진행한다.</p><ol type="1"><li>질문을 임베딩하고 메모리에 올라가 있는 Vector DB에서 유사도 분석을 진행한다.</li><li>유사도가 가장 높은 20개의 요약본을 GPT에게 보내 최대 3개까지 질문에 대한 답이 있는 문서 ID를 달라고 요청한다.</li><li>GPT가 뽑아준 문서 ID의 원본을 다시 GPT에게 보내 사용자에게 반환될 응답을 생성한다.</li><li>슬랙 API로 응답을 보낸다.</li></ol><p>이는 간단한 fastapi 앱으로 개발하였다. 백엔드 서버의 경우 데이터팀이 구축 및 관리하고 있는 인프라 클러스터가 있어서 그 위에 살짝 올려두었으며, 매일 Vector DB가 업데이트 되면 다시 parquet 파일을 읽도록 설정해두었다. 이렇게 하면 Vector DB 사이즈가 작은 경우에는 따로 복잡한 미들웨어를 추가할 필요 없이 사용이 가능하다.</p><h3 id="슬랙-앱-생성하기">5. 슬랙 앱 생성하기</h3><p>마지막으로 직접적으로 사용자에게 제공할 인터페이스를 만든다. 슬랙 앱을 사용하는 방법은 <a href="https://slack.com/intl/ko-kr/help/articles/13345326945043-Slack-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EB%8F%84%EA%B5%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%B4-%EC%95%B1-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0">slack 홈페이지</a>에도 잘 나와있다.</p><p>슬랙의 앱 디렉토리로 가서 새로 앱을 생성한 후 설정에 들어가서 몇 가지 조작만 해주면 된다. 나의 경우 Event Subscription 기능을 사용하여 특정 이벤트가 발생한 경우 백엔드 서버로 요청이 올 수 있도록 설정하였다. Event Subscription 기능에 대해서는 <a href="https://api.slack.com/apis/events-api#challenge">공식 문서</a>에서 자세히 확인할 수 있다.</p><h2 id="개발-후기">개발 후기</h2><p>처음 시작했을 때는 큰 기대 없이 호기심을 해결할 겸 공부할 겸 그렇게 겸사겸사 시작했었다. 하지만 생각보다 좋은 성능을 보여줬고, 사내에서도 반응이 꽤나 좋았다. 가장 잊어버리기 쉬운 와이파이 비밀번호나 프린터 사용법, 근무 규칙 등등의 질문들을 잘 답변해주었고 때로는 특정 업무의 담당자가 누구인지도 잘 설명해주었다. 아직 부족한 부분들도 보이지만 프로토 타입치고는 성능이 좋았다. 다음에는 시간되면 해당 슬랙봇의 성능을 높이기 위한 시도들도 해봐야겠다.</p>]]></content>
     
@@ -313,7 +356,7 @@
       
       <category>MachineLearning</category>
       
-      <category>deep learning</category>
+      <category>experiment</category>
       
     </categories>
     
@@ -326,15 +369,15 @@
       
       <tag>ChatGPT</tag>
       
+      <tag>AI</tag>
+      
+      <tag>인공지능</tag>
+      
       <tag>RAG</tag>
       
       <tag>Prompt</tag>
       
       <tag>프롬프트</tag>
-      
-      <tag>AI</tag>
-      
-      <tag>인공지능</tag>
       
     </tags>
     
@@ -361,13 +404,13 @@
     
     <tags>
       
-      <tag>python</tag>
-      
       <tag>rust</tag>
       
-      <tag>book</tag>
+      <tag>python</tag>
       
       <tag>review</tag>
+      
+      <tag>book</tag>
       
     </tags>
     
@@ -396,11 +439,11 @@
       
       <tag>python</tag>
       
+      <tag>유사도분석</tag>
+      
       <tag>package</tag>
       
       <tag>library</tag>
-      
-      <tag>유사도분석</tag>
       
       <tag>인덱싱</tag>
       
@@ -441,9 +484,9 @@
       
       <tag>머신러닝</tag>
       
-      <tag>유사도분석</tag>
-      
       <tag>유사도</tag>
+      
+      <tag>유사도분석</tag>
       
       <tag>자카드계수</tag>
       
@@ -465,8 +508,8 @@
   
   <entry>
     <title>요즘 유행하는 ChatGPT로 슬랙봇 만들기 1편</title>
-    <link href="/ko/DeepLearning/deeplearning-0/"/>
-    <url>/ko/DeepLearning/deeplearning-0/</url>
+    <link href="/ko/Experiment/experiment-0/"/>
+    <url>/ko/Experiment/experiment-0/</url>
     
     <content type="html"><![CDATA[<p>LLM을 사용하여 사내가이드 슬랙봇 만드는 방법을 정리합니다. <span id="more"></span></p><hr /><h2 id="시작하며">시작하며</h2><p>ChatGPT 등장 이후 AI 업계는 큰 변화를 맞이한 것 같다. 딥러닝이 주전공은 아니지만 데이터 업계에 몸담고 있는 이상 어느 정도는 알아야 할 것 같아 사내에서 스터디를 진행하였다. 스터디를 진행하면서 뭐라도 하나 만들어보고 싶던 찰나에 컨플루언스 검색엔진 성능이 너무 좋지 못하다는 의견이 나왔다 (우리 회사는 대부분의 문서를 컨플루언스에서 관리한다). 원하는 정보를 찾기 위해 키워드 기반으로 검색해도 전혀 다른 문서들이 더 많이 반환된다는 것이다.</p><p>바로 이거다. 슬랙에서 물어보면 컨플루언스 문서를 보고 알아서 답해주는 비서가 있으면 편할 것 같다. 바로 만들어보자.</p><h2 id="무엇을-하려고-하는가">무엇을 하려고 하는가</h2><p>간단하게 사내에서 사용할 사내가이드 슬랙봇을 만들고자 한다. 구조는 다음과 같다.</p><ol type="1"><li>질문 들어온 내용과 유사한 글들을 몇 개 선정</li><li>선정된 글을 ChatGPT에게 보내 질문에 해당하는 내용만 요약</li><li>슬랙 API로 요약내용과 글 링크 전달</li></ol><p>이를 위해 해야 하는 일들은 다음과 같다.</p><ul><li>사용할 데이터 수집 및 전처리하기</li><li>미리 임베딩해서 Vector Database 생성하기</li><li>유사도 분석 로직 개발하기</li><li>프롬프트 생성하기</li><li>슬랙 앱 만들기</li></ul><p>본격적으로 개발하기 전에 간단하게 필요한 지식들을 먼저 정리하자. 아래 내용은 중요하다고 생각한 최소한의 설명만을 정리한 것이다.</p><h2 id="llm이란-무엇인가">LLM이란 무엇인가</h2><ul><li>Large Language Model, 거대언어모델이라고 불림</li><li>엄청난 양의 훈련 데이터, 파라미터 셋으로 훈련시킨 모델 -&gt; 엄청난 비용과 에너지 요구됨</li><li>특정 분야에 최적화된 것이 아니라 대부분의 질문에도 답변을 생성할 수 있음</li><li>프롬프트를 어떻게 작성하느냐에 따라 답변이 다르게 도출됨</li><li>파인튜닝(Fine-tuning)을 하면 특정 작업에 더 적합하도록 구성할 수 있음</li><li>파인튜닝은 훈련 리소스 비용이 방대한 반면 RAG는 가성비로 성능을 높일 수 있음.</li></ul><h2 id="rag란-무엇인가">RAG란 무엇인가</h2><figure><img src="/images/180.png" alt="rag" /><figcaption aria-hidden="true">rag</figcaption></figure><ul><li>Retrieval Augmented Generation, 검색증강생성이라고도 불림</li><li>질문에 적합한 데이터들을 LLM에게 전달하여 이를 기반으로 답변을 도출할 수 있도록 하는 아키텍처</li><li>보통 검색로직과 답변생성로직, 2개로 나눠짐</li><li>검색로직: 질문과 Vector Database에 있는 데이터와의 유사도 분석으로 적합한 데이터를 추출</li><li>답변생성로직: 적합한 데이터 + 프롬프트를 활용하여 LLM 모델로부터 원하는 답변 도출</li></ul><h2 id="vector-database란-무엇인가">Vector Database란 무엇인가</h2><ul><li>임베딩된 벡터를 저장하고 쿼리하는 데이터베이스. 핵심 키워드는 인덱스와 임베딩</li><li>인덱스: PQ, LSH, HNSW 같은 알고리즘들을 사용하여 유사한 벡터를 빨리 쿼리할 수 있도록 만든 자료구조</li><li>임베딩: 텍스트, 이미지, 오디오 등의 고차원 데이터를 저차원의 벡터 형태로 변환</li><li>학습 데이터를 임베딩으로 변환하여 저장한 후 질문과 유사도를 계산하여 적합한 데이터를 도출할 수 있음</li></ul><h2 id="프롬프트란-무엇인가">프롬프트란 무엇인가</h2><ul><li>LLM에게 적합한 답변을 얻어내고 잘못된 사용을 제한하기 위한 가이드</li><li>프롬프트를 제대로 작성하지 않으면 기밀을 유출하거나 잘못된 답변을 도출하기도 함</li><li>역할을 명확하게 부여하는 방식이 깔끔한 결과를 도출할 수 있음</li></ul><h2 id="결론">결론</h2><p>이제 프로젝트를 진행할만큼의 기본 개념은 알게된 것 같다. 다음 글에서는 본격적으로 슬랙봇을 만들어보자.</p>]]></content>
     
@@ -475,7 +518,7 @@
       
       <category>MachineLearning</category>
       
-      <category>deep learning</category>
+      <category>experiment</category>
       
     </categories>
     
@@ -488,15 +531,15 @@
       
       <tag>ChatGPT</tag>
       
+      <tag>AI</tag>
+      
+      <tag>인공지능</tag>
+      
       <tag>RAG</tag>
       
       <tag>Prompt</tag>
       
       <tag>프롬프트</tag>
-      
-      <tag>AI</tag>
-      
-      <tag>인공지능</tag>
       
     </tags>
     
@@ -523,15 +566,15 @@
     
     <tags>
       
-      <tag>데이터웨어하우스</tag>
-      
       <tag>빅데이터</tag>
       
       <tag>bigdata</tag>
       
-      <tag>데이터마트</tag>
+      <tag>데이터웨어하우스</tag>
       
       <tag>datawarehouse</tag>
+      
+      <tag>데이터마트</tag>
       
       <tag>datamart</tag>
       
@@ -712,9 +755,9 @@
     
     <tags>
       
-      <tag>python</tag>
-      
       <tag>rust</tag>
+      
+      <tag>python</tag>
       
       <tag>dataframe</tag>
       
@@ -749,11 +792,11 @@
     
     <tags>
       
+      <tag>빅데이터</tag>
+      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
-      
-      <tag>빅데이터</tag>
       
       <tag>주니어</tag>
       
@@ -792,19 +835,19 @@
       
       <tag>인프라</tag>
       
+      <tag>OS</tag>
+      
+      <tag>운영체제</tag>
+      
       <tag>분산처리</tag>
       
       <tag>대규모데이터</tag>
       
       <tag>데이터구조</tag>
       
-      <tag>서버</tag>
-      
-      <tag>OS</tag>
-      
-      <tag>운영체제</tag>
-      
       <tag>캐시</tag>
+      
+      <tag>서버</tag>
       
     </tags>
     
@@ -835,10 +878,6 @@
       
       <tag>인프라</tag>
       
-      <tag>메모리</tag>
-      
-      <tag>대규모</tag>
-      
       <tag>분산처리</tag>
       
       <tag>대규모데이터</tag>
@@ -846,6 +885,10 @@
       <tag>데이터구조</tag>
       
       <tag>서버</tag>
+      
+      <tag>메모리</tag>
+      
+      <tag>대규모</tag>
       
     </tags>
     
@@ -1010,9 +1053,9 @@
     
     <tags>
       
-      <tag>python</tag>
-      
       <tag>rust</tag>
+      
+      <tag>python</tag>
       
       <tag>package</tag>
       
@@ -1179,11 +1222,11 @@
     
     <tags>
       
-      <tag>data</tag>
-      
       <tag>ETL</tag>
       
       <tag>ELT</tag>
+      
+      <tag>data</tag>
       
       <tag>dataflow</tag>
       
@@ -1401,17 +1444,17 @@
     
     <tags>
       
-      <tag>recursion</tag>
-      
-      <tag>recursive</tag>
-      
-      <tag>python</tag>
-      
       <tag>비교</tag>
       
       <tag>rust</tag>
       
+      <tag>python</tag>
+      
       <tag>hanoi</tag>
+      
+      <tag>recursion</tag>
+      
+      <tag>recursive</tag>
       
       <tag>시간초과</tag>
       
@@ -1446,13 +1489,13 @@
     
     <tags>
       
-      <tag>재귀</tag>
-      
-      <tag>하노이탑</tag>
-      
       <tag>recursion</tag>
       
       <tag>recursive</tag>
+      
+      <tag>재귀</tag>
+      
+      <tag>하노이탑</tag>
       
     </tags>
     
@@ -1639,9 +1682,9 @@
       
       <tag>KBO</tag>
       
-      <tag>python</tag>
-      
       <tag>data</tag>
+      
+      <tag>python</tag>
       
       <tag>package</tag>
       
@@ -2829,6 +2872,8 @@
     
     <tags>
       
+      <tag>data</tag>
+      
       <tag>자격증</tag>
       
       <tag>DAsP</tag>
@@ -2840,8 +2885,6 @@
       <tag>데이터</tag>
       
       <tag>요건분석</tag>
-      
-      <tag>data</tag>
       
     </tags>
     
@@ -2868,6 +2911,8 @@
     
     <tags>
       
+      <tag>data</tag>
+      
       <tag>자격증</tag>
       
       <tag>DAsP</tag>
@@ -2879,8 +2924,6 @@
       <tag>데이터</tag>
       
       <tag>요건분석</tag>
-      
-      <tag>data</tag>
       
     </tags>
     
@@ -3100,13 +3143,13 @@
       
       <tag>OS</tag>
       
+      <tag>명령어</tag>
+      
       <tag>Linux</tag>
       
       <tag>리눅스</tag>
       
       <tag>커맨드라인</tag>
-      
-      <tag>명령어</tag>
       
       <tag>commandline</tag>
       
@@ -3586,11 +3629,11 @@
       
       <tag>sql</tag>
       
-      <tag>명령어</tag>
-      
       <tag>mariaDB</tag>
       
       <tag>RDBMS</tag>
+      
+      <tag>명령어</tag>
       
       <tag>WHERE</tag>
       
@@ -4902,11 +4945,11 @@
       
       <tag>머신러닝</tag>
       
-      <tag>줄리아</tag>
-      
       <tag>벡터</tag>
       
       <tag>내적</tag>
+      
+      <tag>줄리아</tag>
       
     </tags>
     
