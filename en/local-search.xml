@@ -4,6 +4,43 @@
   
   
   <entry>
+    <title>Terraform, How a Small Data Team Survived</title>
+    <link href="/en/en/Terraform/terraform-0/"/>
+    <url>/en/en/Terraform/terraform-0/</url>
+    
+    <content type="html"><![CDATA[<p>This post shares the lessons learned and structural decisions we made while adopting Terraform in a small data team. We also highlight key choices that helped us reduce errors and improve maintainability using Terraform Cloud.</p><span id="more"></span><h2 id="Why-We-Adopted-Terraform"><a href="#Why-We-Adopted-Terraform" class="headerlink" title="Why We Adopted Terraform"></a>Why We Adopted Terraform</h2><p>Terraform is commonly associated with SRE or DevOps teams, but it’s just as relevant for data teams—especially those responsible for building and maintaining diverse infrastructure. Our case was no different, except for one twist: just two of us were managing the entire stack.</p><p>Previously, we managed everything through the AWS web console, which led to several challenges:</p><ul><li>Difficult handoff when team members changed</li><li>Hard to track which service used which resource</li><li>No clear documentation of how infrastructure was built</li><li>Troublesome to reproduce or recover during outages</li><li>No easy way to distinguish active vs unused resources</li><li>Poor visibility into overall structure</li></ul><p>To address these issues, we decided to adopt Terraform in 2023.</p><h2 id="Early-Pain-Points"><a href="#Early-Pain-Points" class="headerlink" title="Early Pain Points"></a>Early Pain Points</h2><p>Over the course of 2024, we migrated and maintained large infrastructure components—load balancers, deployment servers, Spark clusters—using Terraform. Along the way, we made some important realizations:</p><ul><li>Grouping shared resources isn’t always ideal</li></ul><p>We initially grouped ALB, NLB, and other load balancers in a shared elb directory. However, even minor changes would trigger plans across all resources, making it hard to isolate changes. This introduced operational risks. We learned that organizing <code>code by service</code> rather than by resource type was safer and more practical for small teams.</p><ul><li>Over-abstracted modules became rigid and bloated</li></ul><p>In our effort to maximize <code>reusability</code>, we built composite modules like ec2_bundle that provisioned EC2 instances, EBS volumes, and IAM roles together. Later, when we needed to use only EC2 in another environment, the module was unusable. What began as a DRY solution turned into a bottleneck. We concluded that starting with <code>minimal functional modules</code> and composing them externally gave us more flexibility and easier maintenance.</p><ul><li>Too much abstraction reduced clarity and predictability</li></ul><p>Using for_each, merge, and dynamic made our code shorter and DRY—but it also introduced more bugs, such as type mismatches and null references from conditional logic. Despite looking neat, the code became a black box with frequent plan failures. We found that in a small team, it was safer to be explicit and repetitive than clever.</p><p>Terraform is a tool for humans.<br>Code that humans don’t understand quickly becomes a <code>failure</code> and another <code>maintenance</code> target.</p><h2 id="Our-Core-Design-Priorities"><a href="#Our-Core-Design-Priorities" class="headerlink" title="Our Core Design Priorities"></a>Our Core Design Priorities</h2><p>After identifying those pitfalls, we set three key priorities for our Terraform codebase:</p><ul><li>Clarity and usability: anyone should be able to understand the code at a glance.</li><li>Maintainability: infrastructure should be easy to troubleshoot and fix.</li><li>Terraform Cloud compatibility: environments should be isolated and run without conflicts.</li></ul><p>Ultimately, Terraform is about <code>people</code> managing <code>infrastructure</code> through <code>code</code>. Instead of obsessing over <code>DRYness</code> or <code>automation</code>, we learned to prioritize <code>stability</code>.</p><h2 id="Key-Architectural-Decisions"><a href="#Key-Architectural-Decisions" class="headerlink" title="Key Architectural Decisions"></a>Key Architectural Decisions</h2><p>Because we were a small team, we had to optimize for clarity and reduce room for error. Here are the main decisions we made, with options considered and why we chose them.</p><h3 id="Environment-Separation-Strategy"><a href="#Environment-Separation-Strategy" class="headerlink" title="Environment Separation Strategy"></a>Environment Separation Strategy</h3><ul><li>Problem: How should we separate dev and prod environments?</li><li>Options:<ul><li>Use .tfvars with shared directories</li><li>Use Git branches to separate environments</li><li>Use separate dev&#x2F; and prod&#x2F; folders</li></ul></li><li>Chosen: Folder-based separation</li><li>Reason: .tfvars and branch-based setups lacked clarity and were error-prone in Terraform Cloud. Folder-based structures improved readability and reduced mistakes.</li></ul><h3 id="Directory-Structure-Design"><a href="#Directory-Structure-Design" class="headerlink" title="Directory Structure Design"></a>Directory Structure Design</h3><ul><li>Problem: How should we organize resources?</li><li>Options:<ul><li>Separate modules and environments by resource</li><li>Modules by resource, envs by block</li><li>Modules by resource, envs by service&#x2F;shared</li></ul></li><li>Chosen: <code>modules/</code> for resource-level modules, <code>service/</code> and <code>shared/</code> for environments</li><li>Reason: This allowed clear separation of service-specific and shared resources like ALB and S3. It also aligned well with our CI&#x2F;CD flow.</li></ul><h3 id="Module-Reuse-Strategy"><a href="#Module-Reuse-Strategy" class="headerlink" title="Module Reuse Strategy"></a>Module Reuse Strategy</h3><ul><li>Problem: Should we use composite modules?</li><li>Options:<ul><li>Composite modules that wrap multiple resources</li><li>Functional modules combined in context</li></ul></li><li>Chosen: Functional modules with composition left to the caller</li><li>Reason: Composite modules lacked flexibility and didn’t adapt well across use cases. Smaller modules were easier to reuse and maintain.</li></ul><h3 id="Naming-Conventions"><a href="#Naming-Conventions" class="headerlink" title="Naming Conventions"></a>Naming Conventions</h3><ul><li>Problem: How should we name resources?</li><li>Options:<ul><li>Freeform names with unified tags</li><li>Base conventions with flexible exceptions</li><li>Strict naming conventions without exceptions</li></ul></li><li>Chosen: Strict, consistent naming conventions</li><li>Reason: Clear naming made it easy to identify resources visually and helped with filtering in AWS Console, CloudWatch, and Billing. Tags alone weren’t enough.</li></ul><h3 id="Abstraction-Level"><a href="#Abstraction-Level" class="headerlink" title="Abstraction Level"></a>Abstraction Level</h3><ul><li>Problem: How much should we abstract repeated code?</li><li>Options:<ul><li>Use <code>for_each</code>, <code>dynamic</code>, etc. to avoid repetition</li><li>Write explicit, repetitive code for readability</li></ul></li><li>Chosen: Prefer explicit code with minimal repetition</li><li>Reason: While abstraction reduced lines of code, it introduced more plan errors and debugging friction. Explicit code was safer and more predictable.</li></ul><h3 id="Terraform-Cloud-Workflow"><a href="#Terraform-Cloud-Workflow" class="headerlink" title="Terraform Cloud Workflow"></a>Terraform Cloud Workflow</h3><ul><li>Problem: How can we control the scope of changes in automated workflows?</li><li>Options:<ul><li>One workspace for all resources</li><li>Separate workspace per service</li></ul></li><li>Chosen: One workspace per service</li><li>Reason: Service-level workspaces isolated change scope and made plans easier to review. Terraform Cloud’s automated plans per workspace helped prevent accidental changes.</li></ul><h2 id="Final-Thoughts-Why-These-Decisions-Mattered"><a href="#Final-Thoughts-Why-These-Decisions-Mattered" class="headerlink" title="Final Thoughts: Why These Decisions Mattered"></a>Final Thoughts: Why These Decisions Mattered</h2><p>To wrap up:</p><ul><li>Simplicity and clarity are critical for small teams.</li><li>Over-abstraction and DRY obsession often backfire in Terraform.</li><li>Folder-based environment separation worked better than branch-based setups.</li><li>Terraform Cloud is powerful, but only when used with a well-structured codebase.</li></ul><p>At the end of the day, the most important qualities in Terraform practice were <code>readability</code>, <code>clarity</code>, and <code>recoverability</code>.<br>Small teams don’t need the cleverest Terraform code.<br>They need the most understandable one.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>DevOps</category>
+      
+      <category>terraform</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>terraform</tag>
+      
+      <tag>iac</tag>
+      
+      <tag>infra</tag>
+      
+      <tag>data engineering</tag>
+      
+      <tag>small team</tag>
+      
+      <tag>terraform cloud</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>ChatGPT as a Data Analyst with DuckDB + S3</title>
     <link href="/en/en/Experiment/experiment-0/"/>
     <url>/en/en/Experiment/experiment-0/</url>
@@ -63,6 +100,8 @@
     
     <tags>
       
+      <tag>aws</tag>
+      
       <tag>duckdb</tag>
       
       <tag>datawarehouse</tag>
@@ -70,8 +109,6 @@
       <tag>data</tag>
       
       <tag>s3</tag>
-      
-      <tag>aws</tag>
       
     </tags>
     

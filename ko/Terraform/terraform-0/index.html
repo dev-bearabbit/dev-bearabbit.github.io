@@ -1,0 +1,906 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="작은 데이터팀에서 Terraform을 도입하며 겪은 시행착오와 구조 설계 경험을 공유합니다. Terraform Cloud 환경에서 실수를 줄이고 유지보수성을 높이기 위한 선택 기준도 담았습니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Terraform, 작은 데이터팀이 살아남는 법">
+<meta property="og:url" content="https://dev-bearabbit.github.io/ko/Terraform/terraform-0/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="작은 데이터팀에서 Terraform을 도입하며 겪은 시행착오와 구조 설계 경험을 공유합니다. Terraform Cloud 환경에서 실수를 줄이고 유지보수성을 높이기 위한 선택 기준도 담았습니다.">
+<meta property="og:locale" content="ko_KR">
+<meta property="article:published_time" content="2025-04-20T11:05:51.000Z">
+<meta property="article:modified_time" content="2025-04-20T14:00:50.079Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="인프라">
+<meta property="article:tag" content="terraform">
+<meta property="article:tag" content="테라폼">
+<meta property="article:tag" content="iac">
+<meta property="article:tag" content="소규모팀">
+<meta property="article:tag" content="데이터팀 인프라">
+<meta property="article:tag" content="terraform cloud">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Terraform, 작은 데이터팀이 살아남는 법 - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"G-QW3E4LZZNF"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=G-QW3E4LZZNF", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'G-QW3E4LZZNF');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner" parallax=true
+  style="background: url('/img/background.gif') no-repeat center center; background-size: cover;">
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Terraform, 작은 데이터팀이 살아남는 법"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-20 20:05" pubdate>
+          2025년 4월 20일 오후
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          231 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const banner = document.getElementById('banner');
+
+    // 캔버스 크기를 배너 크기와 동기화
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    // 터치 이벤트 발생 여부를 체크하는 변수
+    let isTouching = false;
+    
+    // 모바일 터치 이벤트 감지
+    document.addEventListener('touchstart', () => {
+      isTouching = true;
+    });
+    document.addEventListener('touchend', () => {
+      isTouching = false;
+    });
+
+    function matrix() {
+      // 터치 중이면 업데이트 중지
+      if (isTouching) return;
+      
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) {
+          ypos[index] = 0;
+        } else {
+          ypos[index] = y + 20;
+        }
+      });
+    }
+
+    // 60ms 간격으로 matrix 함수를 호출
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Terraform, 작은 데이터팀이 살아남는 법</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>작은 데이터팀에서 Terraform을 도입하며 겪은 시행착오와 구조 설계 경험을 공유합니다. Terraform Cloud 환경에서 실수를 줄이고 유지보수성을 높이기 위한 선택 기준도 담았습니다. <span id="more"></span></p>
+<h2 id="도입-계기">도입 계기</h2>
+<p>보통 Terraform(테라폼)은 SRE팀이나 DevOps팀에서 많이 사용한다고 알고 있지만 사실 데이터팀에서도 많이 사용된다. 그 이유는 간단하다. 데이터팀도 수많은 플랫폼을 직접 구축 및 운영하기 때문이다. 우리 회사도 마찬가지였다. 다만 다른 팀과 다르게 2명이서 이 모든 인프라를 어깨에 매고 운영해야 한다는 점만 달랐다.</p>
+<p>이전에는 AWS 웹 콘솔에서 모든 리소스를 생성 및 유지보수를 했는데 이는 많은 문제들을 야기했다.</p>
+<ul>
+<li>팀원이 2명밖에 없고 담당자 교체 시 인수인계가 어려움</li>
+<li>특정 리소스가 어떤 서비스에서 사용되는지 파악이 어려움</li>
+<li>인프라 구조 자체를 누가 어떻게 만들었는지 기억이 안 남</li>
+<li>장애 시 빠르게 재현하거나 복구하는 데 어려움</li>
+<li>사용 중인 리소스 vs 미사용 리소스 구분 불가</li>
+<li>전체 구성 현황이 흩어져 있고 가시성이 없음</li>
+</ul>
+<p>위 문제들을 해결하고자 2023년 테라폼 도입을 추진했다.</p>
+<h2 id="기존-구조의-문제점">기존 구조의 문제점</h2>
+<p>2023년 도입 이후 2024년 한 해동안 로드밸런서, 배포서버, spark 클러스터 등 큰 리소스들은 테라폼으로 구성 및 유지보수를 진행했다. 그 과정을 통해 몇 가지 중요한 깨달음을 얻었다.</p>
+<ul>
+<li>공통 리소스를 한데 묶는 것이 좋은 것은 아니었다.</li>
+</ul>
+<p>공통 리소스를 elb라는 폴더 안에 ALB, NLB 등 여러 개 정의해두었더니, 일부 설정만 바꿔도 전체 리소스가 plan에 잡혀버리는 문제가 있었다. 이는 변경 범위를 좁히기 어렵게 만들고, 의도치 않은 리소스까지 apply에 포함되어 운영 리스크가 되었다. 작은 팀에서는 리소스의 기술적 종류보다 <code>서비스 단위</code>로 코드를 나누는 것이 더 안전하고 실용적이라는 걸 깨달았다.</p>
+<ul>
+<li>재사용성을 고려하다 보니 모듈이 덩치만 커졌다.</li>
+</ul>
+<p>처음에는 <code>재사용성</code>을 높이겠다는 의도로 여러 리소스를 조합한 복합적인 모듈을 만들었다. 예를 들어 EC2 인스턴스와 EBS 볼륨, IAM Role까지 한 번에 생성하는 ec2_bundle 모듈을 만들어 두었는데, 이후 다른 환경에서 EC2만 단독으로 사용하고 싶을 때 해당 모듈을 재사용할 수 없었다. 결국 재사용을 목표로 만든 모듈이 다른 사용 시나리오에서는 발목을 잡는 구조가 되어버린 것이다. 모듈은 처음부터 <code>최소 단위로 분리</code>해놓고 조합은 사용하는 쪽에서 하는 게 확장성과 유지보수 측면에서 더 낫다는 교훈을 얻었다.</p>
+<ul>
+<li>과도한 추상화는 코드 이해도와 예측 가능성을 낮춘다.</li>
+</ul>
+<p>for_each, merge, dynamic 등 고급 기능으로 여러 리소스를 하나의 모듈로 다루는 방식은 처음엔 코드가 짧고 DRY하다는 장점이 있었지만, 조건 분기나 키 누락으로 인한 type mismatch, null 참조 오류가 자주 발생했다. 코드는 짧고 모듈화되어 있어 보였지만, 결과적으로 구조 파악도 어렵고 plan 실패도 자주 나는 블랙박스 코드가 되었다. 작은 팀에선 오히려 반복되더라도 명시적으로 작성된 코드가 훨씬 안전했다.</p>
+<p>테라폼도 결국은 사람을 위한 도구이다. 사람이 이해하지 못하는 코드는 곧 <code>장애</code>가 되고, 또 다른 <code>유지보수</code> 대상이 된다.</p>
+<h2 id="설계-시-가장-중요했던-점">설계 시 가장 중요했던 점</h2>
+<p>위 문제점들을 바탕으로 꼭 가져가야겠다 싶었던 가치는 아래 3가지였다.</p>
+<ul>
+<li>사용성과 직관성: 누구나 보고 바로 이해할 수 있어야 한다.</li>
+<li>유지보수 용이성: 장애 시 빠르게 원인 파악 및 수정이 가능해야 한다.</li>
+<li>Terraform Cloud 활용: 환경 별 디렉토리/구조가 충돌 없이 작동해야 한다.</li>
+</ul>
+<p>결국 테라폼은 <code>사람</code>이 <code>코드</code>로 <code>인프라</code>를 관리하는 것이기 때문에 <code>중복코드</code> 제거나 <code>자동화</code>에 대한 집착하기 보다는 <code>안정성</code>에 무게를 두어야 한다는 교휸을 얻은 것이다.</p>
+<h2 id="고민했던-부분들">고민했던 부분들</h2>
+<p>작은 팀이기 때문에 더욱 구조를 명확히 하고, 실수를 줄일 수 있는 방법을 선택해야 했다. 실제로 아래와 같은 고민을 했고 각 항목마다 선택지를 비교한 후 기준을 세워나갔다.</p>
+<h3 id="환경-분리-전략">환경 분리 전략</h3>
+<ul>
+<li>문제: dev/prd 환경을 어떻게 나눌 것인가?</li>
+<li>후보:
+<ul>
+<li>.tfvars 기반 분리: 변수만 다르게 관리하되 디렉토리는 공유</li>
+<li>브랜치 기반 분리: Git 브랜치에 따라 분기</li>
+<li>폴더 기반 분리: dev/, prd/ 디렉토리 분리</li>
+</ul></li>
+<li>선택: 폴더 기반 분리</li>
+<li>이유: Terraform Cloud에서 .tfvars, 브랜치 기반은 환경이 명확하지 않았고 실수 위험이 컸다. 폴더 구조는 가독성과 명확성이 더 좋아 실수를 방지할 수 있다고 판단했다.</li>
+</ul>
+<h3 id="디렉토리-구조-설계">디렉토리 구조 설계</h3>
+<ul>
+<li>문제: 리소스를 어떻게 구조화할 것인가?</li>
+<li>후보:
+<ul>
+<li>module과 env 모두 리소스 단위로 분리</li>
+<li>module은 리소스, env는 block 단위로 분리</li>
+<li>module은 리소스, env는 service/shared 형태로 구분</li>
+</ul></li>
+<li>선택: <code>modules/</code>는 리소스 단위, 환경 디렉토리는 <code>service/</code>, <code>shared/</code>로 나누는 구조</li>
+<li>이유: 서비스별 리소스를 관리하면서도 공통 리소스(ALB, S3 등)는 shared/에 두어 재사용 가능하게 구성할 수 있었다. 또한 CI/CD 흐름에서도 서비스 단위로 나뉘는 구조가 명확했다.</li>
+</ul>
+<h3 id="모듈-재사용-전략">모듈 재사용 전략</h3>
+<ul>
+<li>문제: 복합 모듈로 구성할 것인가?</li>
+<li>후보:
+<ul>
+<li>여러 리소스를 하나의 모듈로 묶은 복합 모듈</li>
+<li>기능 단위로 모듈을 나누고 조합은 사용하는 쪽에서 처리</li>
+</ul></li>
+<li>선택: 기능 단위로 모듈 분리</li>
+<li>이유: 복합 모듈은 예외 상황에 대응이 어렵고 다른 서비스에서 재활용하기 힘들었다. 기능 단위로 분리한 뒤 조합하는 방식이 훨씬 유연했다.</li>
+</ul>
+<h3 id="네이밍-컨벤션">네이밍 컨벤션</h3>
+<ul>
+<li>문제: 리소스마다 어떤 이름 규칙을 따를 것인가?</li>
+<li>후보:
+<ul>
+<li>자유롭게 작성, tag만 통일</li>
+<li>기본 컨벤션 + 예외는 자유롭게</li>
+<li>예외 없이 일관된 네이밍 컨벤션 적용</li>
+</ul></li>
+<li>선택: 예외 없이 일관된 네이밍 컨벤션 적용</li>
+<li>이유: 일관된 네이밍은 시각적으로 리소스를 빠르게 식별할 수 있게 해준다. 또한 tag로만 구분하는 방식보다 AWS 콘솔, CloudWatch, Billing 등에서 리소스 필터링이 훨씬 용이했다.</li>
+</ul>
+<h3 id="추상화-기준">추상화 기준</h3>
+<ul>
+<li>문제: 반복되는 코드를 얼마나 추상화할 것인가?</li>
+<li>후보:
+<ul>
+<li><code>for_each</code>, <code>dynamic</code> 적극 활용해 반복 최소화</li>
+<li>명시적으로 나열해서 가독성과 디버깅 우선</li>
+</ul></li>
+<li>선택: 명시적 작성 + 최소한의 반복만 허용</li>
+<li>이유: 추상화된 코드는 코드 길이는 줄였지만 plan 오류와 디버깅 난이도를 높였다. 명시적으로 작성한 쪽이 안정성과 예측 가능성이 훨씬 높았다.</li>
+</ul>
+<h3 id="terraform-cloud-워크플로우-설계">Terraform Cloud 워크플로우 설계</h3>
+<ul>
+<li>문제: 변경 범위를 어떻게 명확하게 제어할 것인가?</li>
+<li>후보:
+<ul>
+<li>하나의 workspace에서 모든 리소스를 관리</li>
+<li>서비스 단위로 workspace 분리</li>
+</ul></li>
+<li>선택: 서비스 단위 workspace 분리</li>
+<li>이유: Git 기반 CI/CD 환경에서 서비스별 workspace 분리는 변경 범위를 명확히 구분하고, 자동 plan을 통해 영향도를 사전에 검토할 수 있어 실수 방지에 효과적이었다.</li>
+</ul>
+<h2 id="결론-작은-팀이라-더-중요했던-선택들">결론: 작은 팀이라 더 중요했던 선택들</h2>
+<p>지금까지 이야기 했던 내용을 정리하면 아래와 같다.</p>
+<ul>
+<li>작은 팀일수록 구조의 단순함과 명확성이 생존 조건이다.</li>
+<li>Terraform은 너무 추상화하거나 DRY에 집착하면 되려 복잡해지고 디버깅이 어려워진다.</li>
+<li>브랜치 기반보다 폴더 기반 환경 분리가 실무에서 훨씬 안정적이었다.</li>
+<li>Terraform Cloud는 편리하지만 그만큼 코드 구조가 명확하지 않으면 큰 리스크가 된다.</li>
+</ul>
+<p>결국 테라폼 실전에서 중요한 건 <code>가독성</code>, <code>직관성</code>, <code>복구 가능성</code>이었다. 작은 규모의 팀에게는 멋진 테라폼 코드보다는 이해하기 쉬운 구조가 필요하다.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/devops/" class="category-chain-item">DevOps</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/devops/terraform/" class="category-chain-item">terraform</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%EC%9D%B8%ED%94%84%EB%9D%BC/" class="print-no-link">#인프라</a>
+      
+        <a href="/tags/terraform/" class="print-no-link">#terraform</a>
+      
+        <a href="/tags/%ED%85%8C%EB%9D%BC%ED%8F%BC/" class="print-no-link">#테라폼</a>
+      
+        <a href="/tags/iac/" class="print-no-link">#iac</a>
+      
+        <a href="/tags/%EC%86%8C%EA%B7%9C%EB%AA%A8%ED%8C%80/" class="print-no-link">#소규모팀</a>
+      
+        <a href="/tags/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%8C%80-%EC%9D%B8%ED%94%84%EB%9D%BC/" class="print-no-link">#데이터팀 인프라</a>
+      
+        <a href="/tags/terraform-cloud/" class="print-no-link">#terraform cloud</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Terraform, 작은 데이터팀이 살아남는 법</div>
+      <div>https://dev-bearabbit.github.io/ko/Terraform/terraform-0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2025년 4월 20일</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ko/Experiment/experiment-2/" title="ChatGPT에 DuckDB + S3 연결해 데이터 분석시키기">
+                        <span class="hidden-mobile">ChatGPT에 DuckDB + S3 연결해 데이터 분석시키기</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
