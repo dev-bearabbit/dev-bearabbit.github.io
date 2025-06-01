@@ -4,6 +4,43 @@
   
   
   <entry>
+    <title>Relationship Safety Also Needs a Checkup</title>
+    <link href="/en/en/FixGround/fixground-0/"/>
+    <url>/en/en/FixGround/fixground-0/</url>
+    
+    <content type="html"><![CDATA[<p>To prevent repeated dating violence and relationship-related tragedies,<br>I built a simple test that helps anyone check for subtle warning signs in their romantic relationships.</p><span id="more"></span><hr><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>These days, words like dating violence, relationship-related homicides, and emotional abuse have sadly become all too familiar in the news.<br>Whenever I see another headline, I find myself wondering:</p><blockquote><p>“Why do these tragedies keep happening?”<br>“Wasn’t there some way to notice the warning signs sooner?”</p></blockquote><p>I carried those questions with me for a long time.<br>And one day, as the first experiment for <code>Fixground</code>, I decided to try answering them—<br>by making a simple test that scores your romantic relationship.</p><h2 id="Why-a-Test"><a href="#Why-a-Test" class="headerlink" title="Why a Test?"></a>Why a Test?</h2><p>Most experts agree that relationship violence almost never starts with sudden, extreme behavior.<br>In many cases, small and subtle warning signs begin to appear early on.</p><ul><li>Trouble managing emotions</li><li>Excessive possessiveness</li><li>Demanding constant contact</li><li>Subtle but repeated belittling</li></ul><p>These behaviors often get brushed aside, disappear for a while, or are excused as just part of being in a relationship.</p><blockquote><p>According to a survey by the Korea Women’s Hotline, 38.9% of respondents said they “did not recognize the behavior as violence” right after experiencing controlling behavior. 32.1% said, “I thought it was because they loved me.” After experiencing sexual violence, 29.3% said, “I didn’t think of it as violence,” while 28.9% said, “I felt ashamed.”</p></blockquote><p>The deeper the relationship grows, the more your partner knows your routines and emotions—making it even harder to notice something is off, let alone leave.<br>As a result, the cycle continues, often escalating to isolation and repeated violence, until it’s nearly impossible to get out.</p><p>I kept thinking: if only there were a simple tool that helped people objectively reflect whenever something felt “off.”<br>That’s why I created the <strong>Relationship Safety Test</strong>—a self-assessment tool for moments like these.</p><h2 id="How-I-Made-It"><a href="#How-I-Made-It" class="headerlink" title="How I Made It"></a>How I Made It</h2><p>I wanted to keep this test simple, lightweight, and accessible to anyone.<br>No sign-up, no names—just swipe through the questions and get a score.</p><p>But it’s not just for fun.<br>Each question is weighted based on the severity of the warning sign it addresses, and “killer questions” are assigned fixed high points to make sure serious red flags are always highlighted.<br>Instead of a basic yes&#x2F;no checklist, the goal was to give a more nuanced, relative risk score.<br>You can find the detailed scoring method in the <a href="https://github.com/dev-bearabbit/relationship-safety-test">README page</a>.</p><p>On the technical side, it’s built simply:</p><ul><li>Static site using GitHub Pages</li><li>Supports both Korean and English</li><li>Mobile-friendly, card-style UI</li></ul><p>The hope is that, even though it’s simple, this test can serve as an early warning for someone on the edge.</p><h2 id="What-I-Hope-For"><a href="#What-I-Hope-For" class="headerlink" title="What I Hope For"></a>What I Hope For</h2><p>This test is not perfect.<br>It can’t explain every situation or define every relationship.<br>But I hope that, for someone, it provides even a small sense of clarity.</p><blockquote><p>“Maybe I wasn’t just being sensitive—maybe it really was a problem.”<br>“I thought this was normal in a relationship, but it wasn’t.”</p></blockquote><p>I hope you stop doubting yourself.<br>Even if you never explain it to anyone else,<br>I hope this helps you check in with yourself, just once.</p><p>And I hope no one ever has to become another silent victim.<br>Before small discomfort grows into real tragedy,<br>let this test be a checkpoint for someone to reconsider their relationship.</p><p>If you want to try it yourself: <a href="https://dev-bearabbit.github.io/relationship-safety-test/">Go to the Relationship Safety Test</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>SeriesHub</category>
+      
+      <category>fixground notes</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>experiment</tag>
+      
+      <tag>self-assessment</tag>
+      
+      <tag>relationship</tag>
+      
+      <tag>dating-violence</tag>
+      
+      <tag>test</tag>
+      
+      <tag>social-issue</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Terraform, How a Small Data Team Survived</title>
     <link href="/en/en/Terraform/terraform-0/"/>
     <url>/en/en/Terraform/terraform-0/</url>
@@ -318,9 +355,9 @@
       
       <tag>BigData</tag>
       
-      <tag>DataMart</tag>
-      
       <tag>DataWarehouse</tag>
+      
+      <tag>DataMart</tag>
       
       <tag>Schema</tag>
       

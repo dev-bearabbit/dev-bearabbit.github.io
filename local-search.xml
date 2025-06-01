@@ -4,6 +4,43 @@
   
   
   <entry>
+    <title>연애에도 안전도 평가가 필요하다.</title>
+    <link href="/ko/FixGround/fixground-0/"/>
+    <url>/ko/FixGround/fixground-0/</url>
+    
+    <content type="html"><![CDATA[<p>반복되는 데이트폭력과 교제살인을 막기 위해 연인 관계에서 느끼는 작은 이상 신호를 점검할 수 있는 간단한 테스트를 만들어 봤습니다. <span id="more"></span></p><hr /><h2 id="시작하며">시작하며</h2><p>요즘 뉴스 보면 데이트폭력, 교제살인, 감정적 학대 같은 키워드가 너무나 익숙하게 스쳐 지나간다. 그럴 때마다 이런 생각이 든다.</p><blockquote><p>“이런 비극, 도대체 왜 계속 반복되는 걸까?”<br />“우리가 미리 감지할 수는 없었던 걸까?”</p></blockquote><p>그 질문을 꽤 오랫동안 마음속에 품고 있었다. 그리고 어느 날, <code>Fixground</code>의 첫 작업으로 이 질문에 대한 작은 시도를 해보기로 했다. 바로 연인 관계에 점수를 매기는 간단한 테스트를 만들어보는 것이다.</p><h2 id="왜-테스트인가">왜 테스트인가?</h2><p>사실 데이트폭력은 갑자기 난폭하게 돌변하는 일은 거의 없다고 한다. 전문가들은 대부분의 경우 관계 초반부터 작고 은밀한 신호들이 축적된다고 설명한다.</p><ul><li>감정을 조절하지 못하거나</li><li>과도하게 집착하거나</li><li>연락을 지나치게 강요하거나</li><li>은근히 상대를 깎아내리는 말들을 반복하거나</li></ul><p>하지만 이런 행위들은 잠깐 보였다 사라지거나 연인이라는 특수 관계로 인한 모호함 때문에 그냥 넘기는 경우가 많다.</p><blockquote><p>한국여성의전화 조사 결과 통제 피해가 발생한 직후 무슨 생각이 들었냐는 질문에 응답자의 38.9%는 ‘폭력이라는 생각은 들지 않았다’고 답했다. 또 32.1%는 ‘나를 사랑한다고 느꼈다’고 말하기도 했다. 성적 폭력 피해 이후에는 ‘폭력이라는 생각은 들지 않았다’(29.3%), ‘창피했다’(28.9%)고 말했다.</p></blockquote><p>특히 관계가 깊어질수록 상대는 나의 루틴과 감정을 누구보다 잘 알고 있기 때문에 이상함을 느껴도 쉽게 빠져나오지 못하는 것이다. 그리고 그 뒤에는 반복과 고립, 강도가 높아지는 폭력, 더 늦기 전에 헤어나오기 어려운 상황에 처하게 된다.</p><p>‘혹시 지금 이 관계, 뭔가 이상한데?’라는 직감이 들 때마다 스스로 객관적인 시선으로 돌아볼 수 있는 도구가 있으면 좋겠다고 생각했다. <strong>‘연애 안전도 테스트’</strong>는 그런 목적으로 시작된 자가 진단 도구이다.</p><h2 id="그래서-만들었다">그래서 만들었다</h2><p>나는 이 테스트를 누구나 빠르게 해볼 수 있는 단순하고 가벼운 구조로 만들었다. 딱히 회원가입도 없고 이름을 묻지도 않는다. 그냥 들어와서 슬라이드 형식으로 문항을 쓱쓱 넘기면 바로 점수가 나온다.</p><p>하지만 이 테스트 문항들이 단순히 재미로 만들어진 건 아니다. 위험 신호의 강도에 따라 문항별 가중치를 다르게 설정했고, 반드시 짚고 넘어가야 하는 킬러 문항에는 고정 점수를 부여해 전체 점수에 큰 영향을 주도록 했다. 단순히 "예/아니오"로 끝나는 체크리스트가 아니라, 점수를 제공함으로서 상대적인 위험도까지 보여주는 테스트가 되기를 바랐다. 자세한 점수산정방식은 <a href="https://github.com/dev-bearabbit/relationship-safety-test">README 페이지</a>에 정리해 두었다.</p><p>기술적으로는 간단하게 만들었다.</p><ul><li>GitHub Pages 기반의 정적 페이지</li><li>한국어/영어 다국어 지원</li><li>모바일에서도 편하게 볼 수 있는 슬라이드형 UI</li></ul><p>이 테스트는 단순하지만 누군가의 경계선에서 울리는 알람이 되었으면 좋겠다.</p><h2 id="바라는-점">바라는 점</h2><p>이 테스트는 완벽하지 않다. 모든 상황을 설명할 수도, 모든 관계를 정의할 수도 없다. 하지만 우리는 누군가가 이걸 통해 작은 확신 하나쯤은 얻을 수 있기를 바랐다.</p><blockquote><p>“내가 예민한 게 아니라 진짜 이상했던 거구나”<br />“이게 원래 연애의 일부인 줄 알았는데 그게 아니었네”</p></blockquote><p>그렇게 스스로를 더는 의심하지 않았으면 한다. 누군가에게 설명하거나 증명하지 않아도 스스로 확인해볼 수 있었으면 한다.</p><p>그리고 이 사회에 더는 억울하게 떠나는 사람이 없기를 바란다. 작은 이상함이 큰 비극이 되기 전에, 이 테스트가 누군가의 관계를 멈추게 할 수 있는 하나의 체크포인트가 되기를 바란다.</p><p><strong>직접 해보고 싶다면:</strong> <a href="https://dev-bearabbit.github.io/relationship-safety-test/">연애 안전도 자가진단 테스트 바로가기</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>SeriesHub</category>
+      
+      <category>fixground notes</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>실험노트</tag>
+      
+      <tag>자가진단</tag>
+      
+      <tag>연애</tag>
+      
+      <tag>데이트폭력</tag>
+      
+      <tag>테스트</tag>
+      
+      <tag>사회문제</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Terraform, 작은 데이터팀이 살아남는 법</title>
     <link href="/ko/Terraform/terraform-0/"/>
     <url>/ko/Terraform/terraform-0/</url>
@@ -176,8 +213,6 @@
       
       <tag>데이터분석</tag>
       
-      <tag>book</tag>
-      
       <tag>julia</tag>
       
       <tag>translate</tag>
@@ -185,6 +220,8 @@
       <tag>번역</tag>
       
       <tag>데이터분석을위한줄리아</tag>
+      
+      <tag>book</tag>
       
     </tags>
     
@@ -260,11 +297,11 @@
       
       <tag>학위</tag>
       
+      <tag>학점은행제</tag>
+      
       <tag>컴퓨터공학</tag>
       
       <tag>비전공</tag>
-      
-      <tag>학점은행제</tag>
       
     </tags>
     
@@ -371,9 +408,9 @@
       
       <tag>학위</tag>
       
-      <tag>학점은행제</tag>
-      
       <tag>외국계</tag>
+      
+      <tag>학점은행제</tag>
       
       <tag>TOEFL</tag>
       
@@ -447,9 +484,9 @@
       
       <tag>rust</tag>
       
-      <tag>review</tag>
-      
       <tag>book</tag>
+      
+      <tag>review</tag>
       
     </tags>
     
@@ -1276,47 +1313,6 @@
   
   
   <entry>
-    <title>데이터 엔지니어의 IoT 도전기 1편</title>
-    <link href="/ko/Embedded/embedded-0/"/>
-    <url>/ko/Embedded/embedded-0/</url>
-    
-    <content type="html"><![CDATA[<span id="more"></span><h2 id="시작하기-전에">시작하기 전에</h2>]]></content>
-    
-    
-    <categories>
-      
-      <category>Hardware</category>
-      
-      <category>embedded/IoT</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>IoT</tag>
-      
-      <tag>embedded</tag>
-      
-      <tag>nodeMCU</tag>
-      
-      <tag>IR센서</tag>
-      
-      <tag>RFID</tag>
-      
-      <tag>ESP8266</tag>
-      
-      <tag>TCRT5000</tag>
-      
-      <tag>RFID-RC522</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>하드웨어의 기초</title>
     <link href="/ko/Infra/infra-1/"/>
     <url>/ko/Infra/infra-1/</url>
@@ -1405,13 +1401,13 @@
       
       <tag>DB</tag>
       
+      <tag>database</tag>
+      
       <tag>architecture</tag>
       
       <tag>sharednothing</tag>
       
       <tag>shareddisk</tag>
-      
-      <tag>database</tag>
       
       <tag>아키텍처</tag>
       
@@ -1489,9 +1485,9 @@
       
       <tag>python</tag>
       
-      <tag>비교</tag>
-      
       <tag>rust</tag>
+      
+      <tag>비교</tag>
       
       <tag>hanoi</tag>
       
