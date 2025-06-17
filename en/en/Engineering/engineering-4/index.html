@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="alternate" hreflang="ko" href="https://dev-bearabbit.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://dev-bearabbit.github.io/en/" />  
+  <link rel="apple-touch-icon" sizes="76x76" href="/en/img/apple-touch-icon.png">
+  <link rel="icon" href="/en/img/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000">
+  <meta name="author" content="Jess">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="This article analyzes why dropDuplicates() is slow for deduplicating large PySpark datasets (due to its first aggregation over all columns and memory overhead), and shares an optimization case study d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why You Shouldn’t Always Use dropDuplicates for Deduplication in PySpark">
+<meta property="og:url" content="https://dev-bearabbit.github.io/en/en/Engineering/engineering-4/index.html">
+<meta property="og:site_name" content="DEV AnythinG">
+<meta property="og:description" content="This article analyzes why dropDuplicates() is slow for deduplicating large PySpark datasets (due to its first aggregation over all columns and memory overhead), and shares an optimization case study d">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/23.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/20.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/21.png">
+<meta property="og:image" content="https://dev-bearabbit.github.io/en/images/22.png">
+<meta property="article:published_time" content="2025-06-16T23:04:50.000Z">
+<meta property="article:modified_time" content="2025-06-17T10:14:44.354Z">
+<meta property="article:author" content="Jess">
+<meta property="article:tag" content="pyspark">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="data-engineering">
+<meta property="article:tag" content="big-data">
+<meta property="article:tag" content="performance">
+<meta property="article:tag" content="optimization">
+<meta property="article:tag" content="deduplication">
+<meta property="article:tag" content="row_number">
+<meta property="article:tag" content="dropDuplicates">
+<meta property="article:tag" content="window-functions">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dev-bearabbit.github.io/en/images/23.png">
+  
+  
+  
+  <title>Why You Shouldn’t Always Use dropDuplicates for Deduplication in PySpark - DEV AnythinG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/en/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/en/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/en/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dev-bearabbit.github.io","root":"/en/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"G-QW3E4LZZNF"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/en/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/en/js/utils.js" ></script>
+  <script  src="/en/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=G-QW3E4LZZNF", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'G-QW3E4LZZNF');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/en/">
+      <strong>DEV AnythinG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/en/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/en/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/en/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="iconfont icon-globe"></i> <span id="current-lang"></span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <a class="dropdown-item" href="/">한국어</a>
+            <a class="dropdown-item" href="/en/">English</a>
+          </div>
+        </li>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 현재 언어를 URL 기반으로 감지
+    const path = window.location.pathname;
+    const currentLang = path.startsWith('/en/') ? 'English' : '한국어';
+
+    // 선택된 언어를 버튼에 표시
+    const currentLangElement = document.getElementById('current-lang');
+    currentLangElement.textContent = currentLang;
+  });
+</script>
+
+  
+
+<div id="banner" class="banner" parallax=true
+  style="background: url('/en/img/baclground.gif') no-repeat center center; background-size: cover;">
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Why You Shouldn’t Always Use dropDuplicates for Deduplication in PySpark"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-17 08:04" pubdate>
+          June 17, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          316 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const banner = document.getElementById('banner');
+
+    // 캔버스 크기를 배너 크기와 동기화
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+
+    const cols = Math.floor(canvas.width / 20) + 1;
+    const ypos = Array(cols).fill(0);
+
+    // 터치 이벤트 발생 여부를 체크하는 변수
+    let isTouching = false;
+    
+    // 모바일 터치 이벤트 감지
+    document.addEventListener('touchstart', () => {
+      isTouching = true;
+    });
+    document.addEventListener('touchend', () => {
+      isTouching = false;
+    });
+
+    function matrix() {
+      // 터치 중이면 업데이트 중지
+      if (isTouching) return;
+      
+      ctx.fillStyle = '#0001'; // 배경 페이드 효과
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#009600'; // 텍스트 색상
+      ctx.font = '14pt monospace';
+
+      ypos.forEach((y, index) => {
+        const text = String.fromCharCode(33 + Math.random() * 94); // 랜덤 ASCII 문자
+        const x = index * 20;
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height + Math.random() * 10000) {
+          ypos[index] = 0;
+        } else {
+          ypos[index] = y + 20;
+        }
+      });
+    }
+
+    // 60ms 간격으로 matrix 함수를 호출
+    setInterval(matrix, 60);
+  });
+</script>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Why You Shouldn’t Always Use dropDuplicates for Deduplication in PySpark</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>This article analyzes why dropDuplicates() is slow for deduplicating large PySpark datasets (due to its first aggregation over all columns and memory overhead), and shares an optimization case study demonstrating how using the row_number().over(Window) approach achieved 37% faster performance.</p>
+<span id="more"></span>
+
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Recently, I had a task to deduplicate a large volume of log data. Initially, without much thought, I used <code>dropDuplicates()</code>, but I was surprised by how slow the processing was.</p>
+<p><img src="/en/images/23.png" srcset="/en/img/loading.gif" lazyload alt="Too Slow"></p>
+<p>Given the nature of the task, which required repetitive execution, I wanted to improve the speed as much as possible. So, I experimented with various methods directly. Among them, <code>row_number().over(Window)</code> showed relatively better results.</p>
+<p>In this post, I will summarize the comparison results of these two methods under the same data environment.</p>
+<h2 id="Experimental-Environment"><a href="#Experimental-Environment" class="headerlink" title="Experimental Environment"></a>Experimental Environment</h2><p>To compare the performance difference based on the deduplication method, the experiment was conducted under the following conditions:</p>
+<ul>
+<li>Data Size: Approximately 350 million rows</li>
+<li>Number of Columns: 40</li>
+<li>Format: parquet → parquet</li>
+<li>Deduplication Key: id column</li>
+<li>Spark Version: 3.4.1</li>
+<li>Execution Environment: AWS EMR</li>
+</ul>
+<p>The data used in the experiment was quite large in volume and had a considerable number of columns. Therefore, I judged that it was a condition where the execution time could vary significantly depending on how shuffling and sorting occurred in Spark.</p>
+<p><img src="/en/images/20.png" srcset="/en/img/loading.gif" lazyload alt="Data Size"></p>
+<h2 id="Method-A-dropDuplicates"><a href="#Method-A-dropDuplicates" class="headerlink" title="Method A: dropDuplicates()"></a>Method A: dropDuplicates()</h2><p>This is the most commonly used deduplication method. Its usage is simple, and it can be applied directly without separate sorting or window functions.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">df_deduped_a = df.dropDuplicates([<span class="hljs-string">&quot;id&quot;</span>])<br></code></pre></td></tr></table></figure>
+
+<p>However, examining the actual execution plan reveals that it involves more complex operations than one might expect. Below is a summary of the key parts from the <code>.explain(True)</code> output for <code>df.dropDuplicates([&quot;id&quot;])</code>.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs text">== Optimized Logical Plan ==<br>Aggregate [id#0], [<br>  first(kafka_offset#1L, false),<br>  first(gig_impression_uuid#2, false),<br>  ...<br>]<br><br>== Physical Plan ==<br>SortAggregate(key=[id#0], functions=[first(...)])<br>+- Sort [id#0 ASC NULLS FIRST]<br>   +- Exchange hashpartitioning(id#0, 1000)<br>      +- SortAggregate(key=[id#0], functions=[partial_first(...)])<br>         +- Sort [id#0 ASC NULLS FIRST]<br>            +- FileScan parquet [...]<br></code></pre></td></tr></table></figure>
+
+<p>From the execution plan, it can be seen that <code>dropDuplicates()</code> internally operates in a manner similar to groupBy + first aggregation. Specifically, the <code>first</code> aggregation function is applied to all columns except the key (id). This means that after shuffling (Exchange) data by the id column, Spark groups by id within each partition and selects the first value from all columns within that group.</p>
+<p>During this process, a <code>SortAggregate</code> operation is performed, which is Spark’s optimizer strategy to improve efficiency by sorting the data by the key (id) before performing the aggregation. Thus, both shuffling (Exchange) and sorting (Sort) occur.</p>
+<p>Particularly, when the number of columns is large, the <code>first(*)</code> operation, being applied to all columns, requires loading the shuffled data into Executor memory to find the first value for every column. This process can significantly increase the memory usage and GC (Garbage Collection) overhead on each Executor, leading to performance bottlenecks. Consequently, for large datasets, the execution speed often slows down dramatically.</p>
+<h2 id="Method-B-row-number-Window"><a href="#Method-B-row-number-Window" class="headerlink" title="Method B: row_number + Window"></a>Method B: row_number + Window</h2><p>This method assigns a sequence number to each group and then keeps only the first row, discarding the rest.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pyspark.sql.window <span class="hljs-keyword">import</span> Window<br><span class="hljs-keyword">from</span> pyspark.sql.functions <span class="hljs-keyword">import</span> row_number, lit<br><br>window_spec = Window.partitionBy(<span class="hljs-string">&quot;id&quot;</span>).orderBy(lit(<span class="hljs-number">1</span>))<br><br>df_deduped_b = (<br>    df.withColumn(<span class="hljs-string">&quot;rn&quot;</span>, row_number().over(window_spec))<br>      .<span class="hljs-built_in">filter</span>(<span class="hljs-string">&quot;rn = 1&quot;</span>)<br>      .drop(<span class="hljs-string">&quot;rn&quot;</span>)<br>)<br></code></pre></td></tr></table></figure>
+
+<p>The execution plan for the above code is as follows:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python">df_deduped_b.explain(<span class="hljs-literal">True</span>)<br><br>== Optimized Logical Plan ==<br>Project [... <span class="hljs-number">40</span> columns ...]<br>+- Filter (rn = <span class="hljs-number">1</span>)<br>   +- Window [row_number() OVER (PARTITION BY <span class="hljs-built_in">id</span> ORDER BY <span class="hljs-number">1</span> ASC)] AS rn<br><br>== Physical Plan ==<br>Project [...]<br>+- Filter (rn = <span class="hljs-number">1</span>)<br>   +- Window [row_number() OVER (PARTITION BY <span class="hljs-built_in">id</span> ORDER BY <span class="hljs-number">1</span> ASC)]<br>      +- Sort [<span class="hljs-built_in">id</span> ASC, <span class="hljs-number">1</span> ASC]<br>         +- Exchange hashpartitioning(<span class="hljs-built_in">id</span>, <span class="hljs-number">1000</span>)<br>            +- FileScan parquet [...]<br></code></pre></td></tr></table></figure>
+
+<p>This method also involves Exchange(shuffle) due to <code>partitionBy(&quot;id&quot;)</code>, and Sort(sorting) based on id and the orderBy criterion(here, the constant 1) for the Window operation. However, there’s a significant difference compared to the <code>dropDuplicates()</code> method.</p>
+<p>When there’s no specific sorting criterion, using <code>orderBy(lit(1))</code> enables the use of the Window function without requiring a meaningful sort order. Sorting by a constant like <code>lit(1)</code> does not incur the complex sorting cost of actual data, allowing Spark’s Catalyst Optimizer to process it very efficiently or even optimize it in certain cases.</p>
+<p>Thanks to this, this method can quickly extract only the desired rows by assigning only the necessary sequence numbers (rn) without unnecessary aggregation and then filtering <code>filter(&quot;rn = 1&quot;)</code>. This allows for better performance with large datasets.</p>
+<h2 id="Experiment-Results"><a href="#Experiment-Results" class="headerlink" title="Experiment Results"></a>Experiment Results</h2><p>Both methods were used to deduplicate the same dataset and then save it to S3.</p>
+<p><img src="/en/images/21.png" srcset="/en/img/loading.gif" lazyload alt="dropDuplicates()"></p>
+<ul>
+<li>Processing Time: Approximately 32 minutes</li>
+</ul>
+<p><img src="/en/images/22.png" srcset="/en/img/loading.gif" lazyload alt="dropDuplicates()"></p>
+<ul>
+<li>Processing Time: Approximately 20 minutes</li>
+</ul>
+<p>Although it was the same task, the <code>row_number + Window</code> method completed the job approximately 37% faster than <code>dropDuplicates()</code>.</p>
+<h2 id="Root-Cause-Analysis"><a href="#Root-Cause-Analysis" class="headerlink" title="Root Cause Analysis"></a>Root Cause Analysis</h2><p>Both methods internally involve shuffling and sorting, but there are crucial differences in their processing approaches.</p>
+<p><code>dropDuplicates()</code> performs a <code>first()</code> aggregation on all columns. This means that while the deduplication criterion is a specific column (id), after receiving the shuffled data, to produce the final deduplicated result, it must load all columns of data into memory to perform the <code>first</code> operation. In this process, Spark consumes more resources as the number of columns increases, and memory usage and GC (Garbage Collection) overhead on each Executor increase rapidly, significantly raising the processing cost. This particularly causes severe bottlenecks in wide tables (tables with many columns).</p>
+<p>In contrast, the <code>row_number + Window</code> method shuffles the data and then assigns sequence numbers by sorting based on <code>id</code> and the constant <code>1</code>. When there’s no specific sorting criterion, <code>orderBy(lit(1))</code> avoids unnecessary sorting overhead. It then quickly filters for rows where rn is 1 and passes only these desired rows to the next stage. This approach avoids aggregation over all columns and selectively processes only the necessary data, making it a much lighter operation compared to <code>dropDuplicates()</code>.</p>
+<p>Furthermore, as can be seen from the execution plans above, <code>dropDuplicates()</code> performs SortAggregate and first(…) operations, which internally involve partial aggregation, double sorting (in some Spark versions or situations), and <strong>projection of all columns</strong>. In contrast, <code>row_number()</code> only assigns necessary sequence numbers, performs a <code>filter</code>, and then <code>drops</code> the rn column, resulting in a much lighter operation for its data size and column count.</p>
+<p>In conclusion, when the number of columns is large and the data volume is significant, <code>dropDuplicates()</code> suffers severe bottlenecks due to the first aggregation on all columns and the resulting memory overhead. The <code>row_number + Window</code> method, on the other hand, has a relatively more efficient structure.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p><code>dropDuplicates()</code> is a straightforward and intuitive method, making it a reasonable choice when data volume is small or the number of columns is limited. However, for datasets exceeding hundreds of millions of rows or with a large number of columns, the internal operational costs can lead to significant performance degradation.</p>
+<p>Conversely, while the <code>row_number().over(Window)</code> method slightly increases code complexity, it can minimize sorting costs and perform deduplication with fewer resources, making it advantageous for large-scale data processing.</p>
+<p>Therefore, for repetitive or performance-critical tasks, the <code>row_number + Window</code> method is a strong candidate worth actively considering.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/en/categories/bigdata/" class="category-chain-item">BigData</a>
+  
+  
+    <span>></span>
+    
+  <a href="/en/categories/bigdata/engineering/" class="category-chain-item">engineering</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/en/tags/pyspark/" class="print-no-link">#pyspark</a>
+      
+        <a href="/en/tags/spark/" class="print-no-link">#spark</a>
+      
+        <a href="/en/tags/data-engineering/" class="print-no-link">#data-engineering</a>
+      
+        <a href="/en/tags/big-data/" class="print-no-link">#big-data</a>
+      
+        <a href="/en/tags/performance/" class="print-no-link">#performance</a>
+      
+        <a href="/en/tags/optimization/" class="print-no-link">#optimization</a>
+      
+        <a href="/en/tags/deduplication/" class="print-no-link">#deduplication</a>
+      
+        <a href="/en/tags/row-number/" class="print-no-link">#row_number</a>
+      
+        <a href="/en/tags/dropduplicates/" class="print-no-link">#dropDuplicates</a>
+      
+        <a href="/en/tags/window-functions/" class="print-no-link">#window-functions</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Why You Shouldn’t Always Use dropDuplicates for Deduplication in PySpark</div>
+      <div>https://dev-bearabbit.github.io/en/en/Engineering/engineering-4/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jess</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 17, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/en/en/FixGround/fixground-0/" title="Relationship Safety Also Needs a Checkup">
+                        <span class="hidden-mobile">Relationship Safety Also Needs a Checkup</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://dev-bearabbit.github.io" target="_blank" rel="nofollow noopener"><span>Jess</span></a>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/en/js/events.js" ></script>
+<script  src="/en/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/en/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/en/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/en/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
