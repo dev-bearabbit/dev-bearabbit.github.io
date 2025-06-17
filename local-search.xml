@@ -330,11 +330,11 @@
     
     <tags>
       
+      <tag>직장인</tag>
+      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
-      
-      <tag>직장인</tag>
       
       <tag>대학원</tag>
       
@@ -441,11 +441,11 @@
     
     <tags>
       
+      <tag>직장인</tag>
+      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
-      
-      <tag>직장인</tag>
       
       <tag>대학원</tag>
       
@@ -761,11 +761,11 @@
     
     <tags>
       
-      <tag>회고</tag>
-      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
+      
+      <tag>회고</tag>
       
       <tag>주니어</tag>
       
@@ -1483,11 +1483,11 @@
     
     <tags>
       
-      <tag>회고</tag>
-      
       <tag>엔지니어</tag>
       
       <tag>개발자</tag>
+      
+      <tag>회고</tag>
       
       <tag>주니어</tag>
       
@@ -1528,9 +1528,9 @@
       
       <tag>python</tag>
       
-      <tag>rust</tag>
-      
       <tag>비교</tag>
+      
+      <tag>rust</tag>
       
       <tag>hanoi</tag>
       
@@ -3260,6 +3260,8 @@
       
       <tag>AWS</tag>
       
+      <tag>docker</tag>
+      
       <tag>DB</tag>
       
       <tag>KBO</tag>
@@ -3268,11 +3270,9 @@
       
       <tag>dashborad</tag>
       
-      <tag>docker</tag>
+      <tag>flask</tag>
       
       <tag>mariaDB</tag>
-      
-      <tag>flask</tag>
       
       <tag>EC2</tag>
       
@@ -3775,9 +3775,9 @@
     
     <tags>
       
-      <tag>mariadb</tag>
-      
       <tag>docker</tag>
+      
+      <tag>mariadb</tag>
       
       <tag>sql</tag>
       
