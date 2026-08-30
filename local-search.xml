@@ -57,9 +57,9 @@
     
     <tags>
       
-      <tag>Spark</tag>
-      
       <tag>PySpark</tag>
+      
+      <tag>Spark</tag>
       
       <tag>데이터엔지니어링</tag>
       
@@ -184,15 +184,15 @@
       
       <tag>ChatGPT</tag>
       
+      <tag>AI</tag>
+      
+      <tag>인공지능</tag>
+      
       <tag>openai</tag>
       
       <tag>FastAPI</tag>
       
       <tag>DuckDB</tag>
-      
-      <tag>AI</tag>
-      
-      <tag>인공지능</tag>
       
     </tags>
     
@@ -219,9 +219,9 @@
     
     <tags>
       
-      <tag>data</tag>
-      
       <tag>aws</tag>
+      
+      <tag>data</tag>
       
       <tag>datawarehouse</tag>
       
@@ -326,11 +326,11 @@
     
     <tags>
       
+      <tag>빅데이터</tag>
+      
       <tag>데이터웨어하우스</tag>
       
       <tag>warehouse</tag>
-      
-      <tag>빅데이터</tag>
       
       <tag>DW</tag>
       
@@ -375,11 +375,11 @@
       
       <tag>학위</tag>
       
-      <tag>학점은행제</tag>
-      
       <tag>컴퓨터공학</tag>
       
       <tag>비전공</tag>
+      
+      <tag>학점은행제</tag>
       
     </tags>
     
@@ -486,9 +486,9 @@
       
       <tag>학위</tag>
       
-      <tag>외국계</tag>
-      
       <tag>학점은행제</tag>
+      
+      <tag>외국계</tag>
       
       <tag>TOEFL</tag>
       
@@ -523,15 +523,15 @@
       
       <tag>ChatGPT</tag>
       
-      <tag>AI</tag>
-      
-      <tag>인공지능</tag>
-      
       <tag>RAG</tag>
       
       <tag>Prompt</tag>
       
       <tag>프롬프트</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>인공지능</tag>
       
     </tags>
     
@@ -593,9 +593,9 @@
       
       <tag>python</tag>
       
-      <tag>package</tag>
-      
       <tag>유사도분석</tag>
+      
+      <tag>package</tag>
       
       <tag>library</tag>
       
@@ -685,15 +685,15 @@
       
       <tag>ChatGPT</tag>
       
-      <tag>AI</tag>
-      
-      <tag>인공지능</tag>
-      
       <tag>RAG</tag>
       
       <tag>Prompt</tag>
       
       <tag>프롬프트</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>인공지능</tag>
       
     </tags>
     
@@ -720,13 +720,13 @@
     
     <tags>
       
-      <tag>데이터웨어하우스</tag>
-      
       <tag>빅데이터</tag>
       
       <tag>bigdata</tag>
       
       <tag>데이터마트</tag>
+      
+      <tag>데이터웨어하우스</tag>
       
       <tag>datawarehouse</tag>
       
@@ -800,11 +800,11 @@
       
       <tag>개발자</tag>
       
-      <tag>회고</tag>
-      
       <tag>주니어</tag>
       
       <tag>소프트웨어</tag>
+      
+      <tag>회고</tag>
       
       <tag>3년차</tag>
       
@@ -952,11 +952,11 @@
       
       <tag>빅데이터</tag>
       
+      <tag>세션</tag>
+      
       <tag>주니어</tag>
       
       <tag>소프트웨어</tag>
-      
-      <tag>세션</tag>
       
       <tag>플랫폼</tag>
       
@@ -987,9 +987,7 @@
       
       <tag>데이터</tag>
       
-      <tag>OS</tag>
-      
-      <tag>운영체제</tag>
+      <tag>인프라</tag>
       
       <tag>분산처리</tag>
       
@@ -997,11 +995,13 @@
       
       <tag>데이터구조</tag>
       
-      <tag>캐시</tag>
-      
       <tag>서버</tag>
       
-      <tag>인프라</tag>
+      <tag>OS</tag>
+      
+      <tag>운영체제</tag>
+      
+      <tag>캐시</tag>
       
     </tags>
     
@@ -1030,6 +1030,12 @@
       
       <tag>데이터</tag>
       
+      <tag>인프라</tag>
+      
+      <tag>메모리</tag>
+      
+      <tag>대규모</tag>
+      
       <tag>분산처리</tag>
       
       <tag>대규모데이터</tag>
@@ -1037,12 +1043,6 @@
       <tag>데이터구조</tag>
       
       <tag>서버</tag>
-      
-      <tag>인프라</tag>
-      
-      <tag>메모리</tag>
-      
-      <tag>대규모</tag>
       
     </tags>
     
@@ -1477,6 +1477,8 @@
     
     <tags>
       
+      <tag>DB</tag>
+      
       <tag>database</tag>
       
       <tag>architecture</tag>
@@ -1486,8 +1488,6 @@
       <tag>shareddisk</tag>
       
       <tag>아키텍처</tag>
-      
-      <tag>DB</tag>
       
       <tag>clustering</tag>
       
@@ -1522,11 +1522,11 @@
       
       <tag>개발자</tag>
       
-      <tag>회고</tag>
-      
       <tag>주니어</tag>
       
       <tag>소프트웨어</tag>
+      
+      <tag>회고</tag>
       
       <tag>2년차</tag>
       
@@ -1557,6 +1557,10 @@
     
     <tags>
       
+      <tag>recursion</tag>
+      
+      <tag>recursive</tag>
+      
       <tag>python</tag>
       
       <tag>rust</tag>
@@ -1564,10 +1568,6 @@
       <tag>비교</tag>
       
       <tag>hanoi</tag>
-      
-      <tag>recursion</tag>
-      
-      <tag>recursive</tag>
       
       <tag>시간초과</tag>
       
@@ -1602,13 +1602,13 @@
     
     <tags>
       
-      <tag>recursion</tag>
-      
-      <tag>recursive</tag>
-      
       <tag>재귀</tag>
       
       <tag>하노이탑</tag>
+      
+      <tag>recursion</tag>
+      
+      <tag>recursive</tag>
       
     </tags>
     
@@ -1688,9 +1688,9 @@
       
       <tag>블로그</tag>
       
-      <tag>category</tag>
-      
       <tag>카테고리</tag>
+      
+      <tag>category</tag>
       
       <tag>404에러</tag>
       
@@ -1793,11 +1793,11 @@
     
     <tags>
       
+      <tag>KBO</tag>
+      
       <tag>python</tag>
       
       <tag>data</tag>
-      
-      <tag>KBO</tag>
       
       <tag>package</tag>
       
@@ -1834,11 +1834,11 @@
     
     <tags>
       
+      <tag>Hive</tag>
+      
       <tag>빅데이터</tag>
       
       <tag>hadoop</tag>
-      
-      <tag>Hive</tag>
       
       <tag>ecosystem</tag>
       
@@ -1879,11 +1879,11 @@
       
       <tag>ecosystem</tag>
       
+      <tag>datastorage</tag>
+      
       <tag>Yarn</tag>
       
       <tag>resource</tag>
-      
-      <tag>datastorage</tag>
       
     </tags>
     
@@ -1912,13 +1912,13 @@
       
       <tag>python</tag>
       
+      <tag>review</tag>
+      
       <tag>Cleancode</tag>
       
       <tag>클린코드</tag>
       
       <tag>책리뷰</tag>
-      
-      <tag>review</tag>
       
       <tag>code</tag>
       
@@ -1949,13 +1949,13 @@
       
       <tag>python</tag>
       
+      <tag>review</tag>
+      
       <tag>Cleancode</tag>
       
       <tag>클린코드</tag>
       
       <tag>책리뷰</tag>
-      
-      <tag>review</tag>
       
       <tag>code</tag>
       
@@ -2029,9 +2029,9 @@
       
       <tag>hdfs</tag>
       
-      <tag>datastorage</tag>
-      
       <tag>HDFS</tag>
+      
+      <tag>datastorage</tag>
       
     </tags>
     
@@ -2689,10 +2689,6 @@
       
       <tag>블로그</tag>
       
-      <tag>category</tag>
-      
-      <tag>카테고리</tag>
-      
       <tag>NexT</tag>
       
       <tag>next</tag>
@@ -2701,7 +2697,11 @@
       
       <tag>themes</tag>
       
+      <tag>카테고리</tag>
+      
       <tag>태그</tag>
+      
+      <tag>category</tag>
       
       <tag>tag</tag>
       
@@ -2765,15 +2765,15 @@
     
     <tags>
       
-      <tag>mariadb</tag>
-      
-      <tag>DB</tag>
-      
       <tag>aws</tag>
+      
+      <tag>mariadb</tag>
       
       <tag>lightsail</tag>
       
       <tag>ssh</tag>
+      
+      <tag>DB</tag>
       
       <tag>KBO</tag>
       
@@ -3139,9 +3139,9 @@
     
     <tags>
       
-      <tag>sql</tag>
-      
       <tag>mariadb</tag>
+      
+      <tag>sql</tag>
       
       <tag>mysql</tag>
       
@@ -3293,8 +3293,6 @@
     
     <tags>
       
-      <tag>docker</tag>
-      
       <tag>AWS</tag>
       
       <tag>DB</tag>
@@ -3304,6 +3302,8 @@
       <tag>analysis</tag>
       
       <tag>dashborad</tag>
+      
+      <tag>docker</tag>
       
       <tag>mariaDB</tag>
       
@@ -3496,11 +3496,11 @@
     
     <tags>
       
+      <tag>DB</tag>
+      
       <tag>sql</tag>
       
       <tag>database</tag>
-      
-      <tag>DB</tag>
       
       <tag>mariaDB</tag>
       
@@ -3539,11 +3539,11 @@
     
     <tags>
       
+      <tag>DB</tag>
+      
       <tag>sql</tag>
       
       <tag>database</tag>
-      
-      <tag>DB</tag>
       
       <tag>mariaDB</tag>
       
@@ -3697,11 +3697,11 @@
     
     <tags>
       
+      <tag>DB</tag>
+      
       <tag>sql</tag>
       
       <tag>database</tag>
-      
-      <tag>DB</tag>
       
       <tag>mariaDB</tag>
       
@@ -3810,11 +3810,11 @@
     
     <tags>
       
+      <tag>mariadb</tag>
+      
       <tag>docker</tag>
       
       <tag>sql</tag>
-      
-      <tag>mariadb</tag>
       
       <tag>database</tag>
       
@@ -3853,11 +3853,11 @@
       
       <tag>AWS</tag>
       
+      <tag>Amazon</tag>
+      
       <tag>딥러닝</tag>
       
       <tag>Deeplearning</tag>
-      
-      <tag>Amazon</tag>
       
       <tag>Docker</tag>
       
@@ -3890,11 +3890,11 @@
       
       <tag>AWS</tag>
       
+      <tag>Amazon</tag>
+      
       <tag>딥러닝</tag>
       
       <tag>Deeplearning</tag>
-      
-      <tag>Amazon</tag>
       
       <tag>Docker</tag>
       
@@ -3927,11 +3927,11 @@
       
       <tag>AWS</tag>
       
+      <tag>Amazon</tag>
+      
       <tag>딥러닝</tag>
       
       <tag>Deeplearning</tag>
-      
-      <tag>Amazon</tag>
       
       <tag>Docker</tag>
       
@@ -3964,11 +3964,11 @@
       
       <tag>AWS</tag>
       
-      <tag>Amazon</tag>
-      
       <tag>cloud</tag>
       
       <tag>클라우드</tag>
+      
+      <tag>Amazon</tag>
       
       <tag>아마존</tag>
       
@@ -4005,11 +4005,11 @@
       
       <tag>AWS</tag>
       
-      <tag>Amazon</tag>
-      
       <tag>cloud</tag>
       
       <tag>클라우드</tag>
+      
+      <tag>Amazon</tag>
       
       <tag>아마존</tag>
       
@@ -4046,11 +4046,11 @@
       
       <tag>AWS</tag>
       
-      <tag>Amazon</tag>
-      
       <tag>cloud</tag>
       
       <tag>클라우드</tag>
+      
+      <tag>Amazon</tag>
       
       <tag>아마존</tag>
       
@@ -4085,11 +4085,11 @@
       
       <tag>AWS</tag>
       
-      <tag>Amazon</tag>
-      
       <tag>cloud</tag>
       
       <tag>클라우드</tag>
+      
+      <tag>Amazon</tag>
       
       <tag>아마존</tag>
       
@@ -4122,11 +4122,11 @@
       
       <tag>AWS</tag>
       
-      <tag>Amazon</tag>
-      
       <tag>cloud</tag>
       
       <tag>클라우드</tag>
+      
+      <tag>Amazon</tag>
       
       <tag>아마존</tag>
       
@@ -4482,9 +4482,9 @@
     
     <tags>
       
-      <tag>머신러닝</tag>
-      
       <tag>mathematics</tag>
+      
+      <tag>머신러닝</tag>
       
       <tag>machine learning</tag>
       
@@ -4662,10 +4662,6 @@
       
       <tag>블로그</tag>
       
-      <tag>category</tag>
-      
-      <tag>카테고리</tag>
-      
       <tag>NexT</tag>
       
       <tag>next</tag>
@@ -4674,7 +4670,11 @@
       
       <tag>themes</tag>
       
+      <tag>카테고리</tag>
+      
       <tag>태그</tag>
+      
+      <tag>category</tag>
       
       <tag>tag</tag>
       
@@ -4740,9 +4740,9 @@
     
     <tags>
       
-      <tag>머신러닝</tag>
-      
       <tag>mathematics</tag>
+      
+      <tag>머신러닝</tag>
       
       <tag>machine learning</tag>
       
@@ -4777,9 +4777,9 @@
     
     <tags>
       
-      <tag>머신러닝</tag>
-      
       <tag>mathematics</tag>
+      
+      <tag>머신러닝</tag>
       
       <tag>machine learning</tag>
       
